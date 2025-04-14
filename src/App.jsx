@@ -5,6 +5,7 @@ import Unauthorized from "./pages/Unauthorized";
 import ProtectedRoute from "./services/ProtectedRoute";
 import NoTenantError from "./pages/NoTenantError";
 import CheckTenant from "./services/CheckTenant";
+import { ThemeProvider } from "./components/themeProvider";
 
 const router = createHashRouter([
   {
@@ -41,7 +42,11 @@ const router = createHashRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+  <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+    <RouterProvider router={router} />
+  </ThemeProvider>
+  )
 }
 
 export default App;

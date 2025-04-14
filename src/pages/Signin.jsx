@@ -61,7 +61,7 @@ export default function Signin() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12" dir="rtl">
+    <div className="min-h-screen flex items-center justify-center bg-background px-4 py-12" dir="rtl">
       <div className="w-full max-w-md">
         <div className="flex justify-center mb-8">
           <div className="flex items-center gap-2 text-primary">
@@ -70,9 +70,9 @@ export default function Signin() {
           </div>
         </div>
 
-        <Card>
+        <Card className="bg-card">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold text-center">
+            <CardTitle className="text-2xl font-bold text-center text-card-foreground">
               تسجيل الدخول
             </CardTitle>
             <CardDescription className="text-center">
@@ -98,13 +98,13 @@ export default function Signin() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>البريد الإلكتروني</FormLabel>
+                      <FormLabel className="text-foreground">البريد الإلكتروني</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="أدخل بريدك الإلكتروني"
                           type="email"
                           autoComplete="email"
-                          className="text-right"
+                          className="text-right bg-background text-foreground"
                           {...field}
                           disabled={isLoading}
                         />
@@ -118,14 +118,14 @@ export default function Signin() {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>كلمة المرور</FormLabel>
+                      <FormLabel className="text-foreground">كلمة المرور</FormLabel>
                       <FormControl>
                         <div className="relative">
                           <Input
                             placeholder="أدخل كلمة المرور"
                             type="password"
                             autoComplete="current-password"
-                            className="text-right"
+                            className="text-right bg-background text-foreground"
                             {...field}
                             disabled={isLoading}
                           />
@@ -138,13 +138,13 @@ export default function Signin() {
 
                 <Button 
                   type="submit" 
-                  className="w-full" 
+                  className="w-full text-card-foreground" 
                   disabled={isLoading}
                   aria-disabled={isLoading}
                 >
                   {isLoading ? (
                     <>
-                      <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                      <Loader2 className="ml-2 h-4 w-4 animate-spin text-foreground" />
                       جاري التسجيل...
                     </>
                   ) : (
@@ -157,5 +157,5 @@ export default function Signin() {
         </Card>
       </div>
     </div>
-)
+  )
 }
