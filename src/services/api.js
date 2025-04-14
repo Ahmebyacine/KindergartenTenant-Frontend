@@ -6,7 +6,9 @@ const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
 
-const tenantSubdomain = getSubdomain(window.location.hostname);
+const tenantSubdomain = getSubdomain(window.location.hostname, {
+  validHosts: ["localhost"],
+});
 
 api.interceptors.request.use((config) => {
   if (!tenantSubdomain) {
