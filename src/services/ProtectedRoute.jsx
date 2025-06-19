@@ -1,31 +1,19 @@
-import { getTokenData, isAuthenticated } from './auth';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import Loading from '@/pages/Loading';
 
 const ProtectedRoute = ({ roles = [], redirectPath = '/signin', children }) => {
   const location = useLocation();
-  
-  const authenticated = isAuthenticated();
+  const { user, loading } = useAuth();
 
-  if (!authenticated) {
+  if (loading) return <Loading />;
+
+  if (!user) {
     return <Navigate to={redirectPath} state={{ from: location }} replace />;
   }
 
-  const tokenData = getTokenData();
-
-  if (!tokenData) {
-    return <Navigate to={redirectPath} state={{ from: location }} replace />;
-  }
-
-  const { role } = tokenData;
-
-  if (roles.length > 0) {
-    const hasRequiredRole = roles.some((requiredRole) => 
-      role?.toLowerCase() === requiredRole.toLowerCase()
-    );
-    
-    if (!hasRequiredRole) {
-      return <Navigate to="/unauthorized" state={{ from: location }} replace />;
-    }
+  if (roles.length > 0 && !roles.includes(user.role.toLowerCase())) {
+    return <Navigate to="/unauthorized" state={{ from: location }} replace />;
   }
 
   return children ? children : <Outlet />;

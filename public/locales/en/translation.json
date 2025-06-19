@@ -1,0 +1,289 @@
+{
+  "platform_title": "EasyCole Platform",
+  "login": {
+    "title": "Sign In",
+    "description": "Enter your email and password to access your account",
+    "email": "Email",
+    "email_placeholder": "Enter your email",
+    "password": "Password",
+    "password_placeholder": "Enter your password",
+    "sign_in": "Sign In",
+    "signing_in": "Signing in...",
+    "errors": {
+      "email": "Please enter a valid email address",
+      "password": "Password must be at least 6 characters"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your account settings and preferences.",
+    "tabs": {
+      "personal": "Personal Info",
+      "security": "Security",
+      "language": "Language",
+      "theme": "Theme"
+    },
+    "language": {
+      "title": "Interface Language",
+      "description": "Select your preferred language for the user interface.",
+      "searchPlaceholder": "Search language...",
+      "noLanguageFound": "No language found.",
+      "saveButton": "Save Language Preference",
+      "saving": "Saving...",
+      "successTitle": "Language updated",
+      "successDescription": "Your language preference has been set to {{language}}.",
+      "errorTitle": "Error",
+      "errorDescription": "Failed to update language preference. Please try again."
+    },
+    "theme": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
+  },
+  "sidebar": {
+    "consoleName": "Console Name",
+    "application": "Application",
+    "programs": "Programs",
+    "courses": "Courses",
+    "trainees": "Trainees",
+    "settings": "Settings",
+    "teamWorkspace": "Team Workspace",
+    "teamAvatarAlt": "Team",
+    "signOut": "Sign Out"
+  },
+  "courseForm": {
+    "nameLabel": "Course Name",
+    "namePlaceholder": "Introduction to React",
+    "durationLabel": "Duration",
+    "durationPlaceholder": "8 weeks",
+    "priceLabel": "Price",
+    "pricePlaceholder": "99.99",
+    "lessonsTitle": "Lessons",
+    "addLessonButton": "Add Lesson",
+    "noLessonsMessage": "No lessons added yet",
+    "addFirstLessonButton": "Add your first lesson",
+    "lessonNumber": "Lesson {number}",
+    "deleteConfirmTitle": "Are you sure?",
+    "deleteConfirmDescription": "This will delete the lesson. This action cannot be undone.",
+    "lessonTitleLabel": "Title",
+    "lessonTitlePlaceholder": "Lesson title",
+    "lessonDurationLabel": "Duration (minutes)",
+    "lessonDurationPlaceholder": "45",
+    "contentLabel": "Content",
+    "contentPlaceholder": "Lesson content or description",
+    "updateButton": "Update Course",
+    "createButton": "Create Course"
+  },
+  "courseTable": {
+    "headers": {
+      "name": "Name",
+      "duration": "Duration",
+      "price": "Price",
+      "lessons": "Lessons",
+      "actions": "Actions"
+    },
+    "emptyState": {
+      "title": "No courses found",
+      "description": "Add a new course to get started"
+    },
+    "expandRow": "Expand row",
+    "collapseRow": "Collapse row",
+    "lessonsTitle": "Lessons",
+    "lessonHeaders": {
+      "order": "Order",
+      "title": "Title",
+      "content": "Content",
+      "duration": "Duration"
+    },
+    "noLessons": "No lessons available",
+    "durationMinutes": "{duration} min",
+    "deleteConfirm": {
+      "title": "Are you absolutely sure?",
+      "description": "This action cannot be undone. This will permanently delete the program and all associated data."
+    }
+  },
+  "programForm": {
+    "fields": {
+      "name": "Program Name",
+      "course": "Course",
+      "startDate": "Start Date",
+      "image": "Landing Page Image",
+      "description": "Description",
+      "onlinePayment": "Enable online payment",
+      "onlinePaymentDescription": "Allow users to pay for this program online"
+    },
+    "selectPlaceholder": {
+      "course": "Select a course"
+    },
+    "datePicker": {
+      "placeholder": "Pick a date"
+    },
+    "imageAlt": "Program cover",
+    "uploadButton": "Upload Image",
+    "descriptionPlaceholder": "Enter program description for the landing page",
+    "lessons": {
+      "title": "Lessons",
+      "addButton": "Add Lesson",
+      "editTitle": "Edit Lesson",
+      "addTitle": "Add New Lesson",
+      "order": "Order",
+      "titleLabel": "Title",
+      "durationLabel": "Duration (min)",
+      "contentLabel": "Content",
+      "updateButton": "Update Lesson",
+      "table": {
+        "order": "Order",
+        "title": "Title",
+        "content": "Content",
+        "duration": "Duration",
+        "actions": "Actions"
+      },
+      "deleteTitle": "Delete Lesson",
+      "deleteDescription": "Are you sure you want to delete this lesson?",
+      "emptyTitle": "No lessons added",
+      "emptyDescription": "Add your first lesson to get started.",
+      "durationMinutes": "{duration} min"
+    },
+    "createButton": "Create Program",
+    "updateButton": "Update Program"
+  },
+  "programsTable": {
+    "headers": {
+      "name": "Name",
+      "startDate": "Start Date",
+      "course": "Course",
+      "landingPage": "Landing Page",
+      "actions": "Actions"
+    },
+    "emptyState": {
+      "title": "No programs found",
+      "description": "Add a new program to get started"
+    },
+    "expandRow": "Expand row",
+    "collapseRow": "Collapse row",
+    "copyLink": "Copy Link",
+    "linkCopied": "Link copied to clipboard!",
+    "viewLandingPage": "View landing page",
+    "createLandingPage": "Create Landing Page",
+    "lessonsTitle": "Lessons",
+    "lessonHeaders": {
+      "order": "Order",
+      "title": "Title",
+      "content": "Content",
+      "duration": "Duration"
+    },
+    "noLessons": "No lessons available",
+    "durationMinutes": "{duration} min",
+    "deleteConfirm": {
+      "title": "Are you absolutely sure?",
+      "description": "This action cannot be undone. This will permanently delete the program and all associated data."
+    }
+  },
+  "email": {
+    "composeTab": "Compose Message",
+    "previewTab": "Preview",
+    "subjectLabel": "Subject",
+    "subjectPlaceholder": "Enter email subject",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Enter your message",
+    "namePlaceholderHint": "Use {name} to include the recipient's name in your message.",
+    "templateLabel": "Email Template",
+    "templatePlaceholder": "Select a template",
+    "noTemplate": "No template",
+    "templateHint": "Select a template or create your own message.",
+    "recipientsLabel": "Recipients",
+    "bulkRecipients": "Sending to {count} trainees in {program}",
+    "noRecipients": "No recipients selected",
+    "sendingStatus": "Sending...",
+    "sendBulk": "Send to {count} Trainees",
+    "sendSingle": "Send Message",
+    "previewTitle": "Message Preview",
+    "previewTo": "To",
+    "previewBulkRecipients": "{count} trainees from {program}",
+    "previewSubject": "Subject",
+    "previewMessage": "Message",
+    "backToCompose": "Back to Compose"
+  },
+  "trainees": {
+    "title": "Trainees Management",
+    "emptyState": "No trainees found. Add trainees to your programs to see them here.",
+    "traineeCount": "{count} trainees",
+    "messageAll": "Message All",
+    "table": {
+      "name": "Name",
+      "phone": "Phone",
+      "email": "Email",
+      "joined": "Joined",
+      "actions": "Actions"
+    },
+    "deleteDialog": {
+      "title": "Delete Trainee",
+      "description": "Are you sure you want to delete {name}? This action cannot be undone."
+    }
+  },
+  "unauthorized": {
+    "title": "Unauthorized Access",
+    "description": "You don't have permission to access this page. Please contact your administrator if you believe this is an error.",
+    "errorText": "Error 401: Unauthorized",
+    "backButton": "Go Back",
+    "loginButton": "Login"
+  },
+  "courses": {
+    "title": "Course Management",
+    "addNew": "Add New Course",
+    "fetchError": "Failed to fetch courses",
+    "deleteSuccess": "Course deleted successfully",
+    "deleteError": "Failed to delete course"
+  },
+  "editCourse": {
+    "fetchError": "Failed to fetch course details",
+    "backLink": "Back to courses",
+    "title": "Edit Course",
+    "subtitle": "Update course information and lessons"
+  },
+  "newCourse": {
+    "backLink": "Back to courses",
+    "title": "Create New Course",
+    "subtitle": "Add a new course to your catalog with lessons and details"
+  },
+  "editProgram": {
+    "fetchError": "Failed to fetch program details",
+    "title": "Edit Program"
+  },
+  "messageProgram": {
+    "fetchError": "Error fetching data:",
+    "backLink": "Back to Trainees",
+    "title": "Send Message to All Trainees",
+    "programLabel": "Program",
+    "recipientsLabel": "Recipients: {count} trainees"
+  },
+  "newProgram": {
+    "title": "Create New Program"
+  },
+  "programs": {
+    "title": "Programs Management",
+    "addNew": "Add New Program",
+    "fetchError": "Failed to fetch programs",
+    "deleteSuccess": "Program deleted successfully",
+    "deleteError": "Failed to delete program",
+    "landingPageSuccess": "Landing page generated successfully",
+    "landingPageError": "Failed to generate landing page"
+  },
+  "messageTrainee": {
+    "fetchError": "Error fetching data:",
+    "backLink": "Back to Trainees",
+    "title": "Send Message to Trainee",
+    "recipientLabel": "Recipient",
+    "emailLabel": "Email",
+    "programLabel": "Program"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "saving": "Saving...",
+    "edit": "Edit",
+    "dash": "—",
+    "message": "Message"
+  }
+}
