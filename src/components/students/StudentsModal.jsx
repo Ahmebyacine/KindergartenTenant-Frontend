@@ -78,7 +78,7 @@ export default function StudentsModal({ onAddStudent, classes }) {
   };
 
   return (
-    <div className="bg-background p-4 flex items-center justify-center">
+    <div className="bg-background data-[state=open]:px-4 px-2 w-full flex items-center justify-center">
       <Dialog>
         <DialogTrigger asChild>
           <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-6 py-2 flex items-center gap-2 w-full sm:w-auto">
@@ -90,7 +90,7 @@ export default function StudentsModal({ onAddStudent, classes }) {
         <DialogContent className="w-full max-w-full sm:max-w-2xl bg-card p-2 sm:p-6 rounded-lg sm:rounded-2xl overflow-y-auto">
           <DialogHeader className="border-b-2 pb-4">
             <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
-              <DialogTitle className="text-lg sm:text-xl font-semibold text-foreground text-center w-full">
+              <DialogTitle className="text-lg sm:text-xl font-semibold text-foreground rtl:text-right ltr:text-left w-full">
                 إضافة طفل جديد
               </DialogTitle>
             </div>
@@ -295,7 +295,7 @@ export default function StudentsModal({ onAddStudent, classes }) {
           </Form>
 
           <DialogFooter>
-            <div className="flex flex-col sm:flex-row w-full gap-3 pt-4">
+            <div className="flex w-full md:w-1/2 gap-3 pt-4">
               <Button
                 type="submit"
                 onClick={form.handleSubmit(onSubmit)}

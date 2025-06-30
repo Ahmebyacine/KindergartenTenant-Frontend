@@ -11,15 +11,23 @@ import Reports from "./pages/admin/Reports";
 import Teachers from "./pages/admin/Teachers";
 import Classes from "./pages/admin/Classes";
 import Students from "./pages/admin/Students";
-import ReportHealthDetails from "./layouts/admin/reports/ReportsHealthDetails";
-import ReportsPedagogicalDetails from "./layouts/admin/reports/ReportsPedagogicalDetails";
-import ReportsFinancialDetails from "./layouts/admin/reports/ReportsFinancialDetails";
+import ReportHealthDetails from "./components/reports/ReportsHealthDetails";
+import ReportsPedagogicalDetails from "./components/reports/ReportsPedagogicalDetails";
+import ReportsFinancialDetails from "./components/reports/ReportsFinancialDetails";
 import Dashboard from "./pages/admin/Dashboard";
 import Settings from "./pages/admin/Settings";
 import Expenses from "./pages/admin/Expenses";
 import Attendance from "./pages/admin/Attendance";
 import Incomes from "./pages/admin/Incomes";
 import FinancialPerformance from "./pages/admin/FinancialPerformance";
+import DashboardSupervisor from "./pages/supervisor/DashboardSupervisor";
+import ClassesSupervisor from "./pages/supervisor/ClassesSupervisor";
+import TeachersSupervisor from "./pages/supervisor/TeachersSupervisor";
+import AttendanceSupervisor from "./pages/supervisor/AttendanceSupervisor";
+import DashboardTeacher from "./pages/teacher/DashboardTeacher";
+import StudentsTeacher from "./pages/teacher/StudentsTeacher";
+import AttendanceTeacher from "./pages/teacher/AttendanceTeacher";
+import ReportsTeacher from "./pages/teacher/ReportsTeacher";
 
 const router = createHashRouter([
   {
@@ -33,58 +41,111 @@ const router = createHashRouter([
         </AuthProvider>
       </CheckTenant>
     ),
+
     children: [
       {
-        index: true,
-        element: <Dashboard />,
+        element: <ProtectedRoute roles={["admin"]} />,
+        children: [
+          {
+            index: true,
+            element: <Dashboard />,
+          },
+          {
+            path: "teachers",
+            element: <Teachers />,
+          },
+          {
+            path: "classes",
+            element: <Classes />,
+          },
+          {
+            path: "financial-performance",
+            element: <FinancialPerformance />,
+          },
+          {
+            path: "expenses",
+            element: <Expenses />,
+          },
+          {
+            path: "incomes",
+            element: <Incomes />,
+          },
+          {
+            path: "attendance",
+            element: <Attendance />,
+          },
+          {
+            path: "settings",
+            element: <Settings />,
+          },
+        ],
       },
       {
-        path:'reports',
-        element: <Reports />,
+        element: <ProtectedRoute roles={["admin", "supervisor"]} />,
+        children: [
+          {
+            path: "students",
+            element: <Students />,
+          },
+          {
+            path: "reports",
+            element: <Reports />,
+          },
+          {
+            path: "reports/health/:reportId",
+            element: <ReportHealthDetails />,
+          },
+          {
+            path: "reports/pedagogical/:reportId",
+            element: <ReportsPedagogicalDetails />,
+          },
+          {
+            path: "reports/financial/:reportId",
+            element: <ReportsFinancialDetails />,
+          },
+        ],
       },
       {
-        path:'teachers',
-        element: <Teachers />,
+        element: <ProtectedRoute roles={["supervisor"]} />,
+        children: [
+          {
+            path: "supervisor-dashboard",
+            element: <DashboardSupervisor />,
+          },
+          {
+            path: "supervisor-classes",
+            element: <ClassesSupervisor />,
+          },
+          {
+            path: "supervisor-teachers",
+            element: <TeachersSupervisor />,
+          },
+          {
+            path: "supervisor-attendance",
+            element: <AttendanceSupervisor />,
+          },
+        ],
       },
       {
-        path:'classes',
-        element: <Classes />,
-      },
-      {
-        path:'students',
-        element: <Students />,
-      },
-      {
-        path:'financial-performance',
-        element: <FinancialPerformance />,
-      },
-      {
-        path:'expenses',
-        element: <Expenses />,
-      },
-      {
-        path:'incomes',
-        element: <Incomes />,
-      },
-      {
-        path:'attendance',
-        element: <Attendance />,
-      },
-      {
-        path:'settings',
-        element: <Settings />,
-      },
-      {
-        path:'reports/health/:reportId',
-        element: <ReportHealthDetails />,
-      },
-      {
-        path:'reports/pedagogical/:reportId',
-        element: <ReportsPedagogicalDetails />,
-      },
-      {
-        path:'reports/financial/:reportId',
-        element: <ReportsFinancialDetails />,
+        element: <ProtectedRoute roles={["teacher"]} />,
+        children: [
+          {
+            path: "teacher-dashboard",
+            element: <DashboardTeacher />,
+          },
+          {
+            path: "teacher-students",
+            element: <StudentsTeacher />,
+          },
+          {
+            path: "teacher-attendance",
+            element: <AttendanceTeacher />,
+          },
+          {
+            path: "teacher-reports",
+            element: <ReportsTeacher />,
+          },
+        ],
       },
     ],
   },
@@ -112,9 +173,7 @@ const router = createHashRouter([
 
 function App() {
   useDocumentDirection();
-  return (
-    <RouterProvider router={router} />
-  )
+  return <RouterProvider router={router} />;
 }
 
 export default App;

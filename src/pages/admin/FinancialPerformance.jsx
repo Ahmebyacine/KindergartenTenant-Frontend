@@ -1,4 +1,3 @@
-import { Card, CardContent } from "@/components/ui/card";
 import {
   CardReceive,
   CardSend,
@@ -13,6 +12,42 @@ import IncomesFilter from "@/layouts/admin/incomes/IncomesFilter";
 import FinancialJournalChart from "@/layouts/admin/financialPerformance/FinancialJournalChart";
 import FinancialJournalTable from "@/layouts/admin/financialPerformance/FInancialJournalTable";
 import EmployeeJournalTable from "@/layouts/admin/financialPerformance/EmployeeJournalTable";
+import StatCard from "@/components/StatCard";
+
+const statsData = [
+  {
+    title: "إجمالي المداخيل",
+    value: formatCurrencyDZD(125000, i18n.language),
+    subLabel: "المبلغ المحصل خلال السنة الحالية",
+    icon: CardReceive,
+    bgColor: "bg-[#DCFCE7]",
+    iconColor: "#00A63E",
+  },
+  {
+    title: "إجمالي المصاريف",
+    value: formatCurrencyDZD(50000, i18n.language),
+    icon: CardSend,
+    bgColor: "bg-[#FFE2E2]",
+    iconColor: "#FB2C36",
+    subLabel: "جميع المصاريف المسجلة",
+  },
+  {
+    title: "صافي الربح",
+    value: "+" + formatCurrencyDZD(970000 - 50000, i18n.language),
+    icon: DollarSquare,
+    bgColor: "bg-[#FEF3C6]",
+    iconColor: "#D08700",
+    subLabel: "الفرق بين المداخيل والمصاريف",
+  },
+  {
+    title: "نسبة الربح",
+    value: "88%",
+    icon: Chart2,
+    bgColor: "bg-[#DBEAFE]",
+    iconColor: "#1447E6",
+    subLabel: "مقارنة بين الربح والمصاريف الإجمالية",
+  },
+];
 
 export default function FinancialPerformance() {
   const chartData = [
@@ -143,89 +178,9 @@ export default function FinancialPerformance() {
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="bg-card border-border">
-            <CardContent className="p-6">
-              <div className="flex items-start">
-                <div className="flex items-center w-full">
-                  <div className="flex items-center justify-between w-full gap-2">
-                    <p className="text-sm text-muted-foreground mb-1">
-                      إجمالي المداخيل
-                    </p>
-                    <div className="w-10 h-10 bg-[#DCFCE7] rounded-xl flex items-center justify-center">
-                      <CardReceive size={24} color="#00A63E" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="text-right mt-1">
-                <p className="text-[22px] font-bold text-foreground">
-                  {formatCurrencyDZD(1250000, i18n.language)}
-                </p>
-                <p className="text-xs text-muted-foreground mb-1">
-                  من جميع الفواتير المدفوعة
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-card border-border">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-1">
-                <p className="text-sm text-muted-foreground">إجمالي المصاريف</p>
-                <div className="w-10 h-10 bg-[#FFE2E2] rounded-xl flex items-center justify-center">
-                  <CardSend size={24} color="#FB2C36" />
-                </div>
-              </div>
-
-              <div className="text-right mt-1">
-                <p className="text-[22px] font-bold text-foreground">
-                  {formatCurrencyDZD(970000, i18n.language)}
-                </p>
-                <p className="text-xs text-muted-foreground mb-1">
-                  جميع المصاريف المسجلة
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-card border-border">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-1">
-                <p className="text-sm text-muted-foreground">صافي الربح </p>
-                <div className="w-10 h-10 bg-[#FEF3C6] rounded-xl flex items-center justify-center">
-                  <DollarSquare size={24} color="#D08700" />
-                </div>
-              </div>
-
-              <div className="text-right mt-1">
-                <p className="text-[22px] font-bold text-foreground">
-                  +{formatCurrencyDZD(970000, i18n.language)}
-                </p>
-                <p className="text-xs text-muted-foreground mb-1">
-                  الفرق بين المداخيل والمصاريف
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-card border-border">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-1">
-                <p className="text-sm text-muted-foreground">نسبة الربح</p>
-                <div className="w-10 h-10 bg-[#DBEAFE] rounded-xl flex items-center justify-center">
-                  <Chart2 size={24} color="#1447E6" />
-                </div>
-              </div>
-
-              <div className="text-right mt-1">
-                <p className="text-[22px] font-bold text-foreground">22%</p>
-                <p className="text-xs text-muted-foreground mb-1">
-                  مقارنة بين الربح والمصاريف الإجمالية
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+          {statsData.map((stat, index) => (
+            <StatCard key={index} stat={stat} />
+          ))}
         </div>
         {/* filter search and tables */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

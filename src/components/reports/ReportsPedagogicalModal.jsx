@@ -31,93 +31,98 @@ import { Textarea } from "@/components/ui/textarea";
 import { Add } from "iconsax-react";
 import { useEffect, useState } from "react";
 
-// Updated schema with student instead of childName
-const healthReportSchema = z.object({
+// Updated report schema
+const reportSchema = z.object({
   student: z.string().min(1, "مطلوب"),
   classId: z.string().min(1, "مطلوب"),
-  observationTime: z.string().min(1, "مطلوب"),
-  conditionType: z.string().min(1, "مطلوب"),
-  conditionAssessment: z.string().min(1, "مطلوب"),
-  actionTaken: z.boolean(),
-  actionType: z.string().optional(),
+  languageCommunication: z.string().min(1, "مطلوب"),
+  behavior: z.string().min(1, "مطلوب"),
+  skills: z.string().min(1, "مطلوب"),
+  overall: z.string().min(1, "مطلوب"),
   notes: z.string().optional(),
 });
 
-export default function ReportsHealthModal({ onAddReport, classes, children }) {
+export default function ReportsPedagogicalModal({
+  onAddReport,
+  classes,
+  children,
+}) {
   const [filteredChildren, setFilteredChildren] = useState([]);
 
   const form = useForm({
-    resolver: zodResolver(healthReportSchema),
+    resolver: zodResolver(reportSchema),
     defaultValues: {
       student: "",
       classId: "",
-      observationTime: "",
-      conditionType: "",
-      conditionAssessment: "",
-      actionTaken: true,
-      actionType: "",
+      languageCommunication: "",
+      behavior: "",
+      skills: "",
+      overall: "",
       notes: "",
     },
   });
 
   const classId = form.watch("classId");
-  const actionTaken = form.watch("actionTaken");
 
   // Filter children based on selected class and search query
   useEffect(() => {
-    let result = children || [];
+    let result = children;
 
     // Filter by class
     if (classId) {
       result = result.filter((child) => child.class?._id === classId);
     }
-
     setFilteredChildren(result);
   }, [classId, children]);
 
   const onSubmit = (data) => {
-    onAddReport( data);
+    onAddReport(data);
     form.reset();
   };
 
-  // Condition types
-  const conditionTypes = ["حرارة", "سعال", "إعياء", "غثيان", "إصابة"];
+  const evaluationOptions = [
+    { label: "ممتاز", value: "excellent" },
 
-  // Condition assessments
-  const conditionAssessments = ["خفيفة", "متوسطة", "شديدة"];
+    { label: "هادي", value: "calm" },
+
+    { label: "جيد جداً", value: "very_good" },
+
+    { label: "جيد", value: "good" },
+
+    { label: "مقبول", value: "acceptable" },
+
+    { label: "ضعيف", value: "weak" },
+  ];
 
   return (
-    <div className="bg-background p-4 flex items-center justify-center">
+    <div className="bg-background flex items-center justify-center">
       <Dialog>
         <DialogTrigger asChild>
           <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-6 py-2 flex items-center gap-2">
             <Add size="20" color="currentColor" />
-            إضافة تقرير صحي
+            إضافة تقرير
           </Button>
         </DialogTrigger>
 
-        <DialogContent className="w-full max-w-full sm:max-w-2xl bg-card p-6 rounded-lg sm:rounded-2xl">
+        <DialogContent className="w-full max-w-full sm:max-w-2xl bg-card p-2 sm:p-6 rounded-lg sm:rounded-2xl overflow-y-auto">
           <DialogHeader className="border-b-2 pb-4">
-            <div className="flex justify-center">
-              <DialogTitle className="text-lg sm:text-xl font-semibold text-foreground">
-                إضافة تقرير صحي
-              </DialogTitle>
-            </div>
+            <DialogTitle className="text-lg sm:text-xl font-semibold text-foreground rtl:text-right ltr:text-left w-full">
+              إضافة تقرير بيداغوجي
+            </DialogTitle>
           </DialogHeader>
 
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
               className="space-y-6 max-h-[70vh] overflow-y-auto pt-2 px-1 sm:px-2"
-              dir="rtl"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Class Selection */}
                 <FormField
                   control={form.control}
                   name="classId"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem className="space-y-1">
                       <FormLabel className="text-muted-foreground">
                         الفصل
                       </FormLabel>
@@ -131,7 +136,7 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {classes.map((cls) => (
+                          {classes?.map((cls) => (
                             <SelectItem key={cls._id} value={cls._id}>
                               {cls.className}
                             </SelectItem>
@@ -148,103 +153,55 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                   control={form.control}
                   name="student"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem className="space-y-1">
                       <FormLabel className="text-muted-foreground">
                         اسم الطفل
                       </FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                        disabled={!classId}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="text-right">
-                            <SelectValue placeholder="اختر الطفل" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent className="max-h-60 overflow-y-auto">
-                          {filteredChildren?.length > 0 ? (
-                            filteredChildren?.map((child) => (
-                              <SelectItem
-                                key={child.student._id}
-                                value={child?.student?._id}
-                              >
-                                {child?.student?.firstName}{" "}
-                                {child?.student?.lastName}
+                      <div className="space-y-2">
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          disabled={!classId}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="text-right">
+                              <SelectValue placeholder="اختر الطفل" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent className="max-h-60 overflow-y-auto">
+                            {filteredChildren?.length > 0 ? (
+                              filteredChildren?.map((child) => (
+                                <SelectItem
+                                  key={child.student._id}
+                                  value={child?.student?._id}
+                                >
+                                  {child?.student?.firstName}{" "}
+                                  {child?.student?.lastName}
+                                </SelectItem>
+                              ))
+                            ) : (
+                              <SelectItem value="none" disabled>
+                                لا يوجد أطفال
                               </SelectItem>
-                            ))
-                          ) : (
-                            <SelectItem value="none" disabled>
-                              لا يوجد أطفال
-                            </SelectItem>
-                          )}
-                        </SelectContent>
-                      </Select>
+                            )}
+                          </SelectContent>
+                        </Select>
+                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+              </div>
 
-                {/* Observation Time */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Language & Communication */}
                 <FormField
                   control={form.control}
-                  name="observationTime"
+                  name="languageCommunication"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem className="space-y-1">
                       <FormLabel className="text-muted-foreground">
-                        وقت الملاحظة
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className="text-right"
-                          placeholder="صباحاً 10:00"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Condition Type */}
-                <FormField
-                  control={form.control}
-                  name="conditionType"
-                  render={({ field }) => (
-                    <FormItem className="space-y-2">
-                      <FormLabel className="text-muted-foreground">
-                        نوع الحالة
-                      </FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="text-right">
-                            <SelectValue placeholder="اختر نوع الحالة" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {conditionTypes.map((type) => (
-                            <SelectItem key={type} value={type}>
-                              {type}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Condition Assessment */}
-                <FormField
-                  control={form.control}
-                  name="conditionAssessment"
-                  render={({ field }) => (
-                    <FormItem className="space-y-2">
-                      <FormLabel className="text-muted-foreground">
-                        تقييم الحالة
+                        تقييم اللغة والتواصل
                       </FormLabel>
                       <Select
                         onValueChange={field.onChange}
@@ -256,9 +213,9 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {conditionAssessments.map((assessment) => (
-                            <SelectItem key={assessment} value={assessment}>
-                              {assessment}
+                          {evaluationOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -268,62 +225,98 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                   )}
                 />
 
-                {/* Action Taken */}
+                {/* Behavior */}
                 <FormField
                   control={form.control}
-                  name="actionTaken"
+                  name="behavior"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem className="space-y-1">
                       <FormLabel className="text-muted-foreground">
-                        تم اتخاذ إجراء؟
+                        تقييم السلوك
                       </FormLabel>
-                      <div className="flex gap-4">
-                        {[
-                          { label: "نعم", value: true },
-                          { label: "لا", value: false },
-                        ].map(({ label, value }) => (
-                          <label
-                            key={label}
-                            className="flex items-center space-x-2"
-                          >
-                            <input
-                              type="radio"
-                              value={String(value)}
-                              checked={field.value === value}
-                              onChange={() => field.onChange(value)}
-                              className="text-primary"
-                            />
-                            <span>{label}</span>
-                          </label>
-                        ))}
-                      </div>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="text-right">
+                            <SelectValue placeholder="اختر التقييم" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {evaluationOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
-                {/* Action Type (conditional) */}
-                {actionTaken && (
-                  <FormField
-                    control={form.control}
-                    name="actionType"
-                    render={({ field }) => (
-                      <FormItem className="space-y-2">
-                        <FormLabel className="text-muted-foreground">
-                          نوع الإجراء
-                        </FormLabel>
+                {/* Skills */}
+                <FormField
+                  control={form.control}
+                  name="skills"
+                  render={({ field }) => (
+                    <FormItem className="space-y-1">
+                      <FormLabel className="text-muted-foreground">
+                        تقييم المهارات
+                      </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
                         <FormControl>
-                          <Input
-                            {...field}
-                            className="text-right"
-                            placeholder="راحة في العيادة لمدة ساعة"
-                          />
+                          <SelectTrigger className="text-right">
+                            <SelectValue placeholder="اختر التقييم" />
+                          </SelectTrigger>
                         </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                )}
+                        <SelectContent>
+                          {evaluationOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Overall */}
+                <FormField
+                  control={form.control}
+                  name="overall"
+                  render={({ field }) => (
+                    <FormItem className="space-y-1">
+                      <FormLabel className="text-muted-foreground">
+                        التقييم العام
+                      </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="text-right">
+                            <SelectValue placeholder="اختر التقييم" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {evaluationOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
 
               {/* Notes */}
@@ -331,7 +324,7 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                 control={form.control}
                 name="notes"
                 render={({ field }) => (
-                  <FormItem className="space-y-2">
+                  <FormItem className="space-y-1">
                     <FormLabel className="text-muted-foreground">
                       ملاحظات
                     </FormLabel>
@@ -339,7 +332,7 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                       <Textarea
                         {...field}
                         className="text-right"
-                        placeholder="لاحظت احمراراً في وجه الطفل وتعباً واضحاً. تم قياس حرارته وإراحته في غرفة العيادة، وتم إبلاغ ولي الأمر هاتفياً!"
+                        placeholder="أظهر تحسناً في المهارات الحركية الدقيقة. ننصح بزيادة الأنشطة البدنية."
                       />
                     </FormControl>
                     <FormMessage />
@@ -351,7 +344,7 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
 
           {/* Action Buttons */}
           <DialogFooter>
-            <div className="flex flex-col sm:flex-row w-full gap-3 pt-4">
+            <div className="flex w-full md:w-1/2 gap-3 pt-4">
               <Button
                 type="submit"
                 onClick={form.handleSubmit(onSubmit)}
@@ -363,9 +356,6 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                 <Button
                   variant="outline"
                   className="flex-1 border-border text-muted-foreground hover:bg-background"
-                  onClick={() => {
-                    form.reset();
-                  }}
                 >
                   إلغاء
                 </Button>

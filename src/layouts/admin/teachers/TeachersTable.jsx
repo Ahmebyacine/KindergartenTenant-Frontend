@@ -7,7 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Document } from "iconsax-react";
+import { UserRemove } from "iconsax-react";
 import { formatDate } from "@/utils/dateFormatter";
 import i18next from "i18next";
 import LoadingTable from "@/components/LoadingTable";
@@ -85,10 +85,10 @@ export default function TeachersTable({ loading, teachers }) {
                 className="text-center py-12 text-muted-foreground"
               >
                 <div className="flex flex-col items-center justify-center gap-2">
-                  <Document size={40} color="CurrentColor" />
-                  <p className="text-lg font-medium">لا توجد تقارير متاحة</p>
+                  <UserRemove size={40} color="CurrentColor" />
+                  <p className="text-lg font-medium">لا توجد اساتذة متاحين</p>
                   <p className="text-sm">
-                    لم يتم إنشاء أي تقارير بعد، قم بإضافة تقرير جديد
+                    لم يتم إضافة أي معلمين بعد، قم بإضافة معلم جديد
                   </p>
                 </div>
               </TableCell>

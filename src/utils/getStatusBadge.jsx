@@ -40,19 +40,19 @@ export const getAssessmentBadge = (status) => {
         </Badge>
       );
     case "جيد جداً":
-      return(
+      return (
         <Badge className="bg-[#dcfce7] text-[#008236] hover:bg-[#dcfce7]">
           {status}
         </Badge>
       );
     case "جيد":
-      return(
-        <Badge className= "bg-[#dbeafe] text-[#1447e6] hover:bg-[#dbeafe]">
+      return (
+        <Badge className="bg-[#dbeafe] text-[#1447e6] hover:bg-[#dbeafe]">
           {status}
         </Badge>
       );
     case "يحتاج متابعة":
-      return(
+      return (
         <Badge className="bg-[#fef3c6] text-[#e17100] hover:bg-[#fef3c6]">
           {status}
         </Badge>
@@ -79,11 +79,39 @@ export const getClassStatusBadge = (studentsCount) => {
         مكتمل
       </Badge>
     );
-  }else {
+  } else {
     return (
       <Badge className="bg-red-50 text-red-700 hover:bg-red-50 border-0 rounded-md px-5 py-2">
         متاح
       </Badge>
     );
   }
-}
+};
+export const getAttendancesBadge = (status) => {
+  switch (status) {
+    case "present":
+      return (
+        <Badge className="bg-[#dcfce7] text-[#008236] hover:bg-[#dcfce7]">
+          حاضر
+        </Badge>
+      );
+    case "late":
+      return (
+        <Badge className="bg-[#fef3c6] text-[#e17100] hover:bg-[#fef3c6]">
+          متأخر
+        </Badge>
+      );
+    case "absent":
+      return (
+        <Badge className="bg-[#ffe2e2] text-[#c10007] hover:bg-[#ffe2e2]">
+          غائب
+        </Badge>
+      );
+    default:
+      return (
+        <Badge className="bg-[#e2e8f0] text-[#44403b] hover:bg-[#e2e8f0]">
+          غير مسجل
+        </Badge>
+      );
+  }
+};

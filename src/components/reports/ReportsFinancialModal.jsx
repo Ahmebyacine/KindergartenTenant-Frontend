@@ -78,22 +78,20 @@ export default function ReportsFinancialModal({onAddReport, classes, children })
 
   const academicYearMonths = getAcademicYearMonths();
   return (
-    <div className="bg-background p-4 flex items-center justify-center">
+    <div className="bg-background px-2 flex items-center justify-center">
       <Dialog>
         <DialogTrigger asChild>
           <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-6 py-2 flex items-center gap-2">
             <Add size="20" color="currentColor" />
-            إضافة تقرير مالي
+            إضافة تقرير
           </Button>
         </DialogTrigger>
 
         <DialogContent className="w-full max-w-full sm:max-w-2xl bg-card p-6 rounded-lg sm:rounded-2xl">
           <DialogHeader className="border-b-2 pb-4">
-            <div className="flex justify-center">
-              <DialogTitle className="text-lg sm:text-xl font-semibold text-foreground">
+              <DialogTitle className="text-lg sm:text-xl font-semibold rtl:text-right ltr:text-left text-foreground">
                 إضافة تقرير مالي
               </DialogTitle>
-            </div>
           </DialogHeader>
 
           <Form {...form}>
@@ -288,7 +286,7 @@ export default function ReportsFinancialModal({onAddReport, classes, children })
 
           {/* Action Buttons */}
           <DialogFooter>
-            <div className="flex flex-col sm:flex-row w-full gap-3 pt-4">
+            <div className="flex w-full md:w-1/2 gap-3 pt-4">
               <Button
                 type="submit"
                 onClick={form.handleSubmit(onSubmit)}

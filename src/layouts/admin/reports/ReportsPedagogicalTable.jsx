@@ -13,13 +13,14 @@ import { SearchNormal1, Document } from "iconsax-react";
 import { getAssessmentBadge } from "@/utils/getStatusBadge";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import ReportsPedagogicalModal from "./ReportsPedagogicalModal";
+import ReportsPedagogicalModal from "../../../components/reports/ReportsPedagogicalModal";
 import api from "@/services/api";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { formatDateTime } from "@/utils/dateFormatter";
 import i18n from "@/i18n";
 import LoadingTable from "@/components/LoadingTable";
+import ReportsFilter from "@/components/reports/ReportsFilter";
 
 export default function ReportsPedagogicalTable({ classes, students }) {
   const [reports, setReports] = useState([]);
@@ -50,18 +51,21 @@ export default function ReportsPedagogicalTable({ classes, students }) {
   };
   return (
     <>
-      <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
-        <div className="relative w-full sm:w-64">
-          <SearchNormal1
-            size="16"
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
-            color="currentColor"
-          />
-          <Input
-            placeholder="البحث"
-            className="pr-10 pl-4 py-2 w-64 border border-border rounded-lg text-right bg-background"
-            disabled={!reports.length}
-          />
+      <div className="flex justify-between ">
+        <div className="w-2/3 md:w-full flex gap-1 items-center">
+          <div className="relative w-2/3 md:w-1/3">
+            <SearchNormal1
+              size="16"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+              color="currentColor"
+            />
+            <Input
+              placeholder="البحث"
+              className="pr-10 pl-4 py-2 bg-background"
+              disabled={!reports.length}
+            />
+          </div>
+          <ReportsFilter />
         </div>
         <ReportsPedagogicalModal
           classes={classes}

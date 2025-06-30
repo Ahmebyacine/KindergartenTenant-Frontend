@@ -63,7 +63,7 @@ export default function ExpensesModal({expenseTypes}) {
   ];
 
   return (
-    <div className="bg-background p-4 flex items-center justify-center">
+    <div className="bg-background p-2 md:p-4 flex items-center justify-center">
       <Dialog>
         <DialogTrigger asChild>
           <Button className="bg-primary hover:bg-primary/90 text-primary-foreground w-full rounded-lg px-6 py-2 flex items-center gap-2">
@@ -74,11 +74,9 @@ export default function ExpensesModal({expenseTypes}) {
 
         <DialogContent className="w-full max-w-full sm:max-w-2xl bg-card p-6 rounded-lg sm:rounded-2xl">
           <DialogHeader className="border-b-2 pb-4">
-            <div className="flex justify-center">
-              <DialogTitle className="text-lg sm:text-xl font-semibold text-foreground">
+              <DialogTitle className="text-lg rtl:text-right ltr:text-left sm:text-xl font-semibold text-foreground">
                 تسجيل مصروف جديد
               </DialogTitle>
-            </div>
           </DialogHeader>
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -187,7 +185,7 @@ export default function ExpensesModal({expenseTypes}) {
 
           {/* Action Buttons */}
           <DialogFooter>
-            <div className="flex flex-col sm:flex-row w-full md:w-1/2 gap-3 pt-4">
+            <div className="flex w-full md:w-1/2 gap-3 pt-4">
               <Button
                 type="submit"
                 onClick={handleSubmit(onSubmit)}

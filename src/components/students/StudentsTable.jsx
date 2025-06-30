@@ -15,11 +15,10 @@ import i18n from "@/i18n";
 import LoadingTable from "@/components/LoadingTable";
 import { useState } from "react";
 import { X } from "lucide-react";
+import StudentDetails from "./StudentDetails";
 
 export default function StudentsTable({ loading, students }) {
   const [rowSelection, setRowSelection] = useState([]);
-
-  console.log(rowSelection);
 
   const groupedByClass = students.reduce((groups, enrollment) => {
     const classId = enrollment.class._id;
@@ -76,20 +75,16 @@ export default function StudentsTable({ loading, students }) {
   return (
     <div className="space-y-4">
       {classGroups.map((classGroup) => (
-        <Card
-          key={classGroup.className}
-          className="border border-border shadow-sm px-4"
-        >
-          <CardHeader>
-            <h3 className="text-lg font-semibold text-foreground">
-              {classGroup.className}
-            </h3>
-          </CardHeader>
+        <>
+          <h3 className="text-lg font-semibold text-foreground">
+            {classGroup.className}
+          </h3>
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50 border-b border-border hover:bg-muted/50">
                 <TableHead className="text-muted-foreground font-medium h-12">
                   <Checkbox
+                    className="mr-4"
                     checked={
                       classGroup.enrollments.length > 0 &&
                       classGroup.enrollments.every((e) =>
@@ -139,19 +134,14 @@ export default function StudentsTable({ loading, students }) {
               {classGroup.enrollments.map((enrollment, i) => (
                 <TableRow
                   key={enrollment._id}
-                  onClick={() => {
-                    setRowSelection(
-                      (prev) =>
-                        prev.includes(enrollment._id)
-                          ? prev.filter((id) => id !== enrollment._id)
-                          : [...prev, enrollment._id]
-                    );
-                  }}
-                  className="border-b border-border hover:bg-muted/50"
-                  data-state={rowSelection[enrollment._id] && "selected"}
+                  className="border-b border-border hover:bg-muted/50 data-[state=selected]:bg-primary/10 data-[state=selected]:text-primary-foreground"
+                  data-state={
+                    rowSelection.includes(enrollment._id) && "selected"
+                  }
                 >
                   <TableCell className="text-foreground py-3">
                     <Checkbox
+                      className="mr-4"
                       checked={rowSelection.includes(enrollment._id)}
                       onCheckedChange={(checked) => {
                         setRowSelection((prev) => {
@@ -162,12 +152,22 @@ export default function StudentsTable({ loading, students }) {
                           }
                         });
                       }}
+                      readonly
                     />
                   </TableCell>
                   <TableCell className="text-foreground py-3">
                     {i + 1}
                   </TableCell>
-                  <TableCell className="text-foreground font-medium py-3">
+                  <TableCell
+                    className="text-foreground font-medium py-3 cursor-pointer hover:underline"
+                    onClick={() => {
+                      setRowSelection((prev) =>
+                        prev.includes(enrollment._id)
+                          ? prev.filter((id) => id !== enrollment._id)
+                          : [...prev, enrollment._id]
+                      );
+                    }}
+                  >
                     {enrollment.student.firstName} {enrollment.student.lastName}
                   </TableCell>
                   <TableCell className="text-foreground py-3">
@@ -180,24 +180,19 @@ export default function StudentsTable({ loading, students }) {
                     {formatDate(enrollment.createdAt, i18n.language)}
                   </TableCell>
                   <TableCell className="py-3">
-                    <Button
-                      variant="link"
-                      className="text-primary hover:text-primary/80 p-0 h-auto underline"
-                    >
-                      {enrollment.actions}
-                    </Button>
+                    <StudentDetails enrollment={enrollment} />
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-        </Card>
+        </>
       ))}
       {rowSelection.length > 0 && (
         <>
-          <div className="fixed bottom-5 border-2 border-border shadow-lg rounded-4xl w-[50%] right-[25%]">
-            <div className="container mx-auto px-10 py-2">
-              <div className="flex items-center justify-between gap-4">
+          <div className="fixed bottom-5 border-2 border-border shadow-lg rounded-4xl w-3/4 right-[12.5%] md:w-1/2 md:right-[25%]">
+            <div className="px-10 py-2">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                 {/* Left side - Status or info */}
                 <div className="flex items-center gap-2 text-sm text-foreground ">
                   <span>تم تحديد {rowSelection.length} عناصر</span>

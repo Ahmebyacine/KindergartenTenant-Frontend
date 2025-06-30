@@ -27,9 +27,9 @@ export default function ExpensesTable({ expenses }) {
 
   return (
     <>
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
-          <div className="relative w-full sm:w-64">
+      <div className="flex justify-between ">
+        <div className="w-2/3 md:w-full flex gap-1 items-center">
+          <div className="relative w-2/3 md:w-1/3">
             <SearchNormal1
               size="16"
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"

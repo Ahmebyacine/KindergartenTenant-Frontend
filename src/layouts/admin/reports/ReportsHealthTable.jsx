@@ -12,7 +12,7 @@ import { Card } from "@/components/ui/card";
 import { SearchNormal1, Document } from "iconsax-react";
 import { getAssessmentBadge } from "@/utils/getStatusBadge";
 import { Link } from "react-router-dom";
-import ReportsHealthModal from "./ReportsHealthModal";
+import ReportsHealthModal from "../../../components/reports/ReportsHealthModal";
 import api from "@/services/api";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -20,6 +20,7 @@ import { useEffect } from "react";
 import { formatDateTime } from "@/utils/dateFormatter";
 import i18n from "@/i18n";
 import LoadingTable from "@/components/LoadingTable";
+import ReportsFilter from "@/components/reports/ReportsFilter";
 
 export default function ReportsHealthTable({ classes, students }) {
   const [reports, setReports] = useState([]);
@@ -52,18 +53,21 @@ export default function ReportsHealthTable({ classes, students }) {
 
   return (
     <>
-      <div className="flex justify-between items-center">
-        <div className="relative">
-          <SearchNormal1
-            size="16"
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
-            color="currentColor"
-          />
-          <Input
-            placeholder="البحث"
-            className="pr-10 pl-4 py-2 w-64 border border-border rounded-lg text-right bg-background"
-            disabled={!reports.length}
-          />
+      <div className="flex justify-between ">
+        <div className="w-2/3 md:w-full flex gap-1 items-center">
+          <div className="relative w-2/3 md:w-1/3">
+            <SearchNormal1
+              size="16"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+              color="currentColor"
+            />
+            <Input
+              placeholder="البحث"
+              className="pr-10 pl-4 py-2 bg-background"
+              disabled={!reports.length}
+            />
+          </div>
+          <ReportsFilter />
         </div>
         <ReportsHealthModal
           onAddReport={handelAddReport}

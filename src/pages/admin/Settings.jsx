@@ -8,12 +8,12 @@ export default function Settings() {
   const defaultTab = searchParams.get("tab") || "generalSettings";
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="bg-background p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="flex justify-start">
           <Tabs defaultValue={defaultTab} className="w-full">
             {/* Keep existing TabsList and TabsTrigger styles */}
-            <TabsList className="w-full lg:grid lg:grid-cols-8  bg-transparent h-auto p-0 gap-8 border-b mb-2">
+            <TabsList className="w-full grid grid-cols-3 lg:grid-cols-8 md:grid-cols-6  bg-transparent h-auto p-0 gap-8 border-b mb-2">
               <TabsTrigger
                 value="generalSettings"
                 className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
@@ -59,10 +59,7 @@ export default function Settings() {
               <UsersSettings />
             </TabsContent>
             <TabsContent value="reports" className="space-y-4"></TabsContent>
-            <TabsContent
-              value="notifications"
-              className="space-y-4"
-            ></TabsContent>
+            <TabsContent value="notifications" className="space-y-4"></TabsContent>
             <TabsContent value="payments" className="space-y-4"></TabsContent>
             <TabsContent value="security" className="space-y-4"></TabsContent>
           </Tabs>

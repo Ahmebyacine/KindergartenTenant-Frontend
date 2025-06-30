@@ -52,14 +52,14 @@ export default function TeachersModal({ onAddTeacher, classes }) {
     },
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const teacherData = {
       ...data,
       role: "teacher",
       password: generateRandomPassword(12),
     };
 
-    onAddTeacher(teacherData);
+    await onAddTeacher(teacherData);
     form.reset();
     DialogClose();
   };
@@ -77,7 +77,7 @@ export default function TeachersModal({ onAddTeacher, classes }) {
         <DialogContent className="w-full max-w-full sm:max-w-2xl bg-card p-2 sm:p-6 rounded-lg sm:rounded-2xl overflow-y-auto">
           <DialogHeader className="border-b-2 pb-4">
             <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
-              <DialogTitle className="text-lg sm:text-xl font-semibold text-foreground text-center w-full">
+              <DialogTitle className="text-lg sm:text-xl font-semibold text-foreground rtl:text-right ltr:text-left w-full">
                 إضافة معلم جديد
               </DialogTitle>
               <div className="w-10 hidden sm:block" />

@@ -5,12 +5,12 @@ import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from 
 export default function FinancialJournalChart({ data }) {
   return (
     <Card className="shadow-sm" dir="ltr">
-      <CardContent>
+      <CardContent className={"p-0"}>
         <div className="h-80">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={data}
-              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              margin={{ top: 5, right: 0, left: 0, bottom: 5 }}
             >
               <CartesianGrid strokeDasharray="3 3" stroke="var(--muted-foreground)" />
               <XAxis
@@ -36,7 +36,7 @@ export default function FinancialJournalChart({ data }) {
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 bg-[#1447e6] rounded"></div>
-            <span className="text-sm text-gray-600">التداخيل</span>
+            <span className="text-sm text-gray-600">المداخيل</span>
           </div>
         </div>
       </CardContent>

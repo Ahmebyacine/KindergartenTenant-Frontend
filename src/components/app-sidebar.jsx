@@ -22,6 +22,8 @@ import { Command, More, ProfileCircle, Setting2 } from "iconsax-react";
 import img from "@/assets/images/avatar.png";
 import { Button } from "./ui/button";
 import { useTranslation } from "react-i18next";
+import SidebarMenuSupervisor from "@/layouts/supervisor/SidebarMenuSupervisor";
+import SidebarMenuTeacher from "@/layouts/teacher/SidebarMenuTeacher";
 
 export function AppSidebar() {
   const { user } = useAuth();
@@ -38,6 +40,8 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             {user && user.role === "admin" && <SidebarMenuAdmin />}
+            {user && user.role === "supervisor" && <SidebarMenuSupervisor />}
+            {user && user.role === "teacher" && <SidebarMenuTeacher />}
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>

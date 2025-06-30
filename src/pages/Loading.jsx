@@ -5,7 +5,7 @@ export default function Loading() {
   return (
     <div className="flex h-screen bg-background">
       {/* Left Sidebar */}
-      <div className="w-64 bg-card border-r border-border p-6">
+      <div className="hidden md:block w-64 bg-card border-r border-border p-6">
         <div className="space-y-3">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="h-8 bg-muted rounded-lg">

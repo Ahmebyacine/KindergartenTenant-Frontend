@@ -5,7 +5,7 @@ import Loading from '@/pages/Loading';
 const ProtectedRoute = ({ roles = [], redirectPath = '/signin', children }) => {
   const location = useLocation();
   const { user, loading } = useAuth();
-
+  console.log(user)
   if (loading) return <Loading />;
 
   if (!user) {
@@ -13,6 +13,12 @@ const ProtectedRoute = ({ roles = [], redirectPath = '/signin', children }) => {
   }
 
   if (roles.length > 0 && !roles.includes(user.role.toLowerCase())) {
+    if (user.role.toLowerCase() === 'supervisor') {
+      return <Navigate to="/supervisor-dashboard" state={{ from: location }} replace />;
+    }
+    if (user.role.toLowerCase() === 'teacher') {
+      return <Navigate to="/teacher-dashboard" state={{ from: location }} replace />;
+    }
     return <Navigate to="/unauthorized" state={{ from: location }} replace />;
   }
 

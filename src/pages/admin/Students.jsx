@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import StudentsTable from "@/layouts/admin/students/StudentsTable";
+import StudentsTable from "@/components/students/StudentsTable";
 import { SearchNormal1 } from "iconsax-react";
-import StudentsModal from "@/layouts/admin/students/StudentsModal";
+import StudentsModal from "@/components/students/StudentsModal";
 import api from "@/services/api";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import StudentsFilter from "@/layouts/admin/students/StudentsFilter";
-import RegistrationsModal from "@/layouts/admin/students/RegistrationsModal";
+import StudentsFilter from "@/components/students/StudentsFilter";
+import RegistrationsModal from "@/components/students/RegistrationsModal";
 
 export default function Students() {
   const [tabs, setTabs] = useState([]);
@@ -98,8 +98,8 @@ export default function Students() {
                 </TabsTrigger>
               ))}
             </TabsList>
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
+            <div className="flex flex-col md:flex-row gap-2 items-center">
+              <div className="flex items-center gap-1 w-full">
                 <div className="relative w-full sm:w-64">
                   <SearchNormal1
                     size="16"
@@ -114,7 +114,11 @@ export default function Students() {
                 </div>
                 <StudentsFilter classes={classes} />
               </div>
-              <div className="flex flex-col sm:flex-row sm:items-center w-full sm:w-auto">
+              <div className="flex my-3 w-full sm:w-auto">
+                <RegistrationsModal
+                  classes={classes}
+                  onAddStudent={handelAddStudent}
+                />
                 <StudentsModal
                   classes={classes}
                   onAddStudent={handelAddStudent}

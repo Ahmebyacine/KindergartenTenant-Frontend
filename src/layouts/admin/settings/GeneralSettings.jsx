@@ -36,7 +36,7 @@ export function GeneralSettings() {
           </p>
         </div>
 
-        <div className="flex justify-start gap-6 mt-4">
+        <div className="flex flex-col md:flex-row justify-start gap-6 mt-4">
           <div className="flex flex-col items-center gap-2">
             <div
               className={cn(
@@ -111,14 +111,14 @@ export function GeneralSettings() {
         <div className="border-t border-border mb-6"></div>
 
         <div className="space-y-6">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center">
             <div className="flex flex-col items-start">
               <h3 className="text-lg font-medium">اللغة</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground w-full md:w-auto">
                 قم بتغيير لغة واجهة النظام
               </p>
             </div>
-            <div className="flex gap-8">
+            <div className="flex gap-6 mt-3 md:m-0">
               <RadioGroup
                 value={i18n.language}
                 onValueChange={(lang) => {

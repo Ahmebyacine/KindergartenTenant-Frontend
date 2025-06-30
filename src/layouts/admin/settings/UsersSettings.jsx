@@ -1,7 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,43 +7,45 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Switch } from "@/components/ui/switch";
-import {
-  Plus,
-  Search,
-  SlidersHorizontal,
-  MoreVertical,
-  Group,
-} from "lucide-react";
-import { Edit2, More, ProfileCircle, Setting2, Trash } from "iconsax-react";
+import { Group } from "lucide-react";
+import { Edit2, More, SearchNormal1, Trash } from "iconsax-react";
 import img from "@/assets/images/avatar.png";
+import UserModal from "./UserModal";
+import api from "@/services/api";
+import { toast } from "sonner";
+import { useState } from "react";
+import { useEffect } from "react";
+import Loading from "@/pages/Loading";
+import UsersFilter from "./UsersFilter";
 
 export default function UsersSettings() {
-  const users = [
-    {
-      name: "خديجة زروقي",
-      email: "mouhamedoucef@gmail.com",
-      role: "معلم", // Teacher
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-    {
-      name: "نوال بن عبد الله",
-      email: "nawal@school.com",
-      role: "معلم", // Teacher
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-    {
-      name: "يوسف علوان",
-      email: "y.alwan@gmail.com",
-      role: "مراقب", // Observer
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-    {
-      name: "محمد يوسف",
-      email: "mouhamedoucef@gmail.com",
-      role: "مدير", // Manager
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-  ];
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const handleAddUser = async (userData) => {
+    try {
+      await api.post("/users", userData);
+      toast.success("تم إضافة المستخدم بنجاح");
+    } catch (error) {
+      console.error("Error adding user:", error);
+      toast.error("فشل في إضافة المستخدم. يرجى المحاولة مرة أخرى.");
+    }
+  };
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await api.get("/users");
+        setUsers(response.data);
+      } catch (error) {
+        console.log(error);
+        toast.error("error in fetch the data");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   const permissions = [
     { task: "إضافة طفل جديد", teacher: false, observer: false, manager: true },
@@ -85,36 +85,32 @@ export default function UsersSettings() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div>
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-foreground mb-6">
           اعدادات الحسابات
         </h2>
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
-          <div className="flex items-center gap-4 w-full sm:w-auto">
-            <div className="relative w-full sm:w-64">
-              <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+        <div className="flex items-center w-full gap-1 mb-8">
+          <div className="w-2/3 md:w-full flex gap-1 items-center">
+            <div className="relative w-2/3 md:w-1/3">
+              <SearchNormal1
+                size="16"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+                color="currentColor"
+              />
               <Input
-                type="text"
                 placeholder="البحث"
-                className="pl-10 pr-4 py-2 border border-border rounded-lg focus:ring-primary focus:border-primary text-right bg-background text-foreground"
+                className="pr-10 pl-4 py-2 bg-background"
+                disabled={!users.length}
               />
             </div>
-            <Button
-              variant="outline"
-              className="flex items-center gap-2 border-border text-muted-foreground px-4 py-2 rounded-lg"
-            >
-              <SlidersHorizontal className="w-4 h-4" />
-              فلترة
-            </Button>
+            <UsersFilter />
           </div>
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-lg flex items-center gap-2 text-lg">
-            <Plus className="w-5 h-5" />
-            إنشاء حساب جديد
-          </Button>
+          <UserModal onAddUser={handleAddUser} />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2">
+          {loading && (<Loading />)}
           {users.map((user, index) => (
             <div
               key={index}
@@ -161,7 +157,10 @@ export default function UsersSettings() {
                     />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48 rounded-xl bg-popover border-border">
+                <DropdownMenuContent
+                  align="end"
+                  className="w-48 rounded-xl bg-popover border-border"
+                >
                   <DropdownMenuItem>
                     <Button
                       className="w-full justify-start text-foreground hover:text-destructive border-b border-border"
@@ -193,7 +192,11 @@ export default function UsersSettings() {
                       className="w-full justify-start text-destructive hover:text-destructive/80 border-b border-border"
                       variant="ghost"
                     >
-                      <Trash size={10} variant="Outline" color="var(--destructive)" />
+                      <Trash
+                        size={10}
+                        variant="Outline"
+                        color="var(--destructive)"
+                      />
                       <span>حذف الحساب</span>
                     </Button>
                   </DropdownMenuItem>

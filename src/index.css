@@ -59,13 +59,13 @@
   --secondary: #10B981;                 /* Secondary */
   --secondary-foreground: #F9FAFB;
 
-  --accent: #6B7280;                    /* Accent */
-  --accent-foreground: #111827;
+  --accent: #f7c979;                    /* Accent */
+  --accent-foreground: #F59E0B;
 
   --muted: #F9FAFB;
   --muted-foreground: #6B7280;          /* Text/Muted */
 
-  --destructive: #F59E0B;               /* You can adjust if you have a specific red */
+  --destructive: #fb2c36;               /* You can adjust if you have a specific red */
 
   --border: #E5E7EB;
   --input: #E5E7EB;
@@ -104,13 +104,13 @@
   --secondary: #10B981;
   --secondary-foreground: #F9FAFB;
 
-  --accent: #111827;
-  --accent-foreground: #111827;
+  --accent: #f7c979;                   
+  --accent-foreground: #F59E0B;
 
   --muted: #1F2937;
   --muted-foreground: #6B7280;
 
-  --destructive: #F59E0B;
+  --destructive: #fb2c36;
 
   --border: rgba(255, 255, 255, 0.1);
   --input: rgba(255, 255, 255, 0.15);

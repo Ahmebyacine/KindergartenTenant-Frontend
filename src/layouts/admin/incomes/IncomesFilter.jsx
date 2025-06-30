@@ -1,9 +1,7 @@
 import { useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { X } from "lucide-react"
 import { Setting4, Trash } from "iconsax-react"
-import i18n from "@/i18n"
 
 export default function IncomesFilter() {
   const [isOpen, setIsOpen] = useState(false)
@@ -29,7 +27,7 @@ export default function IncomesFilter() {
   }
 
   return (
-    <div className="relative flex justify-start p-4 bg-background">
+    <div className="relative flex justify-start px-2 bg-background">
       {/* Top right filter button */}
       <Button
         variant="outline"
@@ -37,23 +35,18 @@ export default function IncomesFilter() {
         className={`${isOpen && "text-primary border-primary"} w-full `}
       >
         <Setting4 size={14} color="currentColor" />
-        فلاترة
+        <span className="hidden sm:inline">فلاترة </span>
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-[500px] rounded-xl p-0 overflow-hidden bg-background">
           <DialogHeader className="p-6 pb-0 flex flex-row justify-start items-center relative">
-            {/* Close button positioned top-left */}
-            <Button variant="ghost" size="icon" className="absolute top-4 left-4" onClick={() => setIsOpen(false)}>
-              <X className="h-4 w-4" />
-              <span className="sr-only">Close</span>
-            </Button>
             <DialogTitle className="sr-only">Filter Options</DialogTitle>
           </DialogHeader>
-          <div className={`p-6 pt-0 space-y-6 ${i18n.language === 'ar' ? 'text-right': 'text-left'}`}>
+          <div className="p-6 pt-0 space-y-6 rtl:text-right ltr:text-left">
             {/* Filter by month section */}
             <div>
-              <h3 className="text-lg font-semibold mb-3 text-[#111827]">فلاترة حسب الشهر:</h3>
+              <h3 className="text-lg font-semibold mb-3">فلاترة حسب الشهر:</h3>
               <div className="flex flex-wrap gap-2 justify-start">
                 {months.map((month) => (
                   <Button
@@ -75,11 +68,11 @@ export default function IncomesFilter() {
 
           {/* Dialog Footer with action buttons */}
           <DialogFooter className="p-6 pt-0 flex flex-row-reverse justify-between items-center">
-            <Button variant="ghost" className="text-[#111827] flex items-center gap-1" onClick={handleReset}>
+            <Button variant="ghost" className="flex items-center gap-1" onClick={handleReset}>
               <Trash size={14} color="currentColor" />
               إعادة تعيين الكل
             </Button>
-            <Button className="bg-[#4f46e5] text-white rounded-lg px-6 py-3 hover:bg-[#4f46e5]/90">
+            <Button className="bg-primary rounded-lg px-6 py-3 hover:bg-primary/90">
               تطبيق الفلاتر
             </Button>
           </DialogFooter>

@@ -8,6 +8,7 @@ import {
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import ExpensesTable from "@/layouts/admin/expenses/ExpensesTable";
 import { useTranslation } from "react-i18next";
+import StatCard from "@/components/StatCard";
 
 export default function Expenses() {
   const { i18n } = useTranslation();
@@ -59,100 +60,53 @@ export default function Expenses() {
     },
   ];
 
+  // Card data as JSON array
+  const stats = [
+    {
+      title: "مصاريف هذا الشهر",
+      value: formatCurrencyDZD(125000, i18n.language),
+      subLabel: "إجمالي المصاريف لشهر مايو",
+      icon: Calendar,
+      iconColor: "var(--primary)",
+      bgColor: "bg-[#EDE9FE]",
+    },
+    {
+      title: "مصاريف السنة الحالية",
+      value: formatCurrencyDZD(8300000, i18n.language),
+      subLabel: "منذ يناير حتى اليوم",
+      icon:DollarSquare,
+      iconColor:"#1447E6",
+      bgColor: "bg-[#DBEAFE]",
+    },
+    {
+      title: "عدد المصاريف المسجلة",
+      value: "24 عملية",
+      subLabel: "خلال شهر مايو فقط",
+      icon: MoneyArchive,
+      iconColor:"#E17100",
+      bgColor: "bg-[#FEF3C6]",
+    },
+    {
+      title: "متوسط المصروف",
+      value: formatCurrencyDZD(8300, i18n.language),
+      subLabel: "لكل عملية خلال شهر مايو",
+      icon: CardIcon,
+      iconColor:"#5EA500",
+      bgColor: "bg-[#ECFCCA]",
+    },
+  ];
+
   return (
     <div className="bg-background p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="bg-card border-border">
-            <CardContent className="p-6">
-              <div className="flex items-start">
-                <div className="flex items-center w-full">
-                  <div className="flex items-center justify-between w-full gap-2">
-                    <p className="text-sm text-muted-foreground mb-1">
-                      مصاريف هذا الشهر
-                    </p>
-                    <div className="w-10 h-10 bg-[#EDE9FE] rounded-xl flex items-center justify-center">
-                      <Calendar size={24} color="var(--primary)" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="text-right mt-1">
-                <p className="text-[22px] font-bold text-foreground">
-                  {formatCurrencyDZD(125000, i18n.language)}
-                </p>
-                <p className="text-xs text-muted-foreground mb-1">
-                  إجمالي المصاريف لشهر مايو
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-card border-border">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-1">
-                <p className="text-sm text-muted-foreground">
-                  مصاريف السنة الحالية
-                </p>
-                <div className="w-10 h-10 bg-[#DBEAFE] rounded-xl flex items-center justify-center">
-                  <DollarSquare size={24} color="#1447E6" />
-                </div>
-              </div>
-
-              <div className="text-right mt-1">
-                <p className="text-[22px] font-bold text-foreground">
-                  {formatCurrencyDZD(8300000, i18n.language)}
-                </p>
-                <p className="text-xs text-muted-foreground mb-1">
-                  منذ يناير حتى اليوم
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-card border-border">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-1">
-                <p className="text-sm text-muted-foreground">
-                  عدد المصاريف المسجلة
-                </p>
-                <div className="w-10 h-10 bg-[#FEF3C6] rounded-xl flex items-center justify-center">
-                  <MoneyArchive size={24} color="#E17100" />
-                </div>
-              </div>
-
-              <div className="text-right mt-1">
-                <p className="text-[22px] font-bold text-foreground">
-                  24 عملية
-                </p>
-                <p className="text-xs text-muted-foreground mb-1">
-                  خلال شهر مايو فقط
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-card border-border">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-1">
-                <p className="text-sm text-muted-foreground">متوسط المصروف</p>
-                <div className="w-10 h-10 bg-[#ECFCCA] rounded-xl flex items-center justify-center">
-                  <CardIcon size={24} color="#5EA500" />
-                </div>
-              </div>
-
-              <div className="text-right mt-1">
-                <p className="text-[22px] font-bold text-foreground">
-                  {formatCurrencyDZD(8300, i18n.language)}
-                </p>
-                <p className="text-xs text-muted-foreground mb-1">
-                  لكل عملية خلال شهر مايو
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+          {stats.map((stat, idx) => (
+            <StatCard
+              key={idx}
+              stat={stat}
+            />
+          ))}
         </div>
         {/* Reports Table */}
         <ExpensesTable expenses={expensses} />
