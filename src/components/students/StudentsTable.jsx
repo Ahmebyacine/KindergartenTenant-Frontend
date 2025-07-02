@@ -7,7 +7,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ProfileDelete, Trash } from "iconsax-react";
 import { formatDate } from "@/utils/dateFormatter";
@@ -17,7 +16,7 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import StudentDetails from "./StudentDetails";
 
-export default function StudentsTable({ loading, students }) {
+export default function StudentsTable({ loading, students, classes, onUpdateStudent }) {
   const [rowSelection, setRowSelection] = useState([]);
 
   const groupedByClass = students.reduce((groups, enrollment) => {
@@ -48,7 +47,6 @@ export default function StudentsTable({ loading, students }) {
 
   if (students.length === 0) {
     return (
-      <Card className="border border-border shadow-sm">
         <Table>
           <TableHeader />
           <TableBody>
@@ -68,7 +66,6 @@ export default function StudentsTable({ loading, students }) {
             </TableRow>
           </TableBody>
         </Table>
-      </Card>
     );
   }
 
@@ -180,7 +177,7 @@ export default function StudentsTable({ loading, students }) {
                     {formatDate(enrollment.createdAt, i18n.language)}
                   </TableCell>
                   <TableCell className="py-3">
-                    <StudentDetails enrollment={enrollment} />
+                    <StudentDetails enrollment={enrollment} classes={classes} onUpdateStudent={onUpdateStudent} />
                   </TableCell>
                 </TableRow>
               ))}

@@ -8,75 +8,81 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import StudentsFilter from "@/components/students/StudentsFilter";
 import RegistrationsModal from "@/components/students/RegistrationsModal";
+import useFetch from "@/hooks/useFetch";
 
 export default function Students() {
-  const [tabs, setTabs] = useState([]);
   const [activeTab, setActiveTab] = useState(null);
-  const [classes, setClasses] = useState([]);
-  const [students, setStudents] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const fetchTabs = async () => {
-    try {
-      const response = await api.get("/categories");
-      const fetchedTabs = response.data.map((category) => ({
-        id: category._id,
-        label: category.name,
-        name: category.name,
-      }));
-
-      setTabs(fetchedTabs);
-      setActiveTab(fetchedTabs[0]?.id || null);
-    } catch (error) {
-      console.error("Failed to fetch class categories:", error);
-    }
+    const res = await api.get("/categories");
+    return res.data.map((cat) => ({
+      id: cat._id,
+      label: cat.name,
+      name: cat.name,
+    }));
   };
 
   const fetchClasses = async () => {
-    try {
-      const response = await api.get("/classes");
-      setClasses(response.data);
-    } catch (error) {
-      console.error("Failed to fetch class categories:", error);
-    }
+    const res = await api.get("/classes");
+    return res.data;
   };
+
   const fetchStudents = async () => {
-    try {
-      const response = await api.get("/enrollments");
-      setStudents(response.data.data);
-    } catch (error) {
-      console.error("Failed to fetch students:", error);
-    }
+    const res = await api.get("/enrollments");
+    return res.data.data;
   };
-  // Fetch All Data from API
+
+  const { data: tabs } = useFetch(fetchTabs);
+
+  const { data: classes, loading: classesLoading } = useFetch(fetchClasses);
+
+  const {
+    data: students,
+    setData: setStudents,
+    loading: studentsLoading,
+  } = useFetch(fetchStudents);
+
+
   useEffect(() => {
-    const fetchAllData = async () => {
-      try {
-        await Promise.all([fetchTabs(), fetchClasses(), fetchStudents()]);
-      } catch (error) {
-        console.error("Error fetching initial data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (tabs?.length) {
+      setActiveTab(tabs[0]?.id);
+    }
+  }, [tabs]);
 
-    fetchAllData();
-  }, []);
-
-  const handelAddStudent = async (data) => {
+  const handleAddStudent = async (data) => {
     try {
       const response = await api.post("/students", data);
-      setStudents((prevTeachers) => [...prevTeachers, response.data]);
-      toast("تمت إضافة الطفل بنجاح!");
+      setStudents((prev) => [...prev, response.data]);
+      toast.success("تمت إضافة الطفل بنجاح!");
     } catch (error) {
-      console.error("Error creating class", error);
+      console.error("Error adding student:", error);
+      toast.error("فشل في إضافة الطفل");
     }
   };
 
-  // Filter students by selected tab/category
-  const filteredStudents = students.filter((student) => {
-    return student?.class?.category === activeTab;
-  });
+  const handleUpdateStudent = async (updatedStudent) => {
+    try {
+      const response = await api.put(
+        `/students/${updatedStudent.student._id}`,
+        updatedStudent
+      );
+      const updatedData = response.data;
+
+      setStudents((prev) =>
+        prev.map((student) =>
+          student._id === updatedData._id ? updatedData : student
+        )
+      );
+
+      toast.success("تم تحديث بيانات الطفل بنجاح!");
+    } catch (error) {
+      console.error("Error updating student:", error);
+      toast.error("فشل في تحديث بيانات الطفل");
+    }
+  };
+
+  const filteredStudents =
+    students?.filter((student) => student?.class?.category === activeTab) || [];
 
   return (
     <div className="bg-background p-6">
@@ -88,7 +94,7 @@ export default function Students() {
             className="w-full"
           >
             <TabsList className="grid w-full grid-cols-3 bg-transparent h-auto p-0 gap-8 md:grid-cols-4 lg:grid-cols-6 border-b mb-2">
-              {tabs.map((tab) => (
+              {tabs?.map((tab) => (
                 <TabsTrigger
                   key={tab.id}
                   value={tab.id}
@@ -98,6 +104,7 @@ export default function Students() {
                 </TabsTrigger>
               ))}
             </TabsList>
+
             <div className="flex flex-col md:flex-row gap-2 items-center">
               <div className="flex items-center gap-1 w-full">
                 <div className="relative w-full sm:w-64">
@@ -114,18 +121,24 @@ export default function Students() {
                 </div>
                 <StudentsFilter classes={classes} />
               </div>
+
               <div className="flex my-3 w-full sm:w-auto">
                 <RegistrationsModal
                   classes={classes}
-                  onAddStudent={handelAddStudent}
                 />
                 <StudentsModal
                   classes={classes}
-                  onAddStudent={handelAddStudent}
+                  onAddStudent={handleAddStudent}
                 />
               </div>
             </div>
-            <StudentsTable loading={loading} students={filteredStudents} />
+
+            <StudentsTable
+              loading={studentsLoading || classesLoading}
+              students={filteredStudents}
+              classes={classes}
+              onUpdateStudent={handleUpdateStudent}
+            />
           </Tabs>
         </div>
       </div>

@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import StudentsTable from "@/components/students/StudentsTable";
 import { SearchNormal1 } from "iconsax-react";
 import StudentsModal from "@/components/students/StudentsModal";
@@ -9,27 +7,22 @@ import { toast } from "sonner";
 import StudentsFilter from "@/components/students/StudentsFilter";
 import RegistrationsModal from "@/components/students/RegistrationsModal";
 import { useAuth } from "@/contexts/AuthContext";
+import useFetch from "@/hooks/useFetch";
 
 export default function StudentsTeacher() {
-  const [students, setStudents] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const { user } = useAuth();
 
   const fetchStudents = async () => {
-    try {
-      const response = await api.get("/enrollments");
-      setStudents(response.data.data);
-    } catch (error) {
-      console.error("Failed to fetch students:", error);
-    } finally {
-      setLoading(false);
-    }
+    const res = await api.get("/enrollments");
+    return res.data.data;
   };
-  // Fetch All Data from API
-  useEffect(() => {
-    fetchStudents();
-  }, []);
+
+  const {
+    data: students,
+    setData: setStudents,
+    loading,
+  } = useFetch(fetchStudents);
 
   const handelAddStudent = async (data) => {
     try {
@@ -38,6 +31,27 @@ export default function StudentsTeacher() {
       toast("تمت إضافة الطفل بنجاح!");
     } catch (error) {
       console.error("Error creating class", error);
+    }
+  };
+
+  const handleUpdateStudent = async (updatedStudent) => {
+    try {
+      const response = await api.put(
+        `/students/${updatedStudent.student._id}`,
+        updatedStudent
+      );
+      const updatedData = response.data;
+
+      setStudents((prev) =>
+        prev.map((student) =>
+          student._id === updatedData._id ? updatedData : student
+        )
+      );
+
+      toast.success("تم تحديث بيانات الطفل بنجاح!");
+    } catch (error) {
+      console.error("Error updating student:", error);
+      toast.error("فشل في تحديث بيانات الطفل");
     }
   };
 
@@ -72,7 +86,7 @@ export default function StudentsTeacher() {
               />
             </div>
           </div>
-          <StudentsTable loading={loading} students={students} />
+          <StudentsTable loading={loading} students={students} classes={[user.class]} onUpdateStudent={handleUpdateStudent} />
         </div>
       </div>
     </div>

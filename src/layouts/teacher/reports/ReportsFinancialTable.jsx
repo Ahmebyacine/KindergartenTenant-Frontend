@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SearchNormal1, Document } from "iconsax-react";
-import { getStatusPayBadge } from "@/utils/getStatusBadge";
+import { getStatusPayBadge } from "@/utils/getStatusBadges";
 import { Link } from "react-router-dom";
 import ReportsFinancialModal from "@/components/reports/ReportsFinancialModal";
 import { toast } from "sonner";

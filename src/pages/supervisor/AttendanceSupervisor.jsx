@@ -40,7 +40,7 @@ import {
 } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import img from "@/assets/images/attendanceillu.png";
-import AttendanceTable from "@/layouts/supervisor/attendance/AttendanceTable";
+import AttendanceTable from "@/components/attendance/AttendanceTable";
 import api from "@/services/api";
 import { formatDate } from "@/utils/dateFormatter";
 import i18n from "@/i18n";

@@ -43,55 +43,71 @@ const studentSchema = z.object({
   image: z.any().optional(),
 });
 
-export default function StudentsModal({ onAddStudent, classes }) {
+export default function StudentsModal({
+  onAddStudent,
+  onUpdateStudent,
+  editingStudent = null,
+  classes,
+}) {
   const form = useForm({
     resolver: zodResolver(studentSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      birthDate: "",
-      parentEmail: "",
-      class: "",
-      parentName: "",
-      parentContact: "",
-      image: null,
+      firstName: editingStudent?.student?.firstName || "",
+      lastName: editingStudent?.student?.lastName || "",
+      birthDate: editingStudent?.student?.birthDate.split("T")[0] || "",
+      parentEmail: editingStudent?.student?.parents?.email || "",
+      parentName: editingStudent?.student?.parents?.name || "",
+      parentContact: editingStudent?.student?.parents?.contact || "",
+      class: editingStudent?.class?._id || "",
+      image: editingStudent?.student?.image || null,
     },
   });
 
-  const onSubmit = (data) => {
-    // Prepare data for API
+  const onSubmit = async (data) => {
     const parentData = {
       name: data.parentName,
       email: data.parentEmail,
       contact: data.parentContact,
     };
+
     const studentData = {
       firstName: data.firstName,
       lastName: data.lastName,
       birthDate: new Date(data.birthDate).toISOString(),
       parents: parentData,
       class: data.class,
+      image: data.image || null,
     };
 
-    onAddStudent(studentData);
+    if (editingStudent) {
+      await onUpdateStudent({ ...editingStudent, ...studentData });
+    } else {
+      await onAddStudent(studentData);
+    }
     form.reset();
   };
 
   return (
-    <div className="bg-background data-[state=open]:px-4 px-2 w-full flex items-center justify-center">
+    <div className="bg-background data-[state=open]:px-4 px-2">
       <Dialog>
         <DialogTrigger asChild>
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-6 py-2 flex items-center gap-2 w-full sm:w-auto">
-            <Add size="16" color="currentColor" />
-            اضافة طفل
-          </Button>
+          {editingStudent ? (
+            <Button variant="ghost" className="text-primary font-medium m-0">
+              تعديل
+            </Button>
+          ) : (
+            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-6 py-2 flex items-center gap-2 w-full sm:w-auto">
+              <Add size="16" color="currentColor" />
+              اضافة طفل
+            </Button>
+          )}
         </DialogTrigger>
 
         <DialogContent className="w-full max-w-full sm:max-w-2xl bg-card p-2 sm:p-6 rounded-lg sm:rounded-2xl overflow-y-auto">
           <DialogHeader className="border-b-2 pb-4">
             <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
               <DialogTitle className="text-lg sm:text-xl font-semibold text-foreground rtl:text-right ltr:text-left w-full">
-                إضافة طفل جديد
+                {editingStudent ? "تعديل الطفل" : "إضافة طفل جديد"}
               </DialogTitle>
             </div>
           </DialogHeader>
@@ -166,7 +182,7 @@ export default function StudentsModal({ onAddStudent, classes }) {
                             <Input
                               type="date"
                               {...field}
-                              className="text-right"
+                              className="rtl:justify-end"
                             />
                           </FormControl>
                           <FormMessage />
@@ -299,9 +315,10 @@ export default function StudentsModal({ onAddStudent, classes }) {
               <Button
                 type="submit"
                 onClick={form.handleSubmit(onSubmit)}
-                className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
+                disabled={editingStudent && !form.formState.isDirty}
+                className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium disabled:opacity-50"
               >
-                حفظ
+                {editingStudent ? "تحديث" : "حفظ"}
               </Button>
               <DialogClose asChild>
                 <Button

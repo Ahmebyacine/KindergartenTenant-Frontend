@@ -6,77 +6,78 @@ import api from "@/services/api";
 import { SearchNormal1 } from "iconsax-react";
 import TeachersModal from "@/layouts/admin/teachers/TeachersModal";
 import { Input } from "@/components/ui/input";
+import useFetch from "@/hooks/useFetch";
 
 export default function Teachers() {
-  const [tabs, setTabs] = useState([]);
-  const [activeTab, setActiveTab] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [addLoading, setAddLoading] = useState(false);
-  const [teachers, setTeachers] = useState([]);
-  const [classes, setClasses] = useState([]);
-
   const fetchTabs = async () => {
-    try {
-      const response = await api.get("/categories");
-      const fetchedTabs = response.data.map((category) => ({
-        id: category._id,
-        label: category.name,
-        name: category.name,
-      }));
-
-      setTabs(fetchedTabs);
-      setActiveTab(fetchedTabs[0]?.id || null); // Set default active tab
-    } catch (error) {
-      console.error("Failed to fetch class categories:", error);
-    }
-  };
-
-  const fetchClasses = async () => {
-    setLoading(true);
-    try {
-      const response = await api.get("/classes");
-      setClasses(response.data);
-    } catch (error) {
-      console.error("Failed to fetch class categories:", error);
-    } finally {
-      setLoading(false);
-    }
+    const res = await api.get("/categories");
+    return res.data.map((category) => ({
+      id: category._id,
+      label: category.name,
+      name: category.name,
+    }));
   };
 
   const fetchTeachers = async () => {
-    setLoading(true);
-    try {
-      const response = await api.get("/users/teachers");
-      setTeachers(response.data);
-    } catch (error) {
-      console.error("Failed to fetch class categories:", error);
-    } finally {
-      setLoading(false);
-    }
+    const res = await api.get("/users/teachers");
+    return res.data;
   };
 
+  const fetchClasses = async () => {
+    const res = await api.get("/classes");
+    return res.data;
+  };
+
+  const { data: tabs } = useFetch(fetchTabs);
+
+  const {
+    data: teachers,
+    setData: setTeachers,
+    loading: teachersLoading,
+  } = useFetch(fetchTeachers);
+
+  const { data: classes, loading: classesLoading } = useFetch(fetchClasses);
+
+  const [addLoading, setAddLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState(null);
+
   useEffect(() => {
-    fetchTabs();
-    fetchTeachers();
-    fetchClasses();
-  }, []);
+    if (tabs?.length > 0) {
+      setActiveTab(tabs[0].id);
+    }
+  }, [tabs]);
 
   const handleAddTeacher = async (data) => {
     setAddLoading(true);
     try {
-      const response = await api.post("/users/teachers", data);
-      setTeachers((prevTeachers) => [...prevTeachers, response.data]);
-      toast("تمت إضافة معلم بنجاح!");
+      const res = await api.post("/users/teachers", data);
+      setTeachers((prev) => [...prev, res.data]);
+      toast.success("تمت إضافة معلم بنجاح!");
     } catch (error) {
-      console.error("Error creating class", error);
+      console.error("Error creating teacher", error);
+      toast.error("حدث خطأ أثناء الإضافة");
     } finally {
       setAddLoading(false);
     }
   };
-  // Filter cheacher
-  const filteredTeachers = teachers.filter((teacher) => {
-    return teacher?.assignedClass?.category === activeTab;
-  });
+
+  const handleUpdateTeacher = async (updatedItem) => {
+    try {
+      const res = await api.put(`/users/${updatedItem._id}`, updatedItem);
+      setTeachers((prev) =>
+        prev.map((item) => (item._id === updatedItem._id ? res.data : item))
+      );
+      toast.success("تم التحديث بنجاح");
+    } catch (error) {
+      console.error("Update failed:", error);
+      toast.error("حدث خطأ أثناء التحديث");
+    }
+  };
+
+  const filteredTeachers =
+    teachers?.filter(
+      (teacher) => teacher?.assignedClass?.category === activeTab
+    ) || [];
 
   return (
     <div className="bg-background p-2 md:p-4">
@@ -87,9 +88,8 @@ export default function Teachers() {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            {/* Keep existing TabsList and TabsTrigger styles */}
             <TabsList className="grid w-full grid-cols-3 bg-transparent h-auto p-0 gap-8 md:grid-cols-4 lg:grid-cols-6 border-b mb-2">
-              {tabs.map((tab) => (
+              {tabs?.map((tab) => (
                 <TabsTrigger
                   key={tab.id}
                   value={tab.id}
@@ -99,6 +99,7 @@ export default function Teachers() {
                 </TabsTrigger>
               ))}
             </TabsList>
+
             <div className="flex justify-between">
               <div className="w-2/3 md:w-full flex gap-1 items-center">
                 <div className="relative">
@@ -110,17 +111,24 @@ export default function Teachers() {
                   <Input
                     placeholder="البحث"
                     className="pr-10 pl-4 py-2 bg-background"
-                    disabled={!teachers.length}
+                    disabled={!teachers?.length}
                   />
                 </div>
               </div>
+
               <TeachersModal
                 onAddTeacher={handleAddTeacher}
                 classes={classes}
                 loading={addLoading}
               />
             </div>
-            <TeachersTable loading={loading} teachers={filteredTeachers} />
+
+            <TeachersTable
+              loading={teachersLoading || classesLoading}
+              teachers={filteredTeachers}
+              classes={classes}
+              onUpdateTeacher={handleUpdateTeacher}
+            />
           </Tabs>
         </div>
       </div>

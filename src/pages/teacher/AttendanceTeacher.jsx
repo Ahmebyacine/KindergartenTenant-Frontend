@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import img from "@/assets/images/attendanceillu.png";
-import AttendanceTable from "@/layouts/supervisor/attendance/AttendanceTable";
+import AttendanceTable from "@/components/attendance/AttendanceTable";
 import api from "@/services/api";
 import { formatDate } from "@/utils/dateFormatter";
 import i18n from "@/i18n";
@@ -130,7 +130,7 @@ export default function AttendanceTeacher() {
   return (
     <div className="bg-background p-6">
       <div className="mx-auto">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
             <div className="flex flex-col gap-3">
               <Popover open={open} onOpenChange={setOpen}>

@@ -15,7 +15,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Check, X } from "lucide-react";
 import { toast } from "sonner";
-import { getAttendancesBadge } from "@/utils/getStatusBadge";
+import { getAttendancesBadge } from "@/utils/getStatusBadges";
 import { isSameDay } from "@/utils/isSameDay";
 
 export default function AttendanceTable({
@@ -268,9 +268,9 @@ export default function AttendanceTable({
       </Table>
       {studentsSelection.length > 0 && (
         <>
-          <div className="fixed bottom-5 border-2 border-border shadow-lg rounded-4xl w-[50%] right-[25%]">
+          <div className="fixed bottom-5 border-2 border-border shadow-lg rounded-4xl w-3/4 right-[12.5%] md:w-1/2 md:right-[25%]">
             <div className="container mx-auto px-10 py-2">
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                 {/* Left side - Status or info */}
                 <div className="flex items-center gap-2 text-sm text-foreground ">
                   <span>تم تحديد {studentsSelection.length} عناصر</span>

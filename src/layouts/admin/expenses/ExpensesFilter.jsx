@@ -9,25 +9,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Setting4, Trash } from "iconsax-react";
 import { DialogTrigger } from "@radix-ui/react-dialog";
+import { expenseTypes, months } from "@/assets/data/data";
 
-export default function ExpensesFilter({ expenseTypes }) {
+export default function ExpensesFilter() {
   const [selectedExpenseType, setSelectedExpenseType] = useState();
   const [selectedMonth, setSelectedMonth] = useState();
-
-  const months = [
-    "سبتمبر",
-    "أكتوبر",
-    "نوفمبر",
-    "ديسمبر",
-    "جانفي",
-    "فيفري",
-    "مارس",
-    "أفريل",
-    "ماي",
-    "جوان",
-    "جويليه",
-    "أوت",
-  ];
 
   const handleReset = () => {
     setSelectedExpenseType("");

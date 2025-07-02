@@ -6,13 +6,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 import { UserRemove } from "iconsax-react";
 import { formatDate } from "@/utils/dateFormatter";
 import i18next from "i18next";
 import LoadingTable from "@/components/LoadingTable";
+import TeachersModal from "./TeachersModal";
 
-export default function TeachersTable({ loading, teachers }) {
+export default function TeachersTable({ loading, teachers, classes, onUpdateTeacher }) {
   return (
     <>
       <Table>
@@ -67,12 +67,7 @@ export default function TeachersTable({ loading, teachers }) {
                   {formatDate(teacher.createdAt, i18next.language)}
                 </TableCell>
                 <TableCell className="py-3">
-                  <Button
-                    variant="link"
-                    className="text-primary hover:text-primary/80 p-0 h-auto underline"
-                  >
-                    {teacher.actions}
-                  </Button>
+                  <TeachersModal editingTeacher={teacher} classes={classes} onUpdateTeacher={onUpdateTeacher} />
                 </TableCell>
               </TableRow>
             ))}

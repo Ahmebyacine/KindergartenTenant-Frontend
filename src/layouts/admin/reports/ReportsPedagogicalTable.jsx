@@ -8,9 +8,8 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card } from "@/components/ui/card";
 import { SearchNormal1, Document } from "iconsax-react";
-import { getAssessmentBadge } from "@/utils/getStatusBadge";
+import { getAssessmentBadge } from "@/utils/getStatusBadges";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import ReportsPedagogicalModal from "../../../components/reports/ReportsPedagogicalModal";
@@ -74,103 +73,99 @@ export default function ReportsPedagogicalTable({ classes, students }) {
         />
       </div>
 
-      <Card className="border border-border shadow-sm">
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-muted/50 border-b border-border hover:bg-muted/50">
-              <TableHead className="text-foreground font-medium">#</TableHead>
-              <TableHead className="text-foreground font-medium">
-                اسم الطفل
-              </TableHead>
-              <TableHead className="text-foreground font-medium">
-                اسم المعلمة
-              </TableHead>
-              <TableHead className="text-foreground font-medium">
-                الفصل
-              </TableHead>
-              <TableHead className="text-foreground font-medium">
-                التاريخ
-              </TableHead>
-              <TableHead className="text-foreground font-medium">
-                التقييم العام
-              </TableHead>
-              <TableHead className="text-foreground font-medium">
-                الحالة
-              </TableHead>
-              <TableHead className="text-foreground font-medium">
-                الإجراءات
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          {loading ? (
-            <LoadingTable />
-          ) : reports.length > 0 ? (
-            <TableBody>
-              {reports.map((row, index) => (
-                <TableRow
-                  key={index}
-                  className="border-b border-border hover:bg-muted/50"
-                >
-                  <TableCell className="text-foreground py-3">
-                    {index + 1}
-                  </TableCell>
-                  <TableCell className="text-foreground font-medium py-3">
-                    {row.student?.firstName} {row.student?.lastName}
-                  </TableCell>
-                  <TableCell className="text-foreground py-3">
-                    {row.teacher?.name}
-                  </TableCell>
-                  <TableCell className="text-foreground py-3">
-                    {row.class?.className}
-                  </TableCell>
-                  <TableCell className="text-foreground py-3">
-                    {formatDateTime(row.createdAt, i18n.language)}
-                  </TableCell>
-                  <TableCell className="py-3">
-                    {getAssessmentBadge(row.overall)}
-                  </TableCell>
-                  <TableCell className="py-3">
-                    {row.overall === "جديد" ? (
-                      <Badge className="bg-primary-foreground text-[#1447e6] hover:bg-primary-foreground">
-                        {row.overall}
-                      </Badge>
-                    ) : (
-                      <span className="text-foreground">{row.overall}</span>
-                    )}
-                  </TableCell>
-                  <TableCell className="py-3">
-                    <Button
-                      variant="link"
-                      className="text-primary hover:text-primary/80 p-0 h-auto underline"
-                    >
-                      <Link to={`/reports/pedagogical/${row._id}`}>
-                        عرض التفاصيل
-                      </Link>
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          ) : (
-            <TableBody>
-              <TableRow>
-                <TableCell
-                  colSpan={8}
-                  className="text-center py-12 text-muted-foreground"
-                >
-                  <div className="flex flex-col items-center justify-center gap-2">
-                    <Document size={40} color="CurrentColor" />
-                    <p className="text-lg font-medium">لا توجد تقارير متاحة</p>
-                    <p className="text-sm">
-                      لم يتم إنشاء أي تقارير بعد، قم بإضافة تقرير جديد
-                    </p>
-                  </div>
+      <Table>
+        <TableHeader>
+          <TableRow className="bg-muted/50 border-b border-border hover:bg-muted/50">
+            <TableHead className="text-foreground font-medium">#</TableHead>
+            <TableHead className="text-foreground font-medium">
+              اسم الطفل
+            </TableHead>
+            <TableHead className="text-foreground font-medium">
+              اسم المعلمة
+            </TableHead>
+            <TableHead className="text-foreground font-medium">الفصل</TableHead>
+            <TableHead className="text-foreground font-medium">
+              التاريخ
+            </TableHead>
+            <TableHead className="text-foreground font-medium">
+              التقييم العام
+            </TableHead>
+            <TableHead className="text-foreground font-medium">
+              الحالة
+            </TableHead>
+            <TableHead className="text-foreground font-medium">
+              الإجراءات
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        {loading ? (
+          <LoadingTable />
+        ) : reports.length > 0 ? (
+          <TableBody>
+            {reports.map((row, index) => (
+              <TableRow
+                key={index}
+                className="border-b border-border hover:bg-muted/50"
+              >
+                <TableCell className="text-foreground py-3">
+                  {index + 1}
+                </TableCell>
+                <TableCell className="text-foreground font-medium py-3">
+                  {row.student?.firstName} {row.student?.lastName}
+                </TableCell>
+                <TableCell className="text-foreground py-3">
+                  {row.teacher?.name}
+                </TableCell>
+                <TableCell className="text-foreground py-3">
+                  {row.class?.className}
+                </TableCell>
+                <TableCell className="text-foreground py-3">
+                  {formatDateTime(row.createdAt, i18n.language)}
+                </TableCell>
+                <TableCell className="py-3">
+                  {getAssessmentBadge(row.overall)}
+                </TableCell>
+                <TableCell className="py-3">
+                  {row.overall === "جديد" ? (
+                    <Badge className="bg-primary-foreground text-[#1447e6] hover:bg-primary-foreground">
+                      {row.overall}
+                    </Badge>
+                  ) : (
+                    <span className="text-foreground">{row.overall}</span>
+                  )}
+                </TableCell>
+                <TableCell className="py-3">
+                  <Button
+                    variant="link"
+                    className="text-primary hover:text-primary/80 p-0 h-auto underline"
+                  >
+                    <Link to={`/reports/pedagogical/${row._id}`}>
+                      عرض التفاصيل
+                    </Link>
+                  </Button>
                 </TableCell>
               </TableRow>
-            </TableBody>
-          )}
-        </Table>
-      </Card>
+            ))}
+          </TableBody>
+        ) : (
+          <TableBody>
+            <TableRow>
+              <TableCell
+                colSpan={8}
+                className="text-center py-12 text-muted-foreground"
+              >
+                <div className="flex flex-col items-center justify-center gap-2">
+                  <Document size={40} color="CurrentColor" />
+                  <p className="text-lg font-medium">لا توجد تقارير متاحة</p>
+                  <p className="text-sm">
+                    لم يتم إنشاء أي تقارير بعد، قم بإضافة تقرير جديد
+                  </p>
+                </div>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        )}
+      </Table>
     </>
   );
 }

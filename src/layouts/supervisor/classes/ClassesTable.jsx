@@ -6,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getClassStatusBadge } from "@/utils/getStatusBadge";
+import { getClassStatusBadge } from "@/utils/getStatusBadges";
 import { FileTextIcon } from "lucide-react";
 import LoadingTable from "@/components/LoadingTable";
 
@@ -48,10 +48,10 @@ export default function ClassesTable({ classes, loading }) {
                   {classItem.className}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {classItem.teacher.name}
+                  {classItem?.teacher?.name}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {classItem.studentsCount}
+                  {classItem.studentCount}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
                   {getClassStatusBadge(classItem.studentsCount)}

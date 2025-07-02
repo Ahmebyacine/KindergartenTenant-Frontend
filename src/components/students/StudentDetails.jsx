@@ -13,8 +13,9 @@ import StudentCard from "./StudentCard";
 import i18n from "@/i18n";
 import { formatDate } from "@/utils/dateFormatter";
 import { getAge } from "@/utils/getLocalizedAge";
+import StudentsModal from "./StudentsModal";
 
-export default function StudentDetails({ enrollment }) {
+export default function StudentDetails({ enrollment, classes, onUpdateStudent }) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isCardOpen, setIsCardOpen] = useState(false);
 
@@ -42,9 +43,7 @@ export default function StudentDetails({ enrollment }) {
           {/* Content */}
           <div className="py-6 px-8 space-y-8">
             <div className="flex justify-end m-0">
-              <Button variant="ghost" className="text-primary font-medium m-0">
-                تعديل
-              </Button>
+              <StudentsModal editingStudent={enrollment} classes={classes} onUpdateStudent={onUpdateStudent} />
             </div>
             <div>
               <div className="space-y-4">

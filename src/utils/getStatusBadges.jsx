@@ -72,8 +72,8 @@ export const getAssessmentBadge = (status) => {
   }
 };
 
-export const getClassStatusBadge = (studentsCount) => {
-  if (studentsCount >= 20) {
+export const getClassStatusBadge = (studentsCount,capacity) => {
+  if (studentsCount >= capacity) {
     return (
       <Badge className="bg-emerald-50 text-emerald-700 hover:bg-emerald-50 border-0 rounded-md px-5 py-2">
         مكتمل

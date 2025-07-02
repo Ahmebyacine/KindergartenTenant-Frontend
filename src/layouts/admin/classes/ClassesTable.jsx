@@ -6,12 +6,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { getClassStatusBadge } from "@/utils/getStatusBadge";
+import { getClassStatusBadge } from "@/utils/getStatusBadges";
 import { FileTextIcon } from "lucide-react";
 import LoadingTable from "@/components/LoadingTable";
+import ClassesModal from "./ClassesModal";
 
-export default function ClassesTable({ classes, loading }) {
+export default function ClassesTable({
+  classes,
+  loading,
+  categories,
+  teachers,
+  onUpdateClass,
+}) {
   return (
     <Table>
       <TableHeader>
@@ -51,21 +57,24 @@ export default function ClassesTable({ classes, loading }) {
                 {classItem.className}
               </TableCell>
               <TableCell className="text-foreground py-3">
-                {classItem?.teacher?.name}
+                {classItem?.teacher?.name || "معلمة غير معروفة"}
               </TableCell>
               <TableCell className="text-foreground py-3">
-                {classItem.studentsCount}
+                {classItem.studentCount}
               </TableCell>
               <TableCell className="text-foreground py-3">
-                {getClassStatusBadge(classItem.studentsCount)}
+                {getClassStatusBadge(
+                  classItem.studentCount,
+                  classItem.capacity
+                )}
               </TableCell>
               <TableCell className="py-3">
-                <Button
-                  variant="link"
-                  className="text-primary hover:text-primary/80 p-0 h-auto underline"
-                >
-                  {classItem?.actions}
-                </Button>
+                <ClassesModal
+                  editingClass={classItem}
+                  categories={categories}
+                  teachers={teachers}
+                  onUpdateClass={onUpdateClass}
+                />
               </TableCell>
             </TableRow>
           ))
@@ -73,7 +82,7 @@ export default function ClassesTable({ classes, loading }) {
           // No data message
           <TableRow>
             <TableCell
-              colSpan={6} // Changed from 8 to 6 to match the number of TableHead columns
+              colSpan={6}
               className="text-center py-12 text-muted-foreground"
             >
               <div className="flex flex-col items-center justify-center gap-2">

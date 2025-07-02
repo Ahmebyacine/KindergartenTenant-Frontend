@@ -40,47 +40,63 @@ const teacherSchema = z.object({
   image: z.any().optional(),
 });
 
-export default function TeachersModal({ onAddTeacher, classes }) {
+export default function TeachersModal({
+  onAddTeacher,
+  onUpdateTeacher,
+  editingTeacher = null,
+  classes,
+}) {
   const form = useForm({
     resolver: zodResolver(teacherSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-      assignedClass: "",
-      image: null,
+      name: editingTeacher?.name || "",
+      email: editingTeacher?.email || "",
+      phone: editingTeacher?.phone || "",
+      assignedClass: editingTeacher?.assignedClass?._id || "",
+      image: editingTeacher?.image || null,
     },
   });
 
   const onSubmit = async (data) => {
-    const teacherData = {
-      ...data,
-      role: "teacher",
-      password: generateRandomPassword(12),
-    };
-
-    await onAddTeacher(teacherData);
+    if (editingTeacher) {
+      await onUpdateTeacher({ ...editingTeacher, ...data });
+    } else {
+      const teacherData = {
+        ...data,
+        role: "teacher",
+        password: generateRandomPassword(12),
+      };
+      await onAddTeacher(teacherData);
+    }
     form.reset();
-    DialogClose();
   };
 
   return (
-    <div className="bg-background p-4 flex items-center justify-center">
+    <div className="bg-background flex items-center">
       <Dialog>
         <DialogTrigger asChild>
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-6 py-2 flex items-center gap-2">
-            <Add size="20" color="currentColor" />
-            اضافة معلم
-          </Button>
+          {editingTeacher ? (
+            <Button
+              variant="link"
+              size="sm"
+              className="text-primary hover:text-primary/80 p-1 h-auto underline text-xs sm:text-sm justify-start sm:justify-center"
+            >
+              تعديل
+            </Button>
+          ) : (
+            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-6 py-2 flex items-center gap-2">
+              <Add size="20" color="currentColor" />
+              اضافة معلم
+            </Button>
+          )}
         </DialogTrigger>
 
-        <DialogContent className="w-full max-w-full sm:max-w-2xl bg-card p-2 sm:p-6 rounded-lg sm:rounded-2xl overflow-y-auto">
+        <DialogContent className="w-full sm:max-w-2xl bg-card p-2 sm:p-6 rounded-lg sm:rounded-2xl overflow-y-auto">
           <DialogHeader className="border-b-2 pb-4">
             <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
               <DialogTitle className="text-lg sm:text-xl font-semibold text-foreground rtl:text-right ltr:text-left w-full">
-                إضافة معلم جديد
+                {editingTeacher ? "تعديل معلومات المعلم" : "إضافة معلم جديد"}
               </DialogTitle>
-              <div className="w-10 hidden sm:block" />
             </div>
           </DialogHeader>
 
@@ -170,11 +186,17 @@ export default function TeachersModal({ onAddTeacher, classes }) {
                     render={({ field }) => (
                       <FormItem className="space-y-1">
                         <FormLabel>القسم</FormLabel>
-                        {(!classes || classes.length === 0) ? (
+                        {!classes || classes.length === 0 ? (
                           <Select disabled>
                             <FormControl>
                               <SelectTrigger className="text-right">
-                                <SelectValue placeholder={classes === undefined ? "جاري تحميل الأقسام..." : "لا يوجد أقسام متاحة"} />
+                                <SelectValue
+                                  placeholder={
+                                    classes === undefined
+                                      ? "جاري تحميل الأقسام..."
+                                      : "لا يوجد أقسام متاحة"
+                                  }
+                                />
                               </SelectTrigger>
                             </FormControl>
                           </Select>
@@ -203,17 +225,19 @@ export default function TeachersModal({ onAddTeacher, classes }) {
                   />
 
                   {/* Password Information */}
-                  <div>
-                    <div className="text-base font-medium text-muted-foreground">
-                      معلومات الدخول
-                    </div>
-                    <div className="bg-muted/50 p-1 rounded-lg">
-                      <div className="text-sm text-muted-foreground">
-                        سيتم إنشاء كلمة مرور عشوائية وإرسالها إلى بريد المعلم
-                        الإلكتروني
+                  {!editingTeacher && (
+                    <div>
+                      <div className="text-base font-medium text-muted-foreground">
+                        معلومات الدخول
+                      </div>
+                      <div className="bg-muted/50 p-1 rounded-lg">
+                        <div className="text-sm text-muted-foreground">
+                          سيتم إنشاء كلمة مرور عشوائية وإرسالها إلى بريد المعلم
+                          الإلكتروني
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
                 </TabsContent>
 
                 <TabsContent value="image" className="pt-4">
@@ -245,9 +269,10 @@ export default function TeachersModal({ onAddTeacher, classes }) {
               <Button
                 type="submit"
                 onClick={form.handleSubmit(onSubmit)}
-                className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
+                disabled={editingTeacher && !form.formState.isDirty}
+                className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium disabled:opacity-50"
               >
-                حفظ
+                {editingTeacher ? "تحديث" : "حفظ"}
               </Button>
               <DialogClose asChild>
                 <Button

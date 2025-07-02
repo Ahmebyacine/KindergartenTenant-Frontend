@@ -6,64 +6,89 @@ import ClassesModal from "@/layouts/admin/classes/ClassesModal";
 import { Input } from "@/components/ui/input";
 import { SearchNormal1 } from "iconsax-react";
 import { toast } from "sonner";
+import useFetch from "@/hooks/useFetch";
 
 export default function Classes() {
-  const [tabs, setTabs] = useState([]);
-  const [activeTab, setActiveTab] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [classes, setClasses] = useState([]);
-
+  // Fetch Functions
   const fetchTabs = async () => {
-    try {
-      const response = await api.get("/categories");
-      const fetchedTabs = response.data.map((category) => ({
-        id: category._id,
-        label: category.name,
-        name: category.name,
-      }));
+    const response = await api.get("/categories");
+    return response.data.map((category) => ({
+      id: category._id,
+      label: category.name,
+      name: category.name,
+    }));
+  };
 
-      setTabs(fetchedTabs);
-      setActiveTab(fetchedTabs[0]?.id || null); // Set default active tab
-    } catch (error) {
-      console.error("Failed to fetch class categories:", error);
-    }
-  };
   const fetchClasses = async () => {
-    try {
-      const response = await api.get("/classes");
-      setClasses(response.data);
-    } catch (error) {
-      console.error("Failed to fetch class categories:", error);
-    } finally {
-      setLoading(false);
-    }
+    const response = await api.get("/classes");
+    return response.data;
   };
+
+  const fetchTeachers = async () => {
+    const response = await api.get("/users/teachers");
+    return response.data;
+  };
+
+  // useFetch Hooks
+  const { data: tabs } = useFetch(fetchTabs);
+
+  const {
+    data: classes,
+    setData: setClasses,
+    loading: classesLoading,
+  } = useFetch(fetchClasses);
+
+  const { data: teachers } = useFetch(fetchTeachers);
+
+  // Local state
+  const [activeTab, setActiveTab] = useState(null);
 
   useEffect(() => {
-    fetchTabs();
-    fetchClasses();
-  }, []);
+    if (tabs?.length > 0) {
+      setActiveTab(tabs[0].id);
+    }
+  }, [tabs]);
+
+  // Handlers
   const handleAddClass = async (data) => {
-    setLoading(true);
     const payload = { ...data };
     if (payload.teacher === "") {
       delete payload.teacher;
     }
+
     try {
       const response = await api.post("/classes", payload);
-      console.log(response.data);
-      setClasses((prevClasses) => [...prevClasses, response.data]);
-      toast("تمت إضافة القسم بنجاح!");
+      setClasses((prev) => [...prev, response.data]);
+      toast.success("تمت إضافة القسم بنجاح!");
     } catch (error) {
       console.error("Error creating class", error);
-    } finally {
-      setLoading(false);
+      toast.error("حدث خطأ أثناء إضافة القسم");
     }
   };
-  // Filter cheacher
-  const filteredClasses = classes.filter((classe) => {
-    return classe?.category?._id === activeTab;
-  });
+
+  const handleUpdateClass = async (updatedItem) => {
+    const payload = { ...updatedItem };
+    if (payload.teacher === "") {
+      delete payload.teacher;
+    }
+
+    try {
+      const response = await api.put(`/classes/${updatedItem._id}`, payload);
+      setClasses((prev) =>
+        prev.map((item) =>
+          item._id === updatedItem._id ? response.data : item
+        )
+      );
+      toast.success("تم التحديث بنجاح");
+    } catch (error) {
+      console.error("Update failed:", error);
+      toast.error("حدث خطأ أثناء التحديث");
+    }
+  };
+
+  // Filtering
+  const filteredClasses =
+    classes?.filter((classe) => classe?.category?._id === activeTab) || [];
 
   return (
     <div className="bg-background p-6">
@@ -74,9 +99,8 @@ export default function Classes() {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            {/* Keep existing TabsList and TabsTrigger styles */}
             <TabsList className="grid w-full grid-cols-3 bg-transparent h-auto p-0 gap-8 md:grid-cols-4 lg:grid-cols-6 border-b mb-2">
-              {tabs.map((tab) => (
+              {tabs?.map((tab) => (
                 <TabsTrigger
                   key={tab.id}
                   value={tab.id}
@@ -86,6 +110,7 @@ export default function Classes() {
                 </TabsTrigger>
               ))}
             </TabsList>
+
             <div className="flex justify-between my-3">
               <div className="w-2/3 md:w-full flex gap-1 items-center">
                 <div className="relative">
@@ -101,9 +126,20 @@ export default function Classes() {
                   />
                 </div>
               </div>
-              <ClassesModal onAddClass={handleAddClass} categories={tabs} />
+              <ClassesModal
+                onAddClass={handleAddClass}
+                categories={tabs}
+                teachers={teachers}
+              />
             </div>
-            <ClassesTable classes={filteredClasses} loading={loading} />
+
+            <ClassesTable
+              classes={filteredClasses}
+              loading={classesLoading}
+              categories={tabs}
+              teachers={teachers}
+              onUpdateClass={handleUpdateClass}
+            />
           </Tabs>
         </div>
       </div>

@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SearchNormal1, Document } from "iconsax-react";
-import { getAssessmentBadge } from "@/utils/getStatusBadge";
+import { getAssessmentBadge } from "@/utils/getStatusBadges";
 import { Link } from "react-router-dom";
 import ReportsHealthModal from "@/components/reports/ReportsHealthModal";
 import api from "@/services/api";

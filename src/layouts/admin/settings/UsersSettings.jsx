@@ -73,11 +73,11 @@ export default function UsersSettings() {
 
   const getRoleTagColors = (role) => {
     switch (role) {
-      case "معلم": // Teacher
+      case "teacher": // Teacher
         return "bg-primary/10 text-primary";
-      case "مراقب": // Observer
+      case "supervisor": // Observer
         return "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300";
-      case "مدير": // Manager
+      case "admin": // Manager
         return "bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300";
       default:
         return "bg-muted text-muted-foreground";
