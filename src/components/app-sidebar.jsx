@@ -18,7 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Command, More, ProfileCircle, Setting2 } from "iconsax-react";
+import { More, ProfileCircle, Setting2 } from "iconsax-react";
 import img from "@/assets/images/avatar.png";
 import { Button } from "./ui/button";
 import { useTranslation } from "react-i18next";

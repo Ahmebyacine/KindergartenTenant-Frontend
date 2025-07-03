@@ -28,6 +28,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useEffect } from "react";
 
 const classSchema = z.object({
   className: z.string().min(1, "مطلوب"),
@@ -52,6 +53,16 @@ export default function ClassesModal({
       capacity: editingClass?.capacity || 20,
     },
   });
+  
+  useEffect(() => {
+  form.reset({
+    className: editingClass?.className || "",
+    teacher: editingClass?.teacher?._id || "",
+    category: editingClass?.category?._id || "",
+    capacity: editingClass?.capacity || 20,
+  });
+}, [editingClass, form]);
+
   const onSubmit = async (data) => {
     if (editingClass) {
       await onUpdateClass({ ...editingClass, ...data });
