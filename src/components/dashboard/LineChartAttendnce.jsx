@@ -27,10 +27,10 @@ export default function LineChartAttendnce() {
           </div>
         </div>
       </CardHeader>
-      <CardContent className={"p-0.5"}>
+      <CardContent className={"overflow-x-auto px-0"}>
         <div className="h-64">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={attendanceData} margin={{ top: 5, right: 0, left: 0, bottom: 5 }}>
+          <ResponsiveContainer width="100%" height="100%" minWidth={500}>
+            <LineChart data={attendanceData} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
               <XAxis
                 dataKey="month"
                 axisLine={false}

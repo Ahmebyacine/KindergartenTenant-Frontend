@@ -1,4 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
 export default function BarChartDashboard() {
@@ -11,15 +17,15 @@ export default function BarChartDashboard() {
     { month: "يونيو", income: 6500, expenses: 1500 },
   ];
   return (
-    <Card className="bg-card border-border" dir="ltr">
+    <Card className="gap-3" dir="ltr">
       <CardHeader>
         <CardTitle className="text-right text-foreground">
           ملخص الأداء المالي الشهري
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-64">
-          <ResponsiveContainer width="100%" height="100%">
+        <div className="h-64 overflow-x-auto">
+          <ResponsiveContainer width="100%" height="100%" minWidth={500}>
             <BarChart data={financialData}>
               <XAxis
                 dataKey="month"
@@ -47,7 +53,9 @@ export default function BarChartDashboard() {
             </BarChart>
           </ResponsiveContainer>
         </div>
-        <div className="flex justify-center gap-4 mt-4">
+      </CardContent>
+      <CardFooter className={"justify-center"}>
+        <div className="flex gap-4">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 bg-primary rounded-full"></div>
             <span className="text-sm text-muted-foreground">الدخل (د.ج)</span>
@@ -59,7 +67,7 @@ export default function BarChartDashboard() {
             </span>
           </div>
         </div>
-      </CardContent>
+      </CardFooter>
     </Card>
   );
 }
