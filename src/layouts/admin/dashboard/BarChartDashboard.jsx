@@ -23,7 +23,7 @@ export default function BarChartDashboard() {
           ملخص الأداء المالي الشهري
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className={"px-0"}>
         <div className="h-64 overflow-x-auto">
           <ResponsiveContainer width="100%" height="100%" minWidth={500}>
             <BarChart data={financialData}>

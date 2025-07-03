@@ -12,7 +12,7 @@ import {
 export default function FinancialJournalChart({ data }) {
   return (
     <Card className="shadow-sm p-4 mb-4" dir="ltr">
-      <CardContent className={"overflow-x-auto"}>
+      <CardContent className={"overflow-x-auto px-0"}>
         <div className="h-80">
           <ResponsiveContainer width="100%" height="100%" minWidth={700}>
             <BarChart
