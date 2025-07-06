@@ -8,11 +8,13 @@ import {
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select";
-import {  Camera } from "lucide-react";
+import { Camera } from "lucide-react";
 import QrScanner from "qr-scanner";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -21,6 +23,7 @@ import { ScanBarcode } from "iconsax-react";
 import api from "@/services/api";
 import StudentCardInforamtion from "../students/StudentCardInforamtion";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Input } from "../ui/input";
 
 export default function ScanAttendance() {
   const [status, setStatus] = useState("مكتمل");
@@ -56,7 +59,7 @@ export default function ScanAttendance() {
             highlightScanRegion: true,
             highlightCodeOutline: true,
             preferredCamera: "environment",
-            maxScansPerSecond: 5,
+            maxScansPerSecond: 1,
           }
         );
 
@@ -78,6 +81,7 @@ export default function ScanAttendance() {
       qrScannerRef.current = null;
     }
     setIsScanning(false);
+    setScannedData(false)
   };
 
   const handleQRResult = async (data) => {
@@ -110,18 +114,19 @@ export default function ScanAttendance() {
             تسجيل الحضور
           </DialogTitle>
         </DialogHeader>
-
         <div className="space-y-6">
           {!isScanning ? (
             isMobile && (
-              <Button
-                variant="outline"
-                className="border-primary text-primary border-2"
-                onClick={startScanning}
-              >
-                <ScanBarcode color="currentColor" />
-                مسح رمز الاستجابة السريعة
-              </Button>
+              <div className="w-full flex justify-center">
+                <Button
+                  variant="outline"
+                  className="border-primary text-primary border-2"
+                  onClick={startScanning}
+                >
+                  مسح رمز الاستجابة السريعة
+                  <ScanBarcode color="currentColor" />
+                </Button>
+              </div>
             )
           ) : (
             <div className="relative">
@@ -142,7 +147,7 @@ export default function ScanAttendance() {
                 <>
                   <video
                     ref={videoRef}
-                    className="w-64 h-64 object-cover mx-auto rounded-2xl"
+                    className="w-45 h-45 object-cover mx-auto rounded-2xl"
                     playsInline
                     muted
                   />
@@ -160,7 +165,7 @@ export default function ScanAttendance() {
                       size="sm"
                       variant="destructive"
                     >
-                      إلغاء
+                      X
                     </Button>
                   </div>
                 </>
@@ -170,7 +175,7 @@ export default function ScanAttendance() {
 
           {/* Show scanned data if available */}
           {scannedData && (
-            <div className="max-h-35">
+            <div>
               <StudentCardInforamtion enrollment={student} loading={loading} />
             </div>
           )}
@@ -204,28 +209,28 @@ export default function ScanAttendance() {
             <Label htmlFor="notes" className="text-[#111827] font-medium">
               ملاحظات
             </Label>
-            <Textarea
+            <Input
               id="notes"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               className="text-right resize-none"
-              placeholder=""
             />
           </div>
-
-          {/* Action Buttons */}
-          <div className="flex gap-3 pt-4">
-            <Button
-              variant="outline"
-              className="flex-1 text-[#6b7280] border-[#e2e8f0] hover:bg-[#f8fafc] bg-transparent"
-            >
-              الغاء
-            </Button>
-            <Button className="flex-1 bg-[#4f46e5] hover:bg-[#4338ca] text-white">
-              حفظ
-            </Button>
-          </div>
         </div>
+        {/* Action Buttons */}
+        <DialogFooter>
+          <div className="flex md:w-1/2">
+            <DialogClose>
+              <Button
+                onClick={stopScanning}
+                variant="outline"
+                className="text-muted-foreground border-border"
+              >
+                الغاء
+              </Button>
+            </DialogClose>
+          </div>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
