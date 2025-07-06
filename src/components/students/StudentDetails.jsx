@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import StudentCard from "./StudentCard";
+import StudentCard from "./StudentCardModal";
 import i18n from "@/i18n";
 import { formatDate } from "@/utils/dateFormatter";
 import { getAge } from "@/utils/getLocalizedAge";

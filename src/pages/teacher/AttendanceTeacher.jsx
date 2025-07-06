@@ -28,6 +28,7 @@ import i18n from "@/i18n";
 import { toast } from "sonner";
 import StatCard from "@/components/StatCard";
 import { useAuth } from "@/contexts/AuthContext";
+import ScanAttendance from "@/components/attendance/ScanAttendance";
 
 const statsData = [
   {
@@ -175,6 +176,7 @@ export default function AttendanceTeacher() {
               disabled={!date || attendance.length === 0}
             />
           </div>
+          <ScanAttendance />
         </div>
         {date ? (
           <>
