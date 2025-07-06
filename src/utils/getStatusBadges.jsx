@@ -8,22 +8,10 @@ export const getStatusPayBadge = (status) => {
           مدفوع
         </Badge>
       );
-    case "قيد المراجعة":
-      return (
-        <Badge className="bg-blue-50 text-blue-700 hover:bg-blue-50 border-0 rounded-md px-5 py-2">
-          {status}
-        </Badge>
-      );
     case "unpaid":
       return (
         <Badge className="bg-red-50 text-red-700 hover:bg-red-50 border-0 rounded-md px-5 py-2">
           غير مدفوع
-        </Badge>
-      );
-    case "متأخر":
-      return (
-        <Badge className="bg-amber-50 text-amber-700 hover:bg-amber-50 border-0 rounded-md px-5 py-2">
-          {status}
         </Badge>
       );
     default:

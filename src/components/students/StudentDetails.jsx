@@ -36,8 +36,8 @@ export default function StudentDetails({ enrollment, classes, onUpdateStudent })
         </DialogTrigger>
         <DialogContent className="px-0 gap-0">
           {/* Header */}
-          <DialogHeader className="border-b border-border">
-            <DialogTitle className={"text-center"}>تفاصيل الطفل</DialogTitle>
+          <DialogHeader className="border-b border-border px-5">
+            <DialogTitle className={"rtl:text-right"}>تفاصيل الطفل</DialogTitle>
           </DialogHeader>
 
           {/* Content */}

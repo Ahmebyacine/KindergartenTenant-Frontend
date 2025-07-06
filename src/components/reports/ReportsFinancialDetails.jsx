@@ -1,5 +1,10 @@
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,38 +13,31 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
-
-const DetailItem = ({ label, value }) => (
-  <div className="flex py-1">
-    <span className="text-muted-foreground font-cairo ml-5">{label}:</span>
-    {typeof value === "string" ? (
-      <span className="text-foreground mx-2 font-medium font-cairo">
-        {value}
-      </span>
-    ) : (
-      value
-    )}
-  </div>
-);
+import api from "@/services/api";
+import useFetch from "@/hooks/useFetch";
+import Loading from "@/pages/Loading";
+import { formatDateMonth, formatDateTime } from "@/utils/dateFormatter";
+import { getStatusPayBadge } from "@/utils/getStatusBadges";
+import { Button } from "../ui/button";
+import { Notification, TickSquare } from "iconsax-react";
+import DetailItem from "../DetailItem";
 
 export default function ReportsFinancialDetails() {
-  const reportDetails = {
-  invoiceNumber: 1,
-  studentName: "لبيان بدر",
-  guardian: "بدر أور",
-  class: "روحه ب",
-  month: "مايو 2025",
-  amount: 8000,
-  issueDate: "2025 مايو 1",
-  status: "مدفوع",
-  paymentMethod: "نقدًا",
-  employee: "أحمد بن يوسف",
-  notes: "تم الدفع نقدًا يوم الخميس في الإدارة."
-};
+  const { reportId } = useParams();
 
+  const fetchreportsDetails = async () => {
+    const response = await api.get(`/financial-reports/${reportId}`);
+    return response.data;
+  };
+
+  const { data: reportDetails, loading } = useFetch(fetchreportsDetails);
+
+  console.log(reportDetails);
+
+  if (loading) return <Loading />;
   return (
     <div className="bg-background p-6 font-cairo">
       <div className="max-w-4xl mx-auto space-y-6">
@@ -47,7 +45,7 @@ export default function ReportsFinancialDetails() {
         <div className="flex flex-col">
           <Link
             to="/reports?tab=financial"
-            className="font-cairo text-muted-foreground"
+            className="font-cairo text-muted-foreground"  
           >
             <h1 className="text-2xl flex items-center font-bold text-foreground font-cairo mb-2">
               <ChevronRight />
@@ -91,46 +89,70 @@ export default function ReportsFinancialDetails() {
         <Card className="bg-card border border-border shadow-sm">
           <CardHeader className="border-b border-border px-6">
             <CardTitle className="text-lg font-semibold text-foreground font-cairo">
-              الفاتورة: {reportDetails.invoiceNumber} 
+              الفاتورة: {reportDetails.invoiceNumber}
             </CardTitle>
           </CardHeader>
           <CardContent className="px-6 space-y-4">
             <div>
               <div className="space-y-1">
-                <DetailItem label="اسم الطفل" value={reportDetails.studentName} />
-                <DetailItem label="ولي الأمر" value={reportDetails.guardian} />
-                <DetailItem label="الفصل" value={reportDetails.class} />
-                <DetailItem label="الشهر" value={reportDetails.month} />
-                <DetailItem label="المبلغ" value={formatCurrencyDZD(reportDetails.amount)} />
-                <DetailItem label="تاريخ إصدار الفاتورة" value={reportDetails.issueDate} />
                 <DetailItem
-                  label="الحالة"
-                  value={
-                    <Badge className="bg-[#fef3c6] text-[#10a735] hover:bg-[#fef3c6] border-0 rounded-md px-3 py-1 font-cairo">
-                      {reportDetails.status}
-                    </Badge>
-                  }
+                  label="اسم الطفل"
+                  value={`${reportDetails?.student?.firstName} ${reportDetails?.student?.lastName}`}
                 />
                 <DetailItem
-                  label="طريقة الدفع"
-                  value={reportDetails.paymentMethod}
+                  label="ولي الأمر"
+                  value={reportDetails?.student?.parents?.name}
+                />
+                <DetailItem
+                  label="الفصل"
+                  value={reportDetails?.class?.className}
+                />
+                <DetailItem
+                  label="الشهر"
+                  value={formatDateMonth(reportDetails.month)}
+                />
+                <DetailItem
+                  label="المبلغ"
+                  value={formatCurrencyDZD(reportDetails.amount)}
+                />
+                <DetailItem
+                  label="تاريخ إصدار الفاتورة"
+                  value={formatDateTime(reportDetails.createdAt)}
+                />
+                <DetailItem
+                  label="الحالة"
+                  value={getStatusPayBadge(reportDetails.status)}
                 />
                 <DetailItem
                   label="الموظف المستلم للمبلغ"
-                  value={reportDetails.employee}
+                  value={reportDetails?.generatedBy?.name}
                 />
               </div>
             </div>
             {/* Notes */}
-            <div>
-              <h2 className="text-base font-semibold text-foreground mb-3 pb-3 border-b border-border font-cairo">
-                ملاحظات
-              </h2>
-              <p className="text-foreground leading-relaxed font-cairo">
-                {reportDetails.notes}
-              </p>
-            </div>
+            {reportDetails.notes && (
+              <div>
+                <h2 className="text-base font-semibold text-foreground mb-3 pb-3 border-b border-border font-cairo">
+                  ملاحظات
+                </h2>
+                <p className="text-foreground leading-relaxed font-cairo">
+                  {reportDetails.notes}
+                </p>
+              </div>
+            )}
           </CardContent>
+          {reportDetails.status === "unpaid" && (
+            <CardFooter className={"gap-4 flex-col sm:flex-row justify-end"}>
+              <Button variant={"outline"} className={"text-foreground"}>
+                <Notification color="#EFB100" />
+                رسال تذكير لولي الأمر
+              </Button>
+              <Button variant={"outline"} className={"text-secondary"}>
+                <TickSquare color="currentColor" />
+                تمييز كمدفوع
+              </Button>
+            </CardFooter>
+          )}
         </Card>
       </div>
     </div>

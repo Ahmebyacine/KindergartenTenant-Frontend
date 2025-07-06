@@ -8,45 +8,36 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
-
-const DetailItem = ({ label, value }) => (
-  <div className="flex py-1">
-    <span className="text-muted-foreground font-cairo">{label}:</span>
-    {typeof value === "string" ? (
-      <span className="text-foreground mx-2 font-medium font-cairo">
-        {value}
-      </span>
-    ) : (
-      value
-    )}
-  </div>
-);
+import DetailItem from "../DetailItem";
+import api from "@/services/api";
+import useFetch from "@/hooks/useFetch";
+import Loading from "@/pages/Loading";
 
 export default function ReportHealthDetails() {
-  const reportDetails = {
-    reportId: "1",
-    childName: "ليان بدر",
-    teacher: "أ. نوال",
-    class: "روضة ب",
-    date: "20 مايو 2025",
-    observationTime: "10:45 صباحًا",
-    conditionType: "حرارة",
-    conditionAssessment: "متوسطة",
-    actionTaken: "نعم",
-    guardianContacted: "نعم",
-    actionType: "راحة في العيادة لمدة ساعة",
-    notes:
-      "لاحظت احمرارًا في وجه الطفل وتعبًا واضحًا. تم قياس حرارته وإراحته في غرفة العيادة. وتم إبلاغ ولي الأمر هاتفيًا.",
+  const { reportId } = useParams();
+
+  const fetchreportsDetails = async () => {
+    const response = await api.get(`/health-reports/${reportId}`);
+    return response.data;
   };
+
+  const { data: reportDetails, loading } = useFetch(fetchreportsDetails);
+
+  console.log(reportDetails);
+
+  if (loading) return <Loading />;
 
   return (
     <div className="bg-background p-6 font-cairo">
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex flex-col">
-          <Link to="/reports?tab=health" className="font-cairo text-muted-foreground">
+          <Link
+            to="/reports?tab=health"
+            className="font-cairo text-muted-foreground"
+          >
             <h1 className="text-2xl flex items-center font-bold text-foreground font-cairo mb-2">
               <ChevronRight />
               تفاصيل التقرير الصحي
@@ -99,9 +90,15 @@ export default function ReportHealthDetails() {
                 بيانات الطفل
               </h2>
               <div className="space-y-1">
-                <DetailItem label="اسم الطفل" value={reportDetails.childName} />
+                <DetailItem
+                  label="اسم الطفل"
+                  value={`${reportDetails?.student?.firstName} ${reportDetails?.student?.lastName}`}
+                />
                 <DetailItem label="المعلمة" value={reportDetails.teacher} />
-                <DetailItem label="الفصل" value={reportDetails.class} />
+                <DetailItem
+                  label="الفصل"
+                  value={reportDetails?.class?.className}
+                />
                 <DetailItem label="التاريخ" value={reportDetails.date} />
                 <DetailItem
                   label="وقت الملاحظة"
