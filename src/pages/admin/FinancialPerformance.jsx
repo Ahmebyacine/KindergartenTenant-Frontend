@@ -6,7 +6,6 @@ import {
   SearchNormal1,
 } from "iconsax-react";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
-import i18n from "@/i18n";
 import { Input } from "@/components/ui/input";
 import IncomesFilter from "@/layouts/admin/incomes/IncomesFilter";
 import FinancialJournalChart from "@/layouts/admin/financialPerformance/FinancialJournalChart";
@@ -17,7 +16,7 @@ import StatCard from "@/components/StatCard";
 const statsData = [
   {
     title: "إجمالي المداخيل",
-    value: formatCurrencyDZD(125000, i18n.language),
+    value: formatCurrencyDZD(125000),
     subLabel: "المبلغ المحصل خلال السنة الحالية",
     icon: CardReceive,
     bgColor: "bg-[#DCFCE7]",
@@ -25,7 +24,7 @@ const statsData = [
   },
   {
     title: "إجمالي المصاريف",
-    value: formatCurrencyDZD(50000, i18n.language),
+    value: formatCurrencyDZD(50000),
     icon: CardSend,
     bgColor: "bg-[#FFE2E2]",
     iconColor: "#FB2C36",
@@ -33,7 +32,7 @@ const statsData = [
   },
   {
     title: "صافي الربح",
-    value: "+" + formatCurrencyDZD(970000 - 50000, i18n.language),
+    value: "+" + formatCurrencyDZD(970000 - 50000),
     icon: DollarSquare,
     bgColor: "bg-[#FEF3C6]",
     iconColor: "#D08700",

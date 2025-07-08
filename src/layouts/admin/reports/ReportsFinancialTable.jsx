@@ -14,32 +14,20 @@ import { Link } from "react-router-dom";
 import ReportsFinancialModal from "../../../components/reports/ReportsFinancialModal";
 import { toast } from "sonner";
 import api from "@/services/api";
-import { useState } from "react";
-import { useEffect } from "react";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import i18n from "@/i18n";
 import { formatDateMonth } from "@/utils/dateFormatter";
 import LoadingTable from "@/components/LoadingTable";
 import ReportsFilter from "@/components/reports/ReportsFilter";
+import useFetch from "@/hooks/useFetch";
 
 export default function ReportsFinancialTable({ classes, students }) {
-  const [reports, setReports] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const fetchReport = async () => {
-    try {
-      const response = await api.get("/financial-reports");
-      setReports(response.data.data);
-      console.log(response.data.data);
-    } catch (error) {
-      console.error("Failed to fetch students:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  useEffect(() => {
-    fetchReport();
-  }, []);
+  const fetchReport = async () => {
+    const response = await api.get("/financial-reports");
+    return response.data.data;
+  };
+  const { data: reports, loading } = useFetch(fetchReport);
 
   const handelAddReport = async (data) => {
     try {

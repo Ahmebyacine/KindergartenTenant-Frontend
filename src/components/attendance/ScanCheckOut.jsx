@@ -6,13 +6,14 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/components/ui/select";
 import { Camera } from "lucide-react";
 import QrScanner from "qr-scanner";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -22,8 +23,7 @@ import api from "@/services/api";
 import StudentCardInforamtion from "../students/StudentCardInforamtion";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-export default function ScanAttendance({ onAttendanceCreate }) {
-  const [status, setStatus] = useState("present");
+export default function ScanCheckOut({ onAttendanceCheckOut }) {
   const [isScanning, setIsScanning] = useState(false);
   const [scannedData, setScannedData] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -89,7 +89,7 @@ export default function ScanAttendance({ onAttendanceCreate }) {
     try {
       setLoading(true);
       const res = await api.get(`/enrollments/${data}`);
-      await onAttendanceCreate({ ids: data, status });
+      await onAttendanceCheckOut(data);
       console.log(res.data);
       setStudent(res.data);
     } catch (error) {
@@ -114,12 +114,12 @@ export default function ScanAttendance({ onAttendanceCreate }) {
       }}
     >
       <DialogTrigger className="w-full">
-        <Button className="w-full sm:w-auto">تسجيل الحضور</Button>
+        <Button variant="outline" className="w-full sm:w-auto mx-2">تسجيل الخروج</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold rtl:text-right">
-            تسجيل الحضور
+            تسجيل الخروج
           </DialogTitle>
         </DialogHeader>
         <div className="space-y-6">
@@ -198,22 +198,6 @@ export default function ScanAttendance({ onAttendanceCreate }) {
               <StudentCardInforamtion enrollment={student} loading={loading} />
             </div>
           )}
-
-          {/* Status */}
-          <div className="space-y-2">
-            <Label htmlFor="status" className="font-medium">
-              الحالة
-            </Label>
-            <Select value={status} onValueChange={(value) => setStatus(value)}>
-              <SelectTrigger className="text-right">
-                <SelectValue placeholder="حالة الحضور" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="present">حاضر</SelectItem>
-                <SelectItem value="late">متأخر</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
         </div>
       </DialogContent>
     </Dialog>

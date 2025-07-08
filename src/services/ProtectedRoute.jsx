@@ -5,7 +5,6 @@ import Loading from '@/pages/Loading';
 const ProtectedRoute = ({ roles = [], redirectPath = '/signin', children }) => {
   const location = useLocation();
   const { user, loading } = useAuth();
-  console.log(user)
   if (loading) return <Loading />;
 
   if (!user) {

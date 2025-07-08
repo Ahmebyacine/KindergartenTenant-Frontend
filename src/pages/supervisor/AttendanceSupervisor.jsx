@@ -13,10 +13,8 @@ import {
   Chart2,
   Danger,
   People,
-  SearchNormal1,
   TickSquare,
 } from "iconsax-react";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -35,17 +33,17 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import img from "@/assets/images/attendanceillu.png";
 import AttendanceTable from "@/components/attendance/AttendanceTable";
 import api from "@/services/api";
 import { formatDate } from "@/utils/dateFormatter";
-import i18n from "@/i18n";
 import { toast } from "sonner";
 import StatCard from "@/components/StatCard";
+import ScanAttendance from "@/components/attendance/ScanAttendance";
+import ScanCheckOut from "@/components/attendance/ScanCheckOut";
+import useFetch from "@/hooks/useFetch";
 
 const statsData = [
   {
@@ -83,26 +81,17 @@ export default function AttendanceSupervisor() {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(new Date());
   const [selectedClass, setSelectedClass] = useState(null);
-  const [classes, setClasses] = useState([]);
   const [attendance, setAttendance] = useState([]);
 
-  //fetch CLasses
-  useEffect(() => {
-    const fetchClasses = async () => {
-      try {
-        const response = await api.get("/classes");
-        setClasses(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchClasses();
-  }, []);
+  const fetchClasses = async () => {
+    const response = await api.get("/classes");
+    return response.data;
+  };
+  const { data: classes } = useFetch(fetchClasses);
 
   const fetchAttendanceData = async (selectedDate, classId) => {
     setLoading(true);
     try {
-      console.log(classId);
       const response = await api.get(
         `/attendances?date=${selectedDate}&classId=${classId}`
       );
@@ -123,20 +112,67 @@ export default function AttendanceSupervisor() {
   }, [date, selectedClass]);
 
   const handleAttendanceCreate = async (data) => {
-    console.log(data);
     try {
       if (Array.isArray(data.ids) && data.ids.length > 0) {
         const response = await api.post("/attendances/bulk", data);
-        console.log(response.data);
+        setAttendance((prev) => {
+          // Create a map of new attendance records by student ID
+          const newAttendanceMap = new Map();
+          response.data.info.forEach((item) => {
+            newAttendanceMap.set(item.student._id, {
+              attendanceId: item._id,
+              status: item.status,
+              time: item.createdAt,
+              checkInTime: item.checkInTime,
+            });
+          });
+
+          // Update only affected students, preserve others
+          const updatedInfo = prev.info.map((studentInfo) => {
+            const newAttendance = newAttendanceMap.get(studentInfo.student._id);
+            return newAttendance
+              ? { ...studentInfo, ...newAttendance }
+              : studentInfo;
+          });
+
+          return {
+            ...prev,
+            recorded: true,
+            info: updatedInfo,
+          };
+        });
       } else {
         const response = await api.post("/attendances", {
           ...data,
           enrollmentId: data.ids,
         });
-        console.log(response.data);
+        setAttendance((prev) => {
+          const index = prev.info.findIndex(
+            (item) => item.enrollmentId === data.ids
+          );
+
+          const updatedInfo = [...prev.info];
+          updatedInfo[index] = {
+            ...updatedInfo[index],
+            ...{
+              attendanceId: response.data._id,
+              status: response.data.status,
+              time: response.data.createdAt,
+              checkInTime: response.data.checkInTime,
+            },
+          };
+
+          return {
+            ...prev,
+            recorded: true,
+            info: updatedInfo,
+          };
+        });
       }
+      toast.success("تم تسجيل الحضور بنجاح");
     } catch (error) {
       console.log(error);
+      toast.error("حدث خطأ أثناء تسجيل الحضور");
     }
   };
 
@@ -150,11 +186,27 @@ export default function AttendanceSupervisor() {
           ...data,
           enrollmentId: data,
         });
-        console.log(response.data);
+        setAttendance((prev) => {
+          const index = prev.info.findIndex(
+            (item) => item.attendanceId === response.data._id
+          );
+
+          const updatedInfo = [...prev.info];
+          updatedInfo[index] = {
+            ...updatedInfo[index],
+            ...{ checkOutTime: response.data.checkOutTime },
+          };
+
+          return {
+            ...prev,
+            info: updatedInfo,
+          };
+        });
       }
       toast.success("تم تسجيل الخروج بنجاح");
     } catch (error) {
       console.log(error);
+      toast.error("حدث خطأ أثناء تسجيل الخروج");
     }
   };
 
@@ -186,38 +238,36 @@ export default function AttendanceSupervisor() {
         </Breadcrumb>
       </div>
       <div className="mx-auto">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
-            <div className="flex flex-col gap-3">
-              <Popover open={open} onOpenChange={setOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    id="date-picker"
-                    className="w-32 justify-between font-normal"
-                  >
-                    {date ? formatDate(date, i18n.language) : "Select date"}
-                    <CalendarSearch color="currentColor" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent
-                  className="w-auto overflow-hidden p-0"
-                  align="start"
+        <div className="flex flex-col md:flex-row gap-2 items-center">
+          <div className="flex items-center gap-1 w-full">
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  id="date-picker"
+                  className="w-32 justify-between font-normal"
                 >
-                  <Calendar
-                    mode="single"
-                    selected={date}
-                    captionLayout="dropdown"
-                    onSelect={(date) => {
-                      setDate(date);
-                      setOpen(false);
-                    }}
-                    disabled={(date) => date > new Date()}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
+                  {date ? formatDate(date) : "Select date"}
+                  <CalendarSearch color="currentColor" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent
+                className="w-auto overflow-hidden p-0"
+                align="start"
+              >
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  captionLayout="dropdown"
+                  onSelect={(date) => {
+                    setDate(date);
+                    setOpen(false);
+                  }}
+                  disabled={(date) => date > new Date()}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
             <Select onValueChange={(value) => setSelectedClass(value)}>
               <SelectTrigger className="bg-background border-border text-right">
                 <SelectValue placeholder="اختيار الفصل" />
@@ -231,51 +281,32 @@ export default function AttendanceSupervisor() {
               </SelectContent>
             </Select>
           </div>
-          <div className="relative w-full sm:w-64">
-            <SearchNormal1
-              size="16"
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
-              color="currentColor"
-            />
-            <Input
-              placeholder="البحث"
-              className="pr-10 pl-4 py-2 bg-background"
-              disabled={!date || !selectedClass || attendance.length === 0}
-            />
+          <div className="flex my-3 w-full sm:w-auto">
+            <ScanAttendance onAttendanceCreate={handleAttendanceCreate} />
+            <ScanCheckOut onAttendanceCheckOut={handleAttendanceCheckOut} />
           </div>
         </div>
         {date && selectedClass ? (
           <>
             {attendance.recorded && (
-              <div className="w-full my-4">
-                {/* Carousel for screens smaller than lg */}
-                <div className="block lg:hidden px-4">
-                  <Carousel
-                    opts={{
-                      align: "start",
-                      loop: true,
-                    }}
-                    className="w-full"
-                  >
-                    <CarouselContent className="-ml-2 md:-ml-4">
-                      {statsData.map((stat, index) => (
-                        <CarouselItem
-                          key={index}
-                          className="pl-2 md:pl-4 basis-4/5 sm:basis-1/2"
-                        >
-                          <StatCard stat={stat} />
-                        </CarouselItem>
-                      ))}
-                    </CarouselContent>
-                  </Carousel>
-                </div>
-
-                {/* Grid for lg screens and above */}
-                <div className="hidden lg:grid lg:grid-cols-4 gap-6 px-4">
-                  {statsData.map((stat, index) => (
-                    <StatCard key={index} stat={stat} />
-                  ))}
-                </div>
+              <div className="w-full my-4 p-3">
+                <Carousel
+                  opts={{
+                    align: "start",
+                    loop: true,
+                  }}
+                >
+                  <CarouselContent className="-ml-2 md:-ml-4 min-w-0">
+                    {statsData.map((stat, index) => (
+                      <CarouselItem
+                        key={index}
+                        className="pl-2 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                      >
+                        <StatCard stat={stat} />
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                </Carousel>
               </div>
             )}
             <AttendanceTable

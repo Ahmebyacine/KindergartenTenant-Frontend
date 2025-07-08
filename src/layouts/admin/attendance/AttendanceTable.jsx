@@ -6,11 +6,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 import { Document } from "iconsax-react";
-import { formatDate } from "@/utils/dateFormatter";
-import i18next from "i18next";
+import { formatDateTime } from "@/utils/dateFormatter";
 import LoadingTable from "@/components/LoadingTable";
+import { getAttendancesBadge } from "@/utils/getStatusBadges";
 
 export default function AttendanceTable({ loading, attendance }) {
   return (
@@ -44,34 +43,29 @@ export default function AttendanceTable({ loading, attendance }) {
         <LoadingTable />
       ) : attendance?.length > 0 ? (
         <TableBody>
-          {attendance?.map((teacher, i) => (
+          {attendance?.map((att, i) => (
             <TableRow
-              key={teacher._id}
+              key={att._id}
               className="border-b border-border hover:bg-muted/50"
             >
               <TableCell className="text-foreground py-3">{i + 1}</TableCell>
               <TableCell className="text-foreground font-medium py-3">
-                {teacher.name}
+                {att?.student?.name}
               </TableCell>
               <TableCell className="text-foreground py-3">
-                {teacher.assignedClass.className}
+                {att?.class?.name}
               </TableCell>
               <TableCell className="text-foreground py-3">
-                {teacher.phone}
+                {getAttendancesBadge(att?.status)}
               </TableCell>
               <TableCell className="text-foreground py-3">
-                {teacher.email}
+                {att?.checkInTime ? formatDateTime(att?.checkInTime) : "--"}
               </TableCell>
               <TableCell className="text-foreground py-3">
-                {formatDate(teacher.createdAt, i18next.language)}
+                {att?.checkOutTime ? formatDateTime(att?.checkOutTime) : "--"}
               </TableCell>
               <TableCell className="py-3">
-                <Button
-                  variant="link"
-                  className="text-primary hover:text-primary/80 p-0 h-auto underline"
-                >
-                  {teacher.actions}
-                </Button>
+                {att?.notes || "لا توجد ملاحظات"}
               </TableCell>
             </TableRow>
           ))}

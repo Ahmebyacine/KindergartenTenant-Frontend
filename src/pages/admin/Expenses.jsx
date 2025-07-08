@@ -7,7 +7,6 @@ import {
 } from "iconsax-react";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import ExpensesTable from "@/layouts/admin/expenses/ExpensesTable";
-import { useTranslation } from "react-i18next";
 import StatCard from "@/components/StatCard";
 import api from "@/services/api";
 import { toast } from "sonner";
@@ -17,7 +16,6 @@ import { Input } from "@/components/ui/input";
 import useFetch from "@/hooks/useFetch";
 
 export default function Expenses() {
-  const { i18n } = useTranslation();
 
   const fetchExpenses = async () => {
     const res = await api.get("/expenses");
@@ -67,7 +65,7 @@ export default function Expenses() {
   const stats = [
     {
       title: "مصاريف هذا الشهر",
-      value: formatCurrencyDZD(125000, i18n.language),
+      value: formatCurrencyDZD(125000),
       subLabel: "إجمالي المصاريف لشهر مايو",
       icon: Calendar,
       iconColor: "var(--primary)",
@@ -75,7 +73,7 @@ export default function Expenses() {
     },
     {
       title: "مصاريف السنة الحالية",
-      value: formatCurrencyDZD(8300000, i18n.language),
+      value: formatCurrencyDZD(8300000),
       subLabel: "منذ يناير حتى اليوم",
       icon: DollarSquare,
       iconColor: "#1447E6",
@@ -91,7 +89,7 @@ export default function Expenses() {
     },
     {
       title: "متوسط المصروف",
-      value: formatCurrencyDZD(8300, i18n.language),
+      value: formatCurrencyDZD(8300),
       subLabel: "لكل عملية خلال شهر مايو",
       icon: CardIcon,
       iconColor: "#5EA500",

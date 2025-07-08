@@ -17,7 +17,7 @@ export default function Layout() {
           <Header />
         </SidebarInset>
         <Outlet />
-        <Toaster />
+        <Toaster position="bottom-center" richColors />
       </main>
     </SidebarProvider>
   );

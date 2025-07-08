@@ -1,48 +1,31 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TeachersTable from "@/layouts/supervisor/teachers/TeachersTable";
 import api from "@/services/api";
 import { SearchNormal1 } from "iconsax-react";
 import { Input } from "@/components/ui/input";
+import useFetch from "@/hooks/useFetch";
 
 export default function TeachersSupervisor() {
-  const [tabs, setTabs] = useState([]);
   const [activeTab, setActiveTab] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [teachers, setTeachers] = useState([]);
 
   const fetchTabs = async () => {
-    try {
-      const response = await api.get("/categories");
-      const fetchedTabs = response.data.map((category) => ({
-        id: category._id,
-        label: category.name,
-        name: category.name,
-      }));
-
-      setTabs(fetchedTabs);
-      setActiveTab(fetchedTabs[0]?.id || null); // Set default active tab
-    } catch (error) {
-      console.error("Failed to fetch class categories:", error);
-    }
+    const response = await api.get("/categories");
+    return response.data.map((category) => ({
+      id: category._id,
+      label: category.name,
+      name: category.name,
+    }));
   };
 
   const fetchTeachers = async () => {
-    setLoading(true);
-    try {
-      const response = await api.get("/users/teachers");
-      setTeachers(response.data);
-    } catch (error) {
-      console.error("Failed to fetch class categories:", error);
-    } finally {
-      setLoading(false);
-    }
+    const response = await api.get("/users/teachers");
+    return response.data;
   };
 
-  useEffect(() => {
-    fetchTabs();
-    fetchTeachers();
-  }, []);
+  const { data: tabs } = useFetch(fetchTabs);
+
+  const { data: teachers, loading } = useFetch(fetchTeachers);
 
   // Filter teachers
   const filteredTeachers = teachers.filter((teacher) => {

@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/table";
 import { Document } from "iconsax-react";
 import { formatDateTime } from "@/utils/dateFormatter";
-import i18next from "i18next";
 import LoadingTable from "@/components/LoadingTable";
 import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -38,10 +37,8 @@ export default function AttendanceTable({
       ids,
       status: "present",
     };
-    // Call the API or perform the action to check in the selected students
-    await onAttendanceCreate(data);
 
-    toast.success("تم تسجيل الحضور بنجاح");
+    await onAttendanceCreate(data);
 
     if (Array.isArray(data.ids) && data.ids.length > 0) {
       setStudentsSelection([]);
@@ -64,10 +61,7 @@ export default function AttendanceTable({
       ids,
       status: "late",
     };
-    // Call the API or perform the action to check in the selected students
     await onAttendanceCreate(data);
-
-    toast.success("تم تسجيل المتاخرين بنجاح");
 
     if (Array.isArray(data.ids) && data.ids.length > 0) {
       setStudentsSelection([]);
@@ -82,11 +76,7 @@ export default function AttendanceTable({
       ids,
       status: "absent",
     };
-    // Call the API or perform the action to check in the selected students
     await onAttendanceCreate(data);
-
-    toast.success("تم تسجيل الغياب بنجاح");
-
     if (Array.isArray(data.ids) && data.ids.length > 0) {
       setStudentsSelection([]);
     }
@@ -200,12 +190,12 @@ export default function AttendanceTable({
                 </TableCell>
                 <TableCell className="text-foreground py-3">
                   {att?.checkInTime
-                    ? formatDateTime(att?.checkInTime, i18next.language)
+                    ? formatDateTime(att?.checkInTime)
                     : "--"}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
                   {att?.checkOutTime
-                    ? formatDateTime(att?.checkOutTime, i18next.language)
+                    ? formatDateTime(att?.checkOutTime)
                     : "--"}
                 </TableCell>
                 <TableCell className="py-3">

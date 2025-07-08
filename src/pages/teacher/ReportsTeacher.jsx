@@ -3,38 +3,25 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ReportsFinancialTable from "@/layouts/teacher/reports/ReportsFinancialTable";
 import ReportsHealthTable from "@/layouts/teacher/reports/ReportsHealthTable";
 import ReportsPedagogicalTable from "@/layouts/teacher/reports/ReportsPedagogicalTable";
-import { useEffect } from "react";
 import api from "@/services/api";
-import { useState } from "react";
+import useFetch from "@/hooks/useFetch";
 
 export default function ReportsTeacher() {
   const [searchParams] = useSearchParams();
   const defaultTab = searchParams.get("tab") || "pedagogical";
 
-  const [classes, setClasses] = useState([]);
-  const [students, setStudents] = useState([]);
-
   const fetchClasses = async () => {
-    try {
-      const response = await api.get("/classes");
-      setClasses(response.data);
-    } catch (error) {
-      console.error("Failed to fetch class categories:", error);
-    }
+    const response = await api.get("/classes");
+    return response.data;
   };
+
   const fetchStudents = async () => {
-    try {
-      const response = await api.get("/enrollments");
-      setStudents(response.data.data);
-    } catch (error) {
-      console.error("Failed to fetch students:", error);
-    }
+    const response = await api.get("/enrollments");
+    return response.data.data;
   };
-  // Fetch categories dynamically from API
-  useEffect(() => {
-    fetchClasses();
-    fetchStudents();
-  }, []);
+
+  const { data: classes } = useFetch(fetchClasses);
+  const { data: students } = useFetch(fetchStudents);
   
   return (
     <div className="bg-background p-6">

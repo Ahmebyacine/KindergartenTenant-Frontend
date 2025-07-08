@@ -8,7 +8,14 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Link } from "react-router-dom";
-import { CalendarSearch, Chart2, Danger, People, SearchNormal1, TickSquare } from "iconsax-react";
+import {
+  CalendarSearch,
+  Chart2,
+  Danger,
+  People,
+  SearchNormal1,
+  TickSquare,
+} from "iconsax-react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -30,37 +37,63 @@ import AttendanceTable from "@/layouts/admin/attendance/AttendanceTable";
 import api from "@/services/api";
 import { formatDate } from "@/utils/dateFormatter";
 import i18n from "@/i18n";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+import StatCard from "@/components/StatCard";
+import useFetch from "@/hooks/useFetch";
 
+const statsData = [
+  {
+    title: "عدد الأطفال",
+    value: "25 طفل",
+    icon: People,
+    bgColor: "bg-[#A2F4FD]",
+    iconColor: "#00A6F4",
+  },
+  {
+    title: "الحضور",
+    value: "22 حاضر",
+    icon: TickSquare,
+    bgColor: "bg-[#B9F8CF]",
+    iconColor: "#008236",
+  },
+  {
+    title: "الغياب",
+    value: "3 غائب",
+    icon: Danger,
+    bgColor: "bg-[#FFE2E2]",
+    iconColor: "#E7000B",
+  },
+  {
+    title: "نسبة الحضور",
+    value: "88%",
+    icon: Chart2,
+    bgColor: "bg-[#EDE9FE]",
+    iconColor: "#7008E7",
+  },
+];
 export default function Attendance() {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState();
   const [selectedClass, setSelectedClass] = useState(null);
-  const [classes, setClasses] = useState([]);
   const [attendance, setAttendance] = useState([]);
 
-  //fetch CLasses
-  useEffect(() => {
-    const fetchClasses = async () => {
-      try {
-        const response = await api.get("/classes");
-        setClasses(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchClasses();
-  }, []);
+  const fetchClasses = async () => {
+    const response = await api.get("/classes");
+    return response.data;
+  };
+  const { data: classes } = useFetch(fetchClasses);
 
   const fetchAttendanceData = async (selectedDate, classId) => {
     try {
-      const formattedDate = selectedDate.toISOString().split("T")[0];
       const response = await api.get(
-        `/attendance?date=${formattedDate}&classId=${classId}`
+        `/attendances?date=${selectedDate}&classId=${classId}`
       );
       setAttendance(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error("Error fetching attendance data:", error);
     } finally {
@@ -161,88 +194,28 @@ export default function Attendance() {
         </div>
         {date && selectedClass ? (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 my-4">
-              <Card className="bg-card border-border">
-                <CardContent className="p-6">
-                  <div className="flex items-start">
-                    <div className="flex items-center w-full">
-                      <div className="flex items-center justify-between w-full gap-2">
-                        <p className="text-sm text-muted-foreground mb-1">
-                          عدد الأطفال
-                        </p>
-                        <div className="w-10 h-10 bg-[#A2F4FD] rounded-xl flex items-center justify-center">
-                          <People size={24} color="#00A6F4" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="text-right mt-1">
-                    <p className="text-[22px] font-bold text-foreground">
-                      25 طفل
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-card border-border">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-1">
-                    <p className="text-sm text-muted-foreground">
-                      الحضور
-                    </p>
-                    <div className="w-10 h-10 bg-[#B9F8CF] rounded-xl flex items-center justify-center">
-                      <TickSquare size={24} color="#008236" />
-                    </div>
-                  </div>
-
-                  <div className="text-right mt-1">
-                    <p className="text-[22px] font-bold text-foreground">
-                      22 حاضر
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-card border-border">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-1">
-                    <p className="text-sm text-muted-foreground">
-                      الغياب
-                    </p>
-                    <div className="w-10 h-10 bg-[#FFE2E2] rounded-xl flex items-center justify-center">
-                      <Danger size={24} color="#E7000B" />
-                    </div>
-                  </div>
-
-                  <div className="text-right mt-1">
-                    <p className="text-[22px] font-bold text-foreground">
-                      3 غائب
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-card border-border">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-1">
-                    <p className="text-sm text-muted-foreground">
-                      نسبة الحضور
-                    </p>
-                    <div className="w-10 h-10 bg-[#EDE9FE] rounded-xl flex items-center justify-center">
-                      <Chart2 size={24} color="#7008E7" />
-                    </div>
-                  </div>
-
-                  <div className="text-right mt-1">
-                    <p className="text-[22px] font-bold text-foreground">
-                      88%
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-            <AttendanceTable attendance={attendance} loading={loading} />
+            {attendance.recorded && (
+              <div className="w-full my-4 p-3">
+                <Carousel
+                  opts={{
+                    align: "start",
+                    loop: true,
+                  }}
+                >
+                  <CarouselContent className="-ml-2 md:-ml-4 min-w-0">
+                    {statsData.map((stat, index) => (
+                      <CarouselItem
+                        key={index}
+                        className="pl-2 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                      >
+                        <StatCard stat={stat} />
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                </Carousel>
+              </div>
+            )}
+            <AttendanceTable attendance={attendance.info} loading={loading} />
           </>
         ) : (
           <div className="flex flex-col items-center justify-center py-16">

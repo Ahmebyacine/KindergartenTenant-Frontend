@@ -15,31 +15,17 @@ import { Link } from "react-router-dom";
 import ReportsPedagogicalModal from "../../../components/reports/ReportsPedagogicalModal";
 import api from "@/services/api";
 import { toast } from "sonner";
-import { useEffect, useState } from "react";
 import { formatDateTime } from "@/utils/dateFormatter";
-import i18n from "@/i18n";
 import LoadingTable from "@/components/LoadingTable";
 import ReportsFilter from "@/components/reports/ReportsFilter";
+import useFetch from "@/hooks/useFetch";
 
 export default function ReportsPedagogicalTable({ classes, students }) {
-  const [reports, setReports] = useState([]);
-  const [loading, setLoading] = useState(true);
-
   const fetchReport = async () => {
-    try {
       const response = await api.get("/pedagogical-reports");
-      setReports(response.data);
-      console.log(response.data);
-    } catch (error) {
-      console.error("Failed to fetch students:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchReport();
-  }, []);
+      return response.data;
+    };
+    const { data: reports, loading } = useFetch(fetchReport);
   const handelAddReport = async (data) => {
     try {
       await api.post("/pedagogical-reports", data);
@@ -120,7 +106,7 @@ export default function ReportsPedagogicalTable({ classes, students }) {
                   {row.class?.className}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatDateTime(row.createdAt, i18n.language)}
+                  {formatDateTime(row.createdAt)}
                 </TableCell>
                 <TableCell className="py-3">
                   {getAssessmentBadge(row.overall)}

@@ -1,13 +1,12 @@
 import { Archive, CardReceive, Chart2, TickSquare } from "iconsax-react";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import IncomesTable from "@/layouts/admin/incomes/IncomesTable";
-import i18n from "@/i18n";
 import StatCard from "@/components/StatCard";
 
 const statsData = [
   {
     title: "إجمالي المداخيل",
-    value: formatCurrencyDZD(125000, i18n.language),
+    value: formatCurrencyDZD(125000),
     subLabel: "المبلغ المحصل خلال السنة الحالية",
     icon: CardReceive,
     bgColor: "bg-[#DCFCE7]",
