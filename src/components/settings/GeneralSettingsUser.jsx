@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/themeProvider";
 import i18n from "@/i18n";
-export function GeneralSettings() {
+export function GeneralSettingsUser() {
   const { theme, setTheme } = useTheme();
   const [autoTimeZone, setAutoTimeZone] = useState(true);
 
@@ -155,33 +155,6 @@ export function GeneralSettings() {
                 checked={autoTimeZone}
                 onCheckedChange={setAutoTimeZone}
               />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Kindergarten Information Section */}
-      <div>
-        <h2 className="text-2xl font-semibold mb-4 text-right">
-          معلومات الروضة
-        </h2>
-        <div className="border-t border-border mb-6"></div>
-
-        <div className="space-y-6">
-          <h3 className="text-lg font-medium">اسم الروضة</h3>
-          <div className="flex justify-between items-center">
-            <Input
-              className="max-w-md border-border"
-              placeholder="روضة النور"
-            />
-          </div>
-
-          <div className="flex justify-between items-center pt-4">
-            <h3 className="text-lg font-medium">شعار الروضة</h3>
-            <div className="flex items-center gap-2">
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                رفع شعار الروضة
-              </Button>
             </div>
           </div>
         </div>

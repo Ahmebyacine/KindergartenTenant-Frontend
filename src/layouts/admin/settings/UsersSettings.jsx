@@ -13,14 +13,17 @@ import img from "@/assets/images/avatar.png";
 import UserModal from "./UserModal";
 import api from "@/services/api";
 import { toast } from "sonner";
-import { useState } from "react";
-import { useEffect } from "react";
 import Loading from "@/pages/Loading";
 import UsersFilter from "./UsersFilter";
+import { getRoleTagColors } from "@/utils/getStatusBadges";
+import useFetch from "@/hooks/useFetch";
 
 export default function UsersSettings() {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const fetchUsers = async () => {
+    const response = await api.get("/users");
+    return response.data;
+  };
+  const { data: users, loading } = useFetch(fetchUsers);
 
   const handleAddUser = async (userData) => {
     try {
@@ -31,21 +34,6 @@ export default function UsersSettings() {
       toast.error("فشل في إضافة المستخدم. يرجى المحاولة مرة أخرى.");
     }
   };
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await api.get("/users");
-        setUsers(response.data);
-      } catch (error) {
-        console.log(error);
-        toast.error("error in fetch the data");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUsers();
-  }, []);
 
   const permissions = [
     { task: "إضافة طفل جديد", teacher: false, observer: false, manager: true },
@@ -70,19 +58,6 @@ export default function UsersSettings() {
     },
     { task: "إضافة مصروف", teacher: false, observer: false, manager: true },
   ];
-
-  const getRoleTagColors = (role) => {
-    switch (role) {
-      case "teacher": // Teacher
-        return "bg-primary/10 text-primary";
-      case "supervisor": // Observer
-        return "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300";
-      case "admin": // Manager
-        return "bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300";
-      default:
-        return "bg-muted text-muted-foreground";
-    }
-  };
 
   return (
     <div>
@@ -109,16 +84,16 @@ export default function UsersSettings() {
           <UserModal onAddUser={handleAddUser} />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2">
-          {loading && (<Loading />)}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2">
+          {loading && <Loading />}
           {users.map((user, index) => (
             <div
               key={index}
               className="p-4 rounded-lg shadow-sm border border-border flex justify-between items-start text-right bg-card"
             >
               {/* User Info Section */}
-              <div className="flex items-start">
-                <div className="overflow-hidden rounded-full bg-primary/10 w-[50px] h-[50px]">
+              <div className="flex items-start overflow-x-auto">
+                <div className="rounded-full bg-primary/10 w-[50px] h-[50px]">
                   <img
                     src={img}
                     alt="User"
@@ -143,7 +118,7 @@ export default function UsersSettings() {
               </div>
 
               {/* Dropdown Menu Section */}
-              <DropdownMenu dir="rtl">
+              <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"

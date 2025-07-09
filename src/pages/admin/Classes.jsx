@@ -23,12 +23,6 @@ export default function Classes() {
     const response = await api.get("/classes");
     return response.data;
   };
-
-  const fetchTeachers = async () => {
-    const response = await api.get("/users/teachers");
-    return response.data;
-  };
-
   // useFetch Hooks
   const { data: tabs } = useFetch(fetchTabs);
 
@@ -38,7 +32,6 @@ export default function Classes() {
     loading: classesLoading,
   } = useFetch(fetchClasses);
 
-  const { data: teachers } = useFetch(fetchTeachers);
 
   // Local state
   const [activeTab, setActiveTab] = useState(null);
@@ -129,7 +122,6 @@ export default function Classes() {
               <ClassesModal
                 onAddClass={handleAddClass}
                 categories={tabs}
-                teachers={teachers}
               />
             </div>
 
@@ -137,7 +129,6 @@ export default function Classes() {
               classes={filteredClasses}
               loading={classesLoading}
               categories={tabs}
-              teachers={teachers}
               onUpdateClass={handleUpdateClass}
             />
           </Tabs>

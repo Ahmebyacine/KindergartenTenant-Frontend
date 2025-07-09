@@ -23,9 +23,6 @@ export default function ClassesTable({ classes, loading }) {
               اسم الفصل
             </TableHead>
             <TableHead className="text-muted-foreground font-medium">
-              المعلمة
-            </TableHead>
-            <TableHead className="text-muted-foreground font-medium">
               عدد الطلاب
             </TableHead>
             <TableHead className="text-muted-foreground font-medium">
@@ -48,9 +45,6 @@ export default function ClassesTable({ classes, loading }) {
                   {classItem.className}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {classItem?.teacher?.name}
-                </TableCell>
-                <TableCell className="text-foreground py-3">
                   {classItem.studentCount}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
@@ -62,7 +56,7 @@ export default function ClassesTable({ classes, loading }) {
             // No data message
             <TableRow>
               <TableCell
-                colSpan={6} // Changed from 8 to 6 to match the number of TableHead columns
+                colSpan={6}
                 className="text-center py-12 text-muted-foreground"
               >
                 <div className="flex flex-col items-center justify-center gap-2">

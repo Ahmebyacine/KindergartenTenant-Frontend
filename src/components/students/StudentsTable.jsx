@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ProfileDelete, Trash } from "iconsax-react";
 import { formatDate } from "@/utils/dateFormatter";
-import i18n from "@/i18n";
 import LoadingTable from "@/components/LoadingTable";
 import { useState } from "react";
 import { X } from "lucide-react";
@@ -79,9 +78,8 @@ export default function StudentsTable({ loading, students, classes, onUpdateStud
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50 border-b border-border hover:bg-muted/50">
-                <TableHead className="text-muted-foreground font-medium h-12">
+                <TableHead className="text-muted-foreground font-medium h-12 !text-center">
                   <Checkbox
-                    className="mr-4"
                     checked={
                       classGroup.enrollments.length > 0 &&
                       classGroup.enrollments.every((e) =>
@@ -136,9 +134,8 @@ export default function StudentsTable({ loading, students, classes, onUpdateStud
                     rowSelection.includes(enrollment._id) && "selected"
                   }
                 >
-                  <TableCell className="text-foreground py-3">
+                  <TableCell className="text-foreground py-3 !text-center">
                     <Checkbox
-                      className="mr-4"
                       checked={rowSelection.includes(enrollment._id)}
                       onCheckedChange={(checked) => {
                         setRowSelection((prev) => {
@@ -174,7 +171,7 @@ export default function StudentsTable({ loading, students, classes, onUpdateStud
                     {enrollment.student.parents?.contact}
                   </TableCell>
                   <TableCell className="text-foreground py-3">
-                    {formatDate(enrollment.createdAt, i18n.language)}
+                    {formatDate(enrollment.createdAt)}
                   </TableCell>
                   <TableCell className="py-3">
                     <StudentDetails enrollment={enrollment} classes={classes} onUpdateStudent={onUpdateStudent} />

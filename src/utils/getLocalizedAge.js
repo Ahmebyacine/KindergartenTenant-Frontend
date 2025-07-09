@@ -1,4 +1,7 @@
-export function getLocalizedAge(isoDate, lang) {
+import i18n from "@/i18n";
+
+export function getLocalizedAge(isoDate) {
+  const lang = i18n.language;
   const birthDate = new Date(isoDate);
   const today = new Date();
 
@@ -27,7 +30,8 @@ export function getLocalizedAge(isoDate, lang) {
 
   return translations[lang];
 }
-export function getAge(birthDay, date, lang) {
+export function getAge(birthDay, date) {
+  const lang = i18n.language;
   const birthDate = new Date(birthDay);
   const today = new Date(date);
 

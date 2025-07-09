@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { User, Mail, Phone } from "lucide-react";
+import { User, Mail, Phone, Group } from "lucide-react";
 import {
   Dialog,
   DialogClose,
@@ -30,6 +30,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { generateRandomPassword } from "@/utils/generateRandomPassword";
+import { useEffect } from "react";
 
 // Define the form schema with validation
 const userSchema = z.object({
@@ -41,7 +42,13 @@ const userSchema = z.object({
   }),
 });
 
-export default function UserModal({ onAddUser }) {
+export default function UserModal({
+  editingUser = null,
+  onAddUser,
+  onUpdateUser,
+  open = false,
+  setOpen,
+}) {
   // Initialize the form
   const form = useForm({
     resolver: zodResolver(userSchema),
@@ -53,134 +60,166 @@ export default function UserModal({ onAddUser }) {
     },
   });
 
+  useEffect(() => {
+    if (editingUser) {
+      form.reset({
+        name: editingUser?.name || "",
+        email: editingUser?.email || "",
+        phone: editingUser?.phone || "",
+        role: editingUser?.role || "teacher",
+      });
+    }
+  }, [editingUser, form]);
+
   const onSubmit = (data) => {
     const userData = {
       ...data,
-      password: generateRandomPassword(12),
+      ...(editingUser ? {} : { password: generateRandomPassword(12) }),
     };
 
-    onAddUser(userData);
+    if (editingUser) {
+      onUpdateUser({ ...editingUser, ...userData });
+    } else {
+      onAddUser(userData);
+    }
+
     form.reset();
+    setOpen(false);
+  };
+
+  const handleOpenDialog = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setOpen(true);
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-6 py-2 flex items-center gap-2">
-          <Add size="20" color="currentColor" />
-          إنشاء حساب جديد
+    <Dialog open={open} onOpenChange={setOpen}>
+      {editingUser ? (
+        <Button
+          onClick={handleOpenDialog}
+          className="w-full justify-start text-foreground hover:text-destructive border-b border-border"
+          variant="ghost"
+        >
+          تعديل الحساب
         </Button>
-      </DialogTrigger>
-      <DialogContent className="max-w-md bg-card border-border p-0">
-        <div className="p-6">
-          {/* Header */}
-          <DialogHeader className="border-b-2 pb-4">
-            <div className="flex justify-center">
-              <DialogTitle className="text-lg sm:text-xl font-semibold text-foreground">
-                إنشاء حساب جديد
-              </DialogTitle>
-            </div>
-          </DialogHeader>
+      ) : (
+        <DialogTrigger asChild>
+          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-6 py-2 flex items-center gap-2">
+            <Add size="20" color="currentColor" />
+            إنشاء حساب جديد
+          </Button>
+        </DialogTrigger>
+      )}
 
-          {/* Form */}
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              {/* Full Name */}
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem className="space-y-2">
-                    <FormLabel className="text-sm font-medium flex items-center gap-2">
-                      <User className="h-4 w-4 text-muted-foreground" />
-                      الاسم الكامل
-                      <span className="text-destructive">*</span>
-                    </FormLabel>
+      <DialogContent className="max-w-md bg-card border-border">
+        {/* Header */}
+        <DialogHeader className="border-b-2">
+          <DialogTitle className="text-lg mb-2 sm:text-xl rtl:text-right font-semibold text-foreground">
+            {editingUser ? "تعديل حساب المستخدم" : "إنشاء حساب جديد"}
+          </DialogTitle>
+        </DialogHeader>
+
+        {/* Form */}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {/* Full Name */}
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem className="space-y-2">
+                  <FormLabel className="text-sm font-medium flex items-center gap-2">
+                    <User className="h-4 w-4 text-muted-foreground" />
+                    الاسم الكامل
+                    <span className="text-destructive">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className="text-right border-border focus:border-primary focus:ring-primary"
+                      placeholder="أحمد محمد"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Email */}
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className="space-y-2">
+                  <FormLabel className="text-sm font-medium flex items-center gap-2">
+                    <Mail className="h-4 w-4 text-muted-foreground" />
+                    البريد الإلكتروني
+                    <span className="text-destructive">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="email"
+                      className="text-right border-border focus:border-primary focus:ring-primary"
+                      placeholder="ahmed@example.com"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* Phone */}
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem className="space-y-2">
+                  <FormLabel className="text-sm font-medium flex items-center gap-2">
+                    <Phone className="h-4 w-4 text-muted-foreground" />
+                    رقم الهاتف
+                    <span className="text-destructive">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="tel"
+                      className="text-right border-border focus:border-primary focus:ring-primary"
+                      placeholder="+1234567890"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Role */}
+            <FormField
+              control={form.control}
+              name="role"
+              render={({ field }) => (
+                <FormItem className="space-y-2">
+                  <FormLabel className="text-sm font-medium flex items-center gap-2">
+                    الدور
+                    <span className="text-destructive">*</span>
+                  </FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
-                      <Input
-                        {...field}
-                        className="text-right border-border focus:border-primary focus:ring-primary"
-                        placeholder="أحمد محمد"
-                      />
+                      <SelectTrigger className="text-right border-border focus:border-primary focus:ring-primary">
+                        <SelectValue placeholder="اختر الدور" />
+                      </SelectTrigger>
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                    <SelectContent>
+                      <SelectItem value="teacher">معلم</SelectItem>
+                      <SelectItem value="supervisor">مراقب</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              {/* Email */}
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem className="space-y-2">
-                    <FormLabel className="text-sm font-medium flex items-center gap-2">
-                      <Mail className="h-4 w-4 text-muted-foreground" />
-                      البريد الإلكتروني
-                      <span className="text-destructive">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="email"
-                        className="text-right border-border focus:border-primary focus:ring-primary"
-                        placeholder="ahmed@example.com"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-                {/* Phone */}
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem className="space-y-2">
-                    <FormLabel className="text-sm font-medium flex items-center gap-2">
-                      <Phone className="h-4 w-4 text-muted-foreground" />
-                      رقم الهاتف
-                      <span className="text-destructive">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="tel"
-                        className="text-right border-border focus:border-primary focus:ring-primary"
-                        placeholder="+1234567890"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Role */}
-              <FormField
-                control={form.control}
-                name="role"
-                render={({ field }) => (
-                  <FormItem className="space-y-2">
-                    <FormLabel className="text-sm font-medium flex items-center gap-2">
-                      الدور
-                      <span className="text-destructive">*</span>
-                    </FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="text-right border-border focus:border-primary focus:ring-primary">
-                          <SelectValue placeholder="اختر الدور" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="teacher">معلم</SelectItem>
-                        <SelectItem value="supervisor">مراقب</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
+            {!editingUser && (
               <div>
                 <div className="text-base font-medium text-muted-foreground">
                   معلومات الدخول
@@ -191,30 +230,31 @@ export default function UserModal({ onAddUser }) {
                   </div>
                 </div>
               </div>
+            )}
 
-              {/* Buttons */}
-              <DialogFooter>
-                <div className="flex flex-col sm:flex-row w-full gap-3 pt-4">
+            {/* Buttons */}
+            <DialogFooter>
+              <div className="flex md:w-1/2 w-full gap-3">
+                <Button
+                  type="submit"
+                  disabled={editingUser && !form.formState.isDirty}
+                  className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
+                >
+                  {editingUser ? "تحديث" : "حفظ"}
+                </Button>
+                <DialogClose asChild>
                   <Button
-                    type="submit"
-                    className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
+                    variant="outline"
+                    className="flex-1 border-border text-muted-foreground hover:bg-background"
+                    onClick={() => form.reset()}
                   >
-                    حفظ
+                    إلغاء
                   </Button>
-                  <DialogClose asChild>
-                    <Button
-                      variant="outline"
-                      className="flex-1 border-border text-muted-foreground hover:bg-background"
-                      onClick={() => form.reset()}
-                    >
-                      إلغاء
-                    </Button>
-                  </DialogClose>
-                </div>
-              </DialogFooter>
-            </form>
-          </Form>
-        </div>
+                </DialogClose>
+              </div>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

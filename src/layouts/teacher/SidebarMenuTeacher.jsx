@@ -37,7 +37,7 @@ export default function SidebarMenuTeacher() {
     },
     {
       title: "الاعدادات",
-      url: "/teacher-settings",
+      url: "/settings-user",
       icon: Setting2,
     },
   ];

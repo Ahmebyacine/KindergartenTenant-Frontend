@@ -43,7 +43,7 @@ export default function SidebarMenuSupervisor() {
     },
     {
       title: "الاعدادات",
-      url: "/supervisor-settings",
+      url: "/settings-user",
       icon: Setting2,
     },
   ];

@@ -1,6 +1,5 @@
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import i18n from "@/i18n";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import React from "react";
 
@@ -40,13 +39,13 @@ export default function FinancialJournalTable({ data }) {
                   {row.year}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatCurrencyDZD(row.income,i18n.language)}
+                  {formatCurrencyDZD(row.income)}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatCurrencyDZD(row.expenses,i18n.language)}
+                  {formatCurrencyDZD(row.expenses)}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatCurrencyDZD(row.surplus,i18n.language)}
+                  {formatCurrencyDZD(row.surplus)}
                 </TableCell>
                 <TableCell className="py-3">{row.profitRate}</TableCell>
               </TableRow>

@@ -10,7 +10,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import StudentCard from "./StudentCardModal";
-import i18n from "@/i18n";
 import { formatDate } from "@/utils/dateFormatter";
 import { getAge } from "@/utils/getLocalizedAge";
 import StudentsModal from "./StudentsModal";
@@ -60,7 +59,7 @@ export default function StudentDetails({ enrollment, classes, onUpdateStudent })
                     تاريخ الميلاد
                   </div>
                   <div className="text-sm text-muted-foreground">
-                    {formatDate(enrollment.student.birthDate, i18n.language)}
+                    {formatDate(enrollment.student.birthDate)}
                   </div>
                 </div>
                 <div className="flex items-center">
@@ -68,8 +67,7 @@ export default function StudentDetails({ enrollment, classes, onUpdateStudent })
                   <div className="text-sm text-muted-foreground">
                     {getAge(
                       enrollment.student.birthDate,
-                      enrollment.createdAt,
-                      i18n.language
+                      enrollment.createdAt
                     )}
                   </div>
                 </div>

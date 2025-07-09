@@ -3,7 +3,6 @@ import { Shield, AlertTriangle, ArrowLeft, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
 export default function Unauthorized({
   title = "وصول غير مصرح به",
@@ -11,9 +10,8 @@ export default function Unauthorized({
   showHomeButton = true,
   showBackButton = true
 }) {
-  const { i18n } = useTranslation();
   return (
-    <div className="flex items-center justify-center min-h-[80vh]" dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}>
+    <div className="flex items-center justify-center min-h-[80vh]">
       <Card className="max-w-md w-full">
         <CardHeader className="space-y-1 flex flex-col items-center text-center pb-2">
           <div className="w-12 h-12 rounded-full bg-destructive/10 flex items-center justify-center mb-2">

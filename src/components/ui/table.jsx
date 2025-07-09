@@ -3,7 +3,6 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
-import { useTranslation } from "react-i18next";
 
 function Table({
   className,
@@ -74,12 +73,11 @@ function TableHead({
   className,
   ...props
 }) {
-  const { i18n } = useTranslation()
   return (
     <th
       data-slot="table-head"
       className={cn(
-        `text-foreground h-10 px-2 ${ i18n.language === "ar" ? "text-right" : "text-left" } align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]`,
+        `text-foreground h-10 px-2 rtl:text-right ltr:text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]`,
        
         className
       )}
@@ -91,12 +89,11 @@ function TableCell({
   className,
   ...props
 }) {
-  const { i18n } = useTranslation()
   return (
     <td
       data-slot="table-cell"
       className={cn(
-        `p-2 align-middle ${ i18n.language === "ar" ? "text-right" : "text-left" } whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]`,
+        `p-2 align-middle rtl:text-right ltr:text-left whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]`,
         className
       )}
       {...props} />

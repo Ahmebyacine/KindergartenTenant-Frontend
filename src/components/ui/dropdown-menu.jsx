@@ -3,12 +3,11 @@ import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { useTranslation } from "react-i18next"
+import i18n from "@/i18n";
 
 function DropdownMenu({
   ...props
 }) {
- const { i18n } = useTranslation();
   return <DropdownMenuPrimitive.Root 
   data-slot="dropdown-menu"
   dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}

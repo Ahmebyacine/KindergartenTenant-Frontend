@@ -63,12 +63,9 @@ export default function Signin() {
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center bg-background px-4 py-12"
-      dir="rtl"
-    >
+    <div className="flex items-center justify-center bg-background px-4 py-12">
       <div className="w-full max-w-md">
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-center my-8">
           <div className="flex items-center gap-2 text-primary">
             <Calendar className="h-8 w-8" />
             <span className="text-2xl font-bold">Rawdati Platform</span>
@@ -147,13 +144,13 @@ export default function Signin() {
 
                 <Button
                   type="submit"
-                  className="w-full text-card-foreground"
+                  className="w-full"
                   disabled={isLoading}
                   aria-disabled={isLoading}
                 >
                   {isLoading ? (
                     <>
-                      <Loader2 className="ml-2 h-4 w-4 animate-spin text-foreground" />
+                      <Loader2 className="ml-2 h-4 w-4 animate-spin" />
                       جاري التسجيل...
                     </>
                   ) : (

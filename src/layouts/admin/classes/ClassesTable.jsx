@@ -15,21 +15,17 @@ export default function ClassesTable({
   classes,
   loading,
   categories,
-  teachers,
   onUpdateClass,
 }) {
   return (
     <Table>
       <TableHeader>
         <TableRow className="bg-muted/50 border-b border-border hover:bg-muted/50">
-          <TableHead className="text-muted-foreground font-medium h-12">
+          <TableHead className="text-muted-foreground font-medium h-12 !text-center">
             #
           </TableHead>
           <TableHead className="text-muted-foreground font-medium">
             اسم الفصل
-          </TableHead>
-          <TableHead className="text-muted-foreground font-medium">
-            المعلمة
           </TableHead>
           <TableHead className="text-muted-foreground font-medium">
             عدد الطلاب
@@ -52,12 +48,9 @@ export default function ClassesTable({
               key={classItem._id}
               className="border-b border-border hover:bg-muted/50"
             >
-              <TableCell className="text-foreground py-3">{i + 1}</TableCell>
+              <TableCell className="text-foreground py-3 !text-center">{i + 1}</TableCell>
               <TableCell className="text-foreground font-medium py-3">
                 {classItem.className}
-              </TableCell>
-              <TableCell className="text-foreground py-3">
-                {classItem?.teacher?.name || "معلمة غير معروفة"}
               </TableCell>
               <TableCell className="text-foreground py-3">
                 {classItem.studentCount}
@@ -72,7 +65,6 @@ export default function ClassesTable({
                 <ClassesModal
                   editingClass={classItem}
                   categories={categories}
-                  teachers={teachers}
                   onUpdateClass={onUpdateClass}
                 />
               </TableCell>

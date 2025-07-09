@@ -15,7 +15,6 @@ import ReportsFinancialModal from "../../../components/reports/ReportsFinancialM
 import { toast } from "sonner";
 import api from "@/services/api";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
-import i18n from "@/i18n";
 import { formatDateMonth } from "@/utils/dateFormatter";
 import LoadingTable from "@/components/LoadingTable";
 import ReportsFilter from "@/components/reports/ReportsFilter";
@@ -112,10 +111,10 @@ export default function ReportsFinancialTable({ classes, students }) {
                   {report.class?.className}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatDateMonth(report.month, i18n.language)}
+                  {formatDateMonth(report.month)}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatCurrencyDZD(report.amount, i18n.language)}
+                  {formatCurrencyDZD(report.amount)}
                 </TableCell>
                 <TableCell className="py-3">
                   {getStatusPayBadge(report.status)}

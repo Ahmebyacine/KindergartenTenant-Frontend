@@ -9,7 +9,6 @@ import {
 import { MoneySend } from "iconsax-react";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import LoadingTable from "@/components/LoadingTable";
-import i18n from "@/i18n";
 import { formatDateTime } from "@/utils/dateFormatter";
 import ExpensesModal from "./ExpensesModal";
 
@@ -48,12 +47,12 @@ export default function ExpensesTable({ expenses, loading, handleUpdateExpenses 
               <TableCell className="text-foreground font-medium py-3">
                 {row.description}
               </TableCell>
-              <TableCell className="text-foreground py-3">{formatDateTime(row.createdAt,i18n.language)}</TableCell>
+              <TableCell className="text-foreground py-3">{formatDateTime(row.createdAt)}</TableCell>
               <TableCell className="text-foreground py-3">
                 {row.category}
               </TableCell>
               <TableCell className="text-foreground py-3">
-                {formatCurrencyDZD(row.amount,i18n.language)}
+                {formatCurrencyDZD(row.amount)}
               </TableCell>
               <TableCell className="py-3">{row?.approvedBy?.name}</TableCell>
               <TableCell className="py-3">

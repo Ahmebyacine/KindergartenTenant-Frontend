@@ -7,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import i18n from "@/i18n";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import React from "react";
 
@@ -60,7 +59,7 @@ export default function EmployeeJournalTable({ data }) {
                   {row.operations}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatCurrencyDZD(row.amount, i18n.language)}
+                  {formatCurrencyDZD(row.amount)}
                 </TableCell>
                 <TableCell className="py-3">{row.notes}</TableCell>
               </TableRow>

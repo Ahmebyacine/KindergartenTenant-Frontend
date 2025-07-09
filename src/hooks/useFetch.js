@@ -16,7 +16,7 @@ const useFetch =(fetchFunction, autoFetch = true) => {
       setError(
         err ? err : new Error("An unknown error occurred")
       );
-      console.log(err)
+      console.error(err)
     } finally {
       setLoading(false);
     }

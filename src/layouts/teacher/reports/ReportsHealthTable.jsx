@@ -14,32 +14,19 @@ import { Link } from "react-router-dom";
 import ReportsHealthModal from "@/components/reports/ReportsHealthModal";
 import api from "@/services/api";
 import { toast } from "sonner";
-import { useState } from "react";
-import { useEffect } from "react";
 import { formatDateTime } from "@/utils/dateFormatter";
-import i18n from "@/i18n";
 import LoadingTable from "@/components/LoadingTable";
 import ReportsFilter from "@/components/reports/ReportsFilter";
+import useFetch from "@/hooks/useFetch";
 
 export default function ReportsHealthTable({ classes, students }) {
-  const [reports, setReports] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const fetchReport = async () => {
-    try {
-      const response = await api.get("/health-reports");
-      setReports(response.data);
-      console.log(response.data);
-    } catch (error) {
-      console.error("Failed to fetch students:", error);
-    } finally {
-      setLoading(false);
-    }
+    const response = await api.get("/health-reports");
+    return response.data;
   };
 
-  useEffect(() => {
-    fetchReport();
-  }, []);
+  const { data: reports, loading } = useFetch(fetchReport);
 
   const handelAddReport = async (data) => {
     try {
@@ -126,7 +113,7 @@ export default function ReportsHealthTable({ classes, students }) {
                   {row.class?.className}
                 </TableCell>
                 <TableCell className="text-right text-foreground py-3">
-                  {formatDateTime(row.createdAt, i18n.language)}
+                  {formatDateTime(row.createdAt)}
                 </TableCell>
                 <TableCell className="text-right py-3">
                   {getAssessmentBadge(row.conditionAssessment)}

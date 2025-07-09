@@ -32,7 +32,6 @@ import { useEffect } from "react";
 
 const classSchema = z.object({
   className: z.string().min(1, "مطلوب"),
-  teacher: z.string(),
   category: z.string().min(1, "مطلوب"),
   capacity: z.number().min(1, "الحد الأدنى للقدرة هو 1"),
 });
@@ -41,27 +40,24 @@ export default function ClassesModal({
   onAddClass,
   onUpdateClass,
   categories,
-  teachers,
   editingClass = null,
 }) {
   const form = useForm({
     resolver: zodResolver(classSchema),
     defaultValues: {
       className: editingClass?.className || "",
-      teacher: editingClass?.teacher?._id || "",
-      category: editingClass?.category?._id|| "",
+      category: editingClass?.category?._id || "",
       capacity: editingClass?.capacity || 20,
     },
   });
-  
+
   useEffect(() => {
-  form.reset({
-    className: editingClass?.className || "",
-    teacher: editingClass?.teacher?._id || "",
-    category: editingClass?.category?._id || "",
-    capacity: editingClass?.capacity || 20,
-  });
-}, [editingClass, form]);
+    form.reset({
+      className: editingClass?.className || "",
+      category: editingClass?.category?._id || "",
+      capacity: editingClass?.capacity || 20,
+    });
+  }, [editingClass, form]);
 
   const onSubmit = async (data) => {
     if (editingClass) {
@@ -113,7 +109,7 @@ export default function ClassesModal({
                   render={({ field }) => (
                     <FormItem className="space-y-1">
                       <FormLabel className="text-muted-foreground">
-                         اسم الفصل *
+                        اسم الفصل *
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -122,37 +118,6 @@ export default function ClassesModal({
                           placeholder="أدخل اسم الفصل"
                         />
                       </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Teacher */}
-                <FormField
-                  control={form.control}
-                  name="teacher"
-                  render={({ field }) => (
-                    <FormItem className="space-y-1">
-                      <FormLabel className="text-muted-foreground">
-                        المعلمة
-                      </FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="text-right">
-                            <SelectValue placeholder="اختر المعلمة" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {teachers?.map((teacher)=>(
-                            <SelectItem key={teacher._id} value={teacher._id}>
-                              {teacher.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}

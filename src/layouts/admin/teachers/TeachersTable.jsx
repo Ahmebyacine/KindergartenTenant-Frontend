@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/table";
 import { UserRemove } from "iconsax-react";
 import { formatDate } from "@/utils/dateFormatter";
-import i18next from "i18next";
 import LoadingTable from "@/components/LoadingTable";
 import TeachersModal from "./TeachersModal";
 
@@ -18,25 +17,25 @@ export default function TeachersTable({ loading, teachers, classes, onUpdateTeac
       <Table>
         <TableHeader>
           <TableRow className="bg-muted/50 border-b border-border hover:bg-muted/50">
-            <TableHead className="text-right text-muted-foreground font-medium h-12">
+            <TableHead className="text-muted-foreground font-medium h-12 !text-center">
               #
             </TableHead>
-            <TableHead className="text-right text-muted-foreground font-medium">
+            <TableHead className="text-muted-foreground font-medium">
               اسم المعلمة
             </TableHead>
-            <TableHead className="text-right text-muted-foreground font-medium">
+            <TableHead className="text-muted-foreground font-medium">
               القسم
             </TableHead>
-            <TableHead className="text-right text-muted-foreground font-medium">
+            <TableHead className="text-muted-foreground font-medium">
               رقم الهاتف
             </TableHead>
-            <TableHead className="text-right text-muted-foreground font-medium">
+            <TableHead className="text-muted-foreground font-medium">
               البريد الالكتروني
             </TableHead>
-            <TableHead className="text-right text-muted-foreground font-medium">
+            <TableHead className="text-muted-foreground font-medium">
               تاريخ التعيين
             </TableHead>
-            <TableHead className="text-right text-muted-foreground font-medium">
+            <TableHead className="text-muted-foreground font-medium">
               الإجراءات
             </TableHead>
           </TableRow>
@@ -50,7 +49,7 @@ export default function TeachersTable({ loading, teachers, classes, onUpdateTeac
                 key={teacher._id}
                 className="border-b border-border hover:bg-muted/50"
               >
-                <TableCell className="text-foreground py-3">{i + 1}</TableCell>
+                <TableCell className="text-foreground py-3 !text-center">{i + 1}</TableCell>
                 <TableCell className="text-foreground font-medium py-3">
                   {teacher.name}
                 </TableCell>
@@ -64,7 +63,7 @@ export default function TeachersTable({ loading, teachers, classes, onUpdateTeac
                   {teacher.email}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatDate(teacher.createdAt, i18next.language)}
+                  {formatDate(teacher.createdAt)}
                 </TableCell>
                 <TableCell className="py-3">
                   <TeachersModal editingTeacher={teacher} classes={classes} onUpdateTeacher={onUpdateTeacher} />

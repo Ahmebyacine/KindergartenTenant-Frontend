@@ -15,7 +15,6 @@ import ReportsHealthModal from "../../../components/reports/ReportsHealthModal";
 import api from "@/services/api";
 import { toast } from "sonner";
 import { formatDateTime } from "@/utils/dateFormatter";
-import i18n from "@/i18n";
 import LoadingTable from "@/components/LoadingTable";
 import ReportsFilter from "@/components/reports/ReportsFilter";
 import useFetch from "@/hooks/useFetch";
@@ -112,7 +111,7 @@ export default function ReportsHealthTable({ classes, students }) {
                   {row.class?.className}
                 </TableCell>
                 <TableCell className="text-right text-foreground py-3">
-                  {formatDateTime(row.createdAt, i18n.language)}
+                  {formatDateTime(row.createdAt)}
                 </TableCell>
                 <TableCell className="text-right py-3">
                   {getAssessmentBadge(row.conditionAssessment)}

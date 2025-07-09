@@ -10,7 +10,6 @@ import { Input } from "@/components/ui/input";
 import { SearchNormal1, Document } from "iconsax-react";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import IncomesFilter from "./IncomesFilter";
-import i18n from "@/i18n";
 
 export default function IncomesTable({ incomes }) {
   return (
@@ -73,10 +72,10 @@ export default function IncomesTable({ incomes }) {
                   {row.invoiceCount}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatCurrencyDZD(row.totalAmount, i18n.language)}
+                  {formatCurrencyDZD(row.totalAmount)}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatCurrencyDZD(row.averageInvoice, i18n.language)}
+                  {formatCurrencyDZD(row.averageInvoice)}
                 </TableCell>
                 <TableCell className="py-3">{row.collectionRate}</TableCell>
                 <TableCell className="py-3">{row.monthlyComparison}</TableCell>

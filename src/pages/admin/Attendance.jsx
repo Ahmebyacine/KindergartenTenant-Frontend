@@ -36,7 +36,6 @@ import img from "@/assets/images/attendanceillu.png";
 import AttendanceTable from "@/layouts/admin/attendance/AttendanceTable";
 import api from "@/services/api";
 import { formatDate } from "@/utils/dateFormatter";
-import i18n from "@/i18n";
 import {
   Carousel,
   CarouselContent,
@@ -146,7 +145,7 @@ export default function Attendance() {
                     id="date-picker"
                     className="w-32 justify-between font-normal"
                   >
-                    {date ? formatDate(date, i18n.language) : "Select date"}
+                    {date ? formatDate(date) : "Select date"}
                     <CalendarSearch color="currentColor" />
                   </Button>
                 </PopoverTrigger>

@@ -3,17 +3,15 @@ import BarChartDashboard from "@/layouts/admin/dashboard/BarChartDashboard";
 import RecentReportsTable from "@/components/dashboard/RecentReportsTable";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import StatCard from "@/components/StatCard";
 import LineChartAttendnce from "@/components/dashboard/LineChartAttendnce";
 
 export default function Dashboard() {
-  const { i18n } = useTranslation();
 
   const stats = [
     {
       title: "إجمالي الدخل الشهري",
-      value: formatCurrencyDZD(12500, i18n.language),
+      value: formatCurrencyDZD(12500),
       icon: Coin,
       iconColor:"#00C951",
       bgColor: "bg-[#B9F8CF]",
@@ -21,7 +19,7 @@ export default function Dashboard() {
     },
     {
       title: "إجمالي المدفوعات",
-      value: formatCurrencyDZD(8300000, i18n.language),
+      value: formatCurrencyDZD(8300000),
       icon: Money2,
       iconColor:"#FB2C36",
       bgColor: "bg-[#FFC9C9]",

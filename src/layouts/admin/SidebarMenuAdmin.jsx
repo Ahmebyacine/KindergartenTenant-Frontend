@@ -23,7 +23,6 @@ import {
   Setting2,
 } from "iconsax-react";
 import { ChevronRight } from "lucide-react";
-import i18n from "@/i18n";
 
 export default function SidebarMenuAdmin() {
   const location = useLocation();
@@ -106,11 +105,11 @@ export default function SidebarMenuAdmin() {
               </div>
             </NavLink>
             <ChevronRight
-              className={`transition-transform duration-200 ${
-                i18n.language === "ar"
-                  ? "rotate-180 group-data-[state=open]/collapsible:-rotate-90"
-                  : "group-data-[state=open]/collapsible:rotate-90"
-              }`}
+              className={`transition-transform duration-200 
+                
+                  rtl:rotate-180 rtl:group-data-[state=open]/collapsible:rotate-90
+                  ltr:group-data-[state=open]/collapsible:rotate-90
+              `}
             />
           </CollapsibleTrigger>
         </SidebarGroupLabel>

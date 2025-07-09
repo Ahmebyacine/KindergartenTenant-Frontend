@@ -28,6 +28,7 @@ import DashboardTeacher from "./pages/teacher/DashboardTeacher";
 import StudentsTeacher from "./pages/teacher/StudentsTeacher";
 import AttendanceTeacher from "./pages/teacher/AttendanceTeacher";
 import ReportsTeacher from "./pages/teacher/ReportsTeacher";
+import SettingsUser from "./pages/supervisor/SettingsUser";
 
 const router = createHashRouter([
   {
@@ -124,6 +125,15 @@ const router = createHashRouter([
             path: "supervisor-attendance",
             element: <AttendanceSupervisor />,
           },
+        ],
+      },
+      {
+        element: <ProtectedRoute roles={["supervisor","teacher"]} />,
+        children: [
+          {
+            path: "settings-user",
+            element: <SettingsUser />,
+          }
         ],
       },
       {

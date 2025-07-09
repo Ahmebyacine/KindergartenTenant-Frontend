@@ -1,18 +1,16 @@
-import { Card, CardContent } from "@/components/ui/card";
 import { Archive, Chart2, Coin, Money2, People } from "iconsax-react";
 import RecentReportsTable from "@/components/dashboard/RecentReportsTable";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import { Link } from "react-router-dom";
 import BarChartRecivedMoney from "@/components/dashboard/BarChartRecivedMoney";
 import LineChartAttendnce from "@/components/dashboard/LineChartAttendnce";
-import i18n from "@/i18n";
 import StatCard from "@/components/StatCard";
 
 export default function DashboardSupervisor() {
   const stats = [
     {
       title: "إجمالي المبالغ المستلمة",
-      value: formatCurrencyDZD(12500, i18n.language),
+      value: formatCurrencyDZD(12500),
       icon: Coin,
       iconColor: "#00C951",
       bgColor: "bg-[#B9F8CF]",
