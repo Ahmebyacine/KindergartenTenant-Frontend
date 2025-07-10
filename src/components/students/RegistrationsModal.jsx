@@ -16,13 +16,45 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import { Calendar, SearchNormal1 } from "iconsax-react";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 
+const searchData = [
+  { id: 1, title: "React Components", category: "Development" },
+  { id: 2, title: "Next.js App Router", category: "Development" },
+  { id: 3, title: "Tailwind CSS", category: "Styling" },
+  { id: 4, title: "TypeScript Guide", category: "Development" },
+  { id: 5, title: "JavaScript Fundamentals", category: "Development" },
+  { id: 6, title: "CSS Grid Layout", category: "Styling" },
+  { id: 7, title: "Node.js Backend", category: "Backend" },
+  { id: 8, title: "Database Design", category: "Backend" },
+  { id: 9, title: "API Development", category: "Backend" },
+  { id: 10, title: "UI/UX Design", category: "Design" },
+  { id: 11, title: "Responsive Design", category: "Design" },
+  { id: 12, title: "Color Theory", category: "Design" },
+];
+
 export default function RegistrationsModal({ classes }) {
   const [selectedClass, setSelectedClass] = useState();
-  const [fullName, setFullName] = useState("");
+  const [searchValue, setSearchValue] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
+
+  const categories = ["Development", "Styling", "Backend", "Design"];
+
+  const handleSelect = (value) => {
+    setSearchValue(value);
+    setIsFocused(true);
+  };
+
   return (
     <div className="bg-background data-[state=open]:px-4 px-2 md:p-0 flex w-full items-center justify-center">
       <Dialog>
@@ -46,30 +78,49 @@ export default function RegistrationsModal({ classes }) {
 
           {/* Form */}
           <div className="p-6 space-y-6">
-            {/* Full Name Field with Search */}
-            <div className="space-y-2">
-              <Label
-                htmlFor="fullName"
-                className="text-muted-foreground text-sm font-medium"
-              >
-                الاسم الكامل
-              </Label>
-              <div className="relative">
-                <SearchNormal1
-                  size="16"
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
-                  color="currentColor"
-                />
-                <Input
-                  id="fullName"
-                  type="text"
-                  className="pr-10 pl-4 py-2 bg-background"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder="ابحث عن الاسم أو أدخل اسم جديد"
-                />
-              </div>
-            </div>
+            <Command shouldFilter={false}>
+              <CommandInput
+                placeholder="ابحث عن الاسم"
+                value={searchValue}
+                onValueChange={setSearchValue}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setTimeout(() => setIsFocused(false), 100)} // Delay to allow item click
+                className="flex w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
+              />
+
+              {isFocused && (
+                <CommandList className="max-h-30">
+                  <CommandEmpty>لا توجد نتائج لـ "{searchValue}"</CommandEmpty>
+
+                  {categories.map((category) => {
+                    const categoryItems = searchData.filter(
+                      (item) =>
+                        item.category === category &&
+                        item.title
+                          .toLowerCase()
+                          .includes(searchValue.toLowerCase())
+                    );
+
+                    if (categoryItems.length === 0) return null;
+
+                    return (
+                      <CommandGroup key={category} heading={category}>
+                        {categoryItems.map((item) => (
+                          <CommandItem
+                            key={item.id}
+                            value={item.title}
+                            onSelect={handleSelect}
+                            className="cursor-pointer"
+                          >
+                            <span>{item.title}</span>
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    );
+                  })}
+                </CommandList>
+              )}
+            </Command>
 
             {/* Class Selection Field with Search */}
             <div className="space-y-2">

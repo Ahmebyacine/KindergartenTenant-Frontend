@@ -22,7 +22,7 @@ export function GeneralSettings() {
     <div className="space-y-8">
       {/* Preferences Section */}
       <div>
-        <h2 className="text-2xl font-semibold mb-4 text-right">التفضيلات</h2>
+        <h2 className="text-l md:text-xl font-semibold mb-4 text-right">التفضيلات</h2>
       </div>
 
       {/* Appearance Section */}
@@ -105,7 +105,7 @@ export function GeneralSettings() {
 
       {/* Language and Time Section */}
       <div>
-        <h2 className="text-2xl font-semibold mb-4 text-right">اللغة والوقت</h2>
+        <h2 className="text-l md:text-xl font-semibold mb-4 text-right">اللغة والوقت</h2>
         <div className="border-t border-border mb-6"></div>
 
         <div className="space-y-6">
@@ -143,7 +143,7 @@ export function GeneralSettings() {
 
           <div className="flex justify-between items-center pt-4">
             <div className="flex flex-col items-end">
-              <h3 className="text-lg font-medium">
+              <h3 className="text-l font-medium">
                 تحديد المنطقة الزمنية تلقائيا باستخدام الموقع
               </h3>
               <p className="text-sm text-muted-foreground">
@@ -162,13 +162,13 @@ export function GeneralSettings() {
 
       {/* Kindergarten Information Section */}
       <div>
-        <h2 className="text-2xl font-semibold mb-4 text-right">
+        <h2 className="text-l md:text-xl font-semibold mb-4 text-right">
           معلومات الروضة
         </h2>
         <div className="border-t border-border mb-6"></div>
 
         <div className="space-y-6">
-          <h3 className="text-lg font-medium">اسم الروضة</h3>
+          <h3 className="md:text-lg font-medium">اسم الروضة</h3>
           <div className="flex justify-between items-center">
             <Input
               className="max-w-md border-border"
@@ -177,7 +177,7 @@ export function GeneralSettings() {
           </div>
 
           <div className="flex justify-between items-center pt-4">
-            <h3 className="text-lg font-medium">شعار الروضة</h3>
+            <h3 className="md:text-lg font-medium">شعار الروضة</h3>
             <div className="flex items-center gap-2">
               <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
                 رفع شعار الروضة

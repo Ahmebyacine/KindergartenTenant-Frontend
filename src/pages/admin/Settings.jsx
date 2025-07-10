@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GeneralSettings } from "@/layouts/admin/settings/GeneralSettings";
 import UsersSettings from "@/layouts/admin/settings/UsersSettings";
+import SecuritySettings from "@/components/settings/SecuritySettings";
 
 export default function Settings() {
   const [searchParams] = useSearchParams();
@@ -61,7 +62,9 @@ export default function Settings() {
             <TabsContent value="reports" className="space-y-4"></TabsContent>
             <TabsContent value="notifications" className="space-y-4"></TabsContent>
             <TabsContent value="payments" className="space-y-4"></TabsContent>
-            <TabsContent value="security" className="space-y-4"></TabsContent>
+            <TabsContent value="security" className="space-y-4">
+              <SecuritySettings />
+            </TabsContent>
           </Tabs>
         </div>
       </div>

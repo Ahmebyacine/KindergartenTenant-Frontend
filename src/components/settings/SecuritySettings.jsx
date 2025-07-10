@@ -15,7 +15,7 @@ export default function SecuritySettings() {
     <div className="p-4  max-w-xl">
       {/* Password Change Section */}
       <div className="mb-12">
-        <h2 className="text-2xl font-semibold mb-8">تغيير كلمة المرور</h2>
+        <h2 className="text-l md:text-xl font-semibold mb-8">تغيير كلمة المرور</h2>
 
         <div className="space-y-6">
           {/* Current Password */}
@@ -79,7 +79,7 @@ export default function SecuritySettings() {
           <div>
             <Label
               htmlFor="confirm-password"
-              className="text-[#111827] font-medium mb-2 block"
+              className="font-medium mb-2 block"
             >
               تأكيد كلمة المرور الجديدة *
             </Label>
@@ -120,7 +120,7 @@ export default function SecuritySettings() {
       {/* Two-Factor Authentication Section */}
       <div className="border-t border-border pt-8">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-semibold">التحقق بخطوتين</h3>
+          <h3 className="text-l md:text-xl font-semibold">التحقق بخطوتين</h3>
           <Switch
             checked={twoFactorEnabled}
             onCheckedChange={setTwoFactorEnabled}

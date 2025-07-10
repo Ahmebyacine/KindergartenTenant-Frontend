@@ -1,37 +1,68 @@
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Switch } from "@/components/ui/switch";
-import { Group } from "lucide-react";
-import { Edit2, More, SearchNormal1, Trash } from "iconsax-react";
-import img from "@/assets/images/avatar.png";
+import { SearchNormal1 } from "iconsax-react";
 import UserModal from "./UserModal";
 import api from "@/services/api";
 import { toast } from "sonner";
-import Loading from "@/pages/Loading";
 import UsersFilter from "./UsersFilter";
-import { getRoleTagColors } from "@/utils/getStatusBadges";
 import useFetch from "@/hooks/useFetch";
+import { useState } from "react";
+import UserCard from "./UserCars";
+import { generateRandomPassword } from "@/utils/generateRandomPassword";
 
 export default function UsersSettings() {
+  const [editingId, setEditingId] = useState(null);
+
   const fetchUsers = async () => {
     const response = await api.get("/users");
     return response.data;
   };
-  const { data: users, loading } = useFetch(fetchUsers);
+  const { data: users, setData: setUsers, loading } = useFetch(fetchUsers);
 
   const handleAddUser = async (userData) => {
     try {
-      await api.post("/users", userData);
+      const response = await api.post("/users", userData);
       toast.success("تم إضافة المستخدم بنجاح");
+      setUsers((prevData) => [...prevData, response.data]);
     } catch (error) {
       console.error("Error adding user:", error);
       toast.error("فشل في إضافة المستخدم. يرجى المحاولة مرة أخرى.");
+    }
+  };
+  const handleUpdateUser = async (userData) => {
+    try {
+      const response = await api.put(`/users/${userData._id}`, userData);
+      toast.success("تم تحديث المستخدم بنجاح");
+      setUsers((prevData) =>
+        prevData.map((user) =>
+          user._id === response.data._id ? response.data : user
+        )
+      );
+    } catch (error) {
+      console.error("Error adding user:", error);
+      toast.error("فشل في تحديث المستخدم. يرجى المحاولة مرة أخرى.");
+    }
+  };
+  const handleDeleteUser = async (userId) => {
+    try {
+      await api.delete(`/users/${userId}`);
+      setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
+      toast.success("تم حذف المستخدم بنجاح");
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      toast.error("فشل في حذف المستخدم. حاول مرة أخرى.");
+    }
+  };
+  const handleChangePassword = async (userId) => {
+    try {
+      await api.put(`/users/${userId}`, {
+        password: generateRandomPassword(12),
+      });
+
+      toast.success("تم تغيير كلمة المرور بنجاح");
+    } catch (error) {
+      console.error("Error changing password:", error);
+      toast.error("فشل في تغيير كلمة المرور. حاول مرة أخرى.");
     }
   };
 
@@ -85,100 +116,19 @@ export default function UsersSettings() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2">
-          {loading && <Loading />}
-          {users.map((user, index) => (
-            <div
-              key={index}
-              className="p-4 rounded-lg shadow-sm border border-border flex justify-between items-start text-right bg-card"
-            >
-              {/* User Info Section */}
-              <div className="flex items-start overflow-x-auto">
-                <div className="rounded-full bg-primary/10 w-[50px] h-[50px]">
-                  <img
-                    src={img}
-                    alt="User"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-                <div className="flex flex-col mr-3">
-                  <span className="text-sm font-medium text-foreground">
-                    {user.name}
-                  </span>
-                  <span className="text-xs text-muted-foreground">
-                    {user.email}
-                  </span>
-                  <span
-                    className={`px-3 py-1 max-w-[60px] rounded-full text-xs font-medium ${getRoleTagColors(
-                      user.role
-                    )}`}
-                  >
-                    {user.role}
-                  </span>
-                </div>
-              </div>
-
-              {/* Dropdown Menu Section */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="w-8 h-8 text-muted-foreground hover:bg-muted"
-                  >
-                    <More
-                      size={16}
-                      color="var(--muted-foreground)"
-                      className="rotate-90"
-                    />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="end"
-                  className="w-48 rounded-xl bg-popover border-border"
-                >
-                  <DropdownMenuItem>
-                    <Button
-                      className="w-full justify-start text-foreground hover:text-destructive border-b border-border"
-                      variant="ghost"
-                    >
-                      <Edit2
-                        size={10}
-                        variant="Outline"
-                        color="var(--foreground)"
-                      />
-                      <span>تغيير كلمة المرور</span>
-                    </Button>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Button
-                      className="w-full justify-start text-foreground hover:text-destructive border-b border-border"
-                      variant="ghost"
-                    >
-                      <Group
-                        size={10}
-                        variant="Outline"
-                        color="var(--foreground)"
-                      />
-                      <span>تعديل الحساب</span>
-                    </Button>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Button
-                      className="w-full justify-start text-destructive hover:text-destructive/80 border-b border-border"
-                      variant="ghost"
-                    >
-                      <Trash
-                        size={10}
-                        variant="Outline"
-                        color="var(--destructive)"
-                      />
-                      <span>حذف الحساب</span>
-                    </Button>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          ))}
+          {loading
+            ? Array.from({ length: 4 }).map((_, index) => (
+                <UserCard key={index} loading />
+              ))
+            : users.map((user) => (
+                <UserCard
+                  key={user._id}
+                  user={user}
+                  onEdit={(user) => setEditingId(user._id)}
+                  onDelete={(user) => handleDeleteUser(user._id)}
+                  onChangePassword={(user) => handleChangePassword(user._id)}
+                />
+              ))}
         </div>
       </section>
 
@@ -224,6 +174,14 @@ export default function UsersSettings() {
           ))}
         </div>
       </section>
+      {editingId && (
+        <UserModal
+          open={!!editingId}
+          onOpenChange={(open) => !open && setEditingId(null)}
+          onUpdateUser={handleUpdateUser}
+          editingUser={users.find((user) => user._id === editingId)}
+        />
+      )}
     </div>
   );
 }
