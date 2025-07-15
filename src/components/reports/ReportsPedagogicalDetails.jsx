@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Breadcrumb,
@@ -8,38 +7,26 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
-
-const DetailItem = ({ label, value }) => (
-  <div className="flex py-1">
-    <span className="text-muted-foreground font-cairo ml-5">{label}:</span>
-    {typeof value === "string" ? (
-      <span className="text-foreground mx-2 font-medium font-cairo">
-        {value}
-      </span>
-    ) : (
-      value
-    )}
-  </div>
-);
+import api from "@/services/api";
+import useFetch from "@/hooks/useFetch";
+import Loading from "@/pages/Loading";
+import DetailItem from "../DetailItem";
+import { formatDate } from "@/utils/dateFormatter";
+import { getOverallBadge } from "@/utils/getStatusBadges";
 
 export default function ReportsPedagogicalDetails() {
-  const reportDetails = {
-    reportId: "1",
-    childName: "ليان بدر",
-    teacher: "أ. نوال",
-    class: "روضة ب",
-    date: "20 مايو 2025",
-    notes:
-      "أظهرت الطفلة تحسنا في المهارات الحركية الدقيقة، تنصح بزيادة الأنشطة اليدوية.",
-    evaluations: {
-      languageAndCommunication: "ممتاز",
-      behavior: "هادي ومشارك",
-      skills: "تحسن",
-    },
-    overallRating: "ممتاز",
+  const { reportId } = useParams();
+
+  const fetchreportsDetails = async () => {
+    const response = await api.get(`/pedagogical-reports/${reportId}`);
+    return response.data;
   };
+
+  const { data: reportDetails, loading } = useFetch(fetchreportsDetails);
+
+  if (loading) return <Loading />;
 
   return (
     <div className="bg-background p-6 font-cairo">
@@ -102,51 +89,55 @@ export default function ReportsPedagogicalDetails() {
                 بيانات الطفل
               </h2>
               <div className="space-y-1">
-                <DetailItem label="اسم الطفل" value={reportDetails.childName} />
-                <DetailItem label="المعلمة" value={reportDetails.teacher} />
-                <DetailItem label="الفصل" value={reportDetails.class} />
-                <DetailItem label="التاريخ" value={reportDetails.date} />
+                <DetailItem
+                  label="اسم الطفل"
+                  value={`${reportDetails?.student?.firstName} ${reportDetails?.student?.lastName}`}
+                />
+                <DetailItem
+                  label="المعلمة"
+                  value={reportDetails?.teacher?.name}
+                />
+                <DetailItem
+                  label="الفصل"
+                  value={reportDetails.class?.className}
+                />
+                <DetailItem
+                  label="التاريخ"
+                  value={formatDate(reportDetails.createdAt)}
+                />
               </div>
             </div>
 
             {/* Condition Details */}
             <div>
               <h2 className="text-base font-semibold text-foreground mb-3 pb-3 border-b border-border font-cairo">
-                 التقييمات
+                التقييمات
               </h2>
               <div className="space-y-1">
                 <DetailItem
                   label="اللغة والتواصل"
-                  value={reportDetails.evaluations.languageAndCommunication}
+                  value={reportDetails?.languageAndCommunication}
                 />
-                <DetailItem
-                  label="السلوك"
-                  value={reportDetails.evaluations.behavior}
-                />
-                <DetailItem
-                  label="المهارات"
-                  value={reportDetails.evaluations.skills}
-                />
+                <DetailItem label="السلوك" value={reportDetails?.behavior} />
+                <DetailItem label="المهارات" value={reportDetails?.skills} />
                 <DetailItem
                   label="التقييم العام"
-                  value={
-                    <Badge className="bg-[#fef3c6] text-[#10a735] hover:bg-[#fef3c6] border-0 rounded-md px-3 py-1 font-cairo">
-                      {reportDetails.overallRating}
-                    </Badge>
-                  }
+                  value={getOverallBadge(reportDetails?.overall)}
                 />
               </div>
             </div>
 
             {/* Notes */}
-            <div>
-              <h2 className="text-base font-semibold text-foreground mb-3 pb-3 border-b border-border font-cairo">
-                ملاحظات
-              </h2>
-              <p className="text-foreground leading-relaxed font-cairo">
-                {reportDetails.notes}
-              </p>
-            </div>
+            {reportDetails.notes && (
+              <div>
+                <h2 className="text-base font-semibold text-foreground mb-3 pb-3 border-b border-border font-cairo">
+                  ملاحظات
+                </h2>
+                <p className="text-foreground leading-relaxed font-cairo">
+                  {reportDetails.notes}
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

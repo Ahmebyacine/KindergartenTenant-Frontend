@@ -26,12 +26,13 @@ export default function ReportsHealthTable({ classes, students }) {
     return response.data;
   };
 
-  const { data: reports, loading } = useFetch(fetchReport);
+  const { data: reports, setData: setReports, loading } = useFetch(fetchReport);
 
   const handelAddReport = async (data) => {
     try {
-      await api.post("/health-reports", data);
-      toast("تمت إضافة التقرير بنجاح!");
+      const response = await api.post("/health-reports", data);
+      setReports((prev) => [response.data, ...prev])
+      toast.success("تمت إضافة التقرير بنجاح!");
     } catch (error) {
       console.error("Error creating Report:", error);
     }
@@ -65,28 +66,28 @@ export default function ReportsHealthTable({ classes, students }) {
       <Table>
         <TableHeader>
           <TableRow className="bg-muted/50 border-b border-border hover:bg-muted/50">
-            <TableHead className="text-right text-foreground font-medium">
+            <TableHead className="text-foreground font-medium !text-center">
               #
             </TableHead>
-            <TableHead className="text-right text-foreground font-medium">
+            <TableHead className="text-foreground font-medium">
               اسم الطفل
             </TableHead>
-            <TableHead className="text-right text-foreground font-medium">
+            <TableHead className="text-foreground font-medium">
               اسم المعلمة
             </TableHead>
-            <TableHead className="text-right text-foreground font-medium">
+            <TableHead className="text-foreground font-medium">
               الفصل
             </TableHead>
-            <TableHead className="text-right text-foreground font-medium">
+            <TableHead className="text-foreground font-medium">
               التاريخ
             </TableHead>
-            <TableHead className="text-right text-foreground font-medium">
+            <TableHead className="text-foreground font-medium">
               تقييم الحالة
             </TableHead>
-            <TableHead className="text-right text-foreground font-medium">
+            <TableHead className="text-foreground font-medium">
               الحالة
             </TableHead>
-            <TableHead className="text-right text-foreground font-medium">
+            <TableHead className="text-foreground font-medium">
               الإجراءات
             </TableHead>
           </TableRow>
@@ -100,28 +101,28 @@ export default function ReportsHealthTable({ classes, students }) {
                 key={row._id}
                 className="border-b border-border hover:bg-muted/50"
               >
-                <TableCell className="text-right text-foreground py-3">
+                <TableCell className="text-foreground py-3 !text-center">
                   {index + 1}
                 </TableCell>
-                <TableCell className="text-right text-foreground font-medium py-3">
+                <TableCell className="text-foreground font-medium py-3">
                   {row.student?.firstName} {row.student?.lastName}
                 </TableCell>
-                <TableCell className="text-right text-foreground py-3">
+                <TableCell className="text-foreground py-3">
                   {row.generatedBy?.name}
                 </TableCell>
-                <TableCell className="text-right text-foreground py-3">
+                <TableCell className="text-foreground py-3">
                   {row.class?.className}
                 </TableCell>
-                <TableCell className="text-right text-foreground py-3">
+                <TableCell className="text-foreground py-3">
                   {formatDateTime(row.createdAt)}
                 </TableCell>
-                <TableCell className="text-right py-3">
+                <TableCell className="py-3">
                   {getAssessmentBadge(row.conditionAssessment)}
                 </TableCell>
-                <TableCell className="text-right py-3">
+                <TableCell className="py-3">
                   {row.conditionType}
                 </TableCell>
-                <TableCell className="text-right py-3">
+                <TableCell className="py-3">
                   <Button
                     variant="link"
                     className="text-primary hover:text-primary/80 p-0 h-auto underline"

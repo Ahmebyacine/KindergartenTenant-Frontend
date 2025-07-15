@@ -12,115 +12,29 @@ import FinancialJournalChart from "@/layouts/admin/financialPerformance/Financia
 import FinancialJournalTable from "@/layouts/admin/financialPerformance/FInancialJournalTable";
 import EmployeeJournalTable from "@/layouts/admin/financialPerformance/EmployeeJournalTable";
 import StatCard from "@/components/StatCard";
-
-const statsData = [
-  {
-    title: "إجمالي المداخيل",
-    value: formatCurrencyDZD(125000),
-    subLabel: "المبلغ المحصل خلال السنة الحالية",
-    icon: CardReceive,
-    bgColor: "bg-[#DCFCE7]",
-    iconColor: "#00A63E",
-  },
-  {
-    title: "إجمالي المصاريف",
-    value: formatCurrencyDZD(50000),
-    icon: CardSend,
-    bgColor: "bg-[#FFE2E2]",
-    iconColor: "#FB2C36",
-    subLabel: "جميع المصاريف المسجلة",
-  },
-  {
-    title: "صافي الربح",
-    value: "+" + formatCurrencyDZD(970000 - 50000),
-    icon: DollarSquare,
-    bgColor: "bg-[#FEF3C6]",
-    iconColor: "#D08700",
-    subLabel: "الفرق بين المداخيل والمصاريف",
-  },
-  {
-    title: "نسبة الربح",
-    value: "88%",
-    icon: Chart2,
-    bgColor: "bg-[#DBEAFE]",
-    iconColor: "#1447E6",
-    subLabel: "مقارنة بين الربح والمصاريف الإجمالية",
-  },
-];
+import api from "@/services/api";
+import { getMonthNameByNumber } from "@/utils/getMonthNameByNumber";
+import useFetch from "@/hooks/useFetch";
 
 export default function FinancialPerformance() {
-  const chartData = [
-    { month: "ديسمبر", المصاريف: 70000, المداخيل: 50000 },
-    { month: "نوفمبر", المصاريف: 25000, المداخيل: 55000 },
-    { month: "أكتوبر", المصاريف: 35000, المداخيل: 40000 },
-    { month: "سبتمبر", المصاريف: 30000, المداخيل: 85000 },
-    { month: "أغسطس", المصاريف: 40000, المداخيل: 20000 },
-    { month: "يوليو", المصاريف: 15000, المداخيل: 18000 },
-    { month: "يونيو", المصاريف: 60000, المداخيل: 58000 },
-    { month: "مايو", المصاريف: 18000, المداخيل: 35000 },
-    { month: "أبريل", المصاريف: 58000, المداخيل: 95000 },
-    { month: "مارس", المصاريف: 55000, المداخيل: 92000 },
-    { month: "فبراير", المصاريف: 88000, المداخيل: 58000 },
-    { month: "يوليو", المصاريف: 42000, المداخيل: 18000 },
-  ];
-  const tableData = [
-    {
-      month: "جانفي",
-      year: "2024-2025",
-      income: 1500000,
-      expenses: 900000,
-      surplus: 600000,
-      profitRate: "40%",
+  const fetchFinancialPerformance = async () => {
+    const res = await api.get(`/statistics/financial-performance`);
+    return res.data.map((item) => ({
+      ...item,
+      monthLabel: getMonthNameByNumber(item.month),
+    }));
+  };
+  const { data, loading } = useFetch(fetchFinancialPerformance);
+
+  const totals = data.reduce(
+    (acc, item) => {
+      acc.expenses += item.expenses;
+      acc.income += item.income;
+      return acc;
     },
-    {
-      month: "فيفري",
-      year: "2024-2025",
-      income: 1500000,
-      expenses: 900000,
-      surplus: 600000,
-      profitRate: "40%",
-    },
-    {
-      month: "مارس",
-      year: "2024-2025",
-      income: 1500000,
-      expenses: 900000,
-      surplus: 600000,
-      profitRate: "40%",
-    },
-    {
-      month: "أبريل",
-      year: "2024-2025",
-      income: 1500000,
-      expenses: 900000,
-      surplus: 600000,
-      profitRate: "40%",
-    },
-    {
-      month: "ماي",
-      year: "2024-2025",
-      income: 1500000,
-      expenses: 900000,
-      surplus: 600000,
-      profitRate: "40%",
-    },
-    {
-      month: "جوان",
-      year: "2024-2025",
-      income: 1500000,
-      expenses: 900000,
-      surplus: 600000,
-      profitRate: "40%",
-    },
-    {
-      month: "جويلية",
-      year: "2024-2025",
-      income: 1500000,
-      expenses: 900000,
-      surplus: 600000,
-      profitRate: "40%",
-    },
-  ];
+    { income: 0, expenses: 0 }
+  );
+
   const employeeData = [
     {
       employee: "م نوال",
@@ -172,14 +86,57 @@ export default function FinancialPerformance() {
     },
   ];
 
+  const profit = totals?.income - totals?.expenses || 0;
+  const profitPercentage =
+    totals?.income > 0
+      ? ((profit / totals.income) * 100).toFixed(2) + "%"
+      : "0%";
+
+  const statsData = [
+    {
+      title: "إجمالي المداخيل",
+      value: formatCurrencyDZD(totals?.income || 0),
+      subLabel: "المبلغ المحصل خلال السنة الحالية",
+      icon: CardReceive,
+      bgColor: "bg-[#DCFCE7]",
+      iconColor: "#00A63E",
+    },
+    {
+      title: "إجمالي المصاريف",
+      value: formatCurrencyDZD(totals?.expenses || 0),
+      icon: CardSend,
+      bgColor: "bg-[#FFE2E2]",
+      iconColor: "#FB2C36",
+      subLabel: "جميع المصاريف المسجلة",
+    },
+    {
+      title: "صافي الربح",
+      value: formatCurrencyDZD(profit),
+      icon: DollarSquare,
+      bgColor: "bg-[#FEF3C6]",
+      iconColor: "#D08700",
+      subLabel: "الفرق بين المداخيل والمصاريف",
+    },
+    {
+      title: "نسبة الربح",
+      value: profitPercentage,
+      icon: Chart2,
+      bgColor: "bg-[#DBEAFE]",
+      iconColor: "#1447E6",
+      subLabel: "مقارنة بين الربح والمصاريف الإجمالية",
+    },
+  ];
+
   return (
     <div className="bg-background p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {statsData.map((stat, index) => (
-            <StatCard key={index} stat={stat} />
-          ))}
+          {loading
+            ? Array(4)
+                .fill(null)
+                .map((_, idx) => <StatCard key={idx} loading={loading} />)
+            : statsData.map((stat, idx) => <StatCard key={idx} stat={stat} />)}
         </div>
         {/* filter search and tables */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -199,8 +156,8 @@ export default function FinancialPerformance() {
             <IncomesFilter />
           </div>
         </div>
-        <FinancialJournalChart data={chartData} />
-        <FinancialJournalTable data={tableData} />
+        <FinancialJournalChart data={data} loading={loading} />
+        <FinancialJournalTable data={data} loading={loading} />
         <EmployeeJournalTable data={employeeData} />
       </div>
     </div>

@@ -14,6 +14,7 @@ import DetailItem from "../DetailItem";
 import api from "@/services/api";
 import useFetch from "@/hooks/useFetch";
 import Loading from "@/pages/Loading";
+import { formatDate } from "@/utils/dateFormatter";
 
 export default function ReportHealthDetails() {
   const { reportId } = useParams();
@@ -24,8 +25,6 @@ export default function ReportHealthDetails() {
   };
 
   const { data: reportDetails, loading } = useFetch(fetchreportsDetails);
-
-  console.log(reportDetails);
 
   if (loading) return <Loading />;
 
@@ -94,12 +93,18 @@ export default function ReportHealthDetails() {
                   label="اسم الطفل"
                   value={`${reportDetails?.student?.firstName} ${reportDetails?.student?.lastName}`}
                 />
-                <DetailItem label="المعلمة" value={reportDetails.teacher} />
+                <DetailItem
+                  label="المعلمة"
+                  value={reportDetails?.generatedBy?.name}
+                />
                 <DetailItem
                   label="الفصل"
                   value={reportDetails?.class?.className}
                 />
-                <DetailItem label="التاريخ" value={reportDetails.date} />
+                <DetailItem
+                  label="التاريخ"
+                  value={formatDate(reportDetails.createdAt)}
+                />
                 <DetailItem
                   label="وقت الملاحظة"
                   value={reportDetails.observationTime}
@@ -109,7 +114,7 @@ export default function ReportHealthDetails() {
 
             {/* Condition Details */}
             <div>
-              <h2 className="text-base font-semibold text-foreground mb-3 pb-3 border-b border-border font-cairo">
+              <h2 className="text-base font-semibold text-foreground mb-3 py-3 border-y border-border font-cairo">
                 تفاصيل الحالة
               </h2>
               <div className="space-y-1">
@@ -127,28 +132,28 @@ export default function ReportHealthDetails() {
                 />
                 <DetailItem
                   label="تم اتخاذ إجراء؟"
-                  value={reportDetails.actionTaken}
+                  value={reportDetails?.actionTaken ? "نعم" : "لا"}
                 />
-                <DetailItem
-                  label="تم التواصل مع ولي الأمر؟"
-                  value={reportDetails.guardianContacted}
-                />
-                <DetailItem
-                  label="نوع الإجراء"
-                  value={reportDetails.actionType}
-                />
+                {reportDetails?.actionTaken && (
+                  <DetailItem
+                    label="نوع الإجراء"
+                    value={reportDetails.actionType}
+                  />
+                )}
               </div>
             </div>
 
             {/* Notes */}
-            <div>
-              <h2 className="text-base font-semibold text-foreground mb-3 pb-3 border-b border-border font-cairo">
-                ملاحظات
-              </h2>
-              <p className="text-foreground leading-relaxed font-cairo">
-                {reportDetails.notes}
-              </p>
-            </div>
+            {reportDetails.notes && (
+              <div>
+                <h2 className="text-base font-semibold text-foreground mb-3 pb-3 border-b border-border font-cairo">
+                  ملاحظات
+                </h2>
+                <p className="text-foreground leading-relaxed font-cairo">
+                  {reportDetails.notes}
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

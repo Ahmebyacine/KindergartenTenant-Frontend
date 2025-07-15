@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import api from "@/services/api";
 import { Input } from "@/components/ui/input";
@@ -25,6 +25,12 @@ export default function ClassesSupervisor() {
 
   const { data: tabs } = useFetch(fetchTabs);
   const { data: classes, loading } = useFetch(fetchClasses);
+
+   useEffect(() => {
+      if (tabs?.length > 0) {
+        setActiveTab(tabs[0].id);
+      }
+    }, [tabs]);
 
   // Filter cheacher
   const filteredClasses = classes.filter((classe) => {

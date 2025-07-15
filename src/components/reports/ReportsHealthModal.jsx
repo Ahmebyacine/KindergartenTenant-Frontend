@@ -76,15 +76,24 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
   }, [classId, children]);
 
   const onSubmit = (data) => {
-    onAddReport( data);
+    onAddReport(data);
     form.reset();
   };
 
-  // Condition types
-  const conditionTypes = ["حرارة", "سعال", "إعياء", "غثيان", "إصابة"];
+  const conditionTypes = [
+    { value: "fever", label: "حرارة" },
+    { value: "cough", label: "سعال" },
+    { value: "fatigue", label: "إعياء" },
+    { value: "nausea", label: "غثيان" },
+    { value: "injury", label: "إصابة" },
+  ];
 
   // Condition assessments
-  const conditionAssessments = ["خفيفة", "متوسطة", "شديدة"];
+  const conditionAssessments = [
+    { value: "mild", label: "خفيفة" },
+    { value: "moderate", label: "متوسطة" },
+    { value: "severe", label: "شديدة" },
+  ];
 
   return (
     <div className="bg-background px-2 flex items-center justify-center">
@@ -98,9 +107,9 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
 
         <DialogContent className="w-full max-w-full sm:max-w-2xl bg-card p-6 rounded-lg sm:rounded-2xl">
           <DialogHeader className="border-b-2 pb-4">
-              <DialogTitle className="text-lg sm:text-xl rtl:text-right ltr:text-left font-semibold text-foreground">
-                إضافة تقرير صحي
-              </DialogTitle>
+            <DialogTitle className="text-lg sm:text-xl rtl:text-right ltr:text-left font-semibold text-foreground">
+              إضافة تقرير صحي
+            </DialogTitle>
           </DialogHeader>
 
           <Form {...form}>
@@ -224,8 +233,8 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                         </FormControl>
                         <SelectContent>
                           {conditionTypes.map((type) => (
-                            <SelectItem key={type} value={type}>
-                              {type}
+                            <SelectItem key={type.value} value={type.value}>
+                              {type.label}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -255,8 +264,8 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                         </FormControl>
                         <SelectContent>
                           {conditionAssessments.map((assessment) => (
-                            <SelectItem key={assessment} value={assessment}>
-                              {assessment}
+                            <SelectItem key={assessment.value} value={assessment.value}>
+                              {assessment.label}
                             </SelectItem>
                           ))}
                         </SelectContent>

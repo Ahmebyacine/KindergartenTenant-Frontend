@@ -1,27 +1,35 @@
-import { Archive, Chart2, Coin, Money2, People } from "iconsax-react";
+import { Chart2, Coin, Danger, People } from "iconsax-react";
 import RecentReportsTable from "@/components/dashboard/RecentReportsTable";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import { Link } from "react-router-dom";
 import BarChartRecivedMoney from "@/components/dashboard/BarChartRecivedMoney";
 import LineChartAttendnce from "@/components/dashboard/LineChartAttendnce";
 import StatCard from "@/components/StatCard";
+import api from "@/services/api";
+import useFetch from "@/hooks/useFetch";
 
 export default function DashboardSupervisor() {
+  const fetchSummaryAdmin = async () => {
+    const res = await api.get(`/statistics/summary/user`);
+    return res.data;
+  };
+  const { data, loading } = useFetch(fetchSummaryAdmin);
   const stats = [
     {
-      title: "إجمالي المبالغ المستلمة",
-      value: formatCurrencyDZD(12500),
+      title: "إجمالي المبالغ المستلمة هذا الشهر",
+      value: formatCurrencyDZD(data?.totalIncome || 0),
       icon: Coin,
       iconColor: "#00C951",
       bgColor: "bg-[#B9F8CF]",
       to: "/supervisor-incomes",
     },
     {
-      title: "عدد العمليات",
-      value: "18 عملية",
-      icon: Archive,
-      iconColor: "#4F46E5",
-      bgColor: "bg-[#DDD6FF]",
+      title: "الأطفال الغائبون هذا الشهر",
+      value: `${data?.absentCount} أطفال`,
+      icon: Danger,
+      iconColor: "#FB2C36",
+      bgColor: "bg-[#FFE2E2]",
+      to: "/teacher-attendance",
     },
     {
       title: "تقارير قيد المراجعة",
@@ -32,7 +40,7 @@ export default function DashboardSupervisor() {
     },
     {
       title: "عدد الأطفال",
-      value: "60 طفل",
+      value: `${data?.studentCount} طفل`,
       icon: People,
       iconColor: "#00A6F4",
       bgColor: "bg-[#A2F4FD]",
@@ -44,15 +52,19 @@ export default function DashboardSupervisor() {
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {stats.map((stat, idx) =>
-            stat.to ? (
-              <Link to={stat.to} className="no-underline" key={idx}>
-                <StatCard stat={stat} />
-              </Link>
-            ) : (
-              <StatCard key={idx} stat={stat} />
-            )
-          )}
+          {loading
+            ? Array(4)
+                .fill(null)
+                .map((_, idx) => <StatCard key={idx} loading={true} />)
+            : stats.map((stat, idx) =>
+                stat.to ? (
+                  <Link to={stat.to} className="no-underline" key={idx}>
+                    <StatCard stat={stat} />
+                  </Link>
+                ) : (
+                  <StatCard key={idx} stat={stat} />
+                )
+              )}
         </div>
 
         {/* Charts Section */}

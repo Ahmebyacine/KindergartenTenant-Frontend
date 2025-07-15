@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
@@ -10,6 +10,13 @@ import i18n from "@/i18n";
 export function GeneralSettings() {
   const { theme, setTheme } = useTheme();
   const [autoTimeZone, setAutoTimeZone] = useState(true);
+  const [selectedLang, setSelectedLang] = useState(i18n.language);
+
+  useEffect(() => {
+    const onLangChange = (lng) => setSelectedLang(lng);
+    i18n.on("languageChanged", onLangChange);
+    return () => i18n.off("languageChanged", onLangChange);
+  }, []);
 
   const updateDocumentDirection = (lng) => {
     document.documentElement.lang = lng;
@@ -17,12 +24,14 @@ export function GeneralSettings() {
     document.documentElement.dir = dir;
     localStorage.setItem("i18n-direction", dir);
   };
-  
+
   return (
     <div className="space-y-8">
       {/* Preferences Section */}
       <div>
-        <h2 className="text-l md:text-xl font-semibold mb-4 text-right">التفضيلات</h2>
+        <h2 className="text-l md:text-xl font-semibold mb-4 text-right">
+          التفضيلات
+        </h2>
       </div>
 
       {/* Appearance Section */}
@@ -105,7 +114,9 @@ export function GeneralSettings() {
 
       {/* Language and Time Section */}
       <div>
-        <h2 className="text-l md:text-xl font-semibold mb-4 text-right">اللغة والوقت</h2>
+        <h2 className="text-l md:text-xl font-semibold mb-4 text-right">
+          اللغة والوقت
+        </h2>
         <div className="border-t border-border mb-6"></div>
 
         <div className="space-y-6">
@@ -118,10 +129,11 @@ export function GeneralSettings() {
             </div>
             <div className="flex gap-6 mt-3 md:m-0">
               <RadioGroup
-                value={i18n.language}
+                value={selectedLang}
                 onValueChange={(lang) => {
                   i18n.changeLanguage(lang);
                   updateDocumentDirection(lang);
+                  setSelectedLang(lang);
                 }}
                 className="flex gap-8"
               >

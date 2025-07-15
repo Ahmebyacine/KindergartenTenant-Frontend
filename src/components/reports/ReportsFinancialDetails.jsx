@@ -24,18 +24,41 @@ import { getStatusPayBadge } from "@/utils/getStatusBadges";
 import { Button } from "../ui/button";
 import { Notification, TickSquare } from "iconsax-react";
 import DetailItem from "../DetailItem";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export default function ReportsFinancialDetails() {
   const { reportId } = useParams();
+  const [confirming, setConfirming] = useState(false);
 
   const fetchreportsDetails = async () => {
     const response = await api.get(`/financial-reports/${reportId}`);
     return response.data;
   };
 
-  const { data: reportDetails, loading } = useFetch(fetchreportsDetails);
+  const {
+    data: reportDetails,
+    setData: setReportDetails,
+    loading,
+  } = useFetch(fetchreportsDetails);
 
-  console.log(reportDetails);
+  const handleConfirmPayment = async () => {
+    setConfirming(true);
+    try {
+      const response = await api.patch(
+        `/financial-reports/${reportId}/confirm-payment`
+      );
+      setReportDetails((prev) => ({
+        ...prev,
+        ...response.data,
+      }));
+      toast.success("the payment confirmed")
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setConfirming(false);
+    }
+  };
 
   if (loading) return <Loading />;
   return (
@@ -45,7 +68,7 @@ export default function ReportsFinancialDetails() {
         <div className="flex flex-col">
           <Link
             to="/reports?tab=financial"
-            className="font-cairo text-muted-foreground"  
+            className="font-cairo text-muted-foreground"
           >
             <h1 className="text-2xl flex items-center font-bold text-foreground font-cairo mb-2">
               <ChevronRight />
@@ -147,9 +170,14 @@ export default function ReportsFinancialDetails() {
                 <Notification color="#EFB100" />
                 رسال تذكير لولي الأمر
               </Button>
-              <Button variant={"outline"} className={"text-secondary"}>
+              <Button
+                variant={"outline"}
+                className={"text-secondary"}
+                onClick={handleConfirmPayment}
+                disabled={confirming}
+              >
                 <TickSquare color="currentColor" />
-                تمييز كمدفوع
+                {confirming ? "...جاري التحديث" : "تمييز كمدفوع"}
               </Button>
             </CardFooter>
           )}

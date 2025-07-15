@@ -1,4 +1,5 @@
-import { Card, CardHeader } from "@/components/ui/card";
+import LoadingTable from "@/components/LoadingTable";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -7,26 +8,32 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import useFetch from "@/hooks/useFetch";
+import api from "@/services/api";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
+import { formatDateMonth } from "@/utils/dateFormatter";
+import { Document } from "iconsax-react";
 import React from "react";
 
-export default function EmployeeJournalTable({ data }) {
+export default function EmployeeJournalTable() {
+  const fetchFinancialPerformance = async () => {
+    const res = await api.get(`/financial-reports/statistics-users`);
+    return res.data;
+  };
+  const { data, loading } = useFetch(fetchFinancialPerformance);
   return (
     <Card className="shadow-sm">
       <CardHeader className="pb-4">
-        <h3 className="text-lg font-semibold text-foreground">
-          تفاصيل المداخيل التنفيذية حسب الموظف
-        </h3>
+        <CardTitle>تفاصيل المداخيل التنفيذية حسب الموظف</CardTitle>
       </CardHeader>
       <Table>
         <TableHeader>
           <TableRow className="bg-muted/50 border-b border-border hover:bg-muted/50">
-            <TableHead className="text-foreground font-medium">الموظف</TableHead>
             <TableHead className="text-foreground font-medium">
-              السنة الدراسية
+              الموظف
             </TableHead>
             <TableHead className="text-foreground font-medium">
-              الشهر
+              التاريخ
             </TableHead>
             <TableHead className="text-foreground font-medium">
               عدد العمليات
@@ -34,34 +41,31 @@ export default function EmployeeJournalTable({ data }) {
             <TableHead className="text-foreground font-medium">
               مجموع المبالغ
             </TableHead>
-            <TableHead className="text-foreground font-medium">
-              ملاحظات
-            </TableHead>
           </TableRow>
         </TableHeader>
-        {data.length > 0 ? (
+        {loading ? (
           <TableBody>
-            {data.map((row, index) => (
+            <LoadingTable />
+          </TableBody>
+        ) : data?.result?.length > 0 ? (
+          <TableBody>
+            {data?.result?.map((row, index) => (
               <TableRow
                 key={index}
                 className="border-b border-border hover:bg-muted/50"
               >
                 <TableCell className="text-foreground py-3">
-                  {row.employee}
-                </TableCell>
-                <TableCell className="text-foreground font-medium py-3">
-                  {row.year}
+                  {row?.name}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {row.month}
+                  {formatDateMonth(data?.date)}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {row.operations}
+                  {row?.count}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatCurrencyDZD(row.amount)}
+                  {formatCurrencyDZD(row?.totalAmount)}
                 </TableCell>
-                <TableCell className="py-3">{row.notes}</TableCell>
               </TableRow>
             ))}
           </TableBody>

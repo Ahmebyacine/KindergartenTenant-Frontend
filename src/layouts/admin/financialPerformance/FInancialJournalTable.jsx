@@ -1,16 +1,27 @@
+import LoadingTable from "@/components/LoadingTable";
 import { Card } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
+import { Document } from "iconsax-react";
 import React from "react";
 
-export default function FinancialJournalTable({ data }) {
+export default function FinancialJournalTable({ data, loading }) {
   return (
     <Card className="shadow-sm">
       <Table>
         <TableHeader>
           <TableRow className="bg-muted/50 border-b border-border hover:bg-muted/50">
-            <TableHead className="text-foreground font-medium">الشهر</TableHead>
-            <TableHead className="text-foreground font-medium">السنة الدراسية</TableHead>
+            <TableHead className="text-foreground font-medium !text-center">
+              الشهر
+            </TableHead>
+            <TableHead className="text-foreground font-medium">السنة</TableHead>
             <TableHead className="text-foreground font-medium">
               المداخيل
             </TableHead>
@@ -25,29 +36,37 @@ export default function FinancialJournalTable({ data }) {
             </TableHead>
           </TableRow>
         </TableHeader>
-        {data.length > 0 ? (
+        {loading ? (
+          <TableBody>
+            <LoadingTable />
+          </TableBody>
+        ) : data.length > 0 ? (
           <TableBody>
             {data.map((row, index) => (
               <TableRow
                 key={index}
                 className="border-b border-border hover:bg-muted/50"
               >
-                <TableCell className="text-foreground py-3">
-                  {row.month}
+                <TableCell className="text-foreground py-3 !text-center">
+                  {row?.monthLabel}
                 </TableCell>
                 <TableCell className="text-foreground font-medium py-3">
-                  {row.year}
+                  {row?.year}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatCurrencyDZD(row.income)}
+                  {formatCurrencyDZD(row?.income)}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatCurrencyDZD(row.expenses)}
+                  {formatCurrencyDZD(row?.expenses)}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatCurrencyDZD(row.surplus)}
+                  {formatCurrencyDZD(row?.income - row?.expenses)}
                 </TableCell>
-                <TableCell className="py-3">{row.profitRate}</TableCell>
+                <TableCell className="py-3">
+                  {row?.income && row?.income !== 0
+                    ? ((row.expenses / row.income) * 100).toFixed(2) + "%"
+                    : "N/A"}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

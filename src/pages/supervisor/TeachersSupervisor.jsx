@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TeachersTable from "@/layouts/supervisor/teachers/TeachersTable";
 import api from "@/services/api";
@@ -27,6 +27,11 @@ export default function TeachersSupervisor() {
 
   const { data: teachers, loading } = useFetch(fetchTeachers);
 
+   useEffect(() => {
+      if (tabs?.length > 0) {
+        setActiveTab(tabs[0].id);
+      }
+    }, [tabs]);
   // Filter teachers
   const filteredTeachers = teachers.filter((teacher) => {
     return teacher?.assignedClass?.category === activeTab;

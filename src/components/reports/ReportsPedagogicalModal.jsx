@@ -10,7 +10,6 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -75,22 +74,16 @@ export default function ReportsPedagogicalModal({
     setFilteredChildren(result);
   }, [classId, children]);
 
-  const onSubmit = (data) => {
-    onAddReport(data);
+  const onSubmit = async (data) => {
+    await onAddReport(data);
     form.reset();
   };
 
   const evaluationOptions = [
     { label: "ممتاز", value: "excellent" },
-
-    { label: "هادي", value: "calm" },
-
     { label: "جيد جداً", value: "very_good" },
-
     { label: "جيد", value: "good" },
-
     { label: "مقبول", value: "acceptable" },
-
     { label: "ضعيف", value: "weak" },
   ];
 

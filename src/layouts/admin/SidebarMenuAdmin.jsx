@@ -67,10 +67,10 @@ export default function SidebarMenuAdmin() {
   ];
   return (
     <SidebarMenu>
-      {items.map((item) => (
-        <SidebarMenuItem key={item.title}>
+      {items.map((item,i) => (
+        <SidebarMenuItem key={i}>
           <SidebarMenuButton asChild isActive={location.pathname === item.url}>
-            <NavLink to={item.url}>
+            <NavLink to={item.url} key={i}>
               <item.icon
                 variant="Outline"
                 color="CurrentColor"

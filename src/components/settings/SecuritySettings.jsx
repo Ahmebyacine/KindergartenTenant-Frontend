@@ -30,7 +30,6 @@ export default function SecuritySettings() {
               <Input
                 id="current-password"
                 type={showCurrentPassword ? "text" : "password"}
-                value="123456789"
                 className="text-right border-border focus:border-primary focus:ring-primary"
                 readOnly
               />
@@ -57,7 +56,6 @@ export default function SecuritySettings() {
               <Input
                 id="new-password"
                 type={showNewPassword ? "text" : "password"}
-                value="123456789"
                 className="text-right border-border focus:border-primary focus:ring-primary"
                 readOnly
               />
@@ -87,7 +85,6 @@ export default function SecuritySettings() {
               <Input
                 id="confirm-password"
                 type={showConfirmPassword ? "text" : "password"}
-                value="1234567899"
                 className="text-right border-border focus:border-primary focus:ring-primary"
                 readOnly
               />

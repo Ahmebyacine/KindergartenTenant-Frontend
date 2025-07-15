@@ -41,10 +41,10 @@ export default function StudentCardInforamtion({ enrollment, loading=false }) {
               className="w-full h-full object-cover"
             />
           </div>
-          <p className="text-secondary-foreground font-bold text-md sm:text-xl">
+          <p className="text-secondary-foreground font-semibold text-md sm:text-xl">
             {`${enrollment.student.firstName} ${enrollment.student.lastName}`}
           </p>
-          <p className="text-secondary-foreground text-sm">روضة التور</p>
+          <p className="text-secondary-foreground text-sm">روضة النور</p>
         </div>
 
         {/* Student Information */}

@@ -21,42 +21,31 @@ export const getStatusPayBadge = (status) => {
 
 export const getAssessmentBadge = (status) => {
   switch (status) {
-    case "ممتاز":
-      return (
-        <Badge className="bg-[#ecfcca] text-[#3d6300] hover:bg-[#ecfcca]">
-          {status}
-        </Badge>
-      );
-    case "جيد جداً":
-      return (
-        <Badge className="bg-[#dcfce7] text-[#008236] hover:bg-[#dcfce7]">
-          {status}
-        </Badge>
-      );
-    case "جيد":
-      return (
-        <Badge className="bg-[#dbeafe] text-[#1447e6] hover:bg-[#dbeafe]">
-          {status}
-        </Badge>
-      );
-    case "يحتاج متابعة":
-      return (
-        <Badge className="bg-[#fef3c6] text-[#e17100] hover:bg-[#fef3c6]">
-          {status}
-        </Badge>
-      );
-    case "يحتاج تدخل":
-      return (
-        <Badge className="bg-[#ffe2e2] text-[#c10007] hover:bg-[#ffe2e2]">
-          {status}
-        </Badge>
-      );
+    case "mild":
+      return <Badge className="bg-[#DCFCE7] text-[#008236]">خفيفة</Badge>;
+    case "moderate":
+      return <Badge className="bg-[#FEF3C6] text-[#E17100]">متوسطة</Badge>;
+    case "severe":
+      return <Badge className="bg-[#FFE2E2] text-[#C10007]">شديدة</Badge>;
     default:
-      return (
-        <Badge className="bg-[#e2e8f0] text-[#44403b] hover:bg-[#e2e8f0]">
-          {status}
-        </Badge>
-      );
+      return <Badge className="bg-[#e2e8f0] text-[#44403b]">{status}</Badge>;
+  }
+};
+
+export const getOverallBadge = (status) => {
+  switch (status) {
+    case "weak":
+      return <Badge className="bg-[#FFE2E2] text-[#C10007]">ضعيف</Badge>;
+    case "acceptable":
+      return <Badge className="bg-[#FEF3C6] text-[#E17100]">مقبول</Badge>;
+    case "good":
+      return <Badge className="bg-[#DBEAFE] text-[#1447E6]">جيد</Badge>;
+    case "very_good":
+      return <Badge className="bg-[#DCFCE7] text-[#008236]">جيد جداً</Badge>;
+    case "excellent":
+      return <Badge className="bg-[#ECFCCA] text-[#3D6300]">ممتاز</Badge>;
+    default:
+      return <Badge className="bg-[#e2e8f0] text-[#44403b]">{status}</Badge>;
   }
 };
 

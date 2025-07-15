@@ -30,7 +30,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Add } from "iconsax-react";
 import { useEffect, useState } from "react";
-import { getAcademicYearMonths } from "@/utils/getAcademicYearMonths";
+import { getAcademicYearMonths } from "@/utils/getAcademicYear";
 
 // Updated schema with student instead of childName
 const financialReportSchema = z.object({

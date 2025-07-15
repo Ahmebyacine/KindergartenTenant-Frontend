@@ -34,6 +34,10 @@ const classSchema = z.object({
   className: z.string().min(1, "مطلوب"),
   category: z.string().min(1, "مطلوب"),
   capacity: z.number().min(1, "الحد الأدنى للقدرة هو 1"),
+  price: z
+    .number({ invalid_type_error: "يجب أن يكون السعر رقمًا" })
+    .min(0, "الحد الأدنى للسعر هو 0")
+    .optional(),
 });
 
 export default function ClassesModal({
@@ -48,6 +52,7 @@ export default function ClassesModal({
       className: editingClass?.className || "",
       category: editingClass?.category?._id || "",
       capacity: editingClass?.capacity || 20,
+      price: editingClass?.price || "",
     },
   });
 
@@ -56,6 +61,10 @@ export default function ClassesModal({
       className: editingClass?.className || "",
       category: editingClass?.category?._id || "",
       capacity: editingClass?.capacity || 20,
+      price:
+        typeof editingClass?.price === "number"
+          ? editingClass.price
+          : "",
     });
   }, [editingClass, form]);
 
@@ -170,6 +179,33 @@ export default function ClassesModal({
                           className="text-right"
                           onChange={(e) =>
                             field.onChange(Number(e.target.value))
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {/* Price */}
+                <FormField
+                  control={form.control}
+                  name="price"
+                  render={({ field }) => (
+                    <FormItem className="space-y-1">
+                      <FormLabel className="text-muted-foreground">
+                        سعر الفصل
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="number"
+                          min="0"
+                          className="text-right"
+                          placeholder="أدخل سعر الفصل"
+                          onChange={(e) =>
+                            field.onChange(
+                              e.target.value === "" ? "" : Number(e.target.value)
+                            )
                           }
                         />
                       </FormControl>

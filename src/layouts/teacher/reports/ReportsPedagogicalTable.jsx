@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SearchNormal1, Document } from "iconsax-react";
-import { getAssessmentBadge } from "@/utils/getStatusBadges";
+import { getOverallBadge } from "@/utils/getStatusBadges";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import ReportsPedagogicalModal from "@/components/reports/ReportsPedagogicalModal";
@@ -25,12 +25,13 @@ export default function ReportsPedagogicalTable({ classes, students }) {
     const response = await api.get("/pedagogical-reports");
     return response.data;
   };
-  const { data: reports, loading } = useFetch(fetchReport);
+  const { data: reports, setData:setReports, loading } = useFetch(fetchReport);
 
   const handelAddReport = async (data) => {
     try {
-      await api.post("/pedagogical-reports", data);
-      toast("تمت إضافة التقرير بنجاح!");
+      const response = await api.post("/pedagogical-reports", data);
+      setReports((prev) => [response.data, ...prev])
+      toast.success("تمت إضافة التقرير بنجاح!");
     } catch (error) {
       console.error("Error creating class", error);
     }
@@ -63,7 +64,7 @@ export default function ReportsPedagogicalTable({ classes, students }) {
       <Table>
         <TableHeader>
           <TableRow className="bg-muted/50 border-b border-border hover:bg-muted/50">
-            <TableHead className="text-foreground font-medium">#</TableHead>
+            <TableHead className="text-foreground font-medium !text-center">#</TableHead>
             <TableHead className="text-foreground font-medium">
               اسم الطفل
             </TableHead>
@@ -94,7 +95,7 @@ export default function ReportsPedagogicalTable({ classes, students }) {
                 key={index}
                 className="border-b border-border hover:bg-muted/50"
               >
-                <TableCell className="text-foreground py-3">
+                <TableCell className="text-foreground py-3 !text-center">
                   {index + 1}
                 </TableCell>
                 <TableCell className="text-foreground font-medium py-3">
@@ -110,7 +111,7 @@ export default function ReportsPedagogicalTable({ classes, students }) {
                   {formatDateTime(row.createdAt)}
                 </TableCell>
                 <TableCell className="py-3">
-                  {getAssessmentBadge(row.overall)}
+                  {getOverallBadge(row.overall)}
                 </TableCell>
                 <TableCell className="py-3">
                   {row.overall === "جديد" ? (

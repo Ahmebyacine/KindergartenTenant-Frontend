@@ -30,6 +30,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Add } from "iconsax-react";
 import { expenseTypes } from "@/assets/data/data";
+import { useEffect } from "react";
 
 // Updated schema to match API requirements
 const expenseSchema = z.object({
@@ -51,6 +52,13 @@ export default function ExpensesModal({
       description: editingExpense?.description || "",
     },
   });
+  useEffect(() => {
+  form.reset({
+    category: editingExpense?.category || "",
+    amount: editingExpense?.amount || 0,
+    description: editingExpense?.description || "",
+  });
+}, [editingExpense, form]);
 
   const onSubmit = async (data) => {
     if (editingExpense) {

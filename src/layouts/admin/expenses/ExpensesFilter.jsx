@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -11,15 +10,13 @@ import { Setting4, Trash } from "iconsax-react";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { expenseTypes, months } from "@/assets/data/data";
 
-export default function ExpensesFilter() {
-  const [selectedExpenseType, setSelectedExpenseType] = useState();
-  const [selectedMonth, setSelectedMonth] = useState();
-
-  const handleReset = () => {
-    setSelectedExpenseType("");
-    setSelectedMonth("");
-  };
-
+export default function ExpensesFilter({
+  selectedExpenseType,
+  selectedMonth,
+  setSelectedExpenseType,
+  setSelectedMonth,
+  onApplyFilters,
+}) {
   return (
     <div className="bg-background p-2 md:p-4 flex items-center justify-center">
       <Dialog>
@@ -53,7 +50,11 @@ export default function ExpensesFilter() {
                         ? "border-primary text-primary bg-backgroun"
                         : "border-border bg-card"
                     }`}
-                    onClick={() => setSelectedExpenseType(type.value)}
+                    onClick={() =>
+                      setSelectedExpenseType((prev) =>
+                        prev === type.value ? "" : type.value
+                      )
+                    }
                   >
                     {type.label}
                   </Button>
@@ -67,16 +68,20 @@ export default function ExpensesFilter() {
               <div className="flex flex-wrap gap-2 justify-start">
                 {months.map((month) => (
                   <Button
-                    key={month}
+                    key={month.value}
                     variant="outline"
                     className={`rounded-full px-4 py-2 text-sm ${
-                      selectedMonth === month
+                      selectedMonth === month.value
                         ? "border-primary text-primary bg-backgroun"
                         : "border-border bg-card"
                     }`}
-                    onClick={() => setSelectedMonth(month)}
+                    onClick={() =>
+                      setSelectedMonth((prev) =>
+                        prev === month.value ? "" : month.value
+                      )
+                    }
                   >
-                    {month}
+                    {month.label}
                   </Button>
                 ))}
               </div>
@@ -88,12 +93,15 @@ export default function ExpensesFilter() {
             <Button
               variant="ghost"
               className="flex items-center gap-1"
-              onClick={handleReset}
+              onClick={() => onApplyFilters("","")}
             >
               <Trash size={14} color="currentColor" />
               إعادة تعيين الكل
             </Button>
-            <Button className="bg-primary rounded-lg px-6 py-3 hover:bg-primary/90">
+            <Button
+              className="bg-primary rounded-lg px-6 py-3 hover:bg-primary/90"
+              onClick={() => onApplyFilters(selectedExpenseType, selectedMonth)}
+            >
               تطبيق الفلاتر
             </Button>
           </DialogFooter>

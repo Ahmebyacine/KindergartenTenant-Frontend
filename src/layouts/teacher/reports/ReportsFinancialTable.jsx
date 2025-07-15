@@ -26,12 +26,13 @@ export default function ReportsFinancialTable({ classes, students }) {
     const response = await api.get("/financial-reports");
     return response.data.data;
   };
-  const { data: reports, loading } = useFetch(fetchReport);
+  const { data: reports, setData:setReports, loading } = useFetch(fetchReport);
 
   const handelAddReport = async (data) => {
     try {
-      await api.post("/financial-reports", data);
-      toast("تمت إضافة التقرير بنجاح!");
+      const response = await api.post("/financial-reports", data);
+      setReports((prev) => [response.data, ...prev])
+      toast.success("تمت إضافة التقرير بنجاح!");
     } catch (error) {
       console.error("Error creating class", error);
     }
@@ -65,7 +66,7 @@ export default function ReportsFinancialTable({ classes, students }) {
       <Table>
         <TableHeader>
           <TableRow className="bg-muted/50 border-b border-border hover:bg-muted/50">
-            <TableHead className="text-muted-foreground font-medium h-12">
+            <TableHead className="text-muted-foreground font-medium h-12 !text-center">
               #
             </TableHead>
             <TableHead className="text-muted-foreground font-medium">
@@ -100,7 +101,7 @@ export default function ReportsFinancialTable({ classes, students }) {
                 key={report._id}
                 className="border-b border-border hover:bg-muted/50"
               >
-                <TableCell className="text-foreground py-3">{i + 1}</TableCell>
+                <TableCell className="text-foreground py-3 !text-center">{i + 1}</TableCell>
                 <TableCell className="text-foreground font-medium py-3">
                   {report.student?.firstName} {report.student?.lastName}
                 </TableCell>

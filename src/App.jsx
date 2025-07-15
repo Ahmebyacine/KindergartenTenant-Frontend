@@ -92,18 +92,6 @@ const router = createHashRouter([
             path: "reports",
             element: <Reports />,
           },
-          {
-            path: "reports/health/:reportId",
-            element: <ReportHealthDetails />,
-          },
-          {
-            path: "reports/pedagogical/:reportId",
-            element: <ReportsPedagogicalDetails />,
-          },
-          {
-            path: "reports/financial/:reportId",
-            element: <ReportsFinancialDetails />,
-          },
         ],
       },
       {
@@ -128,12 +116,12 @@ const router = createHashRouter([
         ],
       },
       {
-        element: <ProtectedRoute roles={["supervisor","teacher"]} />,
+        element: <ProtectedRoute roles={["supervisor", "teacher"]} />,
         children: [
           {
             path: "settings-user",
             element: <SettingsUser />,
-          }
+          },
         ],
       },
       {
@@ -156,6 +144,18 @@ const router = createHashRouter([
             element: <ReportsTeacher />,
           },
         ],
+      },
+      {
+        path: "reports/health/:reportId",
+        element: <ReportHealthDetails />,
+      },
+      {
+        path: "reports/pedagogical/:reportId",
+        element: <ReportsPedagogicalDetails />,
+      },
+      {
+        path: "reports/financial/:reportId",
+        element: <ReportsFinancialDetails />,
       },
     ],
   },

@@ -10,7 +10,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import useFetch from "@/hooks/useFetch";
 
 export default function StudentsTeacher() {
-
   const { user } = useAuth();
 
   const fetchStudents = async () => {
@@ -31,6 +30,17 @@ export default function StudentsTeacher() {
       toast("تمت إضافة الطفل بنجاح!");
     } catch (error) {
       console.error("Error creating class", error);
+    }
+  };
+
+  const handleRegistrationsStudent = async (data) => {
+    try {
+      const response = await api.post("/enrollments", data);
+      setStudents((prev) => [...prev, response.data]);
+      toast.success("تمت تسجيل الطفل بنجاح!");
+    } catch (error) {
+      console.error("Error adding student:", error);
+      toast.error("فشل في تسجيل الطفل");
     }
   };
 
@@ -78,7 +88,7 @@ export default function StudentsTeacher() {
             <div className="flex my-3 w-full sm:w-auto">
               <RegistrationsModal
                 classes={[user.class]}
-                onAddStudent={handelAddStudent}
+                onRegistred={handleRegistrationsStudent}
               />
               <StudentsModal
                 classes={[user.class]}
@@ -86,7 +96,12 @@ export default function StudentsTeacher() {
               />
             </div>
           </div>
-          <StudentsTable loading={loading} students={students} classes={[user.class]} onUpdateStudent={handleUpdateStudent} />
+          <StudentsTable
+            loading={loading}
+            students={students}
+            classes={[user.class]}
+            onUpdateStudent={handleUpdateStudent}
+          />
         </div>
       </div>
     </div>

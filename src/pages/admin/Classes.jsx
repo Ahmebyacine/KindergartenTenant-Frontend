@@ -32,7 +32,6 @@ export default function Classes() {
     loading: classesLoading,
   } = useFetch(fetchClasses);
 
-
   // Local state
   const [activeTab, setActiveTab] = useState(null);
 
@@ -44,13 +43,8 @@ export default function Classes() {
 
   // Handlers
   const handleAddClass = async (data) => {
-    const payload = { ...data };
-    if (payload.teacher === "") {
-      delete payload.teacher;
-    }
-
     try {
-      const response = await api.post("/classes", payload);
+      const response = await api.post("/classes", data);
       setClasses((prev) => [...prev, response.data]);
       toast.success("تمت إضافة القسم بنجاح!");
     } catch (error) {
@@ -119,10 +113,7 @@ export default function Classes() {
                   />
                 </div>
               </div>
-              <ClassesModal
-                onAddClass={handleAddClass}
-                categories={tabs}
-              />
+              <ClassesModal onAddClass={handleAddClass} categories={tabs} />
             </div>
 
             <ClassesTable

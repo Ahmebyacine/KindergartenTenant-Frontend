@@ -40,3 +40,15 @@ export const getAcademicYearMonths = () => {
     }
   });
 };
+export const getCurrentAcademicYear = () => {
+    const now = new Date();
+    let startYear = now.getFullYear();
+    let endYear = startYear + 1;
+
+    if (now.getMonth() < 8) {
+        startYear -= 1;
+        endYear -= 1;
+    }
+
+    return `${startYear}-${endYear}`;
+}

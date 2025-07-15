@@ -1,6 +1,4 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useEffect, useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -10,6 +8,13 @@ import i18n from "@/i18n";
 export function GeneralSettingsUser() {
   const { theme, setTheme } = useTheme();
   const [autoTimeZone, setAutoTimeZone] = useState(true);
+  const [selectedLang, setSelectedLang] = useState(i18n.language);
+
+  useEffect(() => {
+    const onLangChange = (lng) => setSelectedLang(lng);
+    i18n.on("languageChanged", onLangChange);
+    return () => i18n.off("languageChanged", onLangChange);
+  }, []);
 
   const updateDocumentDirection = (lng) => {
     document.documentElement.lang = lng;
@@ -118,10 +123,11 @@ export function GeneralSettingsUser() {
             </div>
             <div className="flex gap-6 mt-3 md:m-0">
               <RadioGroup
-                value={i18n.language}
+                value={selectedLang}
                 onValueChange={(lang) => {
                   i18n.changeLanguage(lang);
                   updateDocumentDirection(lang);
+                  setSelectedLang(lang);
                 }}
                 className="flex gap-8"
               >

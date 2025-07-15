@@ -5,22 +5,19 @@ import ReportsHealthTable from "@/layouts/teacher/reports/ReportsHealthTable";
 import ReportsPedagogicalTable from "@/layouts/teacher/reports/ReportsPedagogicalTable";
 import api from "@/services/api";
 import useFetch from "@/hooks/useFetch";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function ReportsTeacher() {
   const [searchParams] = useSearchParams();
   const defaultTab = searchParams.get("tab") || "pedagogical";
 
-  const fetchClasses = async () => {
-    const response = await api.get("/classes");
-    return response.data;
-  };
+  const { user } = useAuth();
 
   const fetchStudents = async () => {
     const response = await api.get("/enrollments");
     return response.data.data;
   };
 
-  const { data: classes } = useFetch(fetchClasses);
   const { data: students } = useFetch(fetchStudents);
   
   return (
@@ -51,13 +48,13 @@ export default function ReportsTeacher() {
             </TabsList>
             {/* Move TabsContent inside first Tabs component */}
             <TabsContent value="pedagogical" className="space-y-4">
-              <ReportsPedagogicalTable classes={classes} students={students} />
+              <ReportsPedagogicalTable classes={[user.class]} students={students} />
             </TabsContent>
             <TabsContent value="financial" className="space-y-4">
-              <ReportsFinancialTable classes={classes} students={students} />
+              <ReportsFinancialTable classes={[user.class]} students={students} />
             </TabsContent>
             <TabsContent value="health" className="space-y-4">
-              <ReportsHealthTable classes={classes} students={students} />
+              <ReportsHealthTable classes={[user.class]} students={students} />
             </TabsContent>
           </Tabs>
         </div>

@@ -42,7 +42,6 @@ export default function Students() {
     loading: studentsLoading,
   } = useFetch(fetchStudents);
 
-
   useEffect(() => {
     if (tabs?.length) {
       setActiveTab(tabs[0]?.id);
@@ -57,6 +56,17 @@ export default function Students() {
     } catch (error) {
       console.error("Error adding student:", error);
       toast.error("فشل في إضافة الطفل");
+    }
+  };
+  
+  const handleRegistrationsStudent = async (data) => {
+    try {
+      const response = await api.post("/enrollments", data);
+      setStudents((prev) => [...prev, response.data]);
+      toast.success("تمت تسجيل الطفل بنجاح!");
+    } catch (error) {
+      console.error("Error adding student:", error);
+      toast.error("فشل في تسجيل الطفل");
     }
   };
 
@@ -125,6 +135,7 @@ export default function Students() {
               <div className="flex my-3 w-full sm:w-auto">
                 <RegistrationsModal
                   classes={classes}
+                  onRegistred={handleRegistrationsStudent}
                 />
                 <StudentsModal
                   classes={classes}
