@@ -90,7 +90,9 @@ export default function ReportsHealthTable({ classes, students }) {
           </TableRow>
         </TableHeader>
         {loading ? (
-          <LoadingTable />
+          <TableBody>
+            <LoadingTable />
+          </TableBody>
         ) : reports.length > 0 ? (
           <TableBody>
             {reports.map((row, index) => (

@@ -30,6 +30,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Add } from "iconsax-react";
 import ImageUpload from "@/components/ImageUpload";
+import { useEffect } from "react";
 
 // Updated student schema to match backend model
 const studentSchema = z.object({
@@ -40,6 +41,7 @@ const studentSchema = z.object({
   class: z.string().min(1, "مطلوب"),
   parentName: z.string().min(1, "مطلوب"),
   parentContact: z.string().min(1, "مطلوب"),
+  bloodGroup: z.string().optional(),
   image: z.any().optional(),
 });
 
@@ -54,35 +56,58 @@ export default function StudentsModal({
     defaultValues: {
       firstName: editingStudent?.student?.firstName || "",
       lastName: editingStudent?.student?.lastName || "",
-      birthDate: editingStudent?.student?.birthDate.split("T")[0] || "",
+      birthDate: editingStudent?.student?.birthDate?.split("T")[0] || "",
       parentEmail: editingStudent?.student?.parents?.email || "",
       parentName: editingStudent?.student?.parents?.name || "",
       parentContact: editingStudent?.student?.parents?.contact || "",
       class: editingStudent?.class?._id || "",
+      bloodGroup: editingStudent?.student?.bloodGroup || "",
       image: editingStudent?.student?.image || null,
     },
   });
 
+  useEffect(() => {
+    form.reset({
+      firstName: editingStudent?.student?.firstName || "",
+      lastName: editingStudent?.student?.lastName || "",
+      birthDate: editingStudent?.student?.birthDate?.split("T")[0] || "",
+      parentEmail: editingStudent?.student?.parents?.email || "",
+      parentName: editingStudent?.student?.parents?.name || "",
+      parentContact: editingStudent?.student?.parents?.contact || "",
+      class: editingStudent?.class?._id || "",
+      bloodGroup: editingStudent?.student?.bloodGroup || "",
+      image: editingStudent?.student?.image || null,
+    });
+  }, [editingStudent, form]);
+
   const onSubmit = async (data) => {
-    const parentData = {
-      name: data.parentName,
-      email: data.parentEmail,
-      contact: data.parentContact,
-    };
+    const formData = new FormData();
+    formData.append("firstName", data.firstName);
+    formData.append("lastName", data.lastName);
+    formData.append("birthDate", data.birthDate);
+    formData.append("class", data.class);
+    formData.append("parentName", data.parentName);
+    formData.append("parentEmail", data.parentEmail);
+    formData.append("parentContact", data.parentContact);
 
-    const studentData = {
-      firstName: data.firstName,
-      lastName: data.lastName,
-      birthDate: new Date(data.birthDate).toISOString(),
-      parents: parentData,
-      class: data.class,
-      image: data.image || null,
-    };
-
+    if (data.bloodGroup) {
+      formData.append("bloodGroup", data.bloodGroup);
+    }
+    if (data.image && data.image instanceof File) {
+      if (editingStudent?.student?.image) {
+        formData.append("oldImage", editingStudent.student.image);  
+      }
+      formData.append("image", data.image);
+    }
+    // Handle image deletion
+    if (!data.image && editingStudent?.student?.image) {
+      formData.append("deleteImage", "true");
+      formData.append("oldImage", editingStudent.student.image);
+    }
     if (editingStudent) {
-      await onUpdateStudent({ ...editingStudent, ...studentData });
+      await onUpdateStudent(formData, editingStudent?.student?._id);
     } else {
-      await onAddStudent(studentData);
+      await onAddStudent(formData);
     }
     form.reset();
   };
@@ -220,6 +245,40 @@ export default function StudentsModal({
                         </FormItem>
                       )}
                     />
+
+                    {/* Blood Group */}
+                    <FormField
+                      control={form.control}
+                      name="bloodGroup"
+                      render={({ field }) => (
+                        <FormItem className="space-y-2">
+                          <FormLabel className="text-muted-foreground">
+                            فصيلة الدم
+                          </FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            value={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger className="text-right">
+                                <SelectValue placeholder="اختر فصيلة الدم" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="A+">A+</SelectItem>
+                              <SelectItem value="A-">A-</SelectItem>
+                              <SelectItem value="B+">B+</SelectItem>
+                              <SelectItem value="B-">B-</SelectItem>
+                              <SelectItem value="AB+">AB+</SelectItem>
+                              <SelectItem value="AB-">AB-</SelectItem>
+                              <SelectItem value="O+">O+</SelectItem>
+                              <SelectItem value="O-">O-</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
 
                   {/* Parent Information */}
@@ -272,10 +331,8 @@ export default function StudentsModal({
                             </FormLabel>
                             <FormControl>
                               <Input
-                                type="parentEmail"
-                                dir="ltr"
+                                type="email"
                                 {...field}
-                                className="text-right"
                               />
                             </FormControl>
                             <FormMessage />

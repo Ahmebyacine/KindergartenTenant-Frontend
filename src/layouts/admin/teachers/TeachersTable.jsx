@@ -11,7 +11,12 @@ import { formatDate } from "@/utils/dateFormatter";
 import LoadingTable from "@/components/LoadingTable";
 import TeachersModal from "./TeachersModal";
 
-export default function TeachersTable({ loading, teachers, classes, onUpdateTeacher }) {
+export default function TeachersTable({
+  loading,
+  teachers,
+  classes,
+  onUpdateTeacher,
+}) {
   return (
     <>
       <Table>
@@ -41,7 +46,9 @@ export default function TeachersTable({ loading, teachers, classes, onUpdateTeac
           </TableRow>
         </TableHeader>
         {loading ? (
-          <LoadingTable />
+          <TableBody>
+            <LoadingTable />
+          </TableBody>
         ) : teachers.length > 0 ? (
           <TableBody>
             {teachers.map((teacher, i) => (
@@ -49,7 +56,9 @@ export default function TeachersTable({ loading, teachers, classes, onUpdateTeac
                 key={teacher._id}
                 className="border-b border-border hover:bg-muted/50"
               >
-                <TableCell className="text-foreground py-3 !text-center">{i + 1}</TableCell>
+                <TableCell className="text-foreground py-3 !text-center">
+                  {i + 1}
+                </TableCell>
                 <TableCell className="text-foreground font-medium py-3">
                   {teacher.name}
                 </TableCell>
@@ -66,7 +75,11 @@ export default function TeachersTable({ loading, teachers, classes, onUpdateTeac
                   {formatDate(teacher.createdAt)}
                 </TableCell>
                 <TableCell className="py-3">
-                  <TeachersModal editingTeacher={teacher} classes={classes} onUpdateTeacher={onUpdateTeacher} />
+                  <TeachersModal
+                    editingTeacher={teacher}
+                    classes={classes}
+                    onUpdateTeacher={onUpdateTeacher}
+                  />
                 </TableCell>
               </TableRow>
             ))}

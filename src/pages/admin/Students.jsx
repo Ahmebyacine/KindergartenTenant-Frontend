@@ -50,15 +50,16 @@ export default function Students() {
 
   const handleAddStudent = async (data) => {
     try {
+      console.log(data);
       const response = await api.post("/students", data);
-      setStudents((prev) => [...prev, response.data]);
+      setStudents((prev) => [response.data, ...prev]);
       toast.success("تمت إضافة الطفل بنجاح!");
     } catch (error) {
       console.error("Error adding student:", error);
       toast.error("فشل في إضافة الطفل");
     }
   };
-  
+
   const handleRegistrationsStudent = async (data) => {
     try {
       const response = await api.post("/enrollments", data);
@@ -70,12 +71,11 @@ export default function Students() {
     }
   };
 
-  const handleUpdateStudent = async (updatedStudent) => {
+  const handleUpdateStudent = async (formData, studentId) => {
     try {
-      const response = await api.put(
-        `/students/${updatedStudent.student._id}`,
-        updatedStudent
-      );
+      console.log(formData.entries());
+      const response = await api.put(`/students/${studentId}`, formData);
+
       const updatedData = response.data;
 
       setStudents((prev) =>
@@ -116,7 +116,7 @@ export default function Students() {
             </TabsList>
 
             <div className="flex flex-col md:flex-row gap-2 items-center">
-              <div className="flex items-center gap-1 w-full">
+              <div className="flex items-center gap-3 w-full">
                 <div className="relative w-full sm:w-64">
                   <SearchNormal1
                     size="16"

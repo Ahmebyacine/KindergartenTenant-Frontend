@@ -145,3 +145,9 @@
 textarea {
   field-sizing: content;
 }
+
+input[type="email"],
+input[type="password"] {
+  direction: ltr;
+  text-align: left; 
+}

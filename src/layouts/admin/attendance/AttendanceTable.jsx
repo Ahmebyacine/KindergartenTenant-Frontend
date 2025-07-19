@@ -40,7 +40,9 @@ export default function AttendanceTable({ loading, attendance }) {
         </TableRow>
       </TableHeader>
       {loading ? (
-        <LoadingTable />
+        <TableBody>
+          <LoadingTable />
+        </TableBody>
       ) : attendance?.length > 0 ? (
         <TableBody>
           {attendance?.map((att, i) => (

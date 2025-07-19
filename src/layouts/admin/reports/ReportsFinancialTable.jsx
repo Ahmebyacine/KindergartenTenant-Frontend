@@ -21,7 +21,6 @@ import ReportsFilter from "@/components/reports/ReportsFilter";
 import useFetch from "@/hooks/useFetch";
 
 export default function ReportsFinancialTable({ classes, students }) {
-
   const fetchReport = async () => {
     const response = await api.get("/financial-reports");
     return response.data.data;
@@ -92,7 +91,9 @@ export default function ReportsFinancialTable({ classes, students }) {
           </TableRow>
         </TableHeader>
         {loading ? (
-          <LoadingTable />
+          <TableBody>
+            <LoadingTable />
+          </TableBody>
         ) : reports.length > 0 ? (
           <TableBody>
             {reports.map((report, i) => (

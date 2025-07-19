@@ -43,37 +43,8 @@ import {
 } from "@/components/ui/carousel";
 import StatCard from "@/components/StatCard";
 import useFetch from "@/hooks/useFetch";
+import { attendanceStats } from "@/utils/attendanceStats";
 
-const statsData = [
-  {
-    title: "عدد الأطفال",
-    value: "25 طفل",
-    icon: People,
-    bgColor: "bg-[#A2F4FD]",
-    iconColor: "#00A6F4",
-  },
-  {
-    title: "الحضور",
-    value: "22 حاضر",
-    icon: TickSquare,
-    bgColor: "bg-[#B9F8CF]",
-    iconColor: "#008236",
-  },
-  {
-    title: "الغياب",
-    value: "3 غائب",
-    icon: Danger,
-    bgColor: "bg-[#FFE2E2]",
-    iconColor: "#E7000B",
-  },
-  {
-    title: "نسبة الحضور",
-    value: "88%",
-    icon: Chart2,
-    bgColor: "bg-[#EDE9FE]",
-    iconColor: "#7008E7",
-  },
-];
 export default function Attendance() {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
@@ -89,10 +60,12 @@ export default function Attendance() {
 
   const fetchAttendanceData = async (selectedDate, classId) => {
     try {
+      setLoading(true);
       const response = await api.get(
         `/attendances?date=${selectedDate}&classId=${classId}`
       );
       setAttendance(response.data);
+      console.log(response.data);
     } catch (error) {
       console.error("Error fetching attendance data:", error);
     } finally {
@@ -106,6 +79,39 @@ export default function Attendance() {
       fetchAttendanceData(date, selectedClass);
     }
   }, [date, selectedClass]);
+
+  const totals = attendanceStats(attendance?.info || []);
+
+  const statsData = [
+    {
+      title: "عدد الأطفال",
+      value: `${attendance?.info?.length || 0} طفل`,
+      icon: People,
+      bgColor: "bg-[#A2F4FD]",
+      iconColor: "#00A6F4",
+    },
+    {
+      title: "الحضور",
+      value: `${totals?.presentCount || 0} حاضر`,
+      icon: TickSquare,
+      bgColor: "bg-[#B9F8CF]",
+      iconColor: "#008236",
+    },
+    {
+      title: "الغياب",
+      value: `${totals?.absentCount || 0} غائب`,
+      icon: Danger,
+      bgColor: "bg-[#FFE2E2]",
+      iconColor: "#E7000B",
+    },
+    {
+      title: "نسبة الحضور",
+      value: `${totals?.presentPercentage || 0}%`,
+      icon: Chart2,
+      bgColor: "bg-[#EDE9FE]",
+      iconColor: "#7008E7",
+    },
+  ];
 
   return (
     <div className="bg-background p-6">
@@ -135,7 +141,7 @@ export default function Attendance() {
         </Breadcrumb>
       </div>
       <div className="mx-auto">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-4">
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
             <div className="flex flex-col gap-3">
               <Popover open={open} onOpenChange={setOpen}>
@@ -161,6 +167,7 @@ export default function Attendance() {
                       setDate(date);
                       setOpen(false);
                     }}
+                    disabled={(date) => date > new Date()}
                   />
                 </PopoverContent>
               </Popover>
@@ -197,19 +204,30 @@ export default function Attendance() {
               <div className="w-full my-4 p-3">
                 <Carousel
                   opts={{
-                    align: "start",
-                    loop: true,
+                    align: "end",
+                    loop: false,
                   }}
                 >
                   <CarouselContent className="-ml-2 md:-ml-4 min-w-0">
-                    {statsData.map((stat, index) => (
-                      <CarouselItem
-                        key={index}
-                        className="pl-2 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
-                      >
-                        <StatCard stat={stat} />
-                      </CarouselItem>
-                    ))}
+                    {loading
+                      ? Array(4)
+                          .fill(null)
+                          .map((_, idx) => (
+                            <CarouselItem
+                              key={idx}
+                              className="pl-2 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                            >
+                              <StatCard key={idx} loading={true} />
+                            </CarouselItem>
+                          ))
+                      : statsData.map((stat, index) => (
+                          <CarouselItem
+                            key={index}
+                            className="pl-2 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                          >
+                            <StatCard stat={stat} />
+                          </CarouselItem>
+                        ))}
                   </CarouselContent>
                 </Carousel>
               </div>

@@ -1,32 +1,40 @@
-import { useState, useRef, useId } from "react";
-import { Button } from "@/components/ui/button";
+import { useId, useRef, useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Edit, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Trash2, Edit } from "lucide-react";
 import { DocumentUpload } from "iconsax-react";
 
-export default function ImageUpload() {
-  const [uploadedImage, setUploadedImage] = useState(null);
+export default function ImageUpload({ value, onChange }) {
+  const [preview, setPreview] = useState(null);
   const [fileName, setFileName] = useState("");
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef(null);
   const inputId = useId();
 
+  useEffect(() => {
+    if (value instanceof File) {
+      setPreview(URL.createObjectURL(value));
+      setFileName(value.name);
+    } else if (typeof value === "string" && value) {
+      setPreview(`${import.meta.env.VITE_API_URL_PICTURE}${value}`);
+      setFileName(value.split("/").pop());
+    } else {
+      setPreview(null);
+      setFileName("");
+    }
+  }, [value]);
+
   const handleFileSelect = (file) => {
     if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setUploadedImage(e.target?.result);
-        setFileName(file.name);
-      };
-      reader.readAsDataURL(file);
+      setPreview(URL.createObjectURL(file));
+      setFileName(file.name);
+      onChange?.(file);
     }
   };
 
   const handleFileInputChange = (e) => {
     const file = e.target.files?.[0];
-    if (file) {
-      handleFileSelect(file);
-    }
+    if (file) handleFileSelect(file);
   };
 
   const handleDragOver = (e) => {
@@ -43,21 +51,14 @@ export default function ImageUpload() {
     e.preventDefault();
     setIsDragOver(false);
     const file = e.dataTransfer.files?.[0];
-    if (file) {
-      handleFileSelect(file);
-    }
+    if (file) handleFileSelect(file);
   };
 
   const handleDelete = () => {
-    setUploadedImage(null);
+    setPreview(null);
     setFileName("");
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
-
-  const handleChange = () => {
-    fileInputRef.current?.click();
+    if (fileInputRef.current) fileInputRef.current.value = "";
+    onChange?.(null);
   };
 
   const triggerFileInput = () => {
@@ -65,8 +66,8 @@ export default function ImageUpload() {
   };
 
   return (
-    <div className="max-h-[40vh] max-w-md mx-auto p-4 space-y-4">
-      {!uploadedImage ? (
+    <div className="max-h-[40vh] md:w-md mx-auto p-4 space-y-4 overflow-hidden">
+      {!preview ? (
         <Card
           className={`border-2 border-dashed transition-colors cursor-pointer ${
             isDragOver
@@ -94,21 +95,22 @@ export default function ImageUpload() {
           </CardContent>
         </Card>
       ) : (
-        <Card className="overflow-hidden">
-          <CardContent className="p-0">
-            <div className="relative">
-              <img
-                src={uploadedImage || "/placeholder.svg"}
-                alt="Uploaded image"
-                width={300}
-                height={200}
-                className="w-full h-38 object-cover"
-              />
+        <Card className="overflow-hidden p-0 m-0">
+          <CardContent className="px-0 pt-2">
+            <div className="relative px-auto">
+              <div className="w-full flex justify-center items-center h-45">
+                <img
+                  src={preview}
+                  alt="Uploaded image"
+                  className="h-45 object-cover"
+                />
+              </div>
               <div className="absolute top-2 right-2 flex gap-2">
                 <Button
                   size="sm"
                   variant="secondary"
-                  onClick={handleChange}
+                  onClick={triggerFileInput}
+                  type="button"
                   className="h-8 w-8 p-0"
                 >
                   <Edit className="h-4 w-4" />
@@ -116,6 +118,7 @@ export default function ImageUpload() {
                 <Button
                   size="sm"
                   variant="destructive"
+                  type="button"
                   onClick={handleDelete}
                   className="h-8 w-8 p-0"
                 >
@@ -124,7 +127,7 @@ export default function ImageUpload() {
               </div>
             </div>
             <div className="p-4 bg-muted">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-center text-muted-foreground max-w-md line-clamp-1">
                 <span className="font-medium">Name:</span> {fileName}
               </p>
             </div>

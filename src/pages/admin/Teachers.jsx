@@ -50,7 +50,7 @@ export default function Teachers() {
   const handleAddTeacher = async (data) => {
     setAddLoading(true);
     try {
-      const res = await api.post("/users/teachers", data);
+      const res = await api.post("/users", data);
       setTeachers((prev) => [...prev, res.data]);
       toast.success("تمت إضافة معلم بنجاح!");
     } catch (error) {
@@ -61,11 +61,11 @@ export default function Teachers() {
     }
   };
 
-  const handleUpdateTeacher = async (updatedItem) => {
+  const handleUpdateTeacher = async (formData, id) => {
     try {
-      const res = await api.put(`/users/${updatedItem._id}`, updatedItem);
+      const res = await api.put(`/users/${id}`, formData);
       setTeachers((prev) =>
-        prev.map((item) => (item._id === updatedItem._id ? res.data : item))
+        prev.map((item) => (item._id === id ? res.data : item))
       );
       toast.success("تم التحديث بنجاح");
     } catch (error) {
@@ -100,7 +100,7 @@ export default function Teachers() {
               ))}
             </TabsList>
 
-            <div className="flex justify-between">
+            <div className="flex justify-between mb-4">
               <div className="w-2/3 md:w-full flex gap-1 items-center">
                 <div className="relative">
                   <SearchNormal1

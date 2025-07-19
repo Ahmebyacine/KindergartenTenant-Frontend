@@ -58,7 +58,7 @@ export default function TeachersSupervisor() {
                 </TabsTrigger>
               ))}
             </TabsList>
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center mb-4">
               <div className="relative">
                 <SearchNormal1
                   size="16"

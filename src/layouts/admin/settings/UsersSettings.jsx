@@ -29,9 +29,9 @@ export default function UsersSettings() {
       toast.error("فشل في إضافة المستخدم. يرجى المحاولة مرة أخرى.");
     }
   };
-  const handleUpdateUser = async (userData) => {
+  const handleUpdateUser = async (userData,id) => {
     try {
-      const response = await api.put(`/users/${userData._id}`, userData);
+      const response = await api.put(`/users/${id}`, userData);
       toast.success("تم تحديث المستخدم بنجاح");
       setUsers((prevData) =>
         prevData.map((user) =>

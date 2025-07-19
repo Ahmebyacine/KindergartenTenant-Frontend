@@ -388,7 +388,6 @@ function SidebarGroupLabel({
       data-sidebar="group-label"
       className={cn(
         "text-sidebar-foreground ring-sidebar-ring flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium outline-hidden transition-[margin,opacity] duration-200 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
-        "group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0",
         className
       )}
       {...props} />
@@ -488,8 +487,10 @@ function SidebarMenuButton({
   ...props
 }) {
   const Comp = asChild ? Slot : "button"
-  const { isMobile, state } = useSidebar()
-
+  const { isMobile, state, setOpenMobile } = useSidebar()
+  const handleMenuClick = () => {
+    if (isMobile) setOpenMobile(false);
+  };
   const button = (
     <Comp
       data-slot="sidebar-menu-button"
@@ -497,6 +498,7 @@ function SidebarMenuButton({
       data-size={size}
       data-active={isActive}
       className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
+      onClick={handleMenuClick}
       {...props} />
   )
 

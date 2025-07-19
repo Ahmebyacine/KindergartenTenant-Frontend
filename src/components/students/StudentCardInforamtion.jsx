@@ -3,7 +3,10 @@ import QRCode from "qrcode";
 import img from "@/assets/images/avatar.png";
 import StudentCardLoading from "./StudentCardLoading";
 
-export default function StudentCardInforamtion({ enrollment, loading=false }) {
+export default function StudentCardInforamtion({
+  enrollment,
+  loading = false,
+}) {
   const [qrCodeUrl, setQrCodeUrl] = useState("");
 
   // Generate modern QR code when component mounts or enrollment changes
@@ -28,7 +31,7 @@ export default function StudentCardInforamtion({ enrollment, loading=false }) {
       console.error("Error generating QR code:", error);
     }
   };
-  if (loading) return <StudentCardLoading />
+  if (loading) return <StudentCardLoading />;
   return (
     <div className="bg-primary text-card-foreground flex flex-col gap-6 rounded-2xl border p-3 sm:p-6 shadow-sm">
       <div className="flex flex-wrap gap-2 items-start">
@@ -36,13 +39,18 @@ export default function StudentCardInforamtion({ enrollment, loading=false }) {
         <div className="w-[35%] flex flex-col items-center sm:gap-y-2 gap-y-1 justify-center my-auto p-1 md:p-3">
           <div className="rounded-full overflow-hidden border-2 border-border">
             <img
-              src={img}
+              src={
+                enrollment?.student?.image
+                  ? import.meta.env.VITE_API_URL_PICTURE +
+                    enrollment?.student?.image
+                  : img
+              }
               alt="Student Photo"
-              className="w-full h-full object-cover"
+              className="rounded-full object-cover aspect-square w-24 md:w-30"
             />
           </div>
-          <p className="text-secondary-foreground font-semibold text-md sm:text-xl">
-            {`${enrollment.student.firstName} ${enrollment.student.lastName}`}
+          <p className="text-secondary-foreground text-center font-semibold text-sm sm:text-xl">
+            {`${enrollment?.student?.firstName} ${enrollment?.student?.lastName}`}
           </p>
           <p className="text-secondary-foreground text-sm">روضة النور</p>
         </div>
@@ -51,16 +59,16 @@ export default function StudentCardInforamtion({ enrollment, loading=false }) {
         <div className="flex-1 flex flex-col items-center space-y-2 my-auto bg-card rounded-2xl py-2 sm:py-4">
           <div className="space-y-2 md:space-y-2 w-full flex flex-col items-center ">
             {[
-              ["الزمرة الدموية", "A+"],
-              ["الفصل", enrollment.class.className],
-              ["السنة الدراسية", enrollment.academicYear],
-            ].map(([label, value]) => (
+              ["الزمرة الدموية", enrollment?.student?.bloodGroup || "غير محدد"],
+              ["الفصل", enrollment?.class?.className],
+              ["السنة الدراسية", enrollment?.academicYear],
+            ].map(([label, value], i) => (
               <div
                 className="flex sm:text-[13px] text-[10.5px] w-3/4"
                 key={label}
               >
                 <div className="w-1/2 text-muted-foreground">{label}</div>
-                <div>{value}</div>
+                <div dir={i ? "rtl" : "ltr"}>{value}</div>
               </div>
             ))}
           </div>

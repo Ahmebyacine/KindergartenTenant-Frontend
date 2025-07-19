@@ -31,6 +31,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Add } from "iconsax-react";
 import ImageUpload from "@/components/ImageUpload";
 import { generateRandomPassword } from "@/utils/generateRandomPassword";
+import { useEffect } from "react";
 
 const teacherSchema = z.object({
   name: z.string().min(3, "يجب أن يكون الاسم على الأقل 3 أحرف"),
@@ -57,16 +58,42 @@ export default function TeachersModal({
     },
   });
 
+  useEffect(() => {
+    form.reset({
+      name: editingTeacher?.name || "",
+      email: editingTeacher?.email || "",
+      phone: editingTeacher?.phone || "",
+      assignedClass: editingTeacher?.assignedClass?._id || "",
+      image: editingTeacher?.image || null,
+    });
+  }, [editingTeacher, form]);
+
   const onSubmit = async (data) => {
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("email", data.email);
+    formData.append("phone", data.phone);
+
+    if (data.assignedClass)
+      formData.append("assignedClass", data.assignedClass);
+
+    if (data.image && data.image instanceof File) {
+      if (editingTeacher?.image) {
+        formData.append("oldImage", editingTeacher.image);
+      }
+      formData.append("image", data.image);
+    }
+    if (!data.image && editingTeacher?.image) {
+      formData.append("deleteImage", "true");
+      formData.append("oldImage", editingTeacher.image);
+    }
+
     if (editingTeacher) {
-      await onUpdateTeacher({ ...editingTeacher, ...data });
+      await onUpdateTeacher(formData, editingTeacher._id);
     } else {
-      const teacherData = {
-        ...data,
-        role: "teacher",
-        password: generateRandomPassword(12),
-      };
-      await onAddTeacher(teacherData);
+      formData.append("role", "teacher");
+      formData.append("password", generateRandomPassword(12));
+      await onAddTeacher(formData);
     }
     form.reset();
   };

@@ -29,37 +29,7 @@ import StatCard from "@/components/StatCard";
 import { useAuth } from "@/contexts/AuthContext";
 import ScanAttendance from "@/components/attendance/ScanAttendance";
 import ScanCheckOut from "@/components/attendance/ScanCheckOut";
-
-const statsData = [
-  {
-    title: "عدد الأطفال",
-    value: "25 طفل",
-    icon: People,
-    bgColor: "bg-[#A2F4FD]",
-    iconColor: "#00A6F4",
-  },
-  {
-    title: "الحضور",
-    value: "22 حاضر",
-    icon: TickSquare,
-    bgColor: "bg-[#B9F8CF]",
-    iconColor: "#008236",
-  },
-  {
-    title: "الغياب",
-    value: "3 غائب",
-    icon: Danger,
-    bgColor: "bg-[#FFE2E2]",
-    iconColor: "#E7000B",
-  },
-  {
-    title: "نسبة الحضور",
-    value: "88%",
-    icon: Chart2,
-    bgColor: "bg-[#EDE9FE]",
-    iconColor: "#7008E7",
-  },
-];
+import { attendanceStats } from "@/utils/attendanceStats";
 
 export default function AttendanceTeacher() {
   const [loading, setLoading] = useState(true);
@@ -189,6 +159,38 @@ export default function AttendanceTeacher() {
     }
   };
 
+  const totals = attendanceStats(attendance?.info || []);
+
+  const statsData = [
+    {
+      title: "عدد الأطفال",
+      value: `${attendance?.info?.length || 0} طفل`,
+      icon: People,
+      bgColor: "bg-[#A2F4FD]",
+      iconColor: "#00A6F4",
+    },
+    {
+      title: "الحضور",
+      value: `${totals?.presentCount || 0} حاضر`,
+      icon: TickSquare,
+      bgColor: "bg-[#B9F8CF]",
+      iconColor: "#008236",
+    },
+    {
+      title: "الغياب",
+      value: `${totals?.absentCount || 0} غائب`,
+      icon: Danger,
+      bgColor: "bg-[#FFE2E2]",
+      iconColor: "#E7000B",
+    },
+    {
+      title: "نسبة الحضور",
+      value: `${totals?.presentPercentage || 0}%`,
+      icon: Chart2,
+      bgColor: "bg-[#EDE9FE]",
+      iconColor: "#7008E7",
+    },
+  ];
   return (
     <div className="bg-background p-6">
       <div className="mx-auto">
@@ -251,14 +253,25 @@ export default function AttendanceTeacher() {
                   }}
                 >
                   <CarouselContent className="-ml-2 md:-ml-4 min-w-0">
-                    {statsData.map((stat, index) => (
-                      <CarouselItem
-                        key={index}
-                        className="pl-2 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
-                      >
-                        <StatCard stat={stat} />
-                      </CarouselItem>
-                    ))}
+                    {loading
+                      ? Array(4)
+                          .fill(null)
+                          .map((_, idx) => (
+                            <CarouselItem
+                              key={idx}
+                              className="pl-2 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                            >
+                              <StatCard key={idx} loading={true} />
+                            </CarouselItem>
+                          ))
+                      : statsData.map((stat, index) => (
+                          <CarouselItem
+                            key={index}
+                            className="pl-2 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                          >
+                            <StatCard stat={stat} />
+                          </CarouselItem>
+                        ))}
                   </CarouselContent>
                 </Carousel>
               </div>

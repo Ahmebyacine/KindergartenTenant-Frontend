@@ -42,7 +42,7 @@ export default function BarChartRecivedMoney() {
                 لا توجد بيانات متاحة
               </h3>
               <p className="text-sm text-muted-foreground max-w-sm">
-                لم يتم العثور على بيانات الحضور والغياب للفترة المحددة. يرجى
+                لم يتم العثور على بيانات المبالغ المستلمة شهريا. يرجى
                 المحاولة مرة أخرى لاحقاً.
               </p>
             </div>

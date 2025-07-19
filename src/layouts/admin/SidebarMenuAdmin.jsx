@@ -67,7 +67,7 @@ export default function SidebarMenuAdmin() {
   ];
   return (
     <SidebarMenu>
-      {items.map((item,i) => (
+      {items.map((item, i) => (
         <SidebarMenuItem key={i}>
           <SidebarMenuButton asChild isActive={location.pathname === item.url}>
             <NavLink to={item.url} key={i}>
@@ -101,12 +101,14 @@ export default function SidebarMenuAdmin() {
                   color="CurrentColor"
                   size={20}
                 />
-                <span>الاداء المالي</span>
+                <span className="group-data-[collapsible=icon]:hidden">
+                  الاداء المالي
+                </span>
               </div>
             </NavLink>
             <ChevronRight
               className={`transition-transform duration-200 
-                
+                  group-data-[collapsible=icon]:hidden
                   rtl:rotate-180 rtl:group-data-[state=open]/collapsible:rotate-90
                   ltr:group-data-[state=open]/collapsible:rotate-90
               `}
@@ -118,13 +120,14 @@ export default function SidebarMenuAdmin() {
             <SidebarMenu className={"px-2 pt-2"}>
               {financialItems.map((item) => (
                 <NavLink
+                  key={item.url || item.title}
                   to={item.url}
                   className={`${
                     location.pathname === item.url &&
                     "border-r-2 border-sidebar-accent"
                   } border-border border-r-1`}
                 >
-                  <SidebarMenuItem key={item.title}>
+                  <SidebarMenuItem>
                     <SidebarMenuButton
                       tooltip={item.title}
                       className={`${

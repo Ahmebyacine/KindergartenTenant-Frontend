@@ -26,7 +26,7 @@ export default function FinancialPerformance() {
   };
   const { data, loading } = useFetch(fetchFinancialPerformance);
 
-  const totals = data.reduce(
+  const totals = data?.reduce(
     (acc, item) => {
       acc.expenses += item.expenses;
       acc.income += item.income;
@@ -34,57 +34,6 @@ export default function FinancialPerformance() {
     },
     { income: 0, expenses: 0 }
   );
-
-  const employeeData = [
-    {
-      employee: "م نوال",
-      year: "2024-2025",
-      month: "جانفي",
-      operations: "18",
-      amount: 540000,
-      notes: "تقف مراجعة البيانات",
-    },
-    {
-      employee: "م نوال",
-      year: "2024-2025",
-      month: "جانفي",
-      operations: "18",
-      amount: 540000,
-      notes: "تقف مراجعة البيانات",
-    },
-    {
-      employee: "م نوال",
-      year: "2024-2025",
-      month: "جانفي",
-      operations: "18",
-      amount: 540000,
-      notes: "تقف مراجعة البيانات",
-    },
-    {
-      employee: "م نوال",
-      year: "2024-2025",
-      month: "جانفي",
-      operations: "18",
-      amount: 540000,
-      notes: "تقف مراجعة البيانات",
-    },
-    {
-      employee: "م نوال",
-      year: "2024-2025",
-      month: "جانفي",
-      operations: "18",
-      amount: 540000,
-      notes: "تقف مراجعة البيانات",
-    },
-    {
-      employee: "م نوال",
-      year: "2024-2025",
-      month: "جانفي",
-      operations: "18",
-      amount: 540000,
-      notes: "تقف مراجعة البيانات",
-    },
-  ];
 
   const profit = totals?.income - totals?.expenses || 0;
   const profitPercentage =
@@ -158,7 +107,7 @@ export default function FinancialPerformance() {
         </div>
         <FinancialJournalChart data={data} loading={loading} />
         <FinancialJournalTable data={data} loading={loading} />
-        <EmployeeJournalTable data={employeeData} />
+        <EmployeeJournalTable />
       </div>
     </div>
   );

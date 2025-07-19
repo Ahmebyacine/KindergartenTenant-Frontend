@@ -24,6 +24,7 @@ import { Button } from "./ui/button";
 import { useTranslation } from "react-i18next";
 import SidebarMenuSupervisor from "@/layouts/supervisor/SidebarMenuSupervisor";
 import SidebarMenuTeacher from "@/layouts/teacher/SidebarMenuTeacher";
+import { Link } from "react-router-dom";
 
 export function AppSidebar() {
   const { user } = useAuth();
@@ -52,11 +53,15 @@ export function AppSidebar() {
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton size="lg" asChild>
                   <div>
-                    <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-transbarnt text-sidebar-accent-foreground">
+                    <div className="flex aspect-square size-8 items-center justify-center bg-transbarnt text-sidebar-accent-foreground">
                       <img
-                        src={img}
+                        src={
+                          user?.image
+                            ? import.meta.env.VITE_API_URL_PICTURE + user?.image
+                            : img
+                        }
                         alt="User"
-                        className="h-full w-full object-cover"
+                        className="h-full w-full rounded-full object-cover"
                       />
                     </div>
                     <div className="grid flex-1 text-left text-sm leading-tight">
@@ -81,20 +86,28 @@ export function AppSidebar() {
                 <DropdownMenuItem className="p-0">
                   <LogoutButton />
                 </DropdownMenuItem>
-                <DropdownMenuItem className="p-0">
-                  <Button
-                    className="w-full justify-start text-foreground hover:text-red-400 border-b"
-                    variant="ghost"
-                  >
-                    <Setting2
-                      size={16}
-                      variant="Outline"
-                      color="var(--foreground)"
-                      className="size-5"
-                    />
-                    <span>اعدادات الامان</span>
-                  </Button>
-                </DropdownMenuItem>
+                <Link
+                  to={
+                    user && user.role === "admin"
+                      ? "/settings?tab=security"
+                      : "/settings-user?tab=security"
+                  }
+                >
+                  <DropdownMenuItem className="p-0">
+                    <Button
+                      className="w-full justify-start text-foreground hover:text-red-400 border-b"
+                      variant="ghost"
+                    >
+                      <Setting2
+                        size={16}
+                        variant="Outline"
+                        color="var(--foreground)"
+                        className="size-5"
+                      />
+                      <span>اعدادات الامان</span>
+                    </Button>
+                  </DropdownMenuItem>
+                </Link>
                 <DropdownMenuItem className="p-0">
                   <Button
                     className="w-full justify-start text-foreground hover:text-red-400 border-b"

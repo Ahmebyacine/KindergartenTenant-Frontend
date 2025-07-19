@@ -6,31 +6,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
-import { SearchNormal1, Document } from "iconsax-react";
+import { Document } from "iconsax-react";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
-import IncomesFilter from "./IncomesFilter";
+import LoadingTable from "@/components/LoadingTable";
 
-export default function IncomesTable({ incomes }) {
+export default function IncomesTable({ incomes, loading }) {
   return (
     <>
-      <div className="flex">
-        <div className="flex justify-between items-center gap-2 w-full">
-          <div className="w-full relative">
-            <SearchNormal1
-              size="16"
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
-              color="currentColor"
-            />
-            <Input
-              placeholder="البحث"
-              className="pr-10 pl-4 py-2 bg-background"
-              disabled={!incomes.length}
-            />
-          </div>
-          <IncomesFilter />
-        </div>
-      </div>
       <Table>
         <TableHeader>
           <TableRow className="bg-muted/50 border-b border-border hover:bg-muted/50">
@@ -55,7 +37,11 @@ export default function IncomesTable({ incomes }) {
             </TableHead>
           </TableRow>
         </TableHeader>
-        {incomes.length > 0 ? (
+        {loading ? (
+          <TableBody>
+            <LoadingTable />
+          </TableBody>
+        ) : incomes.length > 0 ? (
           <TableBody>
             {incomes.map((row, index) => (
               <TableRow
@@ -63,22 +49,24 @@ export default function IncomesTable({ incomes }) {
                 className="border-b border-border hover:bg-muted/50"
               >
                 <TableCell className="text-foreground py-3">
-                  {row.month}
+                  {row?.monthLabel}
                 </TableCell>
                 <TableCell className="text-foreground font-medium py-3">
-                  {row.schoolYear}
+                  {row?.year}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {row.invoiceCount}
+                  {row?.totalInvoices}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatCurrencyDZD(row.totalAmount)}
+                  {formatCurrencyDZD(row?.totalAmount)}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatCurrencyDZD(row.averageInvoice)}
+                  {formatCurrencyDZD(row?.averageInvoice)}
                 </TableCell>
-                <TableCell className="py-3">{row.collectionRate}</TableCell>
-                <TableCell className="py-3">{row.monthlyComparison}</TableCell>
+                <TableCell className="py-3">{row?.collectionRate}</TableCell>
+                <TableCell className="py-3">
+                  %{row?.compareToPrevious || "N/A"}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

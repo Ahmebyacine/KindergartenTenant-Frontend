@@ -57,7 +57,11 @@ export default function UserCard({
           >
             <div className="rounded-full bg-primary/10 w-[50px] h-[50px] shrink-0">
               <img
-                src={img}
+                src={
+                  user?.image
+                    ? import.meta.env.VITE_API_URL_PICTURE + user?.image
+                    : img
+                }
                 alt="User"
                 className="h-full w-full object-cover rounded-full"
               />

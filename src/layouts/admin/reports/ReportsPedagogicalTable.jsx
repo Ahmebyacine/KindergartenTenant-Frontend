@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SearchNormal1, Document } from "iconsax-react";
-import { getAssessmentBadge } from "@/utils/getStatusBadges";
+import { getOverallBadge } from "@/utils/getStatusBadges";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import ReportsPedagogicalModal from "../../../components/reports/ReportsPedagogicalModal";
@@ -22,10 +22,10 @@ import useFetch from "@/hooks/useFetch";
 
 export default function ReportsPedagogicalTable({ classes, students }) {
   const fetchReport = async () => {
-      const response = await api.get("/pedagogical-reports");
-      return response.data;
-    };
-    const { data: reports, loading } = useFetch(fetchReport);
+    const response = await api.get("/pedagogical-reports");
+    return response.data;
+  };
+  const { data: reports, loading } = useFetch(fetchReport);
   const handelAddReport = async (data) => {
     try {
       await api.post("/pedagogical-reports", data);
@@ -85,7 +85,9 @@ export default function ReportsPedagogicalTable({ classes, students }) {
           </TableRow>
         </TableHeader>
         {loading ? (
-          <LoadingTable />
+          <TableBody>
+            <LoadingTable />
+          </TableBody>
         ) : reports.length > 0 ? (
           <TableBody>
             {reports.map((row, index) => (
@@ -109,7 +111,7 @@ export default function ReportsPedagogicalTable({ classes, students }) {
                   {formatDateTime(row.createdAt)}
                 </TableCell>
                 <TableCell className="py-3">
-                  {getAssessmentBadge(row.overall)}
+                  {getOverallBadge(row.overall)}
                 </TableCell>
                 <TableCell className="py-3">
                   {row.overall === "جديد" ? (

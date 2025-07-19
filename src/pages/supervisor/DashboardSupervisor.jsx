@@ -21,7 +21,6 @@ export default function DashboardSupervisor() {
       icon: Coin,
       iconColor: "#00C951",
       bgColor: "bg-[#B9F8CF]",
-      to: "/supervisor-incomes",
     },
     {
       title: "الأطفال الغائبون هذا الشهر",
@@ -29,7 +28,7 @@ export default function DashboardSupervisor() {
       icon: Danger,
       iconColor: "#FB2C36",
       bgColor: "bg-[#FFE2E2]",
-      to: "/teacher-attendance",
+      to: "/supervisor-attendance",
     },
     {
       title: "تقارير قيد المراجعة",
