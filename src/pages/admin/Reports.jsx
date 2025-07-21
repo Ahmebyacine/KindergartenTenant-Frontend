@@ -1,10 +1,11 @@
 import { useSearchParams } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ReportsFinancialTable from "@/layouts/admin/reports/ReportsFinancialTable";
-import ReportsHealthTable from "@/layouts/admin/reports/ReportsHealthTable";
-import ReportsPedagogicalTable from "@/layouts/admin/reports/ReportsPedagogicalTable";
+import ReportsFinancialTable from "@/components/reports/ReportsFinancialTable";
+import ReportsHealthTable from "@/components/reports/ReportsHealthTable";
+import ReportsPedagogicalTable from "@/components/reports/ReportsPedagogicalTable";
 import api from "@/services/api";
 import useFetch from "@/hooks/useFetch";
+import ErrorPage from "../common/ErrorPage";
 
 export default function Reports() {
   const [searchParams] = useSearchParams();
@@ -19,9 +20,11 @@ export default function Reports() {
     const response = await api.get("/enrollments");
     return response.data.data;
   };
-  const { data: classes } = useFetch(fetchClasses);
+  const { data: classes, error: classesError } = useFetch(fetchClasses);
 
-  const { data: students } = useFetch(fetchStudents);
+  const { data: students, error: studentsError } = useFetch(fetchStudents);
+
+  if (classesError || studentsError) return <ErrorPage  error={classesError || studentsError} />;
 
   return (
     <div className="bg-background p-6">

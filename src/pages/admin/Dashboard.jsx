@@ -13,7 +13,7 @@ export default function Dashboard() {
     const res = await api.get(`/statistics/summary/admin`);
     return res.data;
   };
-  const { data, loading } = useFetch(fetchSummaryAdmin);
+  const { data, loading, error } = useFetch(fetchSummaryAdmin);
   const stats = [
     {
       title: "الدخل الشهري",
@@ -52,10 +52,10 @@ export default function Dashboard() {
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {loading
+          {loading || error
             ? Array(4)
                 .fill(null)
-                .map((_, idx) => <StatCard key={idx} loading={true} />)
+                .map((_, idx) => <StatCard key={idx} loading={loading} error={error} />)
             : stats.map((stat, idx) =>
                 stat.to ? (
                   <Link to={stat.to} className="no-underline" key={idx}>

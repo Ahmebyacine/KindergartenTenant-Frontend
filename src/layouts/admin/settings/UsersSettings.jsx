@@ -1,12 +1,10 @@
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
 import { SearchNormal1 } from "iconsax-react";
 import UserModal from "./UserModal";
 import api from "@/services/api";
 import { toast } from "sonner";
-import UsersFilter from "./UsersFilter";
 import useFetch from "@/hooks/useFetch";
-import { useState } from "react";
 import UserCard from "./UserCars";
 import { generateRandomPassword } from "@/utils/generateRandomPassword";
 
@@ -17,7 +15,7 @@ export default function UsersSettings() {
     const response = await api.get("/users");
     return response.data;
   };
-  const { data: users, setData: setUsers, loading } = useFetch(fetchUsers);
+  const { data: users, setData: setUsers, loading, error } = useFetch(fetchUsers);
 
   const handleAddUser = async (userData) => {
     try {
@@ -66,30 +64,6 @@ export default function UsersSettings() {
     }
   };
 
-  const permissions = [
-    { task: "إضافة طفل جديد", teacher: false, observer: false, manager: true },
-    {
-      task: "تسجيل الحضور والغياب",
-      teacher: true,
-      observer: false,
-      manager: true,
-    },
-    { task: "إرسال تقرير صحي", teacher: true, observer: false, manager: true },
-    {
-      task: "إرسال تقرير تربوي (بيداغوجي)",
-      teacher: true,
-      observer: false,
-      manager: true,
-    },
-    {
-      task: "عرض التقارير المالية",
-      teacher: false,
-      observer: false,
-      manager: true,
-    },
-    { task: "إضافة مصروف", teacher: false, observer: false, manager: true },
-  ];
-
   return (
     <div>
       <section className="mb-12">
@@ -110,15 +84,14 @@ export default function UsersSettings() {
                 disabled={!users.length}
               />
             </div>
-            <UsersFilter />
           </div>
           <UserModal onAddUser={handleAddUser} />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2">
-          {loading
+          {loading || error
             ? Array.from({ length: 4 }).map((_, index) => (
-                <UserCard key={index} loading />
+                <UserCard key={index} loading={loading} error={error} />
               ))
             : users.map((user) => (
                 <UserCard
@@ -129,49 +102,6 @@ export default function UsersSettings() {
                   onChangePassword={(user) => handleChangePassword(user._id)}
                 />
               ))}
-        </div>
-      </section>
-
-      {/* Permissions Management Section */}
-      <section>
-        <h2 className="text-2xl font-bold text-foreground mb-6">
-          إدارة الصلاحيات
-        </h2>
-        <div className="bg-card rounded-lg shadow-sm border border-border overflow-hidden">
-          <div className="grid grid-cols-4 text-right bg-muted border-b border-border py-3 px-4 font-semibold text-foreground">
-            <div>المهمة</div>
-            <div>المعلم</div>
-            <div>المراقب</div>
-            <div>المدير</div>
-          </div>
-          {permissions.map((perm, index) => (
-            <div
-              key={index}
-              className={`grid grid-cols-4 items-center py-3 px-4 ${
-                index % 2 === 0 ? "bg-background" : "bg-muted"
-              } border-b border-border last:border-b-0`}
-            >
-              <div className="text-foreground">{perm.task}</div>
-              <div className="flex justify-start">
-                <Switch
-                  checked={perm.teacher}
-                  className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted"
-                />
-              </div>
-              <div className="flex justify-start">
-                <Switch
-                  checked={perm.observer}
-                  className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted"
-                />
-              </div>
-              <div className="flex justify-start">
-                <Switch
-                  checked={perm.manager}
-                  className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted"
-                />
-              </div>
-            </div>
-          ))}
         </div>
       </section>
       {editingId && (

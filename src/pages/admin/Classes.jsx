@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ClassesTable from "@/layouts/admin/classes/ClassesTable";
 import api from "@/services/api";
@@ -7,8 +7,11 @@ import { Input } from "@/components/ui/input";
 import { SearchNormal1 } from "iconsax-react";
 import { toast } from "sonner";
 import useFetch from "@/hooks/useFetch";
+import ErrorPage from "../common/ErrorPage";
 
 export default function Classes() {
+  const [activeTab, setActiveTab] = useState(null);
+  const [search, setSearch] = useState("");
   // Fetch Functions
   const fetchTabs = async () => {
     const response = await api.get("/categories");
@@ -24,16 +27,14 @@ export default function Classes() {
     return response.data;
   };
   // useFetch Hooks
-  const { data: tabs } = useFetch(fetchTabs);
+  const { data: tabs,error: tabsError } = useFetch(fetchTabs);
 
   const {
     data: classes,
     setData: setClasses,
     loading: classesLoading,
+    error: classesError,
   } = useFetch(fetchClasses);
-
-  // Local state
-  const [activeTab, setActiveTab] = useState(null);
 
   useEffect(() => {
     if (tabs?.length > 0) {
@@ -73,9 +74,19 @@ export default function Classes() {
     }
   };
 
-  // Filtering
-  const filteredClasses =
-    classes?.filter((classe) => classe?.category?._id === activeTab) || [];
+  const filteredClasses = useMemo(() => {
+    if (!search.trim())
+      return (
+        classes?.filter((classe) => classe?.category?._id === activeTab) || []
+      );
+
+    return classes.filter((cls) => {
+      const name = cls.className?.toLowerCase() || "";
+      return name.includes(search.toLowerCase()) || "";
+    });
+  }, [classes, search, activeTab]);
+
+  if (tabsError || classesError) return <ErrorPage error={tabsError || classesError} />;
 
   return (
     <div className="bg-background p-6">
@@ -83,7 +94,7 @@ export default function Classes() {
         <div className="flex justify-start">
           <Tabs
             value={activeTab}
-            onValueChange={setActiveTab}
+            onValueChange={setActiveTab}k
             className="w-full"
           >
             <TabsList className="grid w-full grid-cols-3 bg-transparent h-auto p-0 gap-8 md:grid-cols-4 lg:grid-cols-6 border-b mb-2">
@@ -109,7 +120,8 @@ export default function Classes() {
                   <Input
                     placeholder="البحث"
                     className="pr-10 pl-4 py-2 bg-background"
-                    disabled={!filteredClasses.length}
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                   />
                 </div>
               </div>

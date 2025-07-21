@@ -13,7 +13,7 @@ import { ChevronRight } from "lucide-react";
 import DetailItem from "../DetailItem";
 import api from "@/services/api";
 import useFetch from "@/hooks/useFetch";
-import Loading from "@/pages/Loading";
+import Loading from "@/pages/common/Loading";
 import { formatDate } from "@/utils/dateFormatter";
 
 export default function ReportHealthDetails() {

@@ -10,7 +10,8 @@ import api from "@/services/api";
 import { getMonthNameByNumber } from "@/utils/getMonthNameByNumber";
 import { Line, LineChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { Skeleton } from "../ui/skeleton";
-import { Chart1 } from "iconsax-react";
+import { Chart1, Danger } from "iconsax-react";
+import { t } from "i18next";
 
 export default function LineChartAttendnce() {
   const fetchAttendaceSummary = async () => {
@@ -20,7 +21,7 @@ export default function LineChartAttendnce() {
       monthLabel: getMonthNameByNumber(item.month),
     }));
   };
-  const { data, loading } = useFetch(fetchAttendaceSummary);
+  const { data, loading, error } = useFetch(fetchAttendaceSummary);
   return (
     <Card dir="ltr">
       <CardHeader>
@@ -28,7 +29,26 @@ export default function LineChartAttendnce() {
           مقارنة بين الحضور والغياب شهريا
         </CardTitle>
       </CardHeader>
-      {loading ? (
+      {error ? (
+        <CardContent className="flex flex-col items-center justify-center py-12 px-6">
+          <div className="flex flex-col items-center space-y-4 text-center">
+            <div className="rounded-full text-destructive bg-muted">
+              <Danger size={36} color="currentColor" />
+              <h3 className="text-lg font-medium text-destructive">
+                {error?.status}
+              </h3>
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-lg font-medium text-destructive">
+                حدث خطأ أثناء تحميل البيانات
+              </h3>
+              <p className="text-sm text-destructive max-w-sm">
+                {t(`errorApi.${error?.message}`)}
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      ) : loading ? (
         <div className="space-y-4 mx-4">
           <Skeleton className="h-4 w-full rounded-xl" />
           <Skeleton className="h-70 w-full rounded-xl" />

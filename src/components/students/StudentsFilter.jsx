@@ -10,28 +10,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { Setting4, Trash } from "iconsax-react";
 
-export default function StudentsFilter({ classes }) {
-  const [selectedClass, setSelectedClass] = useState();
-  const [selectedMonth, setSelectedMonth] = useState();
-
-  const months = [
-    "سبتمبر",
-    "أكتوبر",
-    "نوفمبر",
-    "ديسمبر",
-    "جانفي",
-    "فيفري",
-    "مارس",
-    "أفريل",
-    "ماي",
-    "جوان",
-    "جويليه",
-    "أوت",
-  ];
+export default function StudentsFilter({ classes, onFilter }) {
+  const [selectedClass, setSelectedClass] = useState("");
 
   const handleReset = () => {
     setSelectedClass("");
-    setSelectedMonth("");
+    onFilter({ classId: null });
   };
 
   return (
@@ -43,8 +27,14 @@ export default function StudentsFilter({ classes }) {
             variant="outline"
             className="data-[state=open]:text-primary data-[state=open]:border-primary w-full sm:w-auto"
           >
-            <Setting4 size={14} color="currentColor" />
-            <span className="hidden md:block">فلاترة</span>
+            {selectedClass ? (
+              <span className="text-primary">{classes?.find((c) => c._id === selectedClass.classId)?.className}</span>
+            ) : (
+              <>
+                <Setting4 size={14} color="currentColor" />
+                <span className="hidden md:block">فلاترة</span>
+              </>
+            )}
           </Button>
         </DialogTrigger>
 
@@ -57,41 +47,27 @@ export default function StudentsFilter({ classes }) {
             <h3 className="text-lg font-semibold mb-3">فلاترة حسب القسم:</h3>
             <div>
               <div className="flex flex-wrap gap-2 justify-start">
-                {classes.map((type) => (
+                {classes?.map((type) => (
                   <Button
-                    key={type._id}
+                    key={type?._id}
                     variant="outline"
                     className={`rounded-full px-4 py-2 text-sm ${
-                      selectedClass === type._id
-                        ? "border-primary text-primary bg-backgroun"
+                      selectedClass?.classId === type?._id
+                        ? "border-primary text-primary bg-background"
                         : "border-border bg-card"
                     }`}
-                    onClick={() => setSelectedClass(type._id)}
+                    onClick={() =>
+                      selectedClass.classId === type?._id
+                        ? setSelectedClass("")
+                        : setSelectedClass({
+                            classId: type?._id,
+                            category: type?.category?._id,
+                          })
+                    }
                   >
-                    {type.className}
+                    {type?.className}
                   </Button>
-                ))}
-              </div>
-            </div>
-
-            {/* Filter by classes */}
-            <div>
-              <h3 className="text-lg font-semibold mb-3">فلاترة حسب الشهر:</h3>
-              <div className="flex flex-wrap gap-2 justify-start">
-                {months.map((month) => (
-                  <Button
-                    key={month}
-                    variant="outline"
-                    className={`rounded-full px-4 py-2 text-sm ${
-                      selectedMonth === month
-                        ? "border-primary text-primary bg-backgroun"
-                        : "border-border bg-card"
-                    }`}
-                    onClick={() => setSelectedMonth(month)}
-                  >
-                    {month}
-                  </Button>
-                ))}
+                )) || "لا توجد أقسام متاحة"}
               </div>
             </div>
           </div>
@@ -106,7 +82,10 @@ export default function StudentsFilter({ classes }) {
               <Trash size={14} color="currentColor" />
               إعادة تعيين الكل
             </Button>
-            <Button className="bg-primary text-white rounded-lg px-6 py-3 hover:bg-primary/90">
+            <Button
+              className="bg-primary text-white rounded-lg px-6 py-3 hover:bg-primary/90"
+              onClick={() => onFilter(selectedClass)}
+            >
               تطبيق الفلاتر
             </Button>
           </DialogFooter>

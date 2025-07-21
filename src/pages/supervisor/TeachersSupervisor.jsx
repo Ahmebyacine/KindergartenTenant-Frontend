@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TeachersTable from "@/layouts/supervisor/teachers/TeachersTable";
 import api from "@/services/api";
 import { SearchNormal1 } from "iconsax-react";
 import { Input } from "@/components/ui/input";
 import useFetch from "@/hooks/useFetch";
+import ErrorPage from "../common/ErrorPage";
 
 export default function TeachersSupervisor() {
   const [activeTab, setActiveTab] = useState(null);
+  const [search, setSearch] = useState("");
 
   const fetchTabs = async () => {
     const response = await api.get("/categories");
@@ -23,19 +25,33 @@ export default function TeachersSupervisor() {
     return response.data;
   };
 
-  const { data: tabs } = useFetch(fetchTabs);
+  const { data: tabs, error: tabsError } = useFetch(fetchTabs);
 
-  const { data: teachers, loading } = useFetch(fetchTeachers);
+  const { data: teachers, loading, error: teachersError } = useFetch(fetchTeachers);
 
-   useEffect(() => {
-      if (tabs?.length > 0) {
-        setActiveTab(tabs[0].id);
-      }
-    }, [tabs]);
-  // Filter teachers
-  const filteredTeachers = teachers.filter((teacher) => {
-    return teacher?.assignedClass?.category === activeTab;
-  });
+  useEffect(() => {
+    if (tabs?.length > 0) {
+      setActiveTab(tabs[0].id);
+    }
+  }, [tabs]);
+
+  const filteredTeachers = useMemo(() => {
+    if (!search.trim())
+      return (
+        teachers?.filter(
+          (teacher) => teacher?.assignedClass?.category === activeTab
+        ) || []
+      );
+
+    return teachers.filter((teacher) => {
+      const name = teacher.name?.toLowerCase() || "";
+      return name.includes(search.toLowerCase()) || "";
+    });
+  }, [teachers, search, activeTab]);
+
+  if (tabsError || teachersError) {
+    return <ErrorPage error={tabsError || teachersError} />;
+  }
 
   return (
     <div className="bg-background p-6">
@@ -68,7 +84,8 @@ export default function TeachersSupervisor() {
                 <Input
                   placeholder="البحث"
                   className="pr-10 pl-4 py-2 w-64 border border-border rounded-lg text-right bg-background"
-                  disabled={!teachers.length}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
             </div>

@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import {
   Table,
   TableBody,
@@ -6,37 +7,96 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { SearchNormal1, Document } from "iconsax-react";
 import { getStatusPayBadge } from "@/utils/getStatusBadges";
+import { SearchNormal1, Document } from "iconsax-react";
 import { Link } from "react-router-dom";
-import ReportsFinancialModal from "@/components/reports/ReportsFinancialModal";
 import { toast } from "sonner";
+import ReportsFinancialModal from "@/components/reports/ReportsFinancialModal";
 import api from "@/services/api";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import { formatDateMonth } from "@/utils/dateFormatter";
 import LoadingTable from "@/components/LoadingTable";
 import ReportsFilter from "@/components/reports/ReportsFilter";
-import useFetch from "@/hooks/useFetch";
+import usePaginatedFetch from "@/hooks/usePaginatedFetch";
+import getPageNumbers from "@/utils/getPageNumbers";
 
 export default function ReportsFinancialTable({ classes, students }) {
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const debounceTimeout = useRef(null);
 
-  const fetchReport = async () => {
-    const response = await api.get("/financial-reports");
-    return response.data.data;
+  const fetchReports = async ({ page = 1, search, class: classId, month }) => {
+    const params = new URLSearchParams();
+    params.append("page", page);
+    if (search) params.append("search", search);
+    if (classId) params.append("class", classId);
+    if (month) params.append("month", month);
+
+    const res = await api.get(`/financial-reports?${params.toString()}`);
+    return res.data;
   };
-  const { data: reports, setData:setReports, loading } = useFetch(fetchReport);
+  const {
+    data: reports,
+    setData: setReports,
+    loading,
+    page: actualPage,
+    pages,
+    refetch,
+    error
+  } = usePaginatedFetch(() => fetchReports({ page: page }));
 
-  const handelAddReport = async (data) => {
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+    refetch(() => fetchReports({ page: newPage }));
+  };
+
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setSearch(value);
+    setPage(1);
+
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
+    }
+
+    debounceTimeout.current = setTimeout(() => {
+      refetch(() => fetchReports({ page: 1, search: value }));
+    }, 1300);
+  };
+
+  const handleApplyFilter = (selectedClass, selectedMonth) => {
+    refetch(() =>
+      fetchReports({
+        page: 1,
+        class: selectedClass,
+        month: selectedMonth,
+        search,
+      })
+    );
+  };
+
+  const handleAddReport = async (data) => {
     try {
       const response = await api.post("/financial-reports", data);
-      setReports((prev) => [response.data, ...prev])
-      toast.success("تمت إضافة التقرير بنجاح!");
+      setReports((prev) => [response.data, ...prev]);
+      toast("تمت إضافة التقرير بنجاح!");
     } catch (error) {
       console.error("Error creating class", error);
     }
   };
+
+  if (error) return <ErrorPage error={error} />;
 
   return (
     <>
@@ -51,13 +111,14 @@ export default function ReportsFinancialTable({ classes, students }) {
             <Input
               placeholder="البحث"
               className="pr-10 pl-4 py-2 bg-background"
-              disabled={!reports.length}
+              onChange={handleSearch}
+              value={search}
             />
           </div>
-          <ReportsFilter />
+          <ReportsFilter onApplyFilters={handleApplyFilter} classes={classes} />
         </div>
         <ReportsFinancialModal
-          onAddReport={handelAddReport}
+          onAddReport={handleAddReport}
           classes={classes}
           children={students}
         />
@@ -66,7 +127,7 @@ export default function ReportsFinancialTable({ classes, students }) {
       <Table>
         <TableHeader>
           <TableRow className="bg-muted/50 border-b border-border hover:bg-muted/50">
-            <TableHead className="text-muted-foreground font-medium h-12 !text-center">
+            <TableHead className="text-muted-foreground font-medium h-12">
               #
             </TableHead>
             <TableHead className="text-muted-foreground font-medium">
@@ -93,7 +154,9 @@ export default function ReportsFinancialTable({ classes, students }) {
           </TableRow>
         </TableHeader>
         {loading ? (
-          <LoadingTable />
+          <TableBody>
+            <LoadingTable />
+          </TableBody>
         ) : reports.length > 0 ? (
           <TableBody>
             {reports.map((report, i) => (
@@ -101,7 +164,7 @@ export default function ReportsFinancialTable({ classes, students }) {
                 key={report._id}
                 className="border-b border-border hover:bg-muted/50"
               >
-                <TableCell className="text-foreground py-3 !text-center">{i + 1}</TableCell>
+                <TableCell className="text-foreground py-3">{i + 1}</TableCell>
                 <TableCell className="text-foreground font-medium py-3">
                   {report.student?.firstName} {report.student?.lastName}
                 </TableCell>
@@ -152,6 +215,52 @@ export default function ReportsFinancialTable({ classes, students }) {
           </TableBody>
         )}
       </Table>
+      {/* Pagination Controls */}
+      {pages > 1 && (
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => handlePageChange(Math.max(1, actualPage - 1))}
+                className={
+                  actualPage === 1
+                    ? "pointer-events-none opacity-50"
+                    : "cursor-pointer"
+                }
+              />
+            </PaginationItem>
+
+            {getPageNumbers(actualPage, pages).map((p, idx) => (
+              <PaginationItem key={idx}>
+                {p === "ellipsis" ? (
+                  <PaginationEllipsis />
+                ) : (
+                  <PaginationLink
+                    onClick={() => handlePageChange(p)}
+                    isActive={loading ? page === p : actualPage === p}
+                    className="cursor-pointer"
+                  >
+                    {p}
+                  </PaginationLink>
+                )}
+              </PaginationItem>
+            ))}
+
+            <PaginationItem>
+              <PaginationNext
+                onClick={() =>
+                  handlePageChange(Math.min(pages, actualPage + 1))
+                }
+                className={
+                  actualPage === pages
+                    ? "pointer-events-none opacity-50"
+                    : "cursor-pointer"
+                }
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </>
   );
 }

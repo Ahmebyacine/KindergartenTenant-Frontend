@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import StudentsTable from "@/components/students/StudentsTable";
 import { SearchNormal1 } from "iconsax-react";
@@ -9,9 +9,12 @@ import { toast } from "sonner";
 import StudentsFilter from "@/components/students/StudentsFilter";
 import RegistrationsModal from "@/components/students/RegistrationsModal";
 import useFetch from "@/hooks/useFetch";
+import ErrorPage from "../common/ErrorPage";
 
 export default function Students() {
   const [activeTab, setActiveTab] = useState(null);
+  const [search, setSearch] = useState("");
+  const [filters, setFilters] = useState({ classId: null, category: null });
 
   const fetchTabs = async () => {
     const res = await api.get("/categories");
@@ -29,17 +32,22 @@ export default function Students() {
 
   const fetchStudents = async () => {
     const res = await api.get("/enrollments");
-    return res.data.data;
+    return res.data;
   };
 
-  const { data: tabs } = useFetch(fetchTabs);
+  const { data: tabs, error: tabsError } = useFetch(fetchTabs);
 
-  const { data: classes, loading: classesLoading } = useFetch(fetchClasses);
+  const {
+    data: classes,
+    loading: classesLoading,
+    error: classesError,
+  } = useFetch(fetchClasses);
 
   const {
     data: students,
     setData: setStudents,
     loading: studentsLoading,
+    error: studentsError,
   } = useFetch(fetchStudents);
 
   useEffect(() => {
@@ -50,7 +58,6 @@ export default function Students() {
 
   const handleAddStudent = async (data) => {
     try {
-      console.log(data);
       const response = await api.post("/students", data);
       setStudents((prev) => [response.data, ...prev]);
       toast.success("تمت إضافة الطفل بنجاح!");
@@ -73,7 +80,6 @@ export default function Students() {
 
   const handleUpdateStudent = async (formData, studentId) => {
     try {
-      console.log(formData.entries());
       const response = await api.put(`/students/${studentId}`, formData);
 
       const updatedData = response.data;
@@ -91,8 +97,46 @@ export default function Students() {
     }
   };
 
-  const filteredStudents =
-    students?.filter((student) => student?.class?.category === activeTab) || [];
+  const handleFilterStudents = (filters) => {
+    setFilters(filters);
+    if (filters.category) setActiveTab(filters.category);
+  };
+
+  const filteredStudents = useMemo(() => {
+    let result = students || [];
+
+    // Filter by tab (category)
+    if (activeTab) {
+      result = result.filter(
+        (student) => student.class?.category === activeTab
+      );
+    }
+
+    // Apply filters
+    if (filters.classId) {
+      result = result.filter(
+        (student) => student.class?._id === filters.classId
+      );
+    }
+
+    // Apply search
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      result = result.filter((s) => {
+        const firstName = s.student?.firstName?.toLowerCase() || "";
+        const lastName = s.student?.lastName?.toLowerCase() || "";
+        const fullName = `${firstName} ${lastName}`;
+        return (
+          firstName.includes(q) || lastName.includes(q) || fullName.includes(q)
+        );
+      });
+    }
+
+    return result;
+  }, [students, activeTab, filters, search]);
+
+  if (tabsError || classesError || studentsError)
+    return <ErrorPage error={tabsError || classesError || studentsError} />;
 
   return (
     <div className="bg-background p-6">
@@ -126,10 +170,14 @@ export default function Students() {
                   <Input
                     placeholder="البحث"
                     className="pr-10 pl-4 py-2 bg-background"
-                    disabled={!filteredStudents.length}
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                   />
                 </div>
-                <StudentsFilter classes={classes} />
+                <StudentsFilter
+                  classes={classes}
+                  onFilter={handleFilterStudents}
+                />
               </div>
 
               <div className="flex my-3 w-full sm:w-auto">

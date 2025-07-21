@@ -18,7 +18,7 @@ import { ChevronRight } from "lucide-react";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import api from "@/services/api";
 import useFetch from "@/hooks/useFetch";
-import Loading from "@/pages/Loading";
+import Loading from "@/pages/common/Loading";
 import { formatDateMonth, formatDateTime } from "@/utils/dateFormatter";
 import { getStatusPayBadge } from "@/utils/getStatusBadges";
 import { Button } from "../ui/button";

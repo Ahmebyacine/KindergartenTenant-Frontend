@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import StudentsTable from "@/components/students/StudentsTable";
 import { SearchNormal1 } from "iconsax-react";
 import StudentsModal from "@/components/students/StudentsModal";
@@ -8,28 +9,31 @@ import StudentsFilter from "@/components/students/StudentsFilter";
 import RegistrationsModal from "@/components/students/RegistrationsModal";
 import { useAuth } from "@/contexts/AuthContext";
 import useFetch from "@/hooks/useFetch";
+import ErrorPage from "../common/ErrorPage";
 
 export default function StudentsTeacher() {
   const { user } = useAuth();
+  const [search, setSearch] = useState("");
 
   const fetchStudents = async () => {
     const res = await api.get("/enrollments");
-    return res.data.data;
+    return res.data;
   };
 
   const {
     data: students,
     setData: setStudents,
     loading,
+    error,
   } = useFetch(fetchStudents);
 
   const handelAddStudent = async (data) => {
     try {
       const response = await api.post("/students", data);
-      setStudents((prevTeachers) => [...prevTeachers, response.data]);
+      setStudents((prev) => [...prev, response.data]);
       toast("تمت إضافة الطفل بنجاح!");
     } catch (error) {
-      console.error("Error creating class", error);
+      console.error("Error creating student", error);
     }
   };
 
@@ -65,6 +69,24 @@ export default function StudentsTeacher() {
     }
   };
 
+  const filteredStudents = useMemo(() => {
+    if (!search.trim()) return students;
+
+    return students.filter((s) => {
+      const firstName = s.student?.firstName?.toLowerCase() || "";
+      const lastName = s.student?.lastName?.toLowerCase() || "";
+      const fullName = `${firstName} ${lastName}`;
+
+      return (
+        firstName.includes(search.toLowerCase()) ||
+        lastName.includes(search.toLowerCase()) ||
+        fullName.includes(search.toLowerCase())
+      );
+    });
+  }, [students, search]);
+
+  if (error) return <ErrorPage error={error} />;
+
   return (
     <div className="bg-background px-6">
       <div className="w-full mx-auto space-y-6">
@@ -78,28 +100,30 @@ export default function StudentsTeacher() {
                   color="currentColor"
                 />
                 <Input
-                  placeholder="البحث"
+                  placeholder="البحث عن اسم الطفل"
                   className="pr-10 pl-4 py-2 bg-background"
-                  disabled={!students.length}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
-              <StudentsFilter classes={[user.class]} />
+              <StudentsFilter classes={[user?.class]} />
             </div>
             <div className="flex my-3 w-full sm:w-auto">
               <RegistrationsModal
-                classes={[user.class]}
+                classes={[user?.class]}
                 onRegistred={handleRegistrationsStudent}
               />
               <StudentsModal
-                classes={[user.class]}
+                classes={[user?.class]}
                 onAddStudent={handelAddStudent}
               />
             </div>
           </div>
+
           <StudentsTable
             loading={loading}
-            students={students}
-            classes={[user.class]}
+            students={filteredStudents}
+            classes={[user?.class]}
             onUpdateStudent={handleUpdateStudent}
           />
         </div>

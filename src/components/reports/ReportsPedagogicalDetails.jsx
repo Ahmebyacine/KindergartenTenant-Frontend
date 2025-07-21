@@ -11,7 +11,7 @@ import { Link, useParams } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import api from "@/services/api";
 import useFetch from "@/hooks/useFetch";
-import Loading from "@/pages/Loading";
+import Loading from "@/pages/common/Loading";
 import DetailItem from "../DetailItem";
 import { formatDate } from "@/utils/dateFormatter";
 import { getOverallBadge } from "@/utils/getStatusBadges";

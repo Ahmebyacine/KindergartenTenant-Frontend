@@ -1,3 +1,13 @@
+import { useRef, useState } from "react";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import {
   Calendar,
   Card as CardIcon,
@@ -13,18 +23,23 @@ import { toast } from "sonner";
 import ExpensesFilter from "@/layouts/admin/expenses/ExpensesFilter";
 import ExpensesModal from "@/layouts/admin/expenses/ExpensesModal";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
 import { getMonthNameByNumber } from "@/utils/getMonthNameByNumber";
-import useFetchParams from "@/hooks/useFetchParams";
+import useFetch from "@/hooks/useFetch";
+import usePaginatedFetch from "@/hooks/usePaginatedFetch";
+import getPageNumbers from "@/utils/getPageNumbers";
+import ErrorPage from "../common/ErrorPage";
 
 export default function Expenses() {
-  const [selectedExpenseType, setSelectedExpenseType] = useState("");
-  const [selectedMonth, setSelectedMonth] = useState("");
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const debounceTimeout = useRef(null);
 
   const fetchExpenses = async (filters = {}) => {
     const params = new URLSearchParams();
+    params.append("page", page);
     if (filters.type) params.append("category", filters.type);
     if (filters.month) params.append("month", filters.month);
+    if (filters.search) params.append("search", filters.search);
 
     const res = await api.get(`/expenses?${params.toString()}`);
     return res.data;
@@ -36,33 +51,47 @@ export default function Expenses() {
     const res = await api.get(`/expenses/statistics?${params.toString()}`);
     return res.data;
   };
-
   const {
     data: expenses,
     setData: setExpenses,
     loading,
+    page: actualPage,
+    pages,
     refetch: refetchExpenses,
-  } = useFetchParams(() =>
-    fetchExpenses({ type: selectedExpenseType, month: selectedMonth })
-  );
+    error: errorExpenses
+  } = usePaginatedFetch(() => fetchExpenses({ page: page }));
+
   const {
     data: expensesStatistics,
     loading: loadingStatistics,
     refetch: refetchStatistics,
-  } = useFetchParams(() => fetchExpensesStatistics({ month: selectedMonth }));
+    error: errorStatistics
+  } = useFetch(() => fetchExpensesStatistics());
+
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+    refetchExpenses(() => fetchExpenses({ page: newPage }));
+  };
+
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setSearch(value);
+    setPage(1);
+
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
+    }
+
+    debounceTimeout.current = setTimeout(() => {
+      refetchExpenses(() => fetchExpenses({ page: 1, search: value }));
+    }, 700);
+  };
 
   const handleAddExpense = async (data) => {
     try {
       const response = await api.post("/expenses", data);
-      setExpenses((prev) => ({
-        ...prev,
-        count: prev.count + 1,
-        data: [...prev.data, response.data],
-      }));
-      refetchStatistics &&
-        refetchStatistics(() =>
-          fetchExpensesStatistics({ month: selectedMonth })
-        );
+      setExpenses((prev) => [response.data, ...prev]);
+      refetchStatistics(fetchExpensesStatistics);
       toast.success("تمت إضافة المصروف بنجاح!");
     } catch (error) {
       console.error("Error creating class", error);
@@ -73,29 +102,32 @@ export default function Expenses() {
     try {
       const response = await api.put(`/expenses/${data._id}`, data);
 
-      setExpenses((prev) => ({
-        ...prev,
-        data: prev.data.map((item) =>
-          item._id === data._id ? response.data : item
-        ),
-      }));
-      refetchStatistics &&
-        refetchStatistics(() =>
-          fetchExpensesStatistics({ month: selectedMonth })
-        );
+      setExpenses((prev) =>
+        prev.map((item) => (item._id === data._id ? response.data : item))
+      );
+      refetchStatistics && refetchStatistics(() => fetchExpensesStatistics());
       toast.success("تم التحديث بنجاح");
     } catch (error) {
       console.error("Update failed:", error);
       toast.error("حدث خطأ أثناء التحديث");
     }
   };
+  
+  const handleDeleteExpenses = async (id) => {
+    try {
+      await api.delete(`/expenses/${id}`);
+      setExpenses((prev) =>
+        prev.filter((item) => item._id !== id)
+      );
+      refetchStatistics && refetchStatistics(() => fetchExpensesStatistics());
+      toast.success("تم الحذف بنجاح");
+    } catch (error) {
+      console.error("حذف العملية فشل:", error);
+      toast.error("حدث خطأ أثناء الحذف");
+    }
+  };
 
-  const handleApllyFilter = (
-    type = selectedExpenseType,
-    month = selectedMonth
-  ) => {
-    setSelectedExpenseType(type);
-    setSelectedMonth(month);
+  const handleApplyFilter = (type, month) => {
     refetchExpenses(() =>
       fetchExpenses({
         type,
@@ -151,15 +183,17 @@ export default function Expenses() {
     },
   ];
 
+  if (errorExpenses) return <ErrorPage error={errorExpenses} />;
+
   return (
     <div className="bg-background p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {loadingStatistics
+          {loadingStatistics || errorStatistics
             ? Array(4)
                 .fill(null)
-                .map((_, idx) => <StatCard key={idx} loading={true} />)
+                .map((_, idx) => <StatCard key={idx} loading={loadingStatistics} error={errorStatistics} />)
             : stats.map((stat, idx) => <StatCard key={idx} stat={stat} />)}
         </div>
         {/* search and add expenses secion */}
@@ -174,26 +208,68 @@ export default function Expenses() {
               <Input
                 placeholder="البحث"
                 className="pr-10 pl-4 py-2 bg-background"
-                disabled={!expenses?.data?.length}
+                value={search}
+                onChange={handleSearch}
               />
             </div>
-            <ExpensesFilter
-              selectedExpenseType={selectedExpenseType}
-              selectedMonth={selectedMonth}
-              setSelectedExpenseType={setSelectedExpenseType}
-              setSelectedMonth={setSelectedMonth}
-              onApplyFilters={handleApllyFilter}
-            />
+            <ExpensesFilter onApplyFilters={handleApplyFilter} />
           </div>
           <ExpensesModal onAddExpense={handleAddExpense} />
         </div>
 
         {/* Reports Table */}
         <ExpensesTable
-          expenses={expenses?.data}
+          expenses={expenses}
           loading={loading}
           handleUpdateExpenses={handleUpdateExpenses}
+          handleDeleteExpenses={handleDeleteExpenses}
         />
+        {/* Pagination Controls */}
+        {pages > 1 && (
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={() => handlePageChange(Math.max(1, actualPage - 1))}
+                  className={
+                    actualPage === 1
+                      ? "pointer-events-none opacity-50"
+                      : "cursor-pointer"
+                  }
+                />
+              </PaginationItem>
+
+              {getPageNumbers(actualPage, pages).map((p, idx) => (
+                <PaginationItem key={idx}>
+                  {p === "ellipsis" ? (
+                    <PaginationEllipsis />
+                  ) : (
+                    <PaginationLink
+                      onClick={() => handlePageChange(p)}
+                      isActive={loading ? page === p : actualPage === p}
+                      className="cursor-pointer"
+                    >
+                      {p}
+                    </PaginationLink>
+                  )}
+                </PaginationItem>
+              ))}
+
+              <PaginationItem>
+                <PaginationNext
+                  onClick={() =>
+                    handlePageChange(Math.min(pages, actualPage + 1))
+                  }
+                  className={
+                    actualPage === pages
+                      ? "pointer-events-none opacity-50"
+                      : "cursor-pointer"
+                  }
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        )}
       </div>
     </div>
   );

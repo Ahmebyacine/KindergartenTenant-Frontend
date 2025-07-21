@@ -44,8 +44,8 @@
 :root {
   --radius: 0.4rem;
 
-  --background: #F9FAFB;                 /* Background */
-  --foreground: #111827;                 /* Text/Base */
+  --background: #F9FAFB;
+  --foreground: #111827;
 
   --card: #F9FAFB;
   --card-foreground: #111827;
@@ -53,19 +53,19 @@
   --popover: #F9FAFB;
   --popover-foreground: #111827;
 
-  --primary: #4F46E5;                    /* Primary */
-  --primary-foreground: #F5F3FF;         /* Light enough for buttons on primary */
+  --primary: #4F46E5;
+  --primary-foreground: #F5F3FF;
 
-  --secondary: #10B981;                 /* Secondary */
+  --secondary: #10B981;
   --secondary-foreground: #F9FAFB;
 
-  --accent: #7c7c7c;                    /* Accent */
+  --accent: #7c7c7c;
   --accent-foreground: #ffffff;
 
   --muted: #F9FAFB;
-  --muted-foreground: #6B7280;          /* Text/Muted */
+  --muted-foreground: #6B7280;
 
-  --destructive: #fb2c36;               /* You can adjust if you have a specific red */
+  --destructive: #fb2c36;
 
   --border: #E5E7EB;
   --input: #E5E7EB;

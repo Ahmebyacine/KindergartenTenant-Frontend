@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TeachersTable from "@/layouts/admin/teachers/TeachersTable";
 import { toast } from "sonner";
@@ -7,8 +7,13 @@ import { SearchNormal1 } from "iconsax-react";
 import TeachersModal from "@/layouts/admin/teachers/TeachersModal";
 import { Input } from "@/components/ui/input";
 import useFetch from "@/hooks/useFetch";
+import ErrorPage from "../common/ErrorPage";
 
 export default function Teachers() {
+  const [addLoading, setAddLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState(null);
+  const [search, setSearch] = useState("");
+
   const fetchTabs = async () => {
     const res = await api.get("/categories");
     return res.data.map((category) => ({
@@ -28,18 +33,20 @@ export default function Teachers() {
     return res.data;
   };
 
-  const { data: tabs } = useFetch(fetchTabs);
+  const { data: tabs, error: tabsError } = useFetch(fetchTabs);
 
   const {
     data: teachers,
     setData: setTeachers,
     loading: teachersLoading,
+    error: teachersError,
   } = useFetch(fetchTeachers);
 
-  const { data: classes, loading: classesLoading } = useFetch(fetchClasses);
-
-  const [addLoading, setAddLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState(null);
+  const {
+    data: classes,
+    loading: classesLoading,
+    error: classesError,
+  } = useFetch(fetchClasses);
 
   useEffect(() => {
     if (tabs?.length > 0) {
@@ -51,7 +58,7 @@ export default function Teachers() {
     setAddLoading(true);
     try {
       const res = await api.post("/users", data);
-      setTeachers((prev) => [...prev, res.data]);
+      setTeachers((prev) => [res.data, ...prev]);
       toast.success("تمت إضافة معلم بنجاح!");
     } catch (error) {
       console.error("Error creating teacher", error);
@@ -74,10 +81,22 @@ export default function Teachers() {
     }
   };
 
-  const filteredTeachers =
-    teachers?.filter(
-      (teacher) => teacher?.assignedClass?.category === activeTab
-    ) || [];
+  const filteredTeachers = useMemo(() => {
+    if (!search.trim())
+      return (
+        teachers?.filter(
+          (teacher) => teacher?.assignedClass?.category === activeTab
+        ) || []
+      );
+
+    return teachers.filter((teacher) => {
+      const name = teacher.name?.toLowerCase() || "";
+      return name.includes(search.toLowerCase()) || "";
+    });
+  }, [teachers, search, activeTab]);
+
+  if (tabsError || teachersError || classesError)
+    return <ErrorPage error={tabsError || teachersError || classesError} />;
 
   return (
     <div className="bg-background p-2 md:p-4">
@@ -111,7 +130,8 @@ export default function Teachers() {
                   <Input
                     placeholder="البحث"
                     className="pr-10 pl-4 py-2 bg-background"
-                    disabled={!teachers?.length}
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                   />
                 </div>
               </div>

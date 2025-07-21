@@ -17,19 +17,36 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Edit2, More, Trash } from "iconsax-react";
+import { Danger, Edit2, More, Trash } from "iconsax-react";
 import img from "@/assets/images/avatar.png";
 import { getRoleTagColors } from "@/utils/getStatusBadges";
 import { Skeleton } from "@/components/ui/skeleton";
+import { t } from "i18next";
 
 export default function UserCard({
   user,
   loading,
+  error,
   onEdit,
   onDelete,
   onChangePassword,
 }) {
   const [open, setOpen] = useState(false);
+  if (error) {
+    return (
+      <Card className="text-right">
+        <CardContent className="px-4 pb-4 flex items-start text-destructive space-x-3 overflow-x-hidden">
+          <div className="w-[50px] h-[50px] rounded-full shrink-0">
+            <Danger size={32} color="currentColor" />
+          </div>
+          <div className="flex flex-col mr-3 gap-2 w-full">
+            <span>{error.status}</span>
+            {t(`errorApi.${error.message}`)}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
   if (loading) {
     return (
       <Card className="text-right">

@@ -1,11 +1,12 @@
 import { useSearchParams } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ReportsFinancialTable from "@/layouts/teacher/reports/ReportsFinancialTable";
-import ReportsHealthTable from "@/layouts/teacher/reports/ReportsHealthTable";
-import ReportsPedagogicalTable from "@/layouts/teacher/reports/ReportsPedagogicalTable";
+import ReportsFinancialTable from "@/components/reports/ReportsFinancialTable";
+import ReportsHealthTable from "@/components/reports/ReportsHealthTable";
+import ReportsPedagogicalTable from "@/components/reports/ReportsPedagogicalTable";
 import api from "@/services/api";
 import useFetch from "@/hooks/useFetch";
 import { useAuth } from "@/contexts/AuthContext";
+import ErrorPage from "../common/ErrorPage";
 
 export default function ReportsTeacher() {
   const [searchParams] = useSearchParams();
@@ -18,8 +19,8 @@ export default function ReportsTeacher() {
     return response.data.data;
   };
 
-  const { data: students } = useFetch(fetchStudents);
-  
+  const { data: students, error: studentsError } = useFetch(fetchStudents);
+  if (studentsError) return <ErrorPage error={studentsError} />;
   return (
     <div className="bg-background p-6">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -48,13 +49,13 @@ export default function ReportsTeacher() {
             </TabsList>
             {/* Move TabsContent inside first Tabs component */}
             <TabsContent value="pedagogical" className="space-y-4">
-              <ReportsPedagogicalTable classes={[user.class]} students={students} />
+              <ReportsPedagogicalTable classes={[user?.class]} students={students} />
             </TabsContent>
             <TabsContent value="financial" className="space-y-4">
-              <ReportsFinancialTable classes={[user.class]} students={students} />
+              <ReportsFinancialTable classes={[user?.class]} students={students} />
             </TabsContent>
             <TabsContent value="health" className="space-y-4">
-              <ReportsHealthTable classes={[user.class]} students={students} />
+              <ReportsHealthTable classes={[user?.class]} students={students} />
             </TabsContent>
           </Tabs>
         </div>

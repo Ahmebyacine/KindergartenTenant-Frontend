@@ -1,40 +1,46 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
-const useFetch =(fetchFunction, autoFetch = true) => {
+const useFetch = (fetchFunction) => {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchData = async () => {
+  const executeFetch = useCallback(async (customFetchFn) => {
     try {
       setLoading(true);
       setError(null);
-
-      const result = await fetchFunction();
+      
+      const fn = customFetchFn || fetchFunction;
+      const result = await fn();
+      
       setData(result);
     } catch (err) {
-      setError(
-        err ? err : new Error("An unknown error occurred")
-      );
-      console.error(err)
+      setError(err?.response?.data || { message: "An error occurred while fetching data", status: 404});
+      console.error('Fetch error:', err);
     } finally {
       setLoading(false);
     }
-  };
+  }, [fetchFunction]);
 
-  const reset = () => {
-    setData(null);
-    setError(null);
-    setLoading(false);
-  };
-
+  // Initial fetch on mount
   useEffect(() => {
-    if (autoFetch) {
-      fetchData();
+    if (fetchFunction) {
+      executeFetch();
     }
   }, []);
 
-  return { data,setData, loading, error, refetch: fetchData, reset };
+  // Refetch function that can accept a new fetch function
+  const refetch = useCallback((newFetchFunction) => {
+    executeFetch(newFetchFunction);
+  }, [executeFetch]);
+
+  return {
+    data,
+    setData,
+    loading,
+    error,
+    refetch,
+  };
 };
 
 export default useFetch;

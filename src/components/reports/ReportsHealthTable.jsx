@@ -11,29 +11,92 @@ import { Input } from "@/components/ui/input";
 import { SearchNormal1, Document } from "iconsax-react";
 import { getAssessmentBadge } from "@/utils/getStatusBadges";
 import { Link } from "react-router-dom";
-import ReportsHealthModal from "../../../components/reports/ReportsHealthModal";
+import ReportsHealthModal from "./ReportsHealthModal";
 import api from "@/services/api";
 import { toast } from "sonner";
 import { formatDateTime } from "@/utils/dateFormatter";
 import LoadingTable from "@/components/LoadingTable";
 import ReportsFilter from "@/components/reports/ReportsFilter";
-import useFetch from "@/hooks/useFetch";
+import { useRef, useState } from "react";
+import usePaginatedFetch from "@/hooks/usePaginatedFetch";
+import getPageNumbers from "@/utils/getPageNumbers";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import ErrorPage from "@/pages/common/ErrorPage";
 
 export default function ReportsHealthTable({ classes, students }) {
-  const fetchReport = async () => {
-    const response = await api.get("/health-reports");
-    return response.data;
-  };
-  const { data: reports, loading } = useFetch(fetchReport);
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const debounceTimeout = useRef(null);
 
-  const handelAddReport = async (data) => {
+  const fetchReports = async ({ page = 1, search, class: classId, month }) => {
+    const params = new URLSearchParams();
+    params.append("page", page);
+    if (search) params.append("search", search);
+    if (classId) params.append("class", classId);
+    if (month) params.append("month", month);
+
+    const res = await api.get(`/health-reports?${params.toString()}`);
+    return res.data;
+  };
+  const {
+    data: reports,
+    setData: setReports,
+    loading,
+    page: actualPage,
+    pages,
+    refetch,
+    error
+  } = usePaginatedFetch(() => fetchReports({ page: page }));
+
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+    refetch(() => fetchReports({ page: newPage }));
+  };
+
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setSearch(value);
+    setPage(1);
+
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
+    }
+
+    debounceTimeout.current = setTimeout(() => {
+      refetch(() => fetchReports({ page: 1, search: value }));
+    }, 700);
+  };
+
+  const handleApplyFilter = (selectedClass, selectedMonth) => {
+    refetch(() =>
+      fetchReports({
+        page: 1,
+        class: selectedClass,
+        month: selectedMonth,
+        search,
+      })
+    );
+  };
+
+  const handleAddReport = async (data) => {
     try {
-      await api.post("/health-reports", data);
-      toast("تمت إضافة التقرير بنجاح!");
+      const response = await api.post("/health-reports", data);
+      setReports((prev) => [response.data, ...prev]);
+      toast.success("تمت إضافة التقرير بنجاح!");
     } catch (error) {
-      console.error("Error creating Report:", error);
+      console.error("Error creating class", error);
     }
   };
+
+  if (error) return <ErrorPage error={error} />;
 
   return (
     <>
@@ -48,13 +111,14 @@ export default function ReportsHealthTable({ classes, students }) {
             <Input
               placeholder="البحث"
               className="pr-10 pl-4 py-2 bg-background"
-              disabled={!reports.length}
+              onChange={handleSearch}
+              value={search}
             />
           </div>
-          <ReportsFilter />
+          <ReportsFilter classes={classes} onApplyFilters={handleApplyFilter} />
         </div>
         <ReportsHealthModal
-          onAddReport={handelAddReport}
+          onAddReport={handleAddReport}
           classes={classes}
           children={students}
         />
@@ -151,6 +215,52 @@ export default function ReportsHealthTable({ classes, students }) {
           </TableBody>
         )}
       </Table>
+      {/* Pagination Controls */}
+      {pages > 1 && (
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => handlePageChange(Math.max(1, actualPage - 1))}
+                className={
+                  actualPage === 1
+                    ? "pointer-events-none opacity-50"
+                    : "cursor-pointer"
+                }
+              />
+            </PaginationItem>
+
+            {getPageNumbers(actualPage, pages).map((p, idx) => (
+              <PaginationItem key={idx}>
+                {p === "ellipsis" ? (
+                  <PaginationEllipsis />
+                ) : (
+                  <PaginationLink
+                    onClick={() => handlePageChange(p)}
+                    isActive={loading ? page === p : actualPage === p}
+                    className="cursor-pointer"
+                  >
+                    {p}
+                  </PaginationLink>
+                )}
+              </PaginationItem>
+            ))}
+
+            <PaginationItem>
+              <PaginationNext
+                onClick={() =>
+                  handlePageChange(Math.min(pages, actualPage + 1))
+                }
+                className={
+                  actualPage === pages
+                    ? "pointer-events-none opacity-50"
+                    : "cursor-pointer"
+                }
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </>
   );
 }

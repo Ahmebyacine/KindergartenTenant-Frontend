@@ -9,14 +9,11 @@ import { Button } from "@/components/ui/button";
 import { Setting4, Trash } from "iconsax-react";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { expenseTypes, months } from "@/assets/data/data";
+import { useState } from "react";
 
-export default function ExpensesFilter({
-  selectedExpenseType,
-  selectedMonth,
-  setSelectedExpenseType,
-  setSelectedMonth,
-  onApplyFilters,
-}) {
+export default function ExpensesFilter({ onApplyFilters }) {
+  const [selectedExpenseType, setSelectedExpenseType] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState("");
   return (
     <div className="bg-background p-2 md:p-4 flex items-center justify-center">
       <Dialog>
@@ -93,7 +90,11 @@ export default function ExpensesFilter({
             <Button
               variant="ghost"
               className="flex items-center gap-1"
-              onClick={() => onApplyFilters("","")}
+              onClick={() => {
+                setSelectedExpenseType("");
+                setSelectedMonth("");
+                onApplyFilters("", "");
+              }}
             >
               <Trash size={14} color="currentColor" />
               إعادة تعيين الكل

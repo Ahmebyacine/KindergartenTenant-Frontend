@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import api from "@/services/api";
 import { Input } from "@/components/ui/input";
 import { SearchNormal1 } from "iconsax-react";
 import ClassesTable from "@/layouts/supervisor/classes/ClassesTable";
 import useFetch from "@/hooks/useFetch";
+import ErrorPage from "../common/ErrorPage";
 
 export default function ClassesSupervisor() {
   const [activeTab, setActiveTab] = useState(null);
+  const [search, setSearch] = useState("");
 
   const fetchTabs = async () => {
     const response = await api.get("/categories");
@@ -23,19 +25,31 @@ export default function ClassesSupervisor() {
     return response.data;
   };
 
-  const { data: tabs } = useFetch(fetchTabs);
-  const { data: classes, loading } = useFetch(fetchClasses);
+  const { data: tabs, error: tabsError } = useFetch(fetchTabs);
+  const { data: classes, loading, error: classesError } = useFetch(fetchClasses);
 
-   useEffect(() => {
-      if (tabs?.length > 0) {
-        setActiveTab(tabs[0].id);
-      }
-    }, [tabs]);
+  useEffect(() => {
+    if (tabs?.length > 0) {
+      setActiveTab(tabs[0].id);
+    }
+  }, [tabs]);
 
-  // Filter cheacher
-  const filteredClasses = classes.filter((classe) => {
-    return classe?.category?._id === activeTab;
-  });
+  // Filter classes
+  const filteredClasses = useMemo(() => {
+    if (!search.trim())
+      return (
+        classes?.filter((classe) => classe?.category?._id === activeTab) || []
+      );
+
+    return classes.filter((cls) => {
+      const name = cls.className?.toLowerCase() || "";
+      return name.includes(search.toLowerCase()) || "";
+    });
+  }, [classes, search, activeTab]);
+
+  if (tabsError || classesError) {
+    return <ErrorPage error={tabsError || classesError} />;
+  }
 
   return (
     <div className="bg-background p-6">
@@ -68,7 +82,8 @@ export default function ClassesSupervisor() {
                 <Input
                   placeholder="البحث"
                   className="pr-10 pl-4 py-2 w-64 border border-border rounded-lg bg-background"
-                  disabled={!classes.length}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
             </div>

@@ -11,8 +11,14 @@ import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import LoadingTable from "@/components/LoadingTable";
 import { formatDateTime } from "@/utils/dateFormatter";
 import ExpensesModal from "./ExpensesModal";
+import DeleteAlertDialog from "@/components/DeleteAlertDialog";
 
-export default function ExpensesTable({ expenses, loading, handleUpdateExpenses }) {
+export default function ExpensesTable({
+  expenses,
+  loading,
+  handleUpdateExpenses,
+  handleDeleteExpenses,
+}) {
   return (
     <Table>
       <TableHeader>
@@ -47,7 +53,9 @@ export default function ExpensesTable({ expenses, loading, handleUpdateExpenses 
               <TableCell className="text-foreground font-medium py-3">
                 {row.description}
               </TableCell>
-              <TableCell className="text-foreground py-3">{formatDateTime(row.createdAt)}</TableCell>
+              <TableCell className="text-foreground py-3">
+                {formatDateTime(row.createdAt)}
+              </TableCell>
               <TableCell className="text-foreground py-3">
                 {row.category}
               </TableCell>
@@ -55,8 +63,15 @@ export default function ExpensesTable({ expenses, loading, handleUpdateExpenses 
                 {formatCurrencyDZD(row.amount)}
               </TableCell>
               <TableCell className="py-3">{row?.approvedBy?.name}</TableCell>
-              <TableCell className="py-3">
-                <ExpensesModal editingExpense={row} onUpdateExpense={handleUpdateExpenses} />
+              <TableCell className="py-3 flex items-start">
+                <ExpensesModal
+                  editingExpense={row}
+                  onUpdateExpense={handleUpdateExpenses}
+                />
+                <DeleteAlertDialog
+                  onDelete={handleDeleteExpenses}
+                  item={row._id}
+                />
               </TableCell>
             </TableRow>
           ))}
@@ -70,9 +85,9 @@ export default function ExpensesTable({ expenses, loading, handleUpdateExpenses 
             >
               <div className="flex flex-col items-center justify-center gap-2">
                 <MoneySend size={40} color="CurrentColor" />
-                <p className="text-lg font-medium">لا توجد مصريف  متاحة</p>
+                <p className="text-lg font-medium">لا توجد مصريف متاحة</p>
                 <p className="text-sm">
-                  لم يتم إنشاء أي مصريف  بعد، قم بإضافة مصروف جديد
+                  لم يتم إنشاء أي مصريف بعد، قم بإضافة مصروف جديد
                 </p>
               </div>
             </TableCell>

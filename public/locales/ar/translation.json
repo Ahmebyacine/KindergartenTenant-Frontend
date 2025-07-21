@@ -6,5 +6,54 @@
     "cancel": "إلغاء",
     "delete": "حذف",
     "saving": "جاري الحفظ..."
+  },
+  "errorApi": {
+    "Unauthorized": "غير مصرح",
+    "Server error": "حدث خطأ في الخادم",
+    "An error occurred while fetching data": "حدث خطأ أثناء جلب البيانات",
+    "Financial report removed": "تم حذف التقرير المالي",
+    "Enrollment removed": "تم حذف التسجيل",
+    "Please provide email and password": "يرجى تقديم البريد الإلكتروني وكلمة المرور",
+    "Invalid credentials": "بيانات الاعتماد غير صالحة",
+
+    "Email already exists": "البريد الإلكتروني مستخدم بالفعل",
+    "User not found": "المستخدم غير موجود",
+
+    "class is required": "الصف مطلوب",
+    "Student not found": "الطالب غير موجود",
+    "Student with the same name and birth date already exists": "يوجد طالب بنفس الاسم وتاريخ الميلاد",
+
+    "Category name already exists": "اسم الفئة مستخدم بالفعل",
+    "Category not found": "الفئة غير موجودة",
+
+    "Class not found": "الصف غير موجود",
+    "Class name must be unique": "يجب أن يكون اسم الصف فريدًا",
+
+    "Class has reached maximum capacity": "وصل الصف إلى الحد الأقصى من السعة",
+    "Enrollment not found": "التسجيل غير موجود",
+
+    "Category, amount and are required fields": "الفئة والمبلغ مطلوبة",
+    "Expense not found": "المصروف غير موجود",
+
+    "Enrollment id and recorded id are required": "معرف التسجيل ومعرف التسجيل مطلوبان",
+    "Attendance already recorded for this student": "تم تسجيل الحضور لهذا الطالب بالفعل",
+    "Missing user or invalid/missing 'ids' array": "المستخدم مفقود أو مصفوفة 'ids' غير صالحة أو مفقودة",
+    "Some enrollments not found": "بعض التسجيلات غير موجودة",
+    "Attendance already recorded for all selected students": "تم تسجيل الحضور لجميع الطلاب المحددين بالفعل",
+    "Attendance record not found": "سجل الحضور غير موجود",
+    "enrollmentId is required": "معرف التسجيل مطلوب",
+    "No active attendance record found for check-out": "لا يوجد سجل حضور نشط للمغادرة",
+    "Invalid or missing students array": "مصفوفة الطلاب غير صالحة أو مفقودة",
+    "Check-out time cannot be in the future": "وقت المغادرة لا يمكن أن يكون في المستقبل",
+    "No students found for this class.": "لم يتم العثور على طلاب لهذا الصف",
+
+    "Duplicate report entry for this student and month": "تقرير مكرر لهذا الطالب والشهر",
+    "Financial report not found": "التقرير المالي غير موجود",
+    "Payment already confirmed": "تم تأكيد الدفع بالفعل",
+
+    "Health report not found": "التقرير الصحي غير موجود",
+    "Pedagogical report not found": "التقرير التربوي غير موجود",
+
+    "You are not assigned to any class": "لم يتم تعيينك إلى أي صف"
   }
 }

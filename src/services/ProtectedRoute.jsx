@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import Loading from '@/pages/Loading';
+import Loading from '@/pages/common/Loading';
 
 const ProtectedRoute = ({ roles = [], redirectPath = '/signin', children }) => {
   const location = useLocation();

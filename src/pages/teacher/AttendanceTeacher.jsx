@@ -3,10 +3,8 @@ import {
   Chart2,
   Danger,
   People,
-  SearchNormal1,
   TickSquare,
 } from "iconsax-react";
-import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -224,18 +222,6 @@ export default function AttendanceTeacher() {
                 />
               </PopoverContent>
             </Popover>
-            <div className="relative">
-              <SearchNormal1
-                size="16"
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
-                color="currentColor"
-              />
-              <Input
-                placeholder="البحث"
-                className="pr-10 pl-4 py-2 bg-background"
-                disabled={!date || attendance?.info?.length === 0}
-              />
-            </div>
           </div>
           <div className="flex my-3 w-full sm:w-auto">
             <ScanAttendance onAttendanceCreate={handleAttendanceCreate} />

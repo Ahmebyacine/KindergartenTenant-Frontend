@@ -15,6 +15,7 @@ import StatCard from "@/components/StatCard";
 import api from "@/services/api";
 import { getMonthNameByNumber } from "@/utils/getMonthNameByNumber";
 import useFetch from "@/hooks/useFetch";
+import ErrorPage from "../common/ErrorPage";
 
 export default function FinancialPerformance() {
   const fetchFinancialPerformance = async () => {
@@ -24,7 +25,7 @@ export default function FinancialPerformance() {
       monthLabel: getMonthNameByNumber(item.month),
     }));
   };
-  const { data, loading } = useFetch(fetchFinancialPerformance);
+  const { data, loading, error } = useFetch(fetchFinancialPerformance);
 
   const totals = data?.reduce(
     (acc, item) => {
@@ -75,6 +76,8 @@ export default function FinancialPerformance() {
       subLabel: "مقارنة بين الربح والمصاريف الإجمالية",
     },
   ];
+
+  if (error) return <ErrorPage error={error} />;
 
   return (
     <div className="bg-background p-6">
