@@ -69,7 +69,7 @@ export default function ReportsPedagogicalModal({
 
     // Filter by class
     if (classId) {
-      result = result.filter((child) => child.class?._id === classId);
+      result = result?.filter((child) => child?.class?._id === classId);
     }
     setFilteredChildren(result);
   }, [classId, children]);

@@ -1,7 +1,7 @@
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { useDocumentDirection } from "./hooks/useDocumentDirection";
-import Signin from "./pages/Signin";
+import Signin from "./pages/auth/Signin";
 import Unauthorized from "./pages/common/Unauthorized";
 import ProtectedRoute from "./services/ProtectedRoute";
 import NoTenantError from "./pages/common/NoTenantError";
@@ -29,6 +29,7 @@ import StudentsTeacher from "./pages/teacher/StudentsTeacher";
 import AttendanceTeacher from "./pages/teacher/AttendanceTeacher";
 import ReportsTeacher from "./pages/teacher/ReportsTeacher";
 import SettingsUser from "./pages/supervisor/SettingsUser";
+import ChangePasswordFirstTime from "./pages/auth/ChangePasswordFirstTime";
 
 const router = createHashRouter([
   {
@@ -158,6 +159,18 @@ const router = createHashRouter([
         element: <ReportsFinancialDetails />,
       },
     ],
+  },
+  {
+    path: "/change-password-first-time",
+    element: (
+      <CheckTenant>
+        <AuthProvider>
+          <ProtectedRoute>
+            <ChangePasswordFirstTime />
+          </ProtectedRoute>
+        </AuthProvider>
+      </CheckTenant>
+    ),
   },
   {
     path: "/signin",

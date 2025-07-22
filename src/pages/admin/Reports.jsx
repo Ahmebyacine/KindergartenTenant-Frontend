@@ -18,7 +18,7 @@ export default function Reports() {
 
   const fetchStudents = async () => {
     const response = await api.get("/enrollments");
-    return response.data.data;
+    return response.data;
   };
   const { data: classes, error: classesError } = useFetch(fetchClasses);
 

@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -9,67 +8,25 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import useFetch from "@/hooks/useFetch";
+import api from "@/services/api";
 import React from "react";
+import LoadingTable from "../LoadingTable";
+import { Link } from "react-router-dom";
+import {
+  getAssessmentBadge,
+  getOverallBadge,
+  getReportTypeBadge,
+  getStatusPayBadge,
+} from "@/utils/getStatusBadges";
 
 export default function RecentReportsTable() {
-  const reportsData = [
-    {
-      childName: "يوسف أحمد",
-      teacherName: "أ. جديدة",
-      class: "تحضيري أ",
-      type: "صحي",
-      status: "جديد",
-      actions: "عرض التفاصيل",
-    },
-    {
-      childName: "يوسف أحمد",
-      teacherName: "تحت المراجعة",
-      class: "تحضيري أ",
-      type: "صحي",
-      status: "جديد",
-      actions: "عرض التفاصيل",
-    },
-    {
-      childName: "يوسف أحمد",
-      teacherName: "تحت المراجعة",
-      class: "تحضيري أ",
-      type: "صحي",
-      status: "جديد",
-      actions: "عرض التفاصيل",
-    },
-    {
-      childName: "يوسف أحمد",
-      teacherName: "جديد",
-      class: "تحضيري أ",
-      type: "صحي",
-      status: "جديد",
-      actions: "عرض التفاصيل",
-    },
-    {
-      childName: "يوسف أحمد",
-      teacherName: "تحت المراجعة",
-      class: "تحضيري أ",
-      type: "صحي",
-      status: "جديد",
-      actions: "عرض التفاصيل",
-    },
-    {
-      childName: "يوسف أحمد",
-      teacherName: "تحت المراجعة",
-      class: "تحضيري أ",
-      type: "صحي",
-      status: "جديد",
-      actions: "عرض التفاصيل",
-    },
-    {
-      childName: "يوسف أحمد",
-      teacherName: "تحت المراجعة",
-      class: "تحضيري أ",
-      type: "صحي",
-      status: "جديد",
-      actions: "عرض التفاصيل",
-    },
-  ];
+  const fetchReports = async () => {
+    const res = await api.get(`/reports/recent`);
+    return res.data;
+  };
+  const { data: reports, loading, error } = useFetch(fetchReports);
+  console.log(reports);
   return (
     <Card className="bg-card border-border">
       <CardHeader>
@@ -102,35 +59,63 @@ export default function RecentReportsTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {reportsData.map((report, index) => (
-              <TableRow key={index}>
-                <TableCell className="text-foreground font-medium">
-                  {report.childName}
-                </TableCell>
-                <TableCell className="text-foreground">
-                  {report.teacherName}
-                </TableCell>
-                <TableCell className="text-foreground">
-                  {report.class}
-                </TableCell>
-                <TableCell className="text-foreground">{report.type}</TableCell>
-                <TableCell>
-                  <Badge
-                    variant="secondary"
-                    className={`$ {
-                          report.status === "جديد" ? "bg-primary-foreground text-primary" : "bg-muted text-muted-foreground"
-                        }`}
-                  >
-                    {report.status}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <Button variant="link" className="text-primary p-0 h-auto">
-                    {report.actions}
-                  </Button>
+            {loading ? (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center">
+                  <LoadingTable />
                 </TableCell>
               </TableRow>
-            ))}
+            ) : error ? (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center text-red-500">
+                  فشل تحميل التقارير
+                </TableCell>
+              </TableRow>
+            ) : reports.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center">
+                  لا توجد تقارير حديثة
+                </TableCell>
+              </TableRow>
+            ) : (
+              reports.map((report, index) => (
+                <TableRow key={index}>
+                  <TableCell className="text-foreground font-medium">
+                    {report?.student?.firstName} {report?.student?.lastName}
+                  </TableCell>
+                  <TableCell className="text-foreground">
+                    {report?.teacher?.name || report?.generatedBy?.name}
+                  </TableCell>
+                  <TableCell className="text-foreground">
+                    {report?.class?.className}
+                  </TableCell>
+                  <TableCell className="text-foreground">
+                    {getReportTypeBadge(report?.type)}
+                  </TableCell>
+                  <TableCell>
+                    { report?.status && getStatusPayBadge(report?.status) ||
+                      report?.overall && getOverallBadge(report?.overall) ||
+                      report?.conditionAssessment && getAssessmentBadge(report?.conditionAssessment)}
+                  </TableCell>
+                  <TableCell>
+                    <Button variant="link" className="text-primary p-0 h-auto">
+                      <Link
+                        to={
+                          report?.type === "financial"
+                            ? `/reports/financial/${report._id}`
+                            : report?.type === "pedagogical"
+                            ? `/reports/pedagogical/${report._id}`
+                            : report?.type === "health" &&
+                              `/reports/health/${report._id}`
+                        }
+                      >
+                        عرض التفاصيل
+                      </Link>
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </CardContent>

@@ -26,7 +26,7 @@ export default function ReportHealthDetails() {
 
   const { data: reportDetails, loading } = useFetch(fetchreportsDetails);
 
-  if (loading) return <Loading />;
+  if (loading) return <Loading sidebar={false} />;
 
   return (
     <div className="bg-background p-6 font-cairo">

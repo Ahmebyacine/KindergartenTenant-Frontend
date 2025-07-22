@@ -106,3 +106,24 @@ export const getRoleTagColors = (role) => {
       return "bg-muted text-muted-foreground";
   }
 };
+
+export const getReportTypeBadge = (type) => {
+  switch (type) {
+    case "financial":
+      return (
+        <Badge className="bg-[#FCE8FF] text-[#9D0191]">مالي</Badge>
+      );
+    case "pedagogical":
+      return (
+        <Badge className="bg-[#E0F7FA] text-[#006064]">بيداغوجي</Badge>
+      );
+    case "health":
+      return (
+        <Badge className="bg-[#FFF3E0] text-[#BF360C]">صحي</Badge>
+      );
+    default:
+      return (
+        <Badge className="bg-[#e2e8f0] text-[#44403b]">{type}</Badge>
+      );
+  }
+};

@@ -60,7 +60,7 @@ export default function ReportsFinancialDetails() {
     }
   };
 
-  if (loading) return <Loading />;
+  if (loading) return <Loading sidebar={false}/>;
   return (
     <div className="bg-background p-6 font-cairo">
       <div className="max-w-4xl mx-auto space-y-6">
