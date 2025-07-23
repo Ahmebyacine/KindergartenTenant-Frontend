@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GeneralSettingsUser } from "@/components/settings/GeneralSettingsUser";
 import SecuritySettings from "@/components/settings/SecuritySettings";
+import PersonalSettings from "@/components/settings/PersonalSettings";
 
 export default function SettingsUser() {
   const [searchParams] = useSearchParams();
@@ -21,10 +22,10 @@ export default function SettingsUser() {
                 الإعدادات العامة
               </TabsTrigger>
               <TabsTrigger
-                value="notifications"
+                value="personalSettings"
                 className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
               >
-                الإشعارات
+                الإعدادات الشخصية
               </TabsTrigger>
               <TabsTrigger
                 value="security"
@@ -37,9 +38,15 @@ export default function SettingsUser() {
             <TabsContent value="generalSettings" className="space-y-4">
               <GeneralSettingsUser />
             </TabsContent>
-            <TabsContent value="notifications" className="space-y-4"></TabsContent>
+            <TabsContent
+              value="notifications"
+              className="space-y-4"
+            ></TabsContent>
             <TabsContent value="security" className="space-y-4">
               <SecuritySettings />
+            </TabsContent>
+            <TabsContent value="personalSettings" className="space-y-4">
+              <PersonalSettings />
             </TabsContent>
           </Tabs>
         </div>

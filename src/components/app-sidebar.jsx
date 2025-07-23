@@ -108,20 +108,28 @@ export function AppSidebar() {
                     </Button>
                   </DropdownMenuItem>
                 </Link>
-                <DropdownMenuItem className="p-0">
-                  <Button
-                    className="w-full justify-start text-foreground hover:text-red-400 border-b"
-                    variant="ghost"
-                  >
-                    <ProfileCircle
-                      size={16}
-                      variant="Outline"
-                      color="var(--foreground)"
-                      className="size-5"
-                    />
-                    <span>الملف الشخصي</span>
-                  </Button>
-                </DropdownMenuItem>
+                <Link
+                  to={
+                    user && user.role === "admin"
+                      ? "/settings?tab=personalSettings"
+                      : "/settings-user?tab=personalSettings"
+                  }
+                >
+                  <DropdownMenuItem className="p-0">
+                    <Button
+                      className="w-full justify-start text-foreground hover:text-red-400 border-b"
+                      variant="ghost"
+                    >
+                      <ProfileCircle
+                        size={16}
+                        variant="Outline"
+                        color="var(--foreground)"
+                        className="size-5"
+                      />
+                      <span>الملف الشخصي</span>
+                    </Button>
+                  </DropdownMenuItem>
+                </Link>
               </DropdownMenuContent>
             </DropdownMenu>
           </SidebarMenuItem>

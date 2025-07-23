@@ -13,8 +13,14 @@ import StudentCard from "./StudentCardModal";
 import { formatDate } from "@/utils/dateFormatter";
 import { getAge } from "@/utils/getLocalizedAge";
 import StudentsModal from "./StudentsModal";
+import DeleteAlertDialog from "../DeleteAlertDialog";
 
-export default function StudentDetails({ enrollment, classes, onUpdateStudent }) {
+export default function StudentDetails({
+  enrollment,
+  classes,
+  onUpdateStudent,
+  onDeleteEnrollment,
+}) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isCardOpen, setIsCardOpen] = useState(false);
 
@@ -42,7 +48,17 @@ export default function StudentDetails({ enrollment, classes, onUpdateStudent })
           {/* Content */}
           <div className="py-6 px-8 space-y-8">
             <div className="flex justify-end m-0">
-              <StudentsModal editingStudent={enrollment} classes={classes} onUpdateStudent={onUpdateStudent} />
+              <StudentsModal
+                editingStudent={enrollment}
+                classes={classes}
+                onUpdateStudent={onUpdateStudent}
+              />
+              <DeleteAlertDialog
+                title="حذف الطفل"
+                description="هل أنت متأكد أنك تريد حذف هذا الطفل؟"
+                item={enrollment._id}
+                onDelete={onDeleteEnrollment}
+              />
             </div>
             <div>
               <div className="space-y-4">
@@ -65,10 +81,7 @@ export default function StudentDetails({ enrollment, classes, onUpdateStudent })
                 <div className="flex items-center">
                   <div className="text-sm w-1/2 text-foreground">العمر</div>
                   <div className="text-sm text-muted-foreground">
-                    {getAge(
-                      enrollment.student.birthDate,
-                      enrollment.createdAt
-                    )}
+                    {getAge(enrollment.student.birthDate, enrollment.createdAt)}
                   </div>
                 </div>
                 <div className="flex items-center">
@@ -111,7 +124,11 @@ export default function StudentDetails({ enrollment, classes, onUpdateStudent })
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <StudentCard enrollment={enrollment} isOpen={isCardOpen} onOpenChange={setIsCardOpen} />
+      <StudentCard
+        enrollment={enrollment}
+        isOpen={isCardOpen}
+        onOpenChange={setIsCardOpen}
+      />
     </>
   );
 }

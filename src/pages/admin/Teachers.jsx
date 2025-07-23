@@ -81,6 +81,17 @@ export default function Teachers() {
     }
   };
 
+  const handleDeleteTeacher = async (id) => {
+    try {
+      await api.delete(`/users/${id}`);
+      setTeachers((prev) => prev.filter((item) => item._id !== id));
+      toast.success("تم الحذف بنجاح");
+    } catch (error) {
+      console.error("Delete failed:", error);
+      toast.error("حدث خطأ أثناء الحذف");
+    }
+  };
+
   const filteredTeachers = useMemo(() => {
     if (!search.trim())
       return (
@@ -148,6 +159,7 @@ export default function Teachers() {
               teachers={filteredTeachers}
               classes={classes}
               onUpdateTeacher={handleUpdateTeacher}
+              onDeleteTeacher={handleDeleteTeacher}
             />
           </Tabs>
         </div>

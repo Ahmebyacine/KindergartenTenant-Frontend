@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GeneralSettings } from "@/layouts/admin/settings/GeneralSettings";
 import UsersSettings from "@/layouts/admin/settings/UsersSettings";
 import SecuritySettings from "@/components/settings/SecuritySettings";
+import PersonalSettings from "@/components/settings/PersonalSettings";
 
 export default function Settings() {
   const [searchParams] = useSearchParams();
@@ -28,10 +29,10 @@ export default function Settings() {
                 المستخدمون
               </TabsTrigger>
               <TabsTrigger
-                value="reports"
+                value="personalSettings"
                 className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
               >
-                التقارير
+                الحساب الشخصي
               </TabsTrigger>
               <TabsTrigger
                 value="notifications"
@@ -59,7 +60,9 @@ export default function Settings() {
             <TabsContent value="users" className="space-y-4">
               <UsersSettings />
             </TabsContent>
-            <TabsContent value="reports" className="space-y-4"></TabsContent>
+            <TabsContent value="personalSettings" className="space-y-4">
+              <PersonalSettings />
+            </TabsContent>
             <TabsContent value="notifications" className="space-y-4"></TabsContent>
             <TabsContent value="payments" className="space-y-4"></TabsContent>
             <TabsContent value="security" className="space-y-4">

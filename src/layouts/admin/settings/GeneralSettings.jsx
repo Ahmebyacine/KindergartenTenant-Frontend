@@ -9,6 +9,7 @@ import { useTheme } from "@/components/themeProvider";
 import i18n from "@/i18n";
 import api from "@/services/api";
 import { toast } from "sonner";
+import { updateDocumentDirection } from "@/utils/updateDocumentDirection";
 export function GeneralSettings() {
   const { theme, setTheme } = useTheme();
   const [autoTimeZone, setAutoTimeZone] = useState(true);
@@ -19,13 +20,6 @@ export function GeneralSettings() {
     i18n.on("languageChanged", onLangChange);
     return () => i18n.off("languageChanged", onLangChange);
   }, []);
-
-  const updateDocumentDirection = (lng) => {
-    document.documentElement.lang = lng;
-    const dir = lng === "ar" ? "rtl" : "ltr";
-    document.documentElement.dir = dir;
-    localStorage.setItem("i18n-direction", dir);
-  };
 
   const handleLanguageChange = async (lang) => {
     try {

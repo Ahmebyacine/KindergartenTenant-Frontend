@@ -11,12 +11,14 @@ import { FileTextIcon } from "lucide-react";
 import LoadingTable from "@/components/LoadingTable";
 import ClassesModal from "./ClassesModal";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
+import DeleteAlertDialog from "@/components/DeleteAlertDialog";
 
 export default function ClassesTable({
   classes,
   loading,
   categories,
   onUpdateClass,
+  onDeleteClass,
 }) {
   return (
     <Table>
@@ -68,11 +70,16 @@ export default function ClassesTable({
                   classItem.capacity
                 )}
               </TableCell>
-              <TableCell className="py-3">
+              <TableCell className="py-3 flex">
                 <ClassesModal
                   editingClass={classItem}
                   categories={categories}
                   onUpdateClass={onUpdateClass}
+                />
+                <DeleteAlertDialog
+                  title="حذف الفصل"
+                  item={classItem._id}
+                  onDelete={onDeleteClass}
                 />
               </TableCell>
             </TableRow>

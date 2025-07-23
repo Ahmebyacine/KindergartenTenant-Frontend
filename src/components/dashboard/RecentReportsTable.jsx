@@ -26,7 +26,6 @@ export default function RecentReportsTable() {
     return res.data;
   };
   const { data: reports, loading, error } = useFetch(fetchReports);
-  console.log(reports);
   return (
     <Card className="bg-card border-border">
       <CardHeader>

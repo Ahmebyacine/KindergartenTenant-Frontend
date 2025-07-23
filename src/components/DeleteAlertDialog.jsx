@@ -25,7 +25,7 @@ export default function DeleteAlertDialog({
         <Button
           variant="link"
           size="sm"
-          className="text-destructive hover:text-primary/80 p-1 h-auto underline text-xs sm:text-sm justify-start sm:justify-center"
+          className="text-destructive hover:text-destructive/80 underline p-1 h-auto text-xs sm:text-sm justify-start sm:justify-center"
         >
           {trigger}
         </Button>

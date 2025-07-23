@@ -117,7 +117,7 @@ export default function StudentsModal({
       <Dialog>
         <DialogTrigger asChild>
           {editingStudent ? (
-            <Button variant="ghost" className="text-primary font-medium m-0">
+            <Button variant="ghost" className="text-primary underline p-1 h-auto font-medium m-0">
               تعديل
             </Button>
           ) : (

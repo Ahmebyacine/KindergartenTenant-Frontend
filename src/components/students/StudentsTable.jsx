@@ -21,6 +21,7 @@ export default function StudentsTable({
   students,
   classes,
   onUpdateStudent,
+  onDeleteEnrollment,
 }) {
   const [rowSelection, setRowSelection] = useState([]);
 
@@ -186,6 +187,7 @@ export default function StudentsTable({
                         enrollment={enrollment}
                         classes={classes}
                         onUpdateStudent={onUpdateStudent}
+                        onDeleteEnrollment={onDeleteEnrollment}
                       />
                     </TableCell>
                   </TableRow>

@@ -97,6 +97,19 @@ export default function Students() {
     }
   };
 
+  const handleDeleteEnrollment = async (enrollmentId) => {
+    try {
+      await api.delete(`/enrollments/${enrollmentId}`);
+      setStudents((prev) =>
+        prev.filter((student) => student._id !== enrollmentId)
+      );
+      toast.success("تم حذف تسجيل الطفل بنجاح!");
+    } catch (error) {
+      console.error("Error deleting enrollment:", error);
+      toast.error("فشل في حذف تسجيل الطفل");
+    }
+  };
+
   const handleFilterStudents = (filters) => {
     setFilters(filters);
     if (filters.category) setActiveTab(filters.category);
@@ -197,6 +210,7 @@ export default function Students() {
               students={filteredStudents}
               classes={classes}
               onUpdateStudent={handleUpdateStudent}
+              onDeleteEnrollment={handleDeleteEnrollment}
             />
           </Tabs>
         </div>

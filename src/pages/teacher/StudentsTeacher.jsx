@@ -69,6 +69,19 @@ export default function StudentsTeacher() {
     }
   };
 
+  const handleDeleteEnrollment = async (enrollmentId) => {
+    try {
+      await api.delete(`/enrollments/${enrollmentId}`);
+      setStudents((prev) =>
+        prev.filter((student) => student._id !== enrollmentId)
+      );
+      toast.success("تم حذف تسجيل الطفل بنجاح!");
+    } catch (error) {
+      console.error("Error deleting enrollment:", error);
+      toast.error("فشل في حذف تسجيل الطفل");
+    }
+  };
+
   const filteredStudents = useMemo(() => {
     if (!search.trim()) return students;
 
@@ -125,6 +138,7 @@ export default function StudentsTeacher() {
             students={filteredStudents}
             classes={[user?.class]}
             onUpdateStudent={handleUpdateStudent}
+            onDeleteEnrollment={handleDeleteEnrollment}
           />
         </div>
       </div>

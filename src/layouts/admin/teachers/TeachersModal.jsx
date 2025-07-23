@@ -106,7 +106,7 @@ export default function TeachersModal({
             <Button
               variant="link"
               size="sm"
-              className="text-primary hover:text-primary/80 p-1 h-auto underline text-xs sm:text-sm justify-start sm:justify-center"
+              className="text-primary hover:text-primary/80 p-1 underline h-auto text-xs sm:text-sm justify-start sm:justify-center"
             >
               تعديل
             </Button>

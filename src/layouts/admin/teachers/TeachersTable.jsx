@@ -10,12 +10,14 @@ import { UserRemove } from "iconsax-react";
 import { formatDate } from "@/utils/dateFormatter";
 import LoadingTable from "@/components/LoadingTable";
 import TeachersModal from "./TeachersModal";
+import DeleteAlertDialog from "@/components/DeleteAlertDialog";
 
 export default function TeachersTable({
   loading,
   teachers,
   classes,
   onUpdateTeacher,
+  onDeleteTeacher,
 }) {
   return (
     <>
@@ -74,11 +76,15 @@ export default function TeachersTable({
                 <TableCell className="text-foreground py-3">
                   {formatDate(teacher.createdAt)}
                 </TableCell>
-                <TableCell className="py-3">
+                <TableCell className="py-3 flex">
                   <TeachersModal
                     editingTeacher={teacher}
                     classes={classes}
                     onUpdateTeacher={onUpdateTeacher}
+                  />
+                  <DeleteAlertDialog
+                    onDelete={onDeleteTeacher}
+                    item={teacher._id}
                   />
                 </TableCell>
               </TableRow>

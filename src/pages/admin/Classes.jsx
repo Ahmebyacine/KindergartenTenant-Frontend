@@ -74,6 +74,17 @@ export default function Classes() {
     }
   };
 
+  const handleDeleteClass = async (id) => {
+    try {
+      await api.delete(`/classes/${id}`);
+      setClasses((prev) => prev.filter((item) => item._id !== id));
+      toast.success("تم الحذف بنجاح");
+    } catch (error) {
+      console.error("Delete failed:", error);
+      toast.error("حدث خطأ أثناء الحذف");
+    }
+  };
+
   const filteredClasses = useMemo(() => {
     if (!search.trim())
       return (
@@ -133,6 +144,7 @@ export default function Classes() {
               loading={classesLoading}
               categories={tabs}
               onUpdateClass={handleUpdateClass}
+              onDeleteClass={handleDeleteClass}
             />
           </Tabs>
         </div>
