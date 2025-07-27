@@ -15,6 +15,7 @@ import api from "@/services/api";
 import useFetch from "@/hooks/useFetch";
 import Loading from "@/pages/common/Loading";
 import { formatDate } from "@/utils/dateFormatter";
+import { getConditionBadge } from "@/utils/getStatusBadges";
 
 export default function ReportHealthDetails() {
   const { reportId } = useParams();
@@ -120,7 +121,7 @@ export default function ReportHealthDetails() {
               <div className="space-y-1">
                 <DetailItem
                   label="نوع الحالة"
-                  value={reportDetails.conditionType}
+                  value={getConditionBadge(reportDetails.conditionType)}
                 />
                 <DetailItem
                   label="تقييم الحالة"

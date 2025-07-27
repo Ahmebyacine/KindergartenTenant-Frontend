@@ -127,3 +127,20 @@ export const getReportTypeBadge = (type) => {
       );
   }
 };
+
+export const getConditionBadge = (conditionValue) => {
+  switch (conditionValue) {
+    case "fever":
+      return <Badge className="bg-[#FFE2E2] text-[#C10007]">حرارة</Badge>;
+    case "cough":
+      return <Badge className="bg-[#E0F2FE] text-[#0369A1]">سعال</Badge>;
+    case "fatigue":
+      return <Badge className="bg-[#EDE9FE] text-[#5B21B6]">إعياء</Badge>;
+    case "nausea":
+      return <Badge className="bg-[#FEF3C7] text-[#B45309]">غثيان</Badge>;
+    case "injury":
+      return <Badge className="bg-[#FCE7F3] text-[#BE185D]">إصابة</Badge>;
+    default:
+      return <Badge className="bg-[#e2e8f0] text-[#44403b]">{conditionValue}</Badge>;
+  }
+};

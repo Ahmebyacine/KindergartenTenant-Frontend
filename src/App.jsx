@@ -30,6 +30,7 @@ import AttendanceTeacher from "./pages/teacher/AttendanceTeacher";
 import ReportsTeacher from "./pages/teacher/ReportsTeacher";
 import SettingsUser from "./pages/supervisor/SettingsUser";
 import ChangePasswordFirstTime from "./pages/auth/ChangePasswordFirstTime";
+import { Onboarding } from "./pages/admin/Onboarding";
 
 const router = createHashRouter([
   {
@@ -79,6 +80,10 @@ const router = createHashRouter([
           {
             path: "settings",
             element: <Settings />,
+          },
+          {
+            path: "onboarding",
+            element: <Onboarding />,
           },
         ],
       },

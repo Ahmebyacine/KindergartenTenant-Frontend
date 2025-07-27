@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SearchNormal1, Document } from "iconsax-react";
-import { getAssessmentBadge } from "@/utils/getStatusBadges";
+import { getAssessmentBadge, getConditionBadge } from "@/utils/getStatusBadges";
 import { Link } from "react-router-dom";
 import ReportsHealthModal from "./ReportsHealthModal";
 import api from "@/services/api";
@@ -183,7 +183,7 @@ export default function ReportsHealthTable({ classes, students }) {
                   {getAssessmentBadge(row.conditionAssessment)}
                 </TableCell>
                 <TableCell className="text-right py-3">
-                  {row.conditionType}
+                  {getConditionBadge(row.conditionType)}
                 </TableCell>
                 <TableCell className="text-right py-3">
                   <Button
