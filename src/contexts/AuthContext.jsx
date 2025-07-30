@@ -8,6 +8,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [config, setConfig] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const { setTheme } = useTheme();
@@ -16,11 +17,11 @@ export const AuthProvider = ({ children }) => {
     const fetchData = async () => {
       try {
         const response = await api.get("/auth/me");
-        setUser(response.data);
-        i18n.changeLanguage(response?.data?.language);
-        updateDocumentDirection(response?.data?.language);
-        setTheme(response?.data?.theme);
-        return response.data;
+        setUser(response.data.user);
+        i18n.changeLanguage(response?.data?.user.language);
+        updateDocumentDirection(response?.data?.user.language);
+        setTheme(response?.data?.user.theme);
+        setConfig(response.data.config)
       } catch (error) {
         console.error(error);
       } finally {
@@ -32,7 +33,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading }}>
+    <AuthContext.Provider value={{ user, setUser, config, loading }}>
       {children}
     </AuthContext.Provider>
   );

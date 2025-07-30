@@ -34,7 +34,7 @@ export default function RecentReportsTable() {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <Table dir="rtl">
+        <Table>
           <TableHeader>
             <TableRow>
               <TableHead className="text-right text-muted-foreground">
@@ -59,11 +59,7 @@ export default function RecentReportsTable() {
           </TableHeader>
           <TableBody>
             {loading ? (
-              <TableRow>
-                <TableCell colSpan={6} className="text-center">
-                  <LoadingTable />
-                </TableCell>
-              </TableRow>
+              <LoadingTable />
             ) : error ? (
               <TableRow>
                 <TableCell colSpan={6} className="text-center text-red-500">
@@ -92,9 +88,10 @@ export default function RecentReportsTable() {
                     {getReportTypeBadge(report?.type)}
                   </TableCell>
                   <TableCell>
-                    { report?.status && getStatusPayBadge(report?.status) ||
-                      report?.overall && getOverallBadge(report?.overall) ||
-                      report?.conditionAssessment && getAssessmentBadge(report?.conditionAssessment)}
+                    {(report?.status && getStatusPayBadge(report?.status)) ||
+                      (report?.overall && getOverallBadge(report?.overall)) ||
+                      (report?.conditionAssessment &&
+                        getAssessmentBadge(report?.conditionAssessment))}
                   </TableCell>
                   <TableCell>
                     <Button variant="link" className="text-primary p-0 h-auto">

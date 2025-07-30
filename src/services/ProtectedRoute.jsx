@@ -4,14 +4,14 @@ import Loading from "@/pages/common/Loading";
 
 const ProtectedRoute = ({ roles = [], redirectPath = "/signin", children }) => {
   const location = useLocation();
-  const { user, loading } = useAuth();
+  const { user, config, loading } = useAuth();
   if (loading) return <Loading />;
 
   if (!user) {
     return <Navigate to={redirectPath} state={{ from: location }} replace />;
   }
 
-   if (
+  if (
     user.changedDefaultPassword &&
     location.pathname === "/change-password-first-time"
   ) {
@@ -22,6 +22,21 @@ const ProtectedRoute = ({ roles = [], redirectPath = "/signin", children }) => {
       return <Navigate to="/teacher-dashboard" replace />;
     }
     return <Navigate to="/" replace />;
+  }
+
+  if (
+    user.role === "admin" &&
+    !config.onboarding &&
+    location.pathname !== "/onboarding"
+  ) {
+    return <Navigate to="/onboarding" state={{ from: location }} replace />;
+  }
+  if (
+    user.role === "admin" &&
+    config.onboarding &&
+    location.pathname === "/onboarding"
+  ) {
+    return <Navigate to="/" state={{ from: location }} replace />;
   }
 
   if (

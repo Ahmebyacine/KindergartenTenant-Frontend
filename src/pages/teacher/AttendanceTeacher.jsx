@@ -36,14 +36,14 @@ export default function AttendanceTeacher() {
   const [attendance, setAttendance] = useState([]);
 
   const { user } = useAuth();
-
+  console.log(user)
   // fetch attendce
   useEffect(() => {
     const fetchAttendanceData = async () => {
       setLoading(true);
       try {
         const response = await api.get(
-          `/attendances?date=${date}&classId=${user?.class?._id}`
+          `/attendances?date=${date}&classId=${user?.assignedClass?._id}`
         );
         setAttendance(response.data);
       } catch (error) {
@@ -53,10 +53,10 @@ export default function AttendanceTeacher() {
       }
     };
 
-    if (date && user?.class?._id) {
+    if (date && user?.assignedClass?._id) {
       fetchAttendanceData();
     }
-  }, [date, user?.class?._id]);
+  }, [date, user?.assignedClass?._id]);
 
   const handleAttendanceCreate = async (data) => {
     try {

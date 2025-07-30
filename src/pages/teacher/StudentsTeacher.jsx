@@ -119,15 +119,15 @@ export default function StudentsTeacher() {
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
-              <StudentsFilter classes={[user?.class]} />
+              <StudentsFilter classes={[user?.assignedClass]} />
             </div>
             <div className="flex my-3 w-full sm:w-auto">
               <RegistrationsModal
-                classes={[user?.class]}
+                classes={[user?.assignedClass]}
                 onRegistred={handleRegistrationsStudent}
               />
               <StudentsModal
-                classes={[user?.class]}
+                classes={[user?.assignedClass]}
                 onAddStudent={handelAddStudent}
               />
             </div>
@@ -136,7 +136,7 @@ export default function StudentsTeacher() {
           <StudentsTable
             loading={loading}
             students={filteredStudents}
-            classes={[user?.class]}
+            classes={[user?.assignedClass]}
             onUpdateStudent={handleUpdateStudent}
             onDeleteEnrollment={handleDeleteEnrollment}
           />

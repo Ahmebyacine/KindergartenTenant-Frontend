@@ -49,13 +49,13 @@ export default function ReportsTeacher() {
             </TabsList>
             {/* Move TabsContent inside first Tabs component */}
             <TabsContent value="pedagogical" className="space-y-4">
-              <ReportsPedagogicalTable classes={[user?.class]} students={students} />
+              <ReportsPedagogicalTable classes={[user?.assignedClass]} students={students} />
             </TabsContent>
             <TabsContent value="financial" className="space-y-4">
-              <ReportsFinancialTable classes={[user?.class]} students={students} />
+              <ReportsFinancialTable classes={[user?.assignedClass]} students={students} />
             </TabsContent>
             <TabsContent value="health" className="space-y-4">
-              <ReportsHealthTable classes={[user?.class]} students={students} />
+              <ReportsHealthTable classes={[user?.assignedClass]} students={students} />
             </TabsContent>
           </Tabs>
         </div>
