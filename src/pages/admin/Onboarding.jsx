@@ -4,7 +4,7 @@ import CategoryStep from "@/layouts/admin/onboardingSteps/CategoryStep";
 import ClassStep from "@/layouts/admin/onboardingSteps/ClassStep";
 import CurrencyStep from "@/layouts/admin/onboardingSteps/CurrencyStep";
 import LanguageStep from "@/layouts/admin/onboardingSteps/LanguageStep";
-import SuccesStep from "@/layouts/admin/onboardingSteps/succesStep";
+import SuccesStep from "@/layouts/admin/onboardingSteps/SuccesStep";
 import { useState } from "react";
 
 export default function Onboarding() {
