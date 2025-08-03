@@ -24,6 +24,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import img from '@/assets/images/logoSignin.png'
 
 const signInSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -65,10 +66,9 @@ export default function Signin() {
   return (
     <div className="flex items-center justify-center bg-background px-4 py-12">
       <div className="w-full max-w-md">
-        <div className="flex justify-center my-8">
-          <div className="flex items-center gap-2 text-primary">
-            <Calendar className="h-8 w-8" />
-            <span className="text-2xl font-bold">Rawdati Platform</span>
+        <div className="flex justify-center my-2">
+          <div className="flex items-center text-primary">
+            <img src={img} alt="rawdayee logo"  className="h-32"/>
           </div>
         </div>
 

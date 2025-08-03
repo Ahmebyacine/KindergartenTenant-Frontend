@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   Sidebar,
   SidebarContent,
@@ -20,11 +21,12 @@ import {
 } from "./ui/dropdown-menu";
 import { More, ProfileCircle, Setting2 } from "iconsax-react";
 import img from "@/assets/images/avatar.png";
+import logoAr from "@/assets/images/logoSidebarArabic.png";
+import logoLt from "@/assets/images/logoSidebarLatino.png";
 import { Button } from "./ui/button";
 import { useTranslation } from "react-i18next";
 import SidebarMenuSupervisor from "@/layouts/supervisor/SidebarMenuSupervisor";
 import SidebarMenuTeacher from "@/layouts/teacher/SidebarMenuTeacher";
-import { Link } from "react-router-dom";
 
 export function AppSidebar() {
   const { user } = useAuth();
@@ -34,8 +36,17 @@ export function AppSidebar() {
       side={i18n.language === "ar" ? "right" : "left"}
       collapsible="icon"
     >
-      <SidebarHeader className="h-16 px-3 py-auto font-bold transition-all duration-300">
-        LOGO
+      <SidebarHeader className="h-16 px-3 py-3 font-bold transition-all duration-300">
+        <img
+          src={i18n.language === "ar" ? logoAr : logoLt}
+          alt="Rawdatee Logo"
+          className="h-full object-contain group-data-[collapsible=icon]:hidden"
+        />
+        <img
+          src="images/rawdatee.png"
+          alt="Rawdatee Logo"
+          className="h-full object-contain group-data-[collapsible=icon]:block hidden"
+        />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
