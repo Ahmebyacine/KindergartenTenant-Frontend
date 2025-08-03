@@ -21,12 +21,12 @@ import {
 } from "./ui/dropdown-menu";
 import { More, ProfileCircle, Setting2 } from "iconsax-react";
 import img from "@/assets/images/avatar.png";
-import logoAr from "@/assets/images/logoSidebarArabic.png";
-import logoLt from "@/assets/images/logoSidebarLatino.png";
 import { Button } from "./ui/button";
 import { useTranslation } from "react-i18next";
 import SidebarMenuSupervisor from "@/layouts/supervisor/SidebarMenuSupervisor";
 import SidebarMenuTeacher from "@/layouts/teacher/SidebarMenuTeacher";
+import logoAr from "@/assets/images/logoSidebarArabic.png";
+import logoLt from "@/assets/images/logoSidebarLatino.png";
 
 export function AppSidebar() {
   const { user } = useAuth();
