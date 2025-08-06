@@ -3,8 +3,10 @@ import succes from "@/assets/images/succes.png";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function SuccesStep({ onPrevious }) {
+  const { setConfig } = useAuth();
   return (
     <div className="text-center">
       <div className="mb-6">
@@ -29,11 +31,19 @@ export default function SuccesStep({ onPrevious }) {
           <span className="text-base">السابق</span>
         </Button>
 
-        <Button
-          className={`flex items-center gap-2 rounded-xl px-8 py-3 text-base font-medium bg-secondary hover:bg-green-700`}
-        >
-          <Link to="/">ابدأ الآن</Link>
-        </Button>
+        <Link to="/">
+          <Button
+            className={`flex items-center gap-2 rounded-xl px-8 py-3 text-base font-medium bg-secondary hover:bg-green-700`}
+            onClick={() =>
+              setConfig((prev) => ({
+                ...prev,
+                onboarding: true,
+              }))
+            }
+          >
+            ابدأ الآن
+          </Button>
+        </Link>
       </div>
     </div>
   );

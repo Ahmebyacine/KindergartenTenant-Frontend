@@ -42,7 +42,8 @@ const ProtectedRoute = ({ roles = [], redirectPath = "/signin", children }) => {
   if (
     user &&
     !user.changedDefaultPassword &&
-    location.pathname !== "/change-password-first-time"
+    location.pathname !== "/change-password-first-time" &&
+    location.pathname !== "/onboarding"
   ) {
     return (
       <Navigate

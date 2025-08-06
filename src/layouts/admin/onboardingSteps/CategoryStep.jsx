@@ -17,20 +17,24 @@ export default function CategoryStep({ onNext, onPrevious }) {
   ]);
 
   const handleCategoryToggle = (categoryName) => {
-  setSelectedCategories((prev) =>
-    prev.includes(categoryName)
-      ? prev.filter((name) => name !== categoryName)
-      : [...prev, categoryName]
-  );
-};
+    setSelectedCategories((prev) =>
+      prev.includes(categoryName)
+        ? prev.filter((name) => name !== categoryName)
+        : [...prev, categoryName]
+    );
+  };
 
   const handleAddCustomCategory = (customCategory) => {
-    if (!categories.some((cat) => cat.name === customCategory.name)) {
-      setCategories((prev) => [...prev, { name: customCategory.name }]);
-    }
-    if (!selectedCategories.includes(customCategory.name)) {
-      setSelectedCategories((prev) => [...prev, customCategory.name]);
-    }
+    const name = String(customCategory?.name || "").trim();
+    if (!name) return; // skip empty names
+
+    setCategories((prev) =>
+      prev.some((cat) => cat.name === name) ? prev : [...prev, { name }]
+    );
+
+    setSelectedCategories((prev) =>
+      prev.includes(name) ? prev : [...prev, name]
+    );
   };
 
   const handleSubmit = async () => {
@@ -46,7 +50,7 @@ export default function CategoryStep({ onNext, onPrevious }) {
       setLoading(false);
     }
   };
-
+  console.log(selectedCategories);
   return (
     <div className="text-center">
       <div className="mb-3">

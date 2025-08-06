@@ -5,6 +5,7 @@ import ReactCountryFlag from "react-country-flag";
 import { ChevronRight } from "lucide-react";
 import api from "@/services/api";
 import i18n from "@/i18n";
+import { updateDocumentDirection } from "@/utils/updateDocumentDirection";
 
 export default function LanguageStep({ onNext }) {
   const [selectedLanguage, setSelectedLanguage] = useState("");
@@ -22,6 +23,7 @@ export default function LanguageStep({ onNext }) {
     try {
       await api.post("/onboarding/language", { language: selectedLanguage });
       i18n.changeLanguage(selectedLanguage)
+      updateDocumentDirection(selectedLanguage);
       onNext();
     } catch {
       setError("حدث خطأ أثناء الحفظ.");
