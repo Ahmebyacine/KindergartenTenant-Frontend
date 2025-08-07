@@ -19,7 +19,6 @@ import {
   DialogClose,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Add } from "iconsax-react";
 import {
   Form,
   FormControl,
@@ -30,6 +29,7 @@ import {
 } from "@/components/ui/form";
 import { useEffect } from "react";
 import { Plus } from "lucide-react";
+import { toast } from "sonner";
 
 const categorySchema = z.object({
   name: z.string().min(1, "مطلوب"),
@@ -39,6 +39,7 @@ export default function CategoryModal({
   onAddCategory,
   onUpdateCategory,
   editingCategory = null,
+  isLimited = false,
 }) {
   const form = useForm({
     resolver: zodResolver(categorySchema),
@@ -74,8 +75,16 @@ export default function CategoryModal({
               تعديل
             </Button>
           ) : (
-            <Button className="w-full rounded-xl">
-              <Plus/>
+            <Button
+              onClick={(e) => {
+                if (isLimited) {
+                  e.preventDefault();
+                  toast.error(`تم الوصول إلى الحد الأقصى للفئات `);
+                }
+              }}
+              className={`${isLimited && "bg-primary/30 hover:bg-primary/10 cursor-not-allowed"} w-full rounded-xl`}
+            >
+              <Plus />
               أضف فئة مخصصة
             </Button>
           )}

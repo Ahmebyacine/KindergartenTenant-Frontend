@@ -24,7 +24,7 @@ import {
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { useState } from "react";
 import useFetch from "@/hooks/useFetch";
-import api from "@/services/api";
+import api from "@/api";
 
 // Validation schema
 const formSchema = z.object({

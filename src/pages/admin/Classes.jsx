@@ -1,33 +1,24 @@
 import { useState, useEffect, useMemo } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ClassesTable from "@/layouts/admin/classes/ClassesTable";
-import api from "@/services/api";
+import api from "@/api";
 import ClassesModal from "@/layouts/admin/classes/ClassesModal";
 import { Input } from "@/components/ui/input";
 import { SearchNormal1 } from "iconsax-react";
 import { toast } from "sonner";
 import useFetch from "@/hooks/useFetch";
 import ErrorPage from "../common/ErrorPage";
+import { useAuth } from "@/contexts/AuthContext";
+import { fetchTabs } from "@/api/categoriesApi";
+import { fetchClasses } from "@/api/classesApi";
 
 export default function Classes() {
   const [activeTab, setActiveTab] = useState(null);
   const [search, setSearch] = useState("");
-  // Fetch Functions
-  const fetchTabs = async () => {
-    const response = await api.get("/categories");
-    return response.data.map((category) => ({
-      id: category._id,
-      label: category.name,
-      name: category.name,
-    }));
-  };
+  const { config } = useAuth();
 
-  const fetchClasses = async () => {
-    const response = await api.get("/classes");
-    return response.data;
-  };
   // useFetch Hooks
-  const { data: tabs,error: tabsError } = useFetch(fetchTabs);
+  const { data: tabs, error: tabsError } = useFetch(fetchTabs);
 
   const {
     data: classes,
@@ -97,7 +88,8 @@ export default function Classes() {
     });
   }, [classes, search, activeTab]);
 
-  if (tabsError || classesError) return <ErrorPage error={tabsError || classesError} />;
+  if (tabsError || classesError)
+    return <ErrorPage error={tabsError || classesError} />;
 
   return (
     <div className="bg-background p-6">
@@ -105,7 +97,8 @@ export default function Classes() {
         <div className="flex justify-start">
           <Tabs
             value={activeTab}
-            onValueChange={setActiveTab}k
+            onValueChange={setActiveTab}
+            k
             className="w-full"
           >
             <TabsList className="grid w-full grid-cols-3 bg-transparent h-auto p-0 gap-8 md:grid-cols-4 lg:grid-cols-6 border-b mb-2">
@@ -136,7 +129,11 @@ export default function Classes() {
                   />
                 </div>
               </div>
-              <ClassesModal onAddClass={handleAddClass} categories={tabs} />
+              <ClassesModal
+                onAddClass={handleAddClass}
+                categories={tabs}
+                isLimited={classes.length >= config?.limits?.classes}
+              />
             </div>
 
             <ClassesTable

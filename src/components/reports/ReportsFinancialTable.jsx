@@ -23,7 +23,7 @@ import { SearchNormal1, Document } from "iconsax-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import ReportsFinancialModal from "@/components/reports/ReportsFinancialModal";
-import api from "@/services/api";
+import api from "@/api";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import { formatDateMonth } from "@/utils/dateFormatter";
 import LoadingTable from "@/components/LoadingTable";

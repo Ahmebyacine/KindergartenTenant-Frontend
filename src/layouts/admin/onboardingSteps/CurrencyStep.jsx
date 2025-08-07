@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import api from "@/services/api";
+import api from "@/api";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import ReactCountryFlag from "react-country-flag";

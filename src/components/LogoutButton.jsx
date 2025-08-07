@@ -1,6 +1,6 @@
 import { Logout } from "iconsax-react";
 import { Button } from './ui/button';
-import api from '@/services/api';
+import api from '@/api';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 

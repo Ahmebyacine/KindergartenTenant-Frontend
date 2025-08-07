@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import StudentsTable from "@/components/students/StudentsTable";
 import { SearchNormal1 } from "iconsax-react";
 import StudentsModal from "@/components/students/StudentsModal";
-import api from "@/services/api";
+import api from "@/api";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import StudentsFilter from "@/components/students/StudentsFilter";
@@ -10,15 +10,12 @@ import RegistrationsModal from "@/components/students/RegistrationsModal";
 import { useAuth } from "@/contexts/AuthContext";
 import useFetch from "@/hooks/useFetch";
 import ErrorPage from "../common/ErrorPage";
+import { fetchStudents } from "@/api/studentsApi";
 
 export default function StudentsTeacher() {
   const { user } = useAuth();
   const [search, setSearch] = useState("");
-
-  const fetchStudents = async () => {
-    const res = await api.get("/enrollments");
-    return res.data;
-  };
+  const { config } = useAuth();
 
   const {
     data: students,
@@ -125,10 +122,12 @@ export default function StudentsTeacher() {
               <RegistrationsModal
                 classes={[user?.assignedClass]}
                 onRegistred={handleRegistrationsStudent}
+                isLimited={students.length >= config?.limits?.students}
               />
               <StudentsModal
                 classes={[user?.assignedClass]}
                 onAddStudent={handelAddStudent}
+                isLimited={students.length >= config?.limits?.students}
               />
             </div>
           </div>

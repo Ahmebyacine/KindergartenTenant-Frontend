@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import useFetch from "@/hooks/useFetch";
-import api from "@/services/api";
+import api from "@/api";
 import { getMonthNameByNumber } from "@/utils/getMonthNameByNumber";
 import { t } from "i18next";
 import { Chart1, Danger } from "iconsax-react";

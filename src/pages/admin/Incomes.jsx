@@ -7,7 +7,7 @@ import {
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import IncomesTable from "@/layouts/admin/incomes/IncomesTable";
 import StatCard from "@/components/StatCard";
-import api from "@/services/api";
+import api from "@/api";
 import useFetch from "@/hooks/useFetch";
 import { getMonthNameByNumber } from "@/utils/getMonthNameByNumber";
 import ErrorPage from "../common/ErrorPage";

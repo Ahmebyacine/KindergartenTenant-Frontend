@@ -3,37 +3,24 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import StudentsTable from "@/components/students/StudentsTable";
 import { SearchNormal1 } from "iconsax-react";
 import StudentsModal from "@/components/students/StudentsModal";
-import api from "@/services/api";
+import api from "@/api";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import StudentsFilter from "@/components/students/StudentsFilter";
 import RegistrationsModal from "@/components/students/RegistrationsModal";
 import useFetch from "@/hooks/useFetch";
 import ErrorPage from "../common/ErrorPage";
+import { useAuth } from "@/contexts/AuthContext";
+import { fetchTabs } from "@/api/categoriesApi";
+import { fetchClasses } from "@/api/classesApi";
+import { fetchStudents } from "@/api/studentsApi";
 
 export default function Students() {
   const [activeTab, setActiveTab] = useState(null);
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({ classId: null, category: null });
+  const { config } = useAuth();
 
-  const fetchTabs = async () => {
-    const res = await api.get("/categories");
-    return res.data.map((cat) => ({
-      id: cat._id,
-      label: cat.name,
-      name: cat.name,
-    }));
-  };
-
-  const fetchClasses = async () => {
-    const res = await api.get("/classes");
-    return res.data;
-  };
-
-  const fetchStudents = async () => {
-    const res = await api.get("/enrollments");
-    return res.data;
-  };
 
   const { data: tabs, error: tabsError } = useFetch(fetchTabs);
 
@@ -197,10 +184,12 @@ export default function Students() {
                 <RegistrationsModal
                   classes={classes}
                   onRegistred={handleRegistrationsStudent}
+                  isLimited={students.length >= config?.limits?.students}
                 />
                 <StudentsModal
                   classes={classes}
                   onAddStudent={handleAddStudent}
+                  isLimited={students.length >= config?.limits?.students}
                 />
               </div>
             </div>

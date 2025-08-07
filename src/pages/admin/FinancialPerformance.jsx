@@ -12,7 +12,7 @@ import FinancialJournalChart from "@/layouts/admin/financialPerformance/Financia
 import FinancialJournalTable from "@/layouts/admin/financialPerformance/FInancialJournalTable";
 import EmployeeJournalTable from "@/layouts/admin/financialPerformance/EmployeeJournalTable";
 import StatCard from "@/components/StatCard";
-import api from "@/services/api";
+import api from "@/api";
 import { getMonthNameByNumber } from "@/utils/getMonthNameByNumber";
 import useFetch from "@/hooks/useFetch";
 import ErrorPage from "../common/ErrorPage";

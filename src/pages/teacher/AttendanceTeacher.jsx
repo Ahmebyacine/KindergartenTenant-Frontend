@@ -20,7 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 import img from "@/assets/images/attendanceillu.png";
 import AttendanceTable from "@/components/attendance/AttendanceTable";
-import api from "@/services/api";
+import api from "@/api";
 import { formatDate } from "@/utils/dateFormatter";
 import { toast } from "sonner";
 import StatCard from "@/components/StatCard";
@@ -36,7 +36,6 @@ export default function AttendanceTeacher() {
   const [attendance, setAttendance] = useState([]);
 
   const { user } = useAuth();
-  console.log(user)
   // fetch attendce
   useEffect(() => {
     const fetchAttendanceData = async () => {

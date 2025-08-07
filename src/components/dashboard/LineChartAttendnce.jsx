@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import useFetch from "@/hooks/useFetch";
-import api from "@/services/api";
+import api from "@/api";
 import { getMonthNameByNumber } from "@/utils/getMonthNameByNumber";
 import { Line, LineChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { Skeleton } from "../ui/skeleton";

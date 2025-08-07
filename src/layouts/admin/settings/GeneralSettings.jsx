@@ -1,20 +1,28 @@
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/themeProvider";
 import i18n from "@/i18n";
-import api from "@/services/api";
+import api from "@/api";
 import { toast } from "sonner";
 import { updateDocumentDirection } from "@/utils/updateDocumentDirection";
+import useFetch from "@/hooks/useFetch";
+import { fetchCategories } from "@/api/categoriesApi";
+import DeleteAlertDialog from "@/components/DeleteAlertDialog";
+import CategoryModal from "../categories/CategoryModal";
+import { useAuth } from "@/contexts/AuthContext";
+
 export function GeneralSettings() {
   const { theme, setTheme } = useTheme();
+  const { config } = useAuth();
+
   const [autoTimeZone, setAutoTimeZone] = useState(true);
   const [selectedLang, setSelectedLang] = useState(i18n.language);
 
+  const { data: categories, setData: setCategories } =
+    useFetch(fetchCategories);
   useEffect(() => {
     const onLangChange = (lng) => setSelectedLang(lng);
     i18n.on("languageChanged", onLangChange);
@@ -42,6 +50,45 @@ export function GeneralSettings() {
     } catch (error) {
       console.error("Error updating theme:", error);
       toast.error("فشل في تغيير المظهر. يرجى المحاولة مرة أخرى.");
+    }
+  };
+
+  const handleAddCategory = async (data) => {
+    try {
+      const response = await api.post("/categories", data);
+
+      setCategories((prev) => [response.data, ...prev]);
+
+      toast.success("تم إضافة التصنيف بنجاح");
+    } catch (error) {
+      toast.error("حدث خطأ أثناء إضافة التصنيف");
+      console.error("Add category error:", error);
+    }
+  };
+
+  const handleUpdateCategory = async (data) => {
+    try {
+      const response = await api.put(`/categories/${data._id}`, data);
+
+      setCategories((prev) =>
+        prev.map((cat) => (cat._id === data._id ? response.data : cat))
+      );
+
+      toast.success("تم تعديل التصنيف بنجاح");
+    } catch (error) {
+      toast.error("حدث خطأ أثناء تعديل التصنيف");
+      console.error("Update category error:", error);
+    }
+  };
+
+  const handleDeleteCategory = async (id) => {
+    try {
+      await api.delete(`/categories/${id}`);
+      setCategories((prev) => prev.filter((cat) => cat._id !== id));
+      toast.success("تم حذف التصنيف بنجاح");
+    } catch (error) {
+      toast.error("حدث خطأ أثناء الحذف");
+      console.error("Delete category error:", error);
     }
   };
 
@@ -191,27 +238,38 @@ export function GeneralSettings() {
       {/* Kindergarten Information Section */}
       <div>
         <h2 className="text-l md:text-xl font-semibold mb-4 text-right">
-          معلومات الروضة
+          اعدادات الروضة
         </h2>
         <div className="border-t border-border mb-6"></div>
 
-        <div className="space-y-6">
-          <h3 className="md:text-lg font-medium">اسم الروضة</h3>
-          <div className="flex justify-between items-center">
-            <Input
-              className="max-w-md border-border"
-              placeholder="روضة النور"
+        <div className="space-y-6 max-w-lg">
+          <div className="flex justify-between">
+            <h3 className="md:text-lg font-medium">فئات الروضة</h3>
+            <CategoryModal
+              onAddCategory={handleAddCategory}
+              isLimited={categories.length >= config?.limits?.categories}
             />
           </div>
-
-          <div className="flex justify-between items-center pt-4">
-            <h3 className="md:text-lg font-medium">شعار الروضة</h3>
-            <div className="flex items-center gap-2">
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                رفع شعار الروضة
-              </Button>
-            </div>
-          </div>
+          <ul className="space-y-2">
+            {categories.map((category) => (
+              <li
+                key={category._id}
+                className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted"
+              >
+                <span className="text-sm font-medium">{category.name}</span>
+                <div className="flex gap-2">
+                  <CategoryModal
+                    editingCategory={category}
+                    onUpdateCategory={handleUpdateCategory}
+                  />
+                  <DeleteAlertDialog
+                    item={category._id}
+                    onDelete={handleDeleteCategory}
+                  />
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>

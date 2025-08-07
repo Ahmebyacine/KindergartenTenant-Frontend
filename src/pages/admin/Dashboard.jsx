@@ -5,7 +5,7 @@ import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import { Link } from "react-router-dom";
 import StatCard from "@/components/StatCard";
 import LineChartAttendnce from "@/components/dashboard/LineChartAttendnce";
-import api from "@/services/api";
+import api from "@/api";
 import useFetch from "@/hooks/useFetch";
 
 export default function Dashboard() {

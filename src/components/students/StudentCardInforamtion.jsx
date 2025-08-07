@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import QRCode from "qrcode";
 import img from "@/assets/images/avatar.png";
 import StudentCardLoading from "./StudentCardLoading";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function StudentCardInforamtion({
   enrollment,
   loading = false,
 }) {
   const [qrCodeUrl, setQrCodeUrl] = useState("");
+  const { config } = useAuth();
 
   // Generate modern QR code when component mounts or enrollment changes
   useEffect(() => {
@@ -52,7 +54,7 @@ export default function StudentCardInforamtion({
           <p className="text-secondary-foreground text-center font-semibold text-sm sm:text-xl">
             {`${enrollment?.student?.firstName} ${enrollment?.student?.lastName}`}
           </p>
-          <p className="text-secondary-foreground text-sm">روضة النور</p>
+          <p className="text-secondary-foreground text-sm">{config?.kindergraten || "Rawdatee -platform-"}</p>
         </div>
 
         {/* Student Information */}

@@ -29,6 +29,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 const classSchema = z.object({
   className: z.string().min(1, "مطلوب"),
@@ -45,6 +46,7 @@ export default function ClassesModal({
   onUpdateClass,
   categories,
   editingClass = null,
+  isLimited= false
 }) {
   const form = useForm({
     resolver: zodResolver(classSchema),
@@ -61,10 +63,7 @@ export default function ClassesModal({
       className: editingClass?.className || "",
       category: editingClass?.category?._id || "",
       capacity: editingClass?.capacity || 20,
-      price:
-        typeof editingClass?.price === "number"
-          ? editingClass.price
-          : "",
+      price: typeof editingClass?.price === "number" ? editingClass.price : "",
     });
   }, [editingClass, form]);
 
@@ -89,7 +88,17 @@ export default function ClassesModal({
               تعديل
             </Button>
           ) : (
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-6 py-2 flex items-center gap-2">
+            <Button
+              onClick={(e) => {
+                if (isLimited) {
+                  e.preventDefault();
+                  toast.error(
+                    `تم الوصول إلى الحد الأقصى للفصول `
+                  );
+                }
+              }}
+              className={`${isLimited && "hover:bg-primary/30 bg-primary/30 cursor-not-allowed"} rounded-lg px-6 py-2 flex items-center gap-2`}
+            >
               <Add size="20" color="currentColor" />
               إضافة فصل
             </Button>
@@ -204,7 +213,9 @@ export default function ClassesModal({
                           placeholder="أدخل سعر الفصل"
                           onChange={(e) =>
                             field.onChange(
-                              e.target.value === "" ? "" : Number(e.target.value)
+                              e.target.value === ""
+                                ? ""
+                                : Number(e.target.value)
                             )
                           }
                         />

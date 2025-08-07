@@ -2,20 +2,24 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { SearchNormal1 } from "iconsax-react";
 import UserModal from "./UserModal";
-import api from "@/services/api";
+import api from "@/api";
 import { toast } from "sonner";
 import useFetch from "@/hooks/useFetch";
 import UserCard from "./UserCars";
 import { generateRandomPassword } from "@/utils/generateRandomPassword";
+import { fetchUsers } from "@/api/usersApi";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function UsersSettings() {
   const [editingId, setEditingId] = useState(null);
+  const { config } = useAuth();
 
-  const fetchUsers = async () => {
-    const response = await api.get("/users");
-    return response.data;
-  };
-  const { data: users, setData: setUsers, loading, error } = useFetch(fetchUsers);
+  const {
+    data: users,
+    setData: setUsers,
+    loading,
+    error,
+  } = useFetch(fetchUsers);
 
   const handleAddUser = async (userData) => {
     try {
@@ -27,7 +31,7 @@ export default function UsersSettings() {
       toast.error("فشل في إضافة المستخدم. يرجى المحاولة مرة أخرى.");
     }
   };
-  const handleUpdateUser = async (userData,id) => {
+  const handleUpdateUser = async (userData, id) => {
     try {
       const response = await api.put(`/users/${id}`, userData);
       toast.success("تم تحديث المستخدم بنجاح");
@@ -85,7 +89,10 @@ export default function UsersSettings() {
               />
             </div>
           </div>
-          <UserModal onAddUser={handleAddUser} />
+          <UserModal
+            onAddUser={handleAddUser}
+            isLimited={users.length >= config?.limits?.users}
+          />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2">

@@ -1,29 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TeachersTable from "@/layouts/supervisor/teachers/TeachersTable";
-import api from "@/services/api";
 import { SearchNormal1 } from "iconsax-react";
 import { Input } from "@/components/ui/input";
 import useFetch from "@/hooks/useFetch";
 import ErrorPage from "../common/ErrorPage";
+import { fetchTabs } from "@/api/categoriesApi";
+import { fetchTeachers } from "@/api/usersApi";
 
 export default function TeachersSupervisor() {
   const [activeTab, setActiveTab] = useState(null);
   const [search, setSearch] = useState("");
-
-  const fetchTabs = async () => {
-    const response = await api.get("/categories");
-    return response.data.map((category) => ({
-      id: category._id,
-      label: category.name,
-      name: category.name,
-    }));
-  };
-
-  const fetchTeachers = async () => {
-    const response = await api.get("/users/teachers");
-    return response.data;
-  };
 
   const { data: tabs, error: tabsError } = useFetch(fetchTabs);
 

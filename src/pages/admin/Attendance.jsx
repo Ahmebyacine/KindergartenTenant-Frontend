@@ -34,7 +34,7 @@ import {
 import { Button } from "@/components/ui/button";
 import img from "@/assets/images/attendanceillu.png";
 import AttendanceTable from "@/layouts/admin/attendance/AttendanceTable";
-import api from "@/services/api";
+import api from "@/api";
 import { formatDate } from "@/utils/dateFormatter";
 import {
   Carousel,

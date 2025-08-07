@@ -1,29 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import api from "@/services/api";
 import { Input } from "@/components/ui/input";
 import { SearchNormal1 } from "iconsax-react";
 import ClassesTable from "@/layouts/supervisor/classes/ClassesTable";
 import useFetch from "@/hooks/useFetch";
 import ErrorPage from "../common/ErrorPage";
+import { fetchTabs } from "@/api/categoriesApi";
+import { fetchClasses } from "@/api/classesApi";
 
 export default function ClassesSupervisor() {
   const [activeTab, setActiveTab] = useState(null);
   const [search, setSearch] = useState("");
-
-  const fetchTabs = async () => {
-    const response = await api.get("/categories");
-    return response.data.map((category) => ({
-      id: category._id,
-      label: category.name,
-      name: category.name,
-    }));
-  };
-
-  const fetchClasses = async () => {
-    const response = await api.get("/classes");
-    return response.data;
-  };
 
   const { data: tabs, error: tabsError } = useFetch(fetchTabs);
   const { data: classes, loading, error: classesError } = useFetch(fetchClasses);

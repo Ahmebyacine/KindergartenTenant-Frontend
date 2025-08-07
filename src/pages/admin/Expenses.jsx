@@ -18,7 +18,7 @@ import {
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import ExpensesTable from "@/layouts/admin/expenses/ExpensesTable";
 import StatCard from "@/components/StatCard";
-import api from "@/services/api";
+import api from "@/api";
 import { toast } from "sonner";
 import ExpensesFilter from "@/layouts/admin/expenses/ExpensesFilter";
 import ExpensesModal from "@/layouts/admin/expenses/ExpensesModal";

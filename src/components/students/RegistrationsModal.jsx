@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/command";
 import { Calendar, CloseSquare } from "iconsax-react";
 import { useState, useRef, useEffect } from "react";
-import api from "@/services/api";
+import api from "@/api";
 import { formatDate } from "@/utils/dateFormatter";
 import {
   Form,
@@ -39,6 +39,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { getCurrentAcademicYear } from "@/utils/getAcademicYear";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   student: z.string().min(1, "يجب اختيار طالب"),
@@ -46,7 +47,11 @@ const formSchema = z.object({
   academicYear: z.string().min(1, "السنة الدراسية مطلوبة"),
 });
 
-export default function RegistrationsModal({ classes, onRegistred }) {
+export default function RegistrationsModal({
+  classes,
+  onRegistred,
+  isLimited = false,
+}) {
   const [searchValue, setSearchValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -114,7 +119,17 @@ export default function RegistrationsModal({ classes, onRegistred }) {
         <DialogTrigger asChild>
           <Button
             variant="outline"
-            className="hover:bg-primary/90 text-primary border-primary rounded-lg px-6 py-2 flex items-center gap-2 w-full sm:w-auto"
+            className={`${
+              isLimited
+                ? "!text-primary/40 !border-primary/40 hover:bg-primary/10 cursor-not-allowed"
+                : "hover:bg-primary/90"
+            } text-primary border-primary rounded-lg px-6 py-2 flex items-center gap-2 w-full sm:w-auto`}
+            onClick={(e) => {
+              if (isLimited) {
+                e.preventDefault();
+                toast.error(`تم الوصول إلى الحد الأقصى للتلاميذ `);
+              }
+            }}
           >
             اعادة تسجيل
           </Button>

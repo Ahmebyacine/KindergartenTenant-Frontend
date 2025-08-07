@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ReportsFinancialTable from "@/components/reports/ReportsFinancialTable";
 import ReportsHealthTable from "@/components/reports/ReportsHealthTable";
 import ReportsPedagogicalTable from "@/components/reports/ReportsPedagogicalTable";
-import api from "@/services/api";
+import api from "@/api";
 import useFetch from "@/hooks/useFetch";
 import ErrorPage from "../common/ErrorPage";
 

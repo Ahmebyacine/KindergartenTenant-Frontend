@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import useFetch from "@/hooks/useFetch";
-import api from "@/services/api";
+import api from "@/api";
 import { getMonthNameByNumber } from "@/utils/getMonthNameByNumber";
 import { Chart1 } from "iconsax-react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";

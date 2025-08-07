@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import useFetch from "@/hooks/useFetch";
-import api from "@/services/api";
+import api from "@/api";
 import React from "react";
 import LoadingTable from "../LoadingTable";
 import { Link } from "react-router-dom";

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import BarChartRecivedMoney from "@/components/dashboard/BarChartRecivedMoney";
 import LineChartAttendnce from "@/components/dashboard/LineChartAttendnce";
 import StatCard from "@/components/StatCard";
-import api from "@/services/api";
+import api from "@/api";
 import useFetch from "@/hooks/useFetch";
 
 export default function DashboardSupervisor() {

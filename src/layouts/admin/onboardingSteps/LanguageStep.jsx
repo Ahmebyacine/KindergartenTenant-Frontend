@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import ReactCountryFlag from "react-country-flag";
 import { ChevronRight } from "lucide-react";
-import api from "@/services/api";
+import api from "@/api";
 import i18n from "@/i18n";
 import { updateDocumentDirection } from "@/utils/updateDocumentDirection";
 

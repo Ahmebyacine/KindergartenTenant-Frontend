@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import api from "@/services/api";
+import api from "@/api";
 import i18n from "@/i18n";
 import { useTheme } from "@/components/themeProvider";
 import { updateDocumentDirection } from "@/utils/updateDocumentDirection";
@@ -22,13 +22,13 @@ export const AuthProvider = ({ children }) => {
         updateDocumentDirection(response?.data?.user.language);
         setTheme(response?.data?.user.theme);
         setConfig(response.data.config)
+        console.log(response.data.config)
       } catch (error) {
         console.error(error);
       } finally {
         setLoading(false);
       }
     };
-
     fetchData();
   }, []);
 

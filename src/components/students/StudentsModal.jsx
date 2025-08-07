@@ -31,6 +31,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Add } from "iconsax-react";
 import ImageUpload from "@/components/ImageUpload";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 // Updated student schema to match backend model
 const studentSchema = z.object({
@@ -50,6 +51,7 @@ export default function StudentsModal({
   onUpdateStudent,
   editingStudent = null,
   classes,
+  isLimited= false
 }) {
   const form = useForm({
     resolver: zodResolver(studentSchema),
@@ -95,7 +97,7 @@ export default function StudentsModal({
     }
     if (data.image && data.image instanceof File) {
       if (editingStudent?.student?.image) {
-        formData.append("oldImage", editingStudent.student.image);  
+        formData.append("oldImage", editingStudent.student.image);
       }
       formData.append("image", data.image);
     }
@@ -117,11 +119,22 @@ export default function StudentsModal({
       <Dialog>
         <DialogTrigger asChild>
           {editingStudent ? (
-            <Button variant="ghost" className="text-primary underline p-1 h-auto font-medium m-0">
+            <Button
+              variant="ghost"
+              className="text-primary underline p-1 h-auto font-medium m-0"
+            >
               تعديل
             </Button>
           ) : (
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-6 py-2 flex items-center gap-2 w-full sm:w-auto">
+            <Button
+              onClick={(e) => {
+                if (isLimited) {
+                  e.preventDefault();
+                  toast.error(`تم الوصول إلى الحد الأقصى للتلاميذ `);
+                }
+              }}
+              className={`${ isLimited ? "bg-primary/30 hover:bg-primary/20 cursor-not-allowed" : ""} rounded-lg px-6 py-2 flex items-center gap-2 w-full sm:w-auto`}
+            >
               <Add size="16" color="currentColor" />
               اضافة طفل
             </Button>
@@ -330,10 +343,7 @@ export default function StudentsModal({
                               البريد الإلكتروني
                             </FormLabel>
                             <FormControl>
-                              <Input
-                                type="email"
-                                {...field}
-                              />
+                              <Input type="email" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>

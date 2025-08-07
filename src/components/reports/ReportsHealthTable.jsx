@@ -12,7 +12,7 @@ import { SearchNormal1, Document } from "iconsax-react";
 import { getAssessmentBadge, getConditionBadge } from "@/utils/getStatusBadges";
 import { Link } from "react-router-dom";
 import ReportsHealthModal from "./ReportsHealthModal";
-import api from "@/services/api";
+import api from "@/api";
 import { toast } from "sonner";
 import { formatDateTime } from "@/utils/dateFormatter";
 import LoadingTable from "@/components/LoadingTable";

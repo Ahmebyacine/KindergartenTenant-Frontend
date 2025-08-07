@@ -23,7 +23,7 @@ import { getOverallBadge } from "@/utils/getStatusBadges";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import ReportsPedagogicalModal from "./ReportsPedagogicalModal";
-import api from "@/services/api";
+import api from "@/api";
 import { toast } from "sonner";
 import { formatDateTime } from "@/utils/dateFormatter";
 import LoadingTable from "@/components/LoadingTable";

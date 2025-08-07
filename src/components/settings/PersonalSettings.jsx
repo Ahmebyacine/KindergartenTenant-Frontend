@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { User, Mail, Phone, Briefcase, Trash2, Upload } from "lucide-react";
 import img from "@/assets/images/avatar.png";
 import { useAuth } from "@/contexts/AuthContext";
-import api from "@/services/api";
+import api from "@/api";
 import { toast } from "sonner";
 import {
   Form,

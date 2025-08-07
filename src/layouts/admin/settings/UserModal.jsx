@@ -33,6 +33,7 @@ import { generateRandomPassword } from "@/utils/generateRandomPassword";
 import { useEffect } from "react";
 import ImageUpload from "@/components/ImageUpload";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from "sonner";
 
 // Define the form schema with validation
 const userSchema = z.object({
@@ -51,6 +52,7 @@ export default function UserModal({
   editingUser = null,
   open,
   onOpenChange,
+  isLimited = true,
 }) {
   // Initialize the form
   const form = useForm({
@@ -73,19 +75,19 @@ export default function UserModal({
     });
   }, [editingUser, form]);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("email", data.email);
     formData.append("phone", data.phone);
     formData.append("role", data.role);
     if (data.image && data.image instanceof File) {
-      if (editingUser?.image){
-        formData.append("oldImage",editingUser?.image)
+      if (editingUser?.image) {
+        formData.append("oldImage", editingUser?.image);
       }
       formData.append("image", data.image);
     }
-    if (editingUser.image && !data.image){
+    if (editingUser.image && !data.image) {
       formData.append("deleteImage", "true");
       formData.append("oldImage", editingUser.image);
     }
@@ -93,17 +95,28 @@ export default function UserModal({
       formData.append("password", generateRandomPassword(12));
     }
     if (editingUser) {
-      onUpdateUser(formData, editingUser._id);
+      await onUpdateUser(formData, editingUser._id);
     } else {
-      onAddUser(formData);
+      await onAddUser(formData);
     }
     form.reset();
+    onOpenChange(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-6 py-2 flex items-center gap-2">
+        <Button
+          onClick={(e) => {
+            if (isLimited) {
+              e.preventDefault();
+              toast.error(`تم الوصول إلى الحد الأقصى للمستخدمين`);
+            }
+          }}
+          className={`${
+            isLimited && "bg-primary/30 hover:bg-primary/10 cursor-not-allowed"
+          } rounded-lg px-6 py-2 flex items-center gap-2`}
+        >
           <Add size="20" color="currentColor" />
           إنشاء حساب جديد
         </Button>
@@ -217,7 +230,10 @@ export default function UserModal({
                           الدور
                           <span className="text-destructive">*</span>
                         </FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value}>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
                           <FormControl>
                             <SelectTrigger className="text-right border-border focus:border-primary focus:ring-primary">
                               <SelectValue placeholder="اختر الدور" />
@@ -258,7 +274,10 @@ export default function UserModal({
                           صورة المستخدم (اختياري)
                         </FormLabel>
                         <FormControl>
-                          <ImageUpload value={field.value} onChange={field.onChange} />
+                          <ImageUpload
+                            value={field.value}
+                            onChange={field.onChange}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

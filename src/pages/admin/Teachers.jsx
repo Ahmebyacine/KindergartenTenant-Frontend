@@ -2,36 +2,21 @@ import { useState, useEffect, useMemo } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TeachersTable from "@/layouts/admin/teachers/TeachersTable";
 import { toast } from "sonner";
-import api from "@/services/api";
+import api from "@/api";
 import { SearchNormal1 } from "iconsax-react";
 import TeachersModal from "@/layouts/admin/teachers/TeachersModal";
 import { Input } from "@/components/ui/input";
 import useFetch from "@/hooks/useFetch";
 import ErrorPage from "../common/ErrorPage";
+import { fetchClasses } from "@/api/classesApi";
+import { fetchTabs } from "@/api/categoriesApi";
+import { fetchTeachers } from "@/api/usersApi";
 
 export default function Teachers() {
   const [addLoading, setAddLoading] = useState(false);
   const [activeTab, setActiveTab] = useState(null);
   const [search, setSearch] = useState("");
 
-  const fetchTabs = async () => {
-    const res = await api.get("/categories");
-    return res.data.map((category) => ({
-      id: category._id,
-      label: category.name,
-      name: category.name,
-    }));
-  };
-
-  const fetchTeachers = async () => {
-    const res = await api.get("/users/teachers");
-    return res.data;
-  };
-
-  const fetchClasses = async () => {
-    const res = await api.get("/classes");
-    return res.data;
-  };
 
   const { data: tabs, error: tabsError } = useFetch(fetchTabs);
 

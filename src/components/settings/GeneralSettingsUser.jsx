@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/themeProvider";
 import i18n from "@/i18n";
-import api from "@/services/api";
+import api from "@/api";
 import { toast } from "sonner";
 import { updateDocumentDirection } from "@/utils/updateDocumentDirection";
 export function GeneralSettingsUser() {

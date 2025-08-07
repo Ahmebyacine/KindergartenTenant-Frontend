@@ -19,7 +19,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Scan, ScanBarcode } from "iconsax-react";
-import api from "@/services/api";
+import api from "@/api";
 import StudentCardInforamtion from "../students/StudentCardInforamtion";
 import { useIsMobile } from "@/hooks/use-mobile";
 

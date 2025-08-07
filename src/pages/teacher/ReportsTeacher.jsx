@@ -3,22 +3,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ReportsFinancialTable from "@/components/reports/ReportsFinancialTable";
 import ReportsHealthTable from "@/components/reports/ReportsHealthTable";
 import ReportsPedagogicalTable from "@/components/reports/ReportsPedagogicalTable";
-import api from "@/services/api";
 import useFetch from "@/hooks/useFetch";
 import { useAuth } from "@/contexts/AuthContext";
 import ErrorPage from "../common/ErrorPage";
+import { fetchStudents } from "@/api/studentsApi";
 
 export default function ReportsTeacher() {
   const [searchParams] = useSearchParams();
   const defaultTab = searchParams.get("tab") || "pedagogical";
-
   const { user } = useAuth();
-
-  const fetchStudents = async () => {
-    const response = await api.get("/enrollments");
-    return response.data;
-  };
-
   const { data: students, error: studentsError } = useFetch(fetchStudents);
   if (studentsError) return <ErrorPage error={studentsError} />;
   return (

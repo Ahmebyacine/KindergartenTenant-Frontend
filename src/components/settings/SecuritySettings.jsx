@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useState } from "react";
-import api from "@/services/api";
+import api from "@/api";
 import { toast } from "sonner";
 
 // Zod schema for password validation
