@@ -12,6 +12,7 @@ import { Chart1 } from "iconsax-react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { Skeleton } from "../ui/skeleton";
 import { t } from "i18next";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart";
 
 export default function BarChartRecivedMoney() {
   const fetchAttendaceSummary = async () => {
@@ -22,6 +23,12 @@ export default function BarChartRecivedMoney() {
     }));
   };
   const { data, loading, error } = useFetch(fetchAttendaceSummary);
+  const chartConfig = {
+    totalAmount: {
+      label: "Total Amount",
+      color: "hsl(var(--primary))",
+    },
+  };
   return (
     <Card dir="ltr">
       <CardHeader>
@@ -77,8 +84,11 @@ export default function BarChartRecivedMoney() {
       ) : (
         <>
           <CardContent className="overflow-x-auto px-0">
-            <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%" minWidth={300}>
+            <ChartContainer
+              config={chartConfig}
+              className="h-full w-full min-w-[300px]"
+            >
+              <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={data}
                   margin={{ top: 5, right: 0, left: 0, bottom: 5 }}
@@ -94,6 +104,7 @@ export default function BarChartRecivedMoney() {
                     tickLine={false}
                     tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
                   />
+                  <ChartTooltip content={<ChartTooltipContent />} />
                   <Bar
                     dataKey="totalAmount"
                     fill="var(--primary)"
@@ -102,7 +113,7 @@ export default function BarChartRecivedMoney() {
                   />
                 </BarChart>
               </ResponsiveContainer>
-            </div>
+            </ChartContainer>
           </CardContent>
           <CardFooter className={"justify-center"}>
             <div className="flex justify-center gap-4">

@@ -12,6 +12,11 @@ import { getMonthNameByNumber } from "@/utils/getMonthNameByNumber";
 import { t } from "i18next";
 import { Chart1, Danger } from "iconsax-react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 
 export default function BarChartDashboard() {
   const fetchFinancialPerformance = async () => {
@@ -22,6 +27,16 @@ export default function BarChartDashboard() {
     }));
   };
   const { data, loading, error } = useFetch(fetchFinancialPerformance);
+  const chartConfig = {
+    expenses: {
+      label: "Expenses",
+      color: "var(--chart-4)",
+    },
+    income: {
+      label: "Income",
+      color: "var(--primary)",
+    },
+  };
   return (
     <Card className="gap-3 h-full" dir="ltr">
       <CardHeader>
@@ -76,9 +91,12 @@ export default function BarChartDashboard() {
         </CardContent>
       ) : (
         <>
-          <CardContent className={"px-0"}>
-            <div className="h-64 overflow-x-auto">
-              <ResponsiveContainer width="100%" height="100%" minWidth={500}>
+          <CardContent className="px-0 overflow-x-auto">
+            <ChartContainer
+              config={chartConfig}
+              className="h-full w-full min-w-[500px]"
+            >
+              <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={data}>
                   <XAxis
                     dataKey="monthLabel"
@@ -91,6 +109,7 @@ export default function BarChartDashboard() {
                     tickLine={false}
                     tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
                   />
+                  <ChartTooltip content={<ChartTooltipContent />} />
                   <Bar
                     dataKey="expenses"
                     fill="var(--chart-4)"
@@ -105,18 +124,18 @@ export default function BarChartDashboard() {
                   />
                 </BarChart>
               </ResponsiveContainer>
-            </div>
+            </ChartContainer>
           </CardContent>
           <CardFooter className={"justify-center"}>
             <div className="flex gap-4">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-primary rounded-full"></div>
+                <div className="w-3 h-3 bg-primary rounded-full" />
                 <span className="text-sm text-muted-foreground">
                   الدخل (د.ج)
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-chart-4 rounded-full"></div>
+                <div className="w-3 h-3 bg-chart-4 rounded-full" />
                 <span className="text-sm text-muted-foreground">
                   المصروفات (د.ج)
                 </span>

@@ -12,6 +12,7 @@ import { Line, LineChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { Skeleton } from "../ui/skeleton";
 import { Chart1, Danger } from "iconsax-react";
 import { t } from "i18next";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart";
 
 export default function LineChartAttendnce() {
   const fetchAttendaceSummary = async () => {
@@ -22,6 +23,17 @@ export default function LineChartAttendnce() {
     }));
   };
   const { data, loading, error } = useFetch(fetchAttendaceSummary);
+
+  const chartConfig = {
+    attendance: {
+      label: "Attendance",
+      color: "hsl(var(--primary))",
+    },
+    absence: {
+      label: "Absence",
+      color: "hsl(var(--chart-6))",
+    },
+  };
   return (
     <Card dir="ltr">
       <CardHeader>
@@ -76,9 +88,12 @@ export default function LineChartAttendnce() {
         </CardContent>
       ) : (
         <>
-          <CardContent className={"overflow-x-auto px-0"}>
-            <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%" minWidth={500}>
+          <CardContent className="overflow-x-auto px-0">
+            <ChartContainer
+              config={chartConfig}
+              className="h-full w-full min-w-[500px]"
+            >
+              <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={data}
                   margin={{ top: 5, right: 10, left: 0, bottom: 5 }}
@@ -94,6 +109,7 @@ export default function LineChartAttendnce() {
                     tickLine={false}
                     tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
                   />
+                  <ChartTooltip content={<ChartTooltipContent />} />
                   <Line
                     type="monotone"
                     dataKey="attendance"
@@ -107,19 +123,19 @@ export default function LineChartAttendnce() {
                     stroke="var(--chart-6)"
                     strokeWidth={2}
                     dot={{ fill: "var(--chart-6)", strokeWidth: 2, r: 4 }}
-                  ></Line>
+                  />
                 </LineChart>
               </ResponsiveContainer>
-            </div>
+            </ChartContainer>
           </CardContent>
           <CardFooter className="justify-center">
             <div className="flex justify-center gap-4 mt-4">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-[var(--chart-6)] rounded-full"></div>
+                <div className="w-3 h-3 bg-[var(--chart-6)] rounded-full"/>
                 <span className="text-sm text-muted-foreground">الغياب</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-primary rounded-full"></div>
+                <div className="w-3 h-3 bg-primary rounded-full"/>
                 <span className="text-sm text-muted-foreground">الحضور</span>
               </div>
             </div>
