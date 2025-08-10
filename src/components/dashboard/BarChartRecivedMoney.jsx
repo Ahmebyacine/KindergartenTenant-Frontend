@@ -26,7 +26,7 @@ export default function BarChartRecivedMoney() {
   const chartConfig = {
     totalAmount: {
       label: "Total Amount",
-      color: "hsl(var(--primary))",
+      color: "var(--primary)",
     },
   };
   return (
