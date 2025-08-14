@@ -1,41 +1,43 @@
 export const getAcademicYearMonths = () => {
   const months = [
-  "سبتمبر", 
-  "أكتوبر", 
-  "نوفمبر", 
-  "ديسمبر", 
-  "جانفي",  
-  "فيفري",  
-  "مارس",   
-  "أفريل",  
-  "ماي",    
-  "جوان",   
-  "جويليه",    
-];
+    "سبتمبر", 
+    "أكتوبر", 
+    "نوفمبر", 
+    "ديسمبر", 
+    "جانفي",  
+    "فيفري",  
+    "مارس",   
+    "أفريل",  
+    "ماي",    
+    "جوان",   
+    "جويليه"
+  ];
 
   const currentDate = new Date();
   let currentYear = currentDate.getFullYear();
   let nextYear = currentYear + 1;
   
+  // Academic year starts in September (month index 8)
   if (currentDate.getMonth() < 8) {
     currentYear--;
     nextYear--;
   }
 
   return months.map((month, index) => {
-    // Months from September to December (index 0-3)
     if (index < 4) {
+      // Months: Sep–Dec → currentYear
+      const utcDate = new Date(Date.UTC(currentYear, index + 8, 1, 0, 0, 0, 0));
       return {
         label: `${month} ${currentYear}`,
-        iso: `${currentYear}-${(index + 9).toString().padStart(2, '0')}-01`
+        iso: utcDate.toISOString()
       };
-    } 
-    // Months from January to August (index 4-11)
-    else {
-      const monthNumber = index - 3;
+    } else {
+      // Months: Jan–Aug → nextYear
+      const monthNumber = index - 4; // 0 = Jan
+      const utcDate = new Date(Date.UTC(nextYear, monthNumber, 1, 0, 0, 0, 0));
       return {
         label: `${month} ${nextYear}`,
-        iso: `${nextYear}-${monthNumber.toString().padStart(2, '0')}-01`
+        iso: utcDate.toISOString()
       };
     }
   });

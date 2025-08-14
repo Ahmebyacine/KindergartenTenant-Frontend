@@ -90,7 +90,7 @@ export default function ReportsFinancialTable({ classes, students }) {
     try {
       const response = await api.post("/financial-reports", data);
       setReports((prev) => [response.data, ...prev]);
-      toast("تمت إضافة التقرير بنجاح!");
+      toast.success("تمت إضافة التقرير بنجاح!");
     } catch (error) {
       console.error("Error creating class", error);
     }

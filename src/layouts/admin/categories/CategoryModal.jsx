@@ -4,13 +4,6 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -71,7 +64,7 @@ export default function CategoryModal({
           <Button
             variant="link"
             size="sm"
-            className="text-primary hover:text-primary/80 p-1 h-auto underline text-xs sm:text-sm justify-start sm:justify-center"
+            className="underline"
           >
             تعديل
           </Button>
@@ -86,7 +79,7 @@ export default function CategoryModal({
             className={`${
               isLimited &&
               "bg-primary/30 hover:bg-primary/10 cursor-not-allowed"
-            } w-full rounded-xl`}
+            } rounded-xl`}
           >
             <Plus />
             أضف فئة مخصصة

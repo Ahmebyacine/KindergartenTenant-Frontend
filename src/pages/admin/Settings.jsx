@@ -35,18 +35,6 @@ export default function Settings() {
                 الحساب الشخصي
               </TabsTrigger>
               <TabsTrigger
-                value="notifications"
-                className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
-              >
-                الإشعارات
-              </TabsTrigger>
-              <TabsTrigger
-                value="payments"
-                className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
-              >
-                الدفع
-              </TabsTrigger>
-              <TabsTrigger
                 value="security"
                 className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
               >
@@ -63,8 +51,6 @@ export default function Settings() {
             <TabsContent value="personalSettings" className="space-y-4">
               <PersonalSettings />
             </TabsContent>
-            <TabsContent value="notifications" className="space-y-4"></TabsContent>
-            <TabsContent value="payments" className="space-y-4"></TabsContent>
             <TabsContent value="security" className="space-y-4">
               <SecuritySettings />
             </TabsContent>

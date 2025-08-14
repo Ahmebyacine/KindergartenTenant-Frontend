@@ -258,7 +258,7 @@ export default function AttendanceTable({
       </Table>
       {studentsSelection.length > 0 && (
         <>
-          <div className="fixed bottom-5 border-2 border-border shadow-lg rounded-4xl w-3/4 right-[12.5%] md:w-1/2 md:right-[25%]">
+          <div className="bg-card fixed bottom-5 border-2 border-border shadow-lg rounded-4xl w-3/4 right-[12.5%] md:w-1/2 md:right-[25%]">
             <div className="container mx-auto px-10 py-2">
               <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                 {/* Left side - Status or info */}
@@ -282,7 +282,7 @@ export default function AttendanceTable({
                       <Button
                         variant="ghost"
                         size="sm"
-                        className={"text-accent-foreground"}
+                        className={"text-amber-500"}
                         onClick={() => onCheckLate(studentsSelection)}
                       >
                         متأخر
