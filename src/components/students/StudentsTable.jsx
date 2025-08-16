@@ -15,6 +15,7 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import StudentDetails from "./StudentDetails";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import PrintStudentsModal from "./PrintStudentsModal";
 
 export default function StudentsTable({
   loading,
@@ -24,7 +25,6 @@ export default function StudentsTable({
   onDeleteEnrollment,
 }) {
   const [rowSelection, setRowSelection] = useState([]);
-
   const groupedByClass = students.reduce((groups, enrollment) => {
     const classId = enrollment.class._id;
     if (!groups[classId]) {
@@ -209,9 +209,9 @@ export default function StudentsTable({
 
                 {/* Right side - Action buttons */}
                 <div className="flex items-center gap-3">
-                  <Button size="sm" className="text-primary" variant={"ghost"}>
-                    طباعة البطاقات
-                  </Button>
+                  <PrintStudentsModal
+                    enrollments={students.filter(s => rowSelection.includes(s._id))}
+                  />
                   <Button
                     variant="ghost"
                     size="sm"

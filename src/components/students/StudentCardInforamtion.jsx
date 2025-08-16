@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import QRCode from "qrcode";
-import img from "@/assets/images/avatar.png";
 import StudentCardLoading from "./StudentCardLoading";
 import { useAuth } from "@/contexts/AuthContext";
+import { generateQRCode } from "@/utils/generateQRCode";
 
 export default function StudentCardInforamtion({
   enrollment,
@@ -13,26 +12,15 @@ export default function StudentCardInforamtion({
 
   // Generate modern QR code when component mounts or enrollment changes
   useEffect(() => {
-    if (enrollment && enrollment._id) {
-      generateModernQRCode(enrollment._id);
-    }
+    const loadQRCode = async () => {
+      if (enrollment && enrollment._id) {
+        const url = await generateQRCode(enrollment._id);
+        setQrCodeUrl(url);
+      }
+    };
+    loadQRCode();
   }, [enrollment]);
 
-  const generateModernQRCode = async (data) => {
-    try {
-      const url = await QRCode.toDataURL(data, {
-        width: 120,
-        color: {
-          dark: "#000000",
-          light: "#ffffff",
-        },
-        errorCorrectionLevel: "M",
-      });
-      setQrCodeUrl(url);
-    } catch (error) {
-      console.error("Error generating QR code:", error);
-    }
-  };
   if (loading) return <StudentCardLoading />;
   return (
     <div className="bg-primary text-card-foreground flex flex-col gap-6 rounded-2xl border p-3 sm:p-6 shadow-sm">
@@ -45,7 +33,7 @@ export default function StudentCardInforamtion({
                 enrollment?.student?.image
                   ? import.meta.env.VITE_API_URL_PICTURE +
                     enrollment?.student?.image
-                  : img
+                  : "src/assets/images/avatar.png"
               }
               alt="Student Photo"
               className="rounded-full object-cover aspect-square w-24 md:w-30"
@@ -54,7 +42,9 @@ export default function StudentCardInforamtion({
           <p className="text-secondary-foreground text-center font-semibold text-sm sm:text-xl">
             {`${enrollment?.student?.firstName} ${enrollment?.student?.lastName}`}
           </p>
-          <p className="text-secondary-foreground text-sm">{config?.kindergraten || "Rawdatee -platform-"}</p>
+          <p className="text-secondary-foreground text-sm">
+            {config?.kindergraten || "Rawdatee -platform-"}
+          </p>
         </div>
 
         {/* Student Information */}
@@ -75,7 +65,7 @@ export default function StudentCardInforamtion({
             ))}
           </div>
 
-          {/* Modern Styled QR Code */}
+          {/*  Styled QR Code */}
           <div className="w-[50%] sm:w-[45%] flex justify-center my-auto px-2">
             <div className="relative bg-white rounded-xl shadow-lg border-2 border-border transform hover:scale-105 transition-transform duration-200">
               {qrCodeUrl ? (

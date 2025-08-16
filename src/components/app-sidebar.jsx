@@ -20,13 +20,10 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { More, ProfileCircle, Setting2 } from "iconsax-react";
-import img from "@/assets/images/avatar.png";
 import { Button } from "./ui/button";
 import { useTranslation } from "react-i18next";
 import SidebarMenuSupervisor from "@/layouts/supervisor/SidebarMenuSupervisor";
 import SidebarMenuTeacher from "@/layouts/teacher/SidebarMenuTeacher";
-import logoAr from "@/assets/images/logoSidebarArabic.png";
-import logoLt from "@/assets/images/logoSidebarLatino.png";
 
 export function AppSidebar() {
   const { user } = useAuth();
@@ -38,7 +35,11 @@ export function AppSidebar() {
     >
       <SidebarHeader className="h-16 px-3 py-3 font-bold transition-all duration-300">
         <img
-          src={i18n.language === "ar" ? logoAr : logoLt}
+          src={
+            i18n.language === "ar"
+              ? "src/assets/images/logoSidebarArabic.png"
+              : "src/assets/images/logoSidebarLatino.png"
+          }
           alt="Rawdatee Logo"
           className="h-full object-contain group-data-[collapsible=icon]:hidden"
         />
@@ -69,7 +70,7 @@ export function AppSidebar() {
                         src={
                           user?.image
                             ? import.meta.env.VITE_API_URL_PICTURE + user?.image
-                            : img
+                            : "src/assets/images/avatar.png"
                         }
                         alt="User"
                         className="h-full w-full rounded-full object-cover"

@@ -8,8 +8,11 @@ import {
 } from "@/components/ui/dialog";
 
 import StudentCardInforamtion from "./StudentCardInforamtion";
+import StudentCardsPDFButton from "@/services/PDF/StudentCardsPDFButton";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function StudentCardModal({ enrollment, isOpen, onOpenChange }) {
+  const { config } = useAuth();
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="gap-0 p-2 sm:p-4">
@@ -26,7 +29,7 @@ export default function StudentCardModal({ enrollment, isOpen, onOpenChange }) {
         {/* Action Buttons */}
         <DialogFooter>
           <div className="flex gap-4 mt-6 justify-center">
-            <Button variant="default">طباعة</Button>
+            <StudentCardsPDFButton enrollments={[enrollment]} config={config}/>
             <Button
               variant="outline"
               onClick={() => onOpenChange(false)}
