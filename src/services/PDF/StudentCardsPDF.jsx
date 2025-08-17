@@ -2,16 +2,18 @@ import { Document, Page, View, StyleSheet, Font } from "@react-pdf/renderer";
 import { useEffect, useState } from "react";
 import { generateQRCode } from "@/utils/generateQRCode";
 import StudentCard from "./StudentCard";
+import CarioRegular from "@/assets/fonts/Cairo-Regular.ttf";
+import CarioBold from "@/assets/fonts/Cairo-Bold.ttf";
 
 Font.register({
   family: "Cairo",
   fonts: [
     {
-      src: "/src/assets/fonts/Cairo-Regular.ttf",
+      src: CarioRegular,
       fontWeight: "normal",
     },
     {
-      src: "/src/assets/fonts/Cairo-Bold.ttf",
+      src: CarioBold,
       fontWeight: "bold",
     },
   ],
@@ -19,7 +21,7 @@ Font.register({
 
 const styles = StyleSheet.create({
   page: {
-    padding: 30,
+    padding: 10,
     backgroundColor: "#fff",
     flexDirection: "column",
     fontFamily: "Cairo",
@@ -32,7 +34,7 @@ const styles = StyleSheet.create({
   },
   cardWrapper: {
     width: "48%", // two per row
-    marginBottom: 20,
+    marginBottom: 10,
   },
 });
 
@@ -61,11 +63,13 @@ export default function StudentCardsPDF({
             key={en._id}
             size="ID1"
             orientation="landscape"
-            style={{
-              fontFamily: "Cairo",
-            }}
+            style={{ fontFamily: "Cairo" }}
           >
-            <StudentCard en={en} qrMap={qrMap} config={config} />
+            {qrMap[en._id] ? (
+              <StudentCard en={en} qrMap={qrMap} config={config} />
+            ) : (
+              <></>
+            )}
           </Page>
         ))}
       </Document>
@@ -73,25 +77,28 @@ export default function StudentCardsPDF({
   }
 
   // 🔹 Multiple cards on A4 pages (grid layout)
-  const cardsPerPage = 8; // 2x2 layout on A4
+  const cardsPerPage = 10;
   const chunks = [];
   for (let i = 0; i < enrollments.length; i += cardsPerPage) {
     chunks.push(enrollments.slice(i, i + cardsPerPage));
   }
+  
 
   return (
     <Document>
-      {chunks.map((chunk, pageIndex) => (
-        <Page key={pageIndex} size="A4" style={styles.page}>
-          <View style={styles.grid}>
-            {chunk.map((en) => (
-              <View key={en._id} style={styles.cardWrapper}>
+    {chunks.map((chunk, pageIndex) => (
+      <Page key={pageIndex} size="A4" style={styles.page}>
+        <View style={styles.grid}>
+          {chunk.map((en) => (
+            <View key={en._id} style={styles.cardWrapper}>
+              {qrMap[en._id] && (
                 <StudentCard en={en} qrMap={qrMap} config={config} />
-              </View>
-            ))}
-          </View>
-        </Page>
-      ))}
-    </Document>
+              )}
+            </View>
+          ))}
+        </View>
+      </Page>
+    ))}
+  </Document>
   );
 }

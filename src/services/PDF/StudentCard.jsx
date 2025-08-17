@@ -1,4 +1,5 @@
 import { View, Text, Image, StyleSheet } from "@react-pdf/renderer";
+import img from "@/assets/images/avatar.png";
 
 // ID-1 card size = 153 x 243 points
 const styles = StyleSheet.create({
@@ -84,7 +85,7 @@ export default function StudentCard({ en, config, qrMap }) {
           src={
             en?.student?.image
               ? import.meta.env.VITE_API_URL_PICTURE + en?.student?.image
-              : "src/assets/images/avatar.png"
+              : img
           }
           style={styles.avatar}
         />
