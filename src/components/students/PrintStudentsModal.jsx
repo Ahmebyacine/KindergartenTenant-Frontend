@@ -1,5 +1,4 @@
 import { useState } from "react";
-import StudentCardsPDFButton from "@/services/PDF/StudentCardsPDFButton";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -9,14 +8,47 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { useAuth } from "@/contexts/AuthContext";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
+import api from "@/api";
 
 export default function PrintStudentsModal({ enrollments }) {
   const [open, setOpen] = useState(false);
   const [selectedFormat, setSelectedFormat] = useState("A4");
-  const { config } = useAuth();
+  const [loading, setLoading] = useState(false);
+
+  const handlePrint = async () => {
+    try {
+      setLoading(true);
+
+      // اختر الـ endpoint حسب التنسيق
+      const endpoint =
+        selectedFormat === "A4"
+          ? "/pdf/a4"
+          : "/pdf/id1";
+
+      // 🔹 طلب الـ PDF من السيرفر
+      const response = await api.post(
+        endpoint,
+        { enrollments },
+        {
+          responseType: "blob",
+        }
+      );
+
+      // 🔹 تحويل الـ blob إلى رابط وفتحه
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+
+      setOpen(false);
+    } catch (error) {
+      console.error("Error printing cards:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -53,7 +85,9 @@ export default function PrintStudentsModal({ enrollments }) {
         </div>
         <DialogFooter>
           <div className="flex gap-4 mt-6 justify-center">
-            <StudentCardsPDFButton enrollments={enrollments} config={config} mode={selectedFormat} />
+            <Button onClick={handlePrint} disabled={loading}>
+              {loading ? "جارٍ التحميل..." : "طباعة"}
+            </Button>
             <Button
               variant="outline"
               onClick={() => setOpen(false)}

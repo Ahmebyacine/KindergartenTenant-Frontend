@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,11 +9,34 @@ import {
 } from "@/components/ui/dialog";
 
 import StudentCardInforamtion from "./StudentCardInforamtion";
-import StudentCardsPDFButton from "@/services/PDF/StudentCardsPDFButton";
-import { useAuth } from "@/contexts/AuthContext";
+import api from "@/api";
 
 export default function StudentCardModal({ enrollment, isOpen, onOpenChange }) {
-  const { config } = useAuth();
+  const [loading, setLoading] = useState(false);
+
+  const handlePrint = async () => {
+    try {
+      setLoading(true);
+      const response = await api.post(
+        "/pdf/id1",
+        { enrollments: [enrollment] },
+        {
+          responseType: "blob",
+        }
+      );
+
+      // 🔹 تحويل الـ blob إلى رابط وفتحه
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+
+      onOpenChange(false);
+    } catch (error) {
+      console.error("Error printing cards:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="gap-0 p-2 sm:p-4">
@@ -29,7 +53,9 @@ export default function StudentCardModal({ enrollment, isOpen, onOpenChange }) {
         {/* Action Buttons */}
         <DialogFooter>
           <div className="flex gap-4 mt-6 justify-center">
-            <StudentCardsPDFButton enrollments={[enrollment]} config={config}/>
+            <Button onClick={handlePrint} disabled={loading}>
+              {loading ? "جارٍ التحميل..." : "طباعة"}
+            </Button>
             <Button
               variant="outline"
               onClick={() => onOpenChange(false)}
