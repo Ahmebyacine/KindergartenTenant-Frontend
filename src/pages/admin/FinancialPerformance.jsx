@@ -90,24 +90,6 @@ export default function FinancialPerformance() {
                 .map((_, idx) => <StatCard key={idx} loading={loading} />)
             : statsData.map((stat, idx) => <StatCard key={idx} stat={stat} />)}
         </div>
-        {/* filter search and tables */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
-            <div className="relative w-full sm:w-64">
-              <SearchNormal1
-                size="16"
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
-                color="currentColor"
-              />
-              <Input
-                placeholder="البحث"
-                className="pr-10 pl-4 py-2 bg-background"
-                //disabled={!expenses.length}
-              />
-            </div>
-            <IncomesFilter />
-          </div>
-        </div>
         <FinancialJournalChart data={data} loading={loading} />
         <FinancialJournalTable data={data} loading={loading} />
         <EmployeeJournalTable />

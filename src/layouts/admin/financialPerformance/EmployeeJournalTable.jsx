@@ -1,5 +1,6 @@
+import { useState } from "react";
 import LoadingTable from "@/components/LoadingTable";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardAction, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -13,18 +14,35 @@ import api from "@/api";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import { formatDateMonth } from "@/utils/dateFormatter";
 import { Document } from "iconsax-react";
-import React from "react";
+import { Input } from "@/components/ui/input";
 
 export default function EmployeeJournalTable() {
-  const fetchFinancialPerformance = async () => {
-    const res = await api.get(`/financial-reports/statistics-users`);
+  const [monthFilter, setMonthFilter] = useState("");
+  const fetchFinancialPerformance = async (filters = {}) => {
+    const params = new URLSearchParams();
+    if (filters.month) params.append("month", filters.month);
+    const res = await api.get(
+      `/financial-reports/statistics-users?${params.toString()}`
+    );
     return res.data;
   };
-  const { data, loading } = useFetch(fetchFinancialPerformance);
+  const { data, loading, refetch } = useFetch(fetchFinancialPerformance);
   return (
     <Card className="shadow-sm">
       <CardHeader className="pb-4">
         <CardTitle>تفاصيل المداخيل التنفيذية حسب الموظف</CardTitle>
+        <CardAction>
+          <Input
+            type="month"
+            value={monthFilter}
+            onChange={(e) => {
+              const value = e.target.value;
+              setMonthFilter(value);
+              refetch(()=>fetchFinancialPerformance({ month: value }));
+            }}
+            placeholder="اختر الشهر والسنة"
+          />
+        </CardAction>
       </CardHeader>
       <Table>
         <TableHeader>

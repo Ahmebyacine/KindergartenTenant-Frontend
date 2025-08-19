@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import StudentCardLoading from "./StudentCardLoading";
 import { useAuth } from "@/contexts/AuthContext";
 import { generateQRCode } from "@/utils/generateQRCode";
+import img from "@/assets/images/avatar.png";
 
 export default function StudentCardInforamtion({
   enrollment,
@@ -33,7 +34,7 @@ export default function StudentCardInforamtion({
                 enrollment?.student?.image
                   ? import.meta.env.VITE_API_URL_PICTURE +
                     enrollment?.student?.image
-                  : "src/assets/images/avatar.png"
+                  : img
               }
               alt="Student Photo"
               className="rounded-full object-cover aspect-square w-24 md:w-30"

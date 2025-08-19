@@ -11,6 +11,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
 import api from "@/api";
+import { toast } from "sonner";
 
 export default function PrintStudentsModal({ enrollments }) {
   const [open, setOpen] = useState(false);
@@ -21,13 +22,8 @@ export default function PrintStudentsModal({ enrollments }) {
     try {
       setLoading(true);
 
-      // اختر الـ endpoint حسب التنسيق
-      const endpoint =
-        selectedFormat === "A4"
-          ? "/pdf/a4"
-          : "/pdf/id1";
+      const endpoint = selectedFormat === "A4" ? "/pdf/a4" : "/pdf/id1";
 
-      // 🔹 طلب الـ PDF من السيرفر
       const response = await api.post(
         endpoint,
         { enrollments },
@@ -36,14 +32,29 @@ export default function PrintStudentsModal({ enrollments }) {
         }
       );
 
-      // 🔹 تحويل الـ blob إلى رابط وفتحه
       const file = new Blob([response.data], { type: "application/pdf" });
       const fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
+
+      const newWindow = window.open(fileURL, "_blank");
+
+      if (newWindow) {
+        newWindow.onload = () => {
+          // A slight delay to ensure the PDF is fully rendered before printing
+          setTimeout(() => {
+            newWindow.print();
+          }, 500);
+        };
+      } else {
+        // This case handles pop-up blockers
+        toast.error(
+          "خطأ: لم نتمكن من فتح نافذة جديدة. يرجى السماح بالنوافذ المنبثقة."
+        );
+      }
 
       setOpen(false);
     } catch (error) {
       console.error("Error printing cards:", error);
+      toast.error("حدث خطأ أثناء طباعة البطاقات. يرجى المحاولة مرة أخرى.");
     } finally {
       setLoading(false);
     }
@@ -58,7 +69,7 @@ export default function PrintStudentsModal({ enrollments }) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Print Students Cards</DialogTitle>
+          <DialogTitle>طباعة بطاقات الاطفال</DialogTitle>
         </DialogHeader>
         <div className="py-4">
           <Label className="text-base font-medium mb-3 block">

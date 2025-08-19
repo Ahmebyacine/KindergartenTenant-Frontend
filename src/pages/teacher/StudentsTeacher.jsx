@@ -118,7 +118,7 @@ export default function StudentsTeacher() {
               </div>
               <StudentsFilter classes={[user?.assignedClass]} />
             </div>
-            <div className="flex my-3 w-full sm:w-auto">
+            <div className="grid grid-cols-2 my-3 w-full md:max-w-3xs gap-4">
               <RegistrationsModal
                 classes={[user?.assignedClass]}
                 onRegistred={handleRegistrationsStudent}

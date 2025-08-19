@@ -180,7 +180,7 @@ export default function Students() {
                 />
               </div>
 
-              <div className="flex my-3 w-full sm:w-auto sm:gap-4">
+              <div className="grid grid-cols-2 my-3 w-full md:max-w-3xs gap-4">
                 <RegistrationsModal
                   classes={classes}
                   onRegistred={handleRegistrationsStudent}

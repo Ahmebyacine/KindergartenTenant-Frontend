@@ -140,11 +140,26 @@ export default function ScanAttendance({ onAttendanceCreate }) {
                 <Button
                   variant="outline"
                   className="border-primary text-primary border-2"
-                  onClick={startScanning}
                 >
                   مسح رمز الاستجابة السريعة
                   <Scan color="currentColor" />
                 </Button>
+                <input
+                  type="text"
+                  autoFocus
+                  className="absolute opacity-0 pointer-events-none"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      const scannedValue = e.currentTarget.value.trim();
+                      if (scannedValue) {
+                        handleQRResult(scannedValue);
+                        setScannedData(true);
+                        e.currentTarget.value = "";
+                      }
+                    }
+                  }}
+                />
               </div>
             )
           ) : (
