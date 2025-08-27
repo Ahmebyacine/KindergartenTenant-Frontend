@@ -24,7 +24,7 @@ export default function StudentCardInforamtion({
 
   if (loading) return <StudentCardLoading />;
   return (
-    <div className="bg-primary text-card-foreground flex flex-col gap-6 rounded-2xl border p-3 sm:p-6 shadow-sm">
+    <div className="bg-primary text-card-foreground flex flex-col gap-6 rounded-2xl border p-3 sm:p-6 shadow-sm" dir="rtl">
       <div className="flex flex-wrap gap-2 items-start">
         {/* Student Photo */}
         <div className="w-[35%] flex flex-col items-center sm:gap-y-2 gap-y-1 justify-center my-auto p-1 md:p-3">
@@ -33,7 +33,7 @@ export default function StudentCardInforamtion({
               src={
                 enrollment?.student?.image
                   ? import.meta.env.VITE_API_URL_PICTURE +
-                    enrollment?.student?.image
+                    enrollment?.student?.image +".png"
                   : img
               }
               alt="Student Photo"

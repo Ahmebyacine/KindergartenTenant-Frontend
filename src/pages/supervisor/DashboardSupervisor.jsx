@@ -7,45 +7,50 @@ import LineChartAttendnce from "@/components/dashboard/LineChartAttendnce";
 import StatCard from "@/components/StatCard";
 import api from "@/api";
 import useFetch from "@/hooks/useFetch";
+import { getTextNumberChild } from "@/utils/getTextNumberChild";
+import { t } from "i18next";
 
 export default function DashboardSupervisor() {
-  const fetchSummaryAdmin = async () => {
+  const fetchSummarySupervisor = async () => {
     const res = await api.get(`/statistics/summary/user`);
     return res.data;
   };
-  const { data, loading, error } = useFetch(fetchSummaryAdmin);
+
+  const { data, loading, error } = useFetch(fetchSummarySupervisor);
+
   const stats = [
     {
-      title: "إجمالي المبالغ المستلمة هذا الشهر",
+      title: t("dashboardSupervisor.monthlyReceived"),
       value: formatCurrencyDZD(data?.totalIncome || 0),
       icon: Coin,
       iconColor: "#00C951",
       bgColor: "bg-[#B9F8CF]",
     },
     {
-      title: "الأطفال الغائبون هذا الشهر",
-      value: `${data?.absentCount} أطفال`,
+      title: t("dashboardSupervisor.absentChildren"),
+      value: `${data?.absentCount || 0} ${t("attendance.children")}`,
       icon: Danger,
       iconColor: "#FB2C36",
       bgColor: "bg-[#FFE2E2]",
       to: "/supervisor-attendance",
     },
     {
-      title: "تقارير قيد المراجعة",
-      value: "4 تقارير",
+      title: t("dashboardSupervisor.pendingReports"),
+      value: `4 ${t("dashboard.reports")}`,
       icon: Chart2,
       iconColor: "#FD9A00",
       bgColor: "bg-[#FEE685]",
     },
     {
-      title: "عدد الأطفال",
-      value: `${data?.studentCount} طفل`,
+      title: t("dashboardSupervisor.childrenCount"),
+      value: getTextNumberChild(data?.studentCount || 0),
       icon: People,
       iconColor: "#00A6F4",
       bgColor: "bg-[#A2F4FD]",
       to: "/students",
     },
   ];
+
   return (
     <div className="bg-background p-6">
       <div className="max-w-7xl mx-auto space-y-6">

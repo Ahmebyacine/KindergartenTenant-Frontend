@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import CategoryStep from "@/layouts/admin/onboardingSteps/CategoryStep";
@@ -5,7 +6,7 @@ import ClassStep from "@/layouts/admin/onboardingSteps/ClassStep";
 import CurrencyStep from "@/layouts/admin/onboardingSteps/CurrencyStep";
 import LanguageStep from "@/layouts/admin/onboardingSteps/LanguageStep";
 import SuccesStep from "@/layouts/admin/onboardingSteps/SuccesStep";
-import { useState } from "react";
+import img from '@/assets/images/logoSidebarLatino.png'
 
 export default function Onboarding() {
   const { config } = useAuth();
@@ -49,14 +50,14 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="min-h-screen bg-[#e2e8f0] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-backrounf flex items-center justify-center p-4">
       <Card className="w-full max-w-4xl bg-card rounded-3xl shadow-lg border-0">
         <CardContent>
           {/* Header */}
-          <div className="text-center">
-            <h1 className="text-3xl font-semibold text-primary mb-8">
-              Rawdatee
-            </h1>
+          <div>
+            <div className="w-full flex justify-center items-center my-4">
+              <img src={img} alt="rawdayee logo" className="h-16" />
+            </div>
 
             {/* Progress indicators */}
             <div className="flex justify-center gap-2 mb-16">

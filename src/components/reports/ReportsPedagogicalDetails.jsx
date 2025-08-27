@@ -8,13 +8,14 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Link, useParams } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import api from "@/api";
 import useFetch from "@/hooks/useFetch";
 import Loading from "@/pages/common/Loading";
 import DetailItem from "../DetailItem";
 import { formatDate } from "@/utils/dateFormatter";
 import { getOverallBadge } from "@/utils/getStatusBadges";
+import { t } from "i18next";
 
 export default function ReportsPedagogicalDetails() {
   const { reportId } = useParams();
@@ -38,8 +39,8 @@ export default function ReportsPedagogicalDetails() {
             className="font-cairo text-muted-foreground"
           >
             <h1 className="text-2xl flex items-center font-bold text-foreground font-cairo mb-2">
-              <ChevronRight />
-              تفاصيل التقرير البيداغوجي
+              <ChevronLeft className="rtl:rotate-180" />
+              {t("reports.pedagogical.title")}
             </h1>
           </Link>
           <Breadcrumb>
@@ -50,7 +51,7 @@ export default function ReportsPedagogicalDetails() {
                     to="/reports"
                     className="font-cairo text-muted-foreground"
                   >
-                    التقارير
+                    {t("reports.title")}
                   </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
@@ -61,14 +62,14 @@ export default function ReportsPedagogicalDetails() {
                     to="/reports?tab=pedagogical"
                     className="font-cairo text-muted-foreground"
                   >
-                    التقارير البيداغوجية
+                    {t("reports.pedagogical.title")}
                   </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="text-muted-foreground" />
               <BreadcrumbItem>
                 <BreadcrumbPage className="font-cairo text-primary font-medium">
-                  عرض التفاصيل
+                  {t("common.details")}
                 </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
@@ -79,30 +80,30 @@ export default function ReportsPedagogicalDetails() {
         <Card className="bg-card border border-border shadow-sm">
           <CardHeader className="border-b border-border px-6">
             <CardTitle className="text-lg font-semibold text-foreground font-cairo">
-              رقم التقرير: {reportDetails.reportId}
+              {t("reports.reportNumber")}: {reportDetails.reportId}
             </CardTitle>
           </CardHeader>
           <CardContent className="px-6 space-y-4">
             {/* Child Information */}
             <div>
               <h2 className="text-base font-semibold text-foreground mb-3 pb-3 border-b border-border font-cairo">
-                بيانات الطفل
+                {t("reports.pedagogical.childInfo")}
               </h2>
               <div className="space-y-1">
                 <DetailItem
-                  label="اسم الطفل"
+                  label={t("reports.pedagogical.childName")}
                   value={`${reportDetails?.student?.firstName} ${reportDetails?.student?.lastName}`}
                 />
                 <DetailItem
-                  label="المعلمة"
+                  label={t("reports.pedagogical.teacherName")}
                   value={reportDetails?.teacher?.name}
                 />
                 <DetailItem
-                  label="الفصل"
+                  label={t("reports.pedagogical.class")}
                   value={reportDetails.class?.className}
                 />
                 <DetailItem
-                  label="التاريخ"
+                  label={t("reports.pedagogical.createdAt")}
                   value={formatDate(reportDetails.createdAt)}
                 />
               </div>
@@ -115,13 +116,19 @@ export default function ReportsPedagogicalDetails() {
               </h2>
               <div className="space-y-1">
                 <DetailItem
-                  label="اللغة والتواصل"
+                  label={t("reports.pedagogical.languageAndCommunication")}
                   value={reportDetails?.languageAndCommunication}
                 />
-                <DetailItem label="السلوك" value={reportDetails?.behavior} />
-                <DetailItem label="المهارات" value={reportDetails?.skills} />
                 <DetailItem
-                  label="التقييم العام"
+                  label={t("reports.pedagogical.behavior")}
+                  value={reportDetails?.behavior}
+                />
+                <DetailItem
+                  label={t("reports.pedagogical.skills")}
+                  value={reportDetails?.skills}
+                />
+                <DetailItem
+                  label={t("reports.pedagogical.overall")}
                   value={getOverallBadge(reportDetails?.overall)}
                 />
               </div>
@@ -131,7 +138,7 @@ export default function ReportsPedagogicalDetails() {
             {reportDetails.notes && (
               <div>
                 <h2 className="text-base font-semibold text-foreground mb-3 pb-3 border-b border-border font-cairo">
-                  ملاحظات
+                  {t("reports.pedagogical.notes")}
                 </h2>
                 <p className="text-foreground leading-relaxed font-cairo">
                   {reportDetails.notes}

@@ -1,35 +1,37 @@
+import { t } from "i18next";
+
 export const getRouteTitle = (pathname) => {
   const routes = {
-    "/": "لوحة التحكم",
+    "/": t("routes.home"),
     // Admin
-    "/dashboard": "لوحة تحكم المدير",
-    "/students": "الطلاب",
-    "/teachers": "المعلمون",
-    "/settings": "الإعدادات",
-    "/incomes": "الإيرادات",
-    "/expenses": "المصروفات",
-    "/financial-performance": "الأداء المالي",
-    "/attendance": "الحضور",
+    "/dashboard": t("routes.adminDashboard"),
+    "/students": t("routes.students"),
+    "/teachers": t("routes.teachers"),
+    "/settings": t("routes.settings"),
+    "/incomes": t("routes.incomes"),
+    "/expenses": t("routes.expenses"),
+    "/financial-performance": t("routes.financialPerformance"),
+    "/attendance": t("routes.attendance"),
 
     // Supervisor
-    "/supervisor-dashboard": "لوحة تحكم المشرف",
-    "/supervisor-classes": "الفصول",
-    "/supervisor-attendance": "حضور المشرف",
-    "/supervisor-teachers": "المعلمون",
+    "/supervisor-dashboard": t("routes.supervisorDashboard"),
+    "/supervisor-classes": t("routes.supervisorClasses"),
+    "/supervisor-attendance": t("routes.supervisorAttendance"),
+    "/supervisor-teachers": t("routes.supervisorTeachers"),
 
     // Teacher
-    "/teacher-dashboard": "لوحة تحكم المعلم",
-    "/teacher-students": "طلاب المعلم",
-    "/teacher-reports": "تقارير المعلم",
-    "/teacher-attendance": "حضور المعلم",
+    "/teacher-dashboard": t("routes.teacherDashboard"),
+    "/teacher-students": t("routes.teacherStudents"),
+    "/teacher-reports": t("routes.teacherReports"),
+    "/teacher-attendance": t("routes.teacherAttendance"),
 
     // General
-    "/reports": "التقارير",
-    "/classes": "الفصول",
-    "/settings-user": "الإعدادات",
-    "/unauthorized": "وصول غير مصرح به",
-    "/loading": "جاري التحميل",
-    "/no-tenant-error": "خطأ في المستأجر",
+    "/reports": t("routes.reports"),
+    "/classes": t("routes.classes"),
+    "/settings-user": t("routes.settingsUser"),
+    "/unauthorized": t("routes.unauthorized"),
+    "/loading": t("routes.loading"),
+    "/no-tenant-error": t("routes.noTenantError"),
   };
 
   return routes[pathname] || "Rawdati Platform";

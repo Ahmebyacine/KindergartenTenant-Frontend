@@ -1,9 +1,4 @@
-import {
-  Archive,
-  CardReceive,
-  CardRemove,
-  Chart2,
-} from "iconsax-react";
+import { Archive, CardReceive, CardRemove, Chart2 } from "iconsax-react";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import IncomesTable from "@/layouts/admin/incomes/IncomesTable";
 import StatCard from "@/components/StatCard";
@@ -11,13 +6,14 @@ import api from "@/api";
 import useFetch from "@/hooks/useFetch";
 import { getMonthNameByNumber } from "@/utils/getMonthNameByNumber";
 import ErrorPage from "../common/ErrorPage";
+import { t } from "i18next";
 
 export default function Incomes() {
   const fetchIncome = async () => {
     const res = await api.get(`/financial-reports/summary`);
     return res.data.map((item) => ({
       ...item,
-      monthLabel: getMonthNameByNumber(item.month),
+      monthLabel: t(getMonthNameByNumber(item.month)),
     }));
   };
   const { data, loading, error } = useFetch(fetchIncome);
@@ -47,36 +43,38 @@ export default function Incomes() {
     : 0;
   const stats = [
     {
-      title: "إجمالي المداخيل",
+      title: t("income.stats.income.title"),
       value: formatCurrencyDZD(totals?.paidAmount || 0),
-      subLabel: "المبلغ المحصل خلال السنة الحالية",
+      subLabel: t("income.stats.income.subLabel"),
       icon: CardReceive,
       bgColor: "bg-[#DCFCE7]",
       iconColor: "#00A63E",
     },
     {
-      title: "فواتير غير مسددة",
+      title: t("income.stats.unpaidInvoices.title"),
       value: formatCurrencyDZD(totals?.unpaidAmount || 0),
+      subLabel: t("income.stats.unpaidInvoices.subLabel"),
       icon: CardRemove,
       bgColor: "bg-[#FFE2E2]",
       iconColor: "#FB2C36",
-      subLabel: "إجمالي الفواتير الغير مسددة",
     },
     {
-      title: "عدد الفواتير",
-      value: `${totals?.totalInvoices || 0} فاتورة`,
+      title: t("income.stats.invoiceCount.title"),
+      value: `${totals?.totalInvoices || 0} ${t(
+        "income.stats.invoiceCount.unit"
+      )}`,
+      subLabel: t("income.stats.invoiceCount.subLabel"),
       icon: Archive,
       bgColor: "bg-[#FEF3C6]",
       iconColor: "#E17100",
-      subLabel: "إجمالي الفواتير الصادرة لجميع الفصول",
     },
     {
-      title: "نسبة التحصيل",
+      title: t("income.stats.collectionRate.title"),
       value: "%" + (totals?.collectionRate?.toFixed(0) || 0),
+      subLabel: t("income.stats.collectionRate.subLabel"),
       icon: Chart2,
       bgColor: "bg-[#DBEAFE]",
       iconColor: "#1447E6",
-      subLabel: "نسبة ما تم تحصيله من مجموع الرسوم",
     },
   ];
 

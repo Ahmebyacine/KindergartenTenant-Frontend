@@ -10,6 +10,7 @@ import { getClassStatusBadge } from "@/utils/getStatusBadges";
 import { FileTextIcon } from "lucide-react";
 import LoadingTable from "@/components/LoadingTable";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
+import { t } from "i18next";
 
 export default function ClassesTable({ classes, loading }) {
   return (
@@ -21,16 +22,16 @@ export default function ClassesTable({ classes, loading }) {
               #
             </TableHead>
             <TableHead className="text-muted-foreground font-medium">
-              اسم الفصل
+              {t("classes.nameLabel")}
             </TableHead>
             <TableHead className="text-muted-foreground font-medium">
-              عدد الطلاب
+              {t("classes.studentCountLabel")}
             </TableHead>
             <TableHead className="text-muted-foreground font-medium">
-              سعر الفصل
+              {t("classes.priceLabel")}
             </TableHead>
             <TableHead className="text-muted-foreground font-medium">
-              حالة الفصل
+              {t("classes.statusLabel")}
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -68,8 +69,8 @@ export default function ClassesTable({ classes, loading }) {
               >
                 <div className="flex flex-col items-center justify-center gap-2">
                   <FileTextIcon size={40} color="CurrentColor" />{" "}
-                  <p className="text-lg font-medium">لا توجد اقسام متاحة</p>
-                  <p className="text-sm">لم يتم إنشاء أي اقسام بعد</p>
+                  <p className="text-lg font-medium">{t("classes.noClasses")}</p>
+                  <p className="text-sm">{t("classes.noClassesDescription")}</p>
                 </div>
               </TableCell>
             </TableRow>

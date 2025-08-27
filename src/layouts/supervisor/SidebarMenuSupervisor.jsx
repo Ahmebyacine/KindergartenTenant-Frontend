@@ -12,37 +12,38 @@ import {
   People,
   Setting2,
 } from "iconsax-react";
+import { t } from "i18next";
 
 export default function SidebarMenuSupervisor() {
   const location = useLocation();
   const items = [
     {
-      title: "لوحة التحكم",
+      title: t("sidebar.dashboard"),
       url: "/supervisor-dashboard",
       icon: Category,
     },
     {
-      title: "الفصول",
+      title: t("sidebar.classes"),
       url: "/supervisor-classes",
       icon: Buliding,
     },
     {
-      title: "المعلمين",
+      title: t("sidebar.teachers"),
       url: "/supervisor-teachers",
       icon: Briefcase,
     },
     {
-      title: "الأطفال",
+      title: t("sidebar.students"),
       url: "/students",
       icon: People,
     },
     {
-      title: "التقارير",
+      title: t("sidebar.reports"),
       url: "/reports",
       icon: Chart2,
     },
     {
-      title: "الاعدادات",
+      title: t("sidebar.settings"),
       url: "/settings-user",
       icon: Setting2,
     },

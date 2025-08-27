@@ -9,6 +9,7 @@ import {
 import { UserRemove } from "iconsax-react";
 import { formatDate } from "@/utils/dateFormatter";
 import LoadingTable from "@/components/LoadingTable";
+import { t } from "i18next";
 
 export default function TeachersTable({ loading, teachers }) {
   return (
@@ -20,19 +21,19 @@ export default function TeachersTable({ loading, teachers }) {
               #
             </TableHead>
             <TableHead className="text-muted-foreground font-medium">
-              اسم المعلمة
+              {t("teachers.name")}
             </TableHead>
             <TableHead className="text-muted-foreground font-medium">
-              القسم
+              {t("teachers.assignedClass")}
             </TableHead>
             <TableHead className="text-muted-foreground font-medium">
-              رقم الهاتف
+              {t("teachers.phone")}
             </TableHead>
             <TableHead className="text-muted-foreground font-medium">
-              البريد الالكتروني
+              {t("teachers.email")}
             </TableHead>
             <TableHead className="text-muted-foreground font-medium">
-              تاريخ التعيين
+              {t("teachers.dateOfHiring")}
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -73,9 +74,9 @@ export default function TeachersTable({ loading, teachers }) {
               >
                 <div className="flex flex-col items-center justify-center gap-2">
                   <UserRemove size={40} color="CurrentColor" />
-                  <p className="text-lg font-medium">لا توجد اساتذة متاحين</p>
+                  <p className="text-lg font-medium">{t("teachers.noTeachers")}</p>
                   <p className="text-sm">
-                    لم يتم إضافة أي معلمين بعد 
+                    {t("teachers.noTeachersDescription")}
                   </p>
                 </div>
               </TableCell>

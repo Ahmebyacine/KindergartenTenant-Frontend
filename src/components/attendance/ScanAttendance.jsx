@@ -21,6 +21,7 @@ import { Scan, ScanBarcode } from "iconsax-react";
 import api from "@/api";
 import StudentCardInforamtion from "../students/StudentCardInforamtion";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { t } from "i18next";
 
 export default function ScanAttendance({ onAttendanceCreate }) {
   const [status, setStatus] = useState("present");
@@ -29,10 +30,12 @@ export default function ScanAttendance({ onAttendanceCreate }) {
   const [loading, setLoading] = useState(false);
   const [cameraError, setCameraError] = useState("");
   const [student, setStudent] = useState({});
+  const [focused, setFocused] = useState(false);
 
   const videoRef = useRef(null);
   const qrScannerRef = useRef(null);
   const lastScannedRef = useRef(null);
+  const inputRef = useRef(null);
 
   const isMobile = useIsMobile();
 
@@ -90,7 +93,6 @@ export default function ScanAttendance({ onAttendanceCreate }) {
       setLoading(true);
       const res = await api.get(`/enrollments/${data}`);
       await onAttendanceCreate({ ids: data, status });
-      console.log(res.data);
       setStudent(res.data);
     } catch (error) {
       console.log(error);
@@ -114,12 +116,12 @@ export default function ScanAttendance({ onAttendanceCreate }) {
       }}
     >
       <DialogTrigger className="w-full">
-        <Button className="w-full sm:w-auto">تسجيل الحضور</Button>
+        <Button className="w-full sm:w-auto">{t("attendance.checkIn")}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold rtl:text-right">
-            تسجيل الحضور
+            {t("attendance.checkIn")}
           </DialogTitle>
         </DialogHeader>
         <div className="space-y-6">
@@ -131,30 +133,38 @@ export default function ScanAttendance({ onAttendanceCreate }) {
                   className="border-primary text-primary border-2"
                   onClick={startScanning}
                 >
-                  مسح رمز الاستجابة السريعة
+                  {t("attendance.scanQRCode")}
                   <ScanBarcode color="currentColor" />
                 </Button>
               </div>
             ) : (
-              <div className="w-full flex justify-center">
+              <div className="w-full flex justify-center relative">
                 <Button
-                  variant="outline"
-                  className="border-primary text-primary border-2"
+                  variant={focused ? "default" : "outline"}
+                  className={
+                    focused ? "" : "border-primary text-primary border-2"
+                  }
+                  onClick={() => {
+                    inputRef.current?.focus();
+                  }}
                 >
-                  مسح رمز الاستجابة السريعة
+                  {t("attendance.scanQRCode")}
                   <Scan color="currentColor" />
                 </Button>
+
                 <input
+                  ref={inputRef}
                   type="text"
                   autoFocus
                   className="absolute opacity-0 pointer-events-none"
+                  onFocus={() => setFocused(true)}
+                  onBlur={() => setFocused(false)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       e.preventDefault();
                       const scannedValue = e.currentTarget.value.trim();
                       if (scannedValue) {
                         handleQRResult(scannedValue);
-                        setScannedData(true);
                         e.currentTarget.value = "";
                       }
                     }
@@ -170,10 +180,10 @@ export default function ScanAttendance({ onAttendanceCreate }) {
                   <p className="text-red-600 text-sm mb-4">{cameraError}</p>
                   <div className="flex gap-2 justify-center">
                     <Button onClick={startScanning} size="sm" variant="outline">
-                      إعادة المحاولة
+                      {t("common.retry")}
                     </Button>
                     <Button onClick={stopScanning} size="sm" variant="outline">
-                      إلغاء
+                      {t("common.cancel")}
                     </Button>
                   </div>
                 </div>
@@ -188,7 +198,7 @@ export default function ScanAttendance({ onAttendanceCreate }) {
                   <div className="absolute inset-0 pointer-events-none">
                     {/* Instructions */}
                     <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-black/70 text-white px-3 py-1 rounded-full text-sm">
-                      وجه الكاميرا نحو رمز الاستجابة السريعة
+                      {t("attendance.instructions")}
                     </div>
                   </div>
 
@@ -217,15 +227,15 @@ export default function ScanAttendance({ onAttendanceCreate }) {
           {/* Status */}
           <div className="space-y-2">
             <Label htmlFor="status" className="font-medium">
-              الحالة
+              {t("attendance.status")}
             </Label>
             <Select value={status} onValueChange={(value) => setStatus(value)}>
-              <SelectTrigger className="text-right">
-                <SelectValue placeholder="حالة الحضور" />
+              <SelectTrigger className="rtl:text-right">
+                <SelectValue placeholder={t("attendance.statusPlaceholder")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="present">حاضر</SelectItem>
-                <SelectItem value="late">متأخر</SelectItem>
+                <SelectItem value="present">{t("attendance.present")}</SelectItem>
+                <SelectItem value="late">{t("attendance.late")}</SelectItem>
               </SelectContent>
             </Select>
           </div>

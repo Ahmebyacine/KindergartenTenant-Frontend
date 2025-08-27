@@ -13,6 +13,7 @@ import { fetchCategories } from "@/api/categoriesApi";
 import DeleteAlertDialog from "@/components/DeleteAlertDialog";
 import CategoryModal from "../categories/CategoryModal";
 import { useAuth } from "@/contexts/AuthContext";
+import { t } from "i18next";
 
 export function GeneralSettings() {
   const { theme, setTheme } = useTheme();
@@ -35,10 +36,10 @@ export function GeneralSettings() {
       updateDocumentDirection(lang);
       setSelectedLang(lang);
       await api.put("/auth/update-info", { language: lang });
-      toast.success("تم تغيير اللغة بنجاح!");
+      toast.success(t("settings.general.languageChangeSuccess"));
     } catch (error) {
       console.error("Error updating language:", error);
-      toast.error("فشل في تغيير اللغة. يرجى المحاولة مرة أخرى.");
+      toast.error(t("settings.general.languageChangeError"));
     }
   };
 
@@ -46,10 +47,10 @@ export function GeneralSettings() {
     try {
       await api.put("/auth/update-info", { theme: themeValue });
       setTheme(themeValue);
-      toast.success("تم تغيير المظهر بنجاح!");
+      toast.success(t("settings.general.themeChangeSuccess"));
     } catch (error) {
       console.error("Error updating theme:", error);
-      toast.error("فشل في تغيير المظهر. يرجى المحاولة مرة أخرى.");
+      toast.error(t("settings.general.themeChangeError"));
     }
   };
 
@@ -59,9 +60,9 @@ export function GeneralSettings() {
 
       setCategories((prev) => [response.data, ...prev]);
 
-      toast.success("تم إضافة التصنيف بنجاح");
+      toast.success(t("settings.general.addCategory"));
     } catch (error) {
-      toast.error("حدث خطأ أثناء إضافة التصنيف");
+      toast.error(t("settings.general.addCategoryError"));
       console.error("Add category error:", error);
     }
   };
@@ -74,9 +75,9 @@ export function GeneralSettings() {
         prev.map((cat) => (cat._id === data._id ? response.data : cat))
       );
 
-      toast.success("تم تعديل التصنيف بنجاح");
+      toast.success(t("settings.general.updateCategorySuccess"));
     } catch (error) {
-      toast.error("حدث خطأ أثناء تعديل التصنيف");
+      toast.error(t("settings.general.updateCategoryError"));
       console.error("Update category error:", error);
     }
   };
@@ -85,9 +86,9 @@ export function GeneralSettings() {
     try {
       await api.delete(`/categories/${id}`);
       setCategories((prev) => prev.filter((cat) => cat._id !== id));
-      toast.success("تم حذف التصنيف بنجاح");
+      toast.success(t("settings.general.deleteCategorySuccess"));
     } catch (error) {
-      toast.error("حدث خطأ أثناء الحذف");
+      toast.error(t("settings.general.deleteCategoryError"));
       console.error("Delete category error:", error);
     }
   };
@@ -96,17 +97,17 @@ export function GeneralSettings() {
     <div className="space-y-8">
       {/* Preferences Section */}
       <div>
-        <h2 className="text-l md:text-xl font-semibold mb-4 text-right">
-          التفضيلات
+        <h2 className="text-l md:text-xl font-semibold mb-4 rtl:text-right">
+          {t("settings.general.preferences")}
         </h2>
       </div>
 
       {/* Appearance Section */}
       <div className="space-y-4">
         <div className="flex flex-col justify-start">
-          <h3 className="text-xl font-medium">المظهر</h3>
+          <h3 className="text-xl font-medium">{t("settings.general.theme")}</h3>
           <p className="text-sm text-muted-foreground">
-            اختر المظهر الافتراضي للنظام
+            {t("settings.general.themeDescription")}
           </p>
         </div>
 
@@ -130,7 +131,7 @@ export function GeneralSettings() {
                 </div>
               </div>
             </div>
-            <span className="text-sm">داكن</span>
+            <span className="text-sm">{t("settings.general.dark")}</span>
           </div>
 
           <div className="flex flex-col items-center gap-2">
@@ -152,7 +153,7 @@ export function GeneralSettings() {
                 </div>
               </div>
             </div>
-            <span className="text-sm">فاتح</span>
+            <span className="text-sm">{t("settings.general.light")}</span>
           </div>
 
           <div className="flex flex-col items-center gap-2">
@@ -174,7 +175,7 @@ export function GeneralSettings() {
                 </div>
               </div>
             </div>
-            <span className="text-sm">النظام</span>
+            <span className="text-sm">{t("settings.general.system")}</span>
           </div>
         </div>
       </div>
@@ -182,16 +183,18 @@ export function GeneralSettings() {
       {/* Language and Time Section */}
       <div>
         <h2 className="text-l md:text-xl font-semibold mb-4 text-right">
-          اللغة والوقت
+          {t("settings.general.languageAndTime")}
         </h2>
         <div className="border-t border-border mb-6"></div>
 
         <div className="space-y-6">
           <div className="flex flex-col md:flex-row md:justify-between md:items-center">
             <div className="flex flex-col items-start">
-              <h3 className="text-lg font-medium">اللغة</h3>
+              <h3 className="text-lg font-medium">
+                {t("settings.general.language")}
+              </h3>
               <p className="text-sm text-muted-foreground w-full md:w-auto">
-                قم بتغيير لغة واجهة النظام
+                {t("settings.general.languageDescription")}
               </p>
             </div>
             <div className="flex gap-6 mt-3 md:m-0">
@@ -216,7 +219,7 @@ export function GeneralSettings() {
             </div>
           </div>
 
-          <div className="flex justify-between items-center pt-4">
+          <div className="justify-between items-center pt-4 hidden">
             <div className="flex flex-col items-end">
               <h3 className="text-l font-medium">
                 تحديد المنطقة الزمنية تلقائيا باستخدام الموقع
@@ -237,14 +240,14 @@ export function GeneralSettings() {
 
       {/* Kindergarten Information Section */}
       <div>
-        <h2 className="text-l md:text-xl font-semibold mb-4 text-right">
-          اعدادات الروضة
+        <h2 className="text-l md:text-xl font-semibold mb-4 rtl:text-right">
+          {t("settings.general.kindergartenInfo")}
         </h2>
         <div className="border-t border-border mb-6"></div>
 
         <div className="space-y-6 max-w-lg">
           <div className="flex justify-between">
-            <h3 className="md:text-lg font-medium">فئات الروضة</h3>
+            <h3 className="md:text-lg font-medium">{t("settings.general.kindergartenCategories")}</h3>
             <CategoryModal
               onAddCategory={handleAddCategory}
               isLimited={categories.length >= config?.limits?.categories}

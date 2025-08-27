@@ -3,23 +3,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ReportsFinancialTable from "@/components/reports/ReportsFinancialTable";
 import ReportsHealthTable from "@/components/reports/ReportsHealthTable";
 import ReportsPedagogicalTable from "@/components/reports/ReportsPedagogicalTable";
-import api from "@/api";
 import useFetch from "@/hooks/useFetch";
 import ErrorPage from "../common/ErrorPage";
+import { fetchClasses } from "@/api/classesApi";
+import { fetchStudents } from "@/api/studentsApi";
+import { t } from "i18next";
 
 export default function Reports() {
   const [searchParams] = useSearchParams();
   const defaultTab = searchParams.get("tab") || "pedagogical";
 
-  const fetchClasses = async () => {
-    const response = await api.get("/classes");
-    return response.data;
-  };
-
-  const fetchStudents = async () => {
-    const response = await api.get("/enrollments");
-    return response.data;
-  };
   const { data: classes, error: classesError } = useFetch(fetchClasses);
 
   const { data: students, error: studentsError } = useFetch(fetchStudents);
@@ -31,28 +24,27 @@ export default function Reports() {
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="flex justify-start">
           <Tabs defaultValue={defaultTab} className="w-full">
-            {/* Keep existing TabsList and TabsTrigger styles */}
             <TabsList className="grid w-full grid-cols-3 bg-transparent h-auto p-0 gap-8 md:grid-cols-4 lg:grid-cols-6 border-b mb-2">
               <TabsTrigger
                 value="pedagogical"
                 className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
               >
-                تقارير بداغوجية
+                {t("reports.tabs.pedagogical")}
               </TabsTrigger>
               <TabsTrigger
                 value="financial"
-                className="rounded-t-md data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
+                className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
               >
-                تقارير مالية
+                {t("reports.tabs.financial")}
               </TabsTrigger>
               <TabsTrigger
                 value="health"
                 className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
               >
-                تقارير صحية
+                {t("reports.tabs.health")}
               </TabsTrigger>
             </TabsList>
-            {/* Move TabsContent inside first Tabs component */}
+
             <TabsContent value="pedagogical" className="space-y-4">
               <ReportsPedagogicalTable classes={classes} students={students} />
             </TabsContent>

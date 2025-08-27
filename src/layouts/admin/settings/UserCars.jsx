@@ -76,7 +76,7 @@ export default function UserCard({
               <img
                 src={
                   user?.image
-                    ? import.meta.env.VITE_API_URL_PICTURE + user?.image
+                    ? import.meta.env.VITE_API_URL_PICTURE + user?.image + ".png"
                     : img
                 }
                 alt="User"
@@ -122,7 +122,7 @@ export default function UserCard({
                   onClick={() => onChangePassword?.(user)}
                 >
                   <Edit2 size={10} color="var(--foreground)" />
-                  <span className="ml-2">تغيير كلمة المرور</span>
+                  <span className="ml-2">{t("settings.users.changePassword")}</span>
                 </Button>
               </DropdownMenuItem>
               <DropdownMenuItem>
@@ -131,7 +131,7 @@ export default function UserCard({
                   variant="ghost"
                   onClick={() => onEdit?.(user)}
                 >
-                  <span className="ml-2">تعديل الحساب</span>
+                  <span className="ml-2">{t("settings.users.editAccount")}</span>
                 </Button>
               </DropdownMenuItem>
               <DropdownMenuItem>
@@ -141,7 +141,7 @@ export default function UserCard({
                   onClick={() => setOpen(true)}
                 >
                   <Trash size={10} color="var(--destructive)" />
-                  <span className="ml-2">حذف الحساب</span>
+                  <span className="ml-2">{t("settings.users.deleteAccount")}</span>
                 </Button>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -157,18 +157,16 @@ export default function UserCard({
             </div>
 
             <AlertDialogTitle className="text-xl font-semibold mb-0">
-              حذف العنصر
+              {t("settings.users.deleteAccount")}
             </AlertDialogTitle>
             <AlertDialogDescription className="text-muted-foreground leading-relaxed">
-              هل أنت متأكد من حذف العناصر المحددة؟
-              <br />
-              لا يمكن التراجع عن هذا الإجراء.
+              {t("settings.users.deleteAccountConfirmation")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>إلغاء</AlertDialogCancel>
+            <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
             <AlertDialogAction onClick={() => onDelete?.(user)}>
-              حذف
+              {t("common.delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

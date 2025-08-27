@@ -34,14 +34,15 @@ import { useEffect } from "react";
 import ImageUpload from "@/components/ImageUpload";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
+import { t } from "i18next";
 
 // Define the form schema with validation
-const userSchema = z.object({
-  name: z.string().min(1, "الاسم الكامل مطلوب"),
-  email: z.string().email("بريد إلكتروني غير صالح"),
-  phone: z.string().regex(/^\+?[0-9]{10,15}$/, "رقم هاتف غير صحيح"),
+const userSchema = (t) => z.object({
+  name: z.string().min(1, t("common.required")),
+  email: z.string().email(t("common.invalidEmail")),
+  phone: z.string().regex(/^\+?[0-9]{10,15}$/, t("common.invalidPhone")),
   role: z.enum(["teacher", "supervisor"], {
-    required_error: "الدور مطلوب",
+    required_error: t("common.required"),
   }),
   image: z.any().optional(),
 });
@@ -56,7 +57,7 @@ export default function UserModal({
 }) {
   // Initialize the form
   const form = useForm({
-    resolver: zodResolver(userSchema),
+    resolver: zodResolver(userSchema(t)),
     defaultValues: {
       name: editingUser?.name || "",
       email: editingUser?.email || "",
@@ -110,7 +111,7 @@ export default function UserModal({
           onClick={(e) => {
             if (isLimited) {
               e.preventDefault();
-              toast.error(`تم الوصول إلى الحد الأقصى للمستخدمين`);
+              toast.error(t("settings.users.limitReached"));
             }
           }}
           className={`${
@@ -118,7 +119,7 @@ export default function UserModal({
           } rounded-lg px-6 py-2 flex items-center gap-2`}
         >
           <Add size="20" color="currentColor" />
-          إنشاء حساب جديد
+          {t("settings.users.addNewAccount")}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-md bg-card border-border p-0">
@@ -126,7 +127,7 @@ export default function UserModal({
           {/* Header */}
           <DialogHeader className="border-b-2 mb-4 pb-4">
             <DialogTitle className="text-lg sm:text-xl rtl:text-right font-semibold text-foreground">
-              {editingUser ? "تعديل الحساب" : "إنشاء حساب جديد"}
+              {editingUser ? t("settings.users.editAccount") : t("settings.users.addNewAccount")}
             </DialogTitle>
           </DialogHeader>
 
@@ -139,13 +140,13 @@ export default function UserModal({
                     value="basic"
                     className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
                   >
-                    معلومات أساسية
+                    {t("common.basicInfo")}
                   </TabsTrigger>
                   <TabsTrigger
                     value="image"
                     className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
                   >
-                    صورة المستخدم
+                    {t("common.image")}
                   </TabsTrigger>
                 </TabsList>
 
@@ -158,14 +159,14 @@ export default function UserModal({
                       <FormItem className="space-y-2">
                         <FormLabel className="text-sm font-medium flex items-center gap-2">
                           <User className="h-4 w-4 text-muted-foreground" />
-                          الاسم الكامل
+                          {t("settings.users.fullName")}
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             {...field}
-                            className="text-right border-border focus:border-primary focus:ring-primary"
-                            placeholder="أحمد محمد"
+                            className="rtl:text-right border-border focus:border-primary focus:ring-primary"
+                            placeholder={t("settings.users.fullName")}
                           />
                         </FormControl>
                         <FormMessage />
@@ -181,15 +182,15 @@ export default function UserModal({
                       <FormItem className="space-y-2">
                         <FormLabel className="text-sm font-medium flex items-center gap-2">
                           <Mail className="h-4 w-4 text-muted-foreground" />
-                          البريد الإلكتروني
+                          {t("settings.users.email")}
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             {...field}
                             type="email"
-                            className="text-right border-border focus:border-primary focus:ring-primary"
-                            placeholder="ahmed@example.com"
+                            className="rtl:text-right border-border focus:border-primary focus:ring-primary"
+                            placeholder={t("settings.users.email")}
                           />
                         </FormControl>
                         <FormMessage />
@@ -204,15 +205,15 @@ export default function UserModal({
                       <FormItem className="space-y-2">
                         <FormLabel className="text-sm font-medium flex items-center gap-2">
                           <Phone className="h-4 w-4 text-muted-foreground" />
-                          رقم الهاتف
+                          {t("settings.users.phone")}
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             {...field}
                             type="tel"
-                            className="text-right border-border focus:border-primary focus:ring-primary"
-                            placeholder="+1234567890"
+                            className="border-border focus:border-primary focus:ring-primary"
+                            placeholder={t("settings.users.phone")}
                           />
                         </FormControl>
                         <FormMessage />
@@ -227,7 +228,7 @@ export default function UserModal({
                     render={({ field }) => (
                       <FormItem className="space-y-2">
                         <FormLabel className="text-sm font-medium flex items-center gap-2">
-                          الدور
+                          {t("settings.users.role")}
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <Select
@@ -235,13 +236,13 @@ export default function UserModal({
                           value={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className="text-right border-border focus:border-primary focus:ring-primary">
-                              <SelectValue placeholder="اختر الدور" />
+                            <SelectTrigger className="border-border focus:border-primary focus:ring-primary">
+                              <SelectValue placeholder={t("settings.users.role")} />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="teacher">معلم</SelectItem>
-                            <SelectItem value="supervisor">مراقب</SelectItem>
+                            <SelectItem value="teacher">{t("settings.users.teacher")}</SelectItem>
+                            <SelectItem value="supervisor">{t("settings.users.supervisor")}</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -252,12 +253,11 @@ export default function UserModal({
                   {!editingUser && (
                     <div>
                       <div className="text-base font-medium text-muted-foreground">
-                        معلومات الدخول
+                        {t("settings.users.signInInfo")}
                       </div>
                       <div className="bg-muted/50 p-1 rounded-lg">
                         <div className="text-sm text-muted-foreground">
-                          سيتم إنشاء كلمة مرور عشوائية وإرسالها إلى البريد
-                          الإلكتروني
+                          {t("settings.users.signInDescription")}
                         </div>
                       </div>
                     </div>
@@ -271,7 +271,7 @@ export default function UserModal({
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-sm font-medium flex items-center gap-2">
-                          صورة المستخدم (اختياري)
+                          {t("settings.users.image")}
                         </FormLabel>
                         <FormControl>
                           <ImageUpload
@@ -294,7 +294,7 @@ export default function UserModal({
                     disabled={editingUser && !form.formState.isDirty}
                     className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
                   >
-                    {editingUser ? "حفظ التعديلات" : "حفظ"}
+                    {editingUser ? t("common.update") : t("common.save")}
                   </Button>
                   <DialogClose asChild>
                     <Button
@@ -302,7 +302,7 @@ export default function UserModal({
                       className="flex-1 border-border text-muted-foreground hover:bg-background"
                       onClick={() => form.reset()}
                     >
-                      إلغاء
+                      {t("common.cancel")}
                     </Button>
                   </DialogClose>
                 </div>

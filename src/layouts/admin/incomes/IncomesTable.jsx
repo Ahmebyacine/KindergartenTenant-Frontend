@@ -9,6 +9,7 @@ import {
 import { Document } from "iconsax-react";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import LoadingTable from "@/components/LoadingTable";
+import { t } from "i18next";
 
 export default function IncomesTable({ incomes, loading }) {
   return (
@@ -16,24 +17,24 @@ export default function IncomesTable({ incomes, loading }) {
       <Table>
         <TableHeader>
           <TableRow className="bg-muted/50 border-b border-border hover:bg-muted/50">
-            <TableHead className="text-foreground font-medium">الشهر</TableHead>
+            <TableHead className="text-foreground font-medium">{t("income.month")}</TableHead>
             <TableHead className="text-foreground font-medium">
-              السنة الدراسية
+              {t("income.yearAcademy")}
             </TableHead>
             <TableHead className="text-foreground font-medium">
-              عدد الفواتير
+              {t("income.numberOfFaturations")}
             </TableHead>
             <TableHead className="text-foreground font-medium">
-              المبلغ الإجمالي
+              {t("income.totalAmount")}
             </TableHead>
             <TableHead className="text-foreground font-medium">
-              معدل الفاتورة
+              {t("income.averageInvoice")}
             </TableHead>
             <TableHead className="text-foreground font-medium">
-              نسبة التحصيل
+              {t("income.collectionRate")}
             </TableHead>
             <TableHead className="text-foreground font-medium">
-              مقارنة الشهر السابق
+              {t("income.previousMonthComparison")}
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -79,9 +80,9 @@ export default function IncomesTable({ incomes, loading }) {
               >
                 <div className="flex flex-col items-center justify-center gap-2">
                   <Document size={40} color="CurrentColor" />
-                  <p className="text-lg font-medium">لا توجد تقارير متاحة</p>
+                  <p className="text-lg font-medium">{t("income.noDataTitle")}</p>
                   <p className="text-sm">
-                    لم يتم إنشاء أي تقارير بعد، قم بإضافة تقرير جديد
+                    {t("income.noDataDesc")}
                   </p>
                 </div>
               </TableCell>

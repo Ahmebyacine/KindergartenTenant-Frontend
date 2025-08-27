@@ -10,6 +10,7 @@ import { Setting4, Trash } from "iconsax-react";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { months } from "@/assets/data/data";
 import { useState } from "react";
+import { t } from "i18next";
 
 export default function ReportsFilter({ classes, onApplyFilters }) {
   const [selectedClass, setSelectedClass] = useState("");
@@ -30,7 +31,7 @@ export default function ReportsFilter({ classes, onApplyFilters }) {
             className={`data-[state=open]:text-primary data-[state=open]:border-primary w-full `}
           >
             <Setting4 size={14} color="currentColor" />
-            <span className="hidden md:block">فلاترة</span>
+            <span className="hidden md:block">{t("common.filter")}</span>
           </Button>
         </DialogTrigger>
 
@@ -41,7 +42,7 @@ export default function ReportsFilter({ classes, onApplyFilters }) {
           <div className={`p-6 pt-0 space-y-6 rtl:text-right ltr:text-left`}>
             {/* Filter by classes section */}
             <div>
-              <h3 className="text-lg font-semibold mb-3">فلاترة حسب الفصل:</h3>
+              <h3 className="text-lg font-semibold mb-3">{t("filter.byClass")}</h3>
               <div className="flex flex-wrap gap-2 justify-start">
                 {classes?.map((classItem) => (
                   <Button
@@ -65,7 +66,7 @@ export default function ReportsFilter({ classes, onApplyFilters }) {
             </div>
             {/* Filter by month section */}
             <div>
-              <h3 className="text-lg font-semibold mb-3">فلاترة حسب الشهر:</h3>
+              <h3 className="text-lg font-semibold mb-3">{t("filter.byMonth")}</h3>
               <div className="flex flex-wrap gap-2 justify-start">
                 {months.map((month) => (
                   <Button
@@ -82,7 +83,7 @@ export default function ReportsFilter({ classes, onApplyFilters }) {
                       )
                     }
                   >
-                    {month.label}
+                    {t(month.key)}
                   </Button>
                 ))}
               </div>
@@ -97,13 +98,13 @@ export default function ReportsFilter({ classes, onApplyFilters }) {
               onClick={handleReset}
             >
               <Trash size={14} color="currentColor" />
-              إعادة تعيين الكل
+              {t("filter.resetFilters")}
             </Button>
             <Button
               className="bg-primary rounded-lg px-6 py-3 hover:bg-primary/90"
               onClick={() => onApplyFilters(selectedClass, selectedMonth)}
             >
-              تطبيق الفلاتر
+              {t("filter.applyFilters")}
             </Button>
           </DialogFooter>
         </DialogContent>

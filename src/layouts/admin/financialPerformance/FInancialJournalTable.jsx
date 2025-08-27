@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
+import { t } from "i18next";
 import { Document } from "iconsax-react";
 import React from "react";
 
@@ -19,20 +20,22 @@ export default function FinancialJournalTable({ data, loading }) {
         <TableHeader>
           <TableRow className="bg-muted/50 border-b border-border hover:bg-muted/50">
             <TableHead className="text-foreground font-medium !text-center">
-              الشهر
-            </TableHead>
-            <TableHead className="text-foreground font-medium">السنة</TableHead>
-            <TableHead className="text-foreground font-medium">
-              المداخيل
+              {t("financialPerformance.month")}
             </TableHead>
             <TableHead className="text-foreground font-medium">
-              المصاريف
+              {t("financialPerformance.year")}
             </TableHead>
             <TableHead className="text-foreground font-medium">
-              الفارق
+              {t("financialPerformance.income")}
             </TableHead>
             <TableHead className="text-foreground font-medium">
-              نسبة الربح
+              {t("financialPerformance.expenses")}
+            </TableHead>
+            <TableHead className="text-foreground font-medium">
+              {t("financialPerformance.profit")}
+            </TableHead>
+            <TableHead className="text-foreground font-medium">
+              {t("financialPerformance.profitMargin")}
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -79,9 +82,9 @@ export default function FinancialJournalTable({ data, loading }) {
               >
                 <div className="flex flex-col items-center justify-center gap-2">
                   <Document size={40} color="CurrentColor" />
-                  <p className="text-lg font-medium">لا توجد تقارير متاحة</p>
+                  <p className="text-lg font-medium">{t("financialPerformance.noReports")}</p>
                   <p className="text-sm">
-                    لم يتم إنشاء أي تقارير بعد، قم بإضافة تقرير جديد
+                    {t("financialPerformance.noReportsDescription")}
                   </p>
                 </div>
               </TableCell>

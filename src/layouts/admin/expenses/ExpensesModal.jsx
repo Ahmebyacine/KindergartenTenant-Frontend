@@ -31,12 +31,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Add } from "iconsax-react";
 import { expenseTypes } from "@/assets/data/data";
 import { useEffect, useState } from "react";
+import { t } from "i18next";
 
 // Updated schema to match API requirements
-const expenseSchema = z.object({
-  category: z.string().min(1, "مطلوب"),
-  amount: z.number().min(1, "يجب أن يكون المبلغ أكبر من 0"),
-  description: z.string().min(1, "مطلوب"),
+const expenseSchema = (t) => z.object({
+  category: z.string().min(1, t("common.required")),
+  amount: z.number().min(1, t("expenses.amountMustBePositive")),
+  description: z.string().min(1, t("common.required")),
 });
 
 export default function ExpensesModal({
@@ -46,7 +47,7 @@ export default function ExpensesModal({
 }) {
   const [open, setOpen] = useState(false);
   const form = useForm({
-    resolver: zodResolver(expenseSchema),
+    resolver: zodResolver(expenseSchema(t)),
     defaultValues: {
       category: editingExpense?.category || "",
       amount: editingExpense?.amount || 0,
@@ -76,12 +77,12 @@ export default function ExpensesModal({
       <DialogTrigger asChild>
         {editingExpense ? (
           <Button variant="link" size="sm" className="underline">
-            تعديل
+            {t("common.edit")}
           </Button>
         ) : (
           <Button>
             <Add size="20" color="currentColor" />
-            تسجيل مصروف جديد
+            {t("expenses.addNewExpense")}
           </Button>
         )}
       </DialogTrigger>
@@ -89,7 +90,7 @@ export default function ExpensesModal({
       <DialogContent className="w-full max-w-full sm:max-w-2xl bg-card p-6 rounded-lg sm:rounded-2xl">
         <DialogHeader className="border-b-2 pb-4">
           <DialogTitle className="text-lg rtl:text-right sm:text-xl font-semibold text-foreground">
-            {editingExpense ? "تعديل المصروف" : "تسجيل مصروف جديد"}
+            {editingExpense ? t("common.editExpense") : t("expenses.addNewExpense")}
           </DialogTitle>
         </DialogHeader>
 
@@ -97,13 +98,8 @@ export default function ExpensesModal({
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-6 max-h-[70vh] overflow-y-auto pt-2 px-1 sm:px-2"
-            dir="rtl"
           >
             <div className="space-y-4">
-              <div className="text-lg font-semibold text-foreground pb-2 border-b border-border">
-                تصنيف مصروف
-              </div>
-
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Category */}
                 <FormField
@@ -112,15 +108,15 @@ export default function ExpensesModal({
                   render={({ field }) => (
                     <FormItem className="space-y-2">
                       <FormLabel className="text-muted-foreground">
-                        التصنيف
+                        {t("expenses.category")}
                       </FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         value={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="text-right">
-                            <SelectValue placeholder="اختر التصنيف" />
+                          <SelectTrigger className="rtl:text-right">
+                            <SelectValue placeholder={t("expenses.categoryPlaceholder")} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -129,7 +125,7 @@ export default function ExpensesModal({
                               key={category.value}
                               value={category.value}
                             >
-                              {category.label}
+                              {t(category.key)}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -146,12 +142,12 @@ export default function ExpensesModal({
                   render={({ field }) => (
                     <FormItem className="space-y-2">
                       <FormLabel className="text-muted-foreground">
-                        المبلغ (دج)
+                        {t("expenses.amount")}
                       </FormLabel>
                       <FormControl>
                         <Input
                           type="number"
-                          className="text-right"
+                          className="rtl:text-right"
                           placeholder="6000"
                           {...field}
                           onChange={(e) =>
@@ -174,12 +170,12 @@ export default function ExpensesModal({
                 render={({ field }) => (
                   <FormItem className="space-y-2">
                     <FormLabel className="text-muted-foreground">
-                      الوصف
+                      {t("expenses.description")}
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        className="text-right"
-                        placeholder="تصليح كراسي"
+                        className="rtl:text-right"
+                        placeholder={t("expenses.descriptionPlaceholder")}
                         {...field}
                       />
                     </FormControl>
@@ -199,14 +195,14 @@ export default function ExpensesModal({
               disabled={editingExpense && !form.formState.isDirty}
               className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium disabled:opacity-50"
             >
-              {editingExpense ? "تحديث" : "حفظ"}
+              {editingExpense ? t("common.update") : t("common.save")}
             </Button>
             <DialogClose asChild>
               <Button
                 variant="outline"
                 className="flex-1 border-border text-muted-foreground hover:bg-background"
               >
-                إلغاء
+                {t("common.cancel")}
               </Button>
             </DialogClose>
           </div>

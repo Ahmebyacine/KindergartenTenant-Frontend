@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Setting4, Trash } from "iconsax-react";
+import { t } from "i18next";
 
 export default function StudentsFilter({ classes, onFilter }) {
   const [selectedClass, setSelectedClass] = useState("");
@@ -32,7 +33,7 @@ export default function StudentsFilter({ classes, onFilter }) {
             ) : (
               <>
                 <Setting4 size={14} color="currentColor" />
-                <span className="hidden md:block">فلاترة</span>
+                <span className="hidden md:block">{t("common.filter")}</span>
               </>
             )}
           </Button>
@@ -40,11 +41,11 @@ export default function StudentsFilter({ classes, onFilter }) {
 
         <DialogContent className="sm:max-w-[500px] rounded-xl p-0 overflow-hidden bg-background">
           <DialogHeader className="p-6 pb-0 flex flex-row justify-start items-center rtl:text-right ltr:text-left relative">
-            <DialogTitle>خيارات الفلترة</DialogTitle>
+            <DialogTitle>{t("filter.optionFilters")}</DialogTitle>
           </DialogHeader>
           <div className="p-6 pt-0 space-y-6 rtl:text-right ltr:text-left">
             {/* Filter by Student by classes */}
-            <h3 className="text-lg font-semibold mb-3">فلاترة حسب القسم:</h3>
+            <h3 className="text-lg font-semibold mb-3">{t("filter.byClass")}</h3>
             <div>
               <div className="flex flex-wrap gap-2 justify-start">
                 {classes?.map((type) => (
@@ -67,7 +68,7 @@ export default function StudentsFilter({ classes, onFilter }) {
                   >
                     {type?.className}
                   </Button>
-                )) || "لا توجد أقسام متاحة"}
+                )) || <>{t("classes.noClasses")}</>}
               </div>
             </div>
           </div>
@@ -80,13 +81,13 @@ export default function StudentsFilter({ classes, onFilter }) {
               onClick={handleReset}
             >
               <Trash size={14} color="currentColor" />
-              إعادة تعيين الكل
+              {t("filter.resetFilters")}
             </Button>
             <Button
               className="bg-primary text-white rounded-lg px-6 py-3 hover:bg-primary/90"
               onClick={() => onFilter(selectedClass)}
             >
-              تطبيق الفلاتر
+              {t("filter.applyFilters")}
             </Button>
           </DialogFooter>
         </DialogContent>

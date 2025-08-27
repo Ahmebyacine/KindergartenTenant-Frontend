@@ -16,6 +16,7 @@ import { X } from "lucide-react";
 import StudentDetails from "./StudentDetails";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import PrintStudentsModal from "./PrintStudentsModal";
+import { t } from "i18next";
 
 export default function StudentsTable({
   loading,
@@ -63,9 +64,9 @@ export default function StudentsTable({
             >
               <div className="flex flex-col items-center justify-center gap-2">
                 <ProfileDelete size={40} color="CurrentColor" />
-                <p className="text-lg font-medium">لا يوجد اطفال متاحون</p>
+                <p className="text-lg font-medium">{t("students.noChildren")}</p>
                 <p className="text-sm">
-                  لم يتم تسجيل أي طفل بعد، قم بإضافة طفل جديد
+                  {t("students.noChildrenDescription")}
                 </p>
               </div>
             </TableCell>
@@ -116,19 +117,19 @@ export default function StudentsTable({
                     #
                   </TableHead>
                   <TableHead className="text-muted-foreground font-medium">
-                    اسم الطفل
+                    {t("students.fullName")}
                   </TableHead>
                   <TableHead className="text-muted-foreground font-medium">
-                    ولي الامر
+                    {t("students.parentName")}
                   </TableHead>
                   <TableHead className="text-muted-foreground font-medium">
-                    رقم التواصل
+                    {t("students.parentContact")}
                   </TableHead>
                   <TableHead className="text-muted-foreground font-medium">
-                    تاريخ التسجيل
+                    {t("students.registrationDate")}
                   </TableHead>
                   <TableHead className="text-muted-foreground font-medium">
-                    الإجراءات
+                    {t("students.actions")}
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -204,7 +205,7 @@ export default function StudentsTable({
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                 {/* Left side - Status or info */}
                 <div className="flex items-center gap-2 text-sm text-foreground ">
-                  <span>تم تحديد {rowSelection.length} عناصر</span>
+                  <span>{t("students.selectedItems", { count: rowSelection.length })}</span>
                 </div>
 
                 {/* Right side - Action buttons */}
@@ -218,7 +219,7 @@ export default function StudentsTable({
                     className="text-destructive"
                   >
                     <Trash color="currentColor" />
-                    حذف
+                    {t("students.delete")}
                   </Button>
                   <Button
                     variant="ghost"

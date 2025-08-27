@@ -14,6 +14,7 @@ import { formatDate } from "@/utils/dateFormatter";
 import { getAge } from "@/utils/getLocalizedAge";
 import StudentsModal from "./StudentsModal";
 import DeleteAlertDialog from "../DeleteAlertDialog";
+import { t } from "i18next";
 
 export default function StudentDetails({
   enrollment,
@@ -36,13 +37,13 @@ export default function StudentDetails({
             variant="link"
             className="text-primary hover:text-primary/80 p-0 h-auto underline"
           >
-            عرض تفاصيل
+            {t("common.details")}
           </Button>
         </DialogTrigger>
         <DialogContent className="px-0 gap-0">
           {/* Header */}
           <DialogHeader className="border-b border-border px-5">
-            <DialogTitle className={"rtl:text-right"}>تفاصيل الطفل</DialogTitle>
+            <DialogTitle className={"rtl:text-right"}>{t("students.details")}</DialogTitle>
           </DialogHeader>
 
           {/* Content */}
@@ -54,8 +55,8 @@ export default function StudentDetails({
                 onUpdateStudent={onUpdateStudent}
               />
               <DeleteAlertDialog
-                title="حذف الطفل"
-                description="هل أنت متأكد أنك تريد حذف هذا الطفل؟"
+                title={t("students.delete")}
+                description={t("students.confirmDelete")}
                 item={enrollment._id}
                 onDelete={onDeleteEnrollment}
               />
@@ -64,7 +65,7 @@ export default function StudentDetails({
               <div className="space-y-4">
                 <div className="flex items-center">
                   <div className="text-sm w-1/2 text-foreground">
-                    الاسم الكامل
+                    {t("students.fullName")}
                   </div>
                   <div className="text-sm text-muted-foreground">
                     {enrollment.student.firstName} {enrollment.student.lastName}
@@ -72,27 +73,27 @@ export default function StudentDetails({
                 </div>
                 <div className="flex items-center">
                   <div className="text-sm w-1/2 text-foreground">
-                    تاريخ الميلاد
+                    {t("students.birthDate")}
                   </div>
                   <div className="text-sm text-muted-foreground">
                     {formatDate(enrollment.student.birthDate)}
                   </div>
                 </div>
                 <div className="flex items-center">
-                  <div className="text-sm w-1/2 text-foreground">العمر</div>
+                  <div className="text-sm w-1/2 text-foreground">{t("students.age")}</div>
                   <div className="text-sm text-muted-foreground">
                     {getAge(enrollment.student.birthDate, enrollment.createdAt)}
                   </div>
                 </div>
                 <div className="flex items-center">
-                  <div className="text-sm w-1/2 text-foreground">القسم </div>
+                  <div className="text-sm w-1/2 text-foreground">{t("students.class")}</div>
                   <div className="text-sm text-muted-foreground">
                     {enrollment.class.className}
                   </div>
                 </div>
                 <div className="flex items-center">
                   <div className="text-sm w-1/2 text-foreground">
-                    السنة الدراسية
+                    {t("students.academicYear")}
                   </div>
                   <div className="text-sm text-muted-foreground">
                     {enrollment.academicYear}
@@ -110,14 +111,14 @@ export default function StudentDetails({
                 onClick={handleShowCard}
                 className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
               >
-                عرض بطاقة التسجيل
+                {t("students.printCard.showCard")}
               </Button>
               <DialogClose asChild>
                 <Button
                   variant="outline"
                   className="flex-1 border-border text-muted-foreground hover:bg-background"
                 >
-                  إلغاء
+                  {t("common.cancel")}
                 </Button>
               </DialogClose>
             </div>

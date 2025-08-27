@@ -3,6 +3,7 @@ import { Button } from './ui/button';
 import api from '@/api';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { t } from "i18next";
 
 export default function LogoutButton() {
   const navigate = useNavigate();
@@ -24,8 +25,8 @@ export default function LogoutButton() {
       onClick={handleLogout}
       className="w-full justify-start text-red-600 hover:text-red-400 border-b"
     >
-      <Logout variant="Outline" color="red" />
-      <span>تسجيل الخروج</span>
+      <Logout variant="Outline" color="red" className="ltr:rotate-180" />
+      <span>{t("sidebar.logout")}</span>
     </Button>
   );
 }

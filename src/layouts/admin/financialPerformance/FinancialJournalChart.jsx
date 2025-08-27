@@ -1,5 +1,6 @@
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { t } from "i18next";
 import { Chart1 } from "iconsax-react";
 import React from "react";
 import {
@@ -31,11 +32,10 @@ export default function FinancialJournalChart({ data, loading }) {
             </div>
             <div className="space-y-2">
               <h3 className="text-lg font-medium text-foreground">
-                لا توجد بيانات متاحة
+                {t("financialPerformance.noData")}
               </h3>
               <p className="text-sm text-muted-foreground max-w-sm">
-                لم يتم العثور على بيانات الحضور والغياب للفترة المحددة. يرجى
-                المحاولة مرة أخرى لاحقاً.
+                {t("financialPerformance.noDataDesc")}
               </p>
             </div>
           </div>
@@ -82,11 +82,11 @@ export default function FinancialJournalChart({ data, loading }) {
             <div className="flex items-center gap-6 mt-4">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-[#fb2c36] rounded"></div>
-                <span className="text-sm text-gray-600">المصاريف</span>
+                <span className="text-sm text-gray-600">{t("financialPerformance.expenses")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-[#1447e6] rounded"></div>
-                <span className="text-sm text-gray-600">المداخيل</span>
+                <span className="text-sm text-gray-600">{t("financialPerformance.income")}</span>
               </div>
             </div>
           </CardFooter>

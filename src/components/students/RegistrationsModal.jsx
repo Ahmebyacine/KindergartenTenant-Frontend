@@ -40,11 +40,12 @@ import {
 } from "@/components/ui/form";
 import { getCurrentAcademicYear } from "@/utils/getAcademicYear";
 import { toast } from "sonner";
+import { t } from "i18next";
 
-const formSchema = z.object({
-  student: z.string().min(1, "يجب اختيار طالب"),
-  classId: z.string().min(1, "يجب اختيار فصل"),
-  academicYear: z.string().min(1, "السنة الدراسية مطلوبة"),
+const formSchema = (t) => z.object({
+  student: z.string().min(1, t("common.required")),
+  classId: z.string().min(1, t("common.required")),
+  academicYear: z.string().min(1, t("common.required")),
 });
 
 export default function RegistrationsModal({
@@ -60,7 +61,7 @@ export default function RegistrationsModal({
   const debounceRef = useRef();
 
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema(t)),
     defaultValues: {
       student: "",
       classId: "",
@@ -126,11 +127,11 @@ export default function RegistrationsModal({
           onClick={(e) => {
             if (isLimited) {
               e.preventDefault();
-              toast.error(`تم الوصول إلى الحد الأقصى للتلاميذ `);
+              toast.error(t("students.limitReached"));
             }
           }}
         >
-          اعادة تسجيل
+          {t("students.registration.title")}
         </Button>
       </DialogTrigger>
 
@@ -138,7 +139,7 @@ export default function RegistrationsModal({
         <DialogHeader className="border-b-2 pb-4">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
             <DialogTitle className="text-lg sm:text-xl font-semibold text-foreground rtl:text-right ltr:text-left w-full">
-              إعادة التسجيل
+              {t("students.registration.title")}
             </DialogTitle>
           </div>
         </DialogHeader>
@@ -156,12 +157,12 @@ export default function RegistrationsModal({
               render={() => (
                 <FormItem>
                   <FormLabel className="text-muted-foreground text-sm font-medium">
-                    البحث عن طالب
+                    {t("students.registration.search")}
                   </FormLabel>
                   <FormControl>
                     <Command shouldFilter={false}>
                       <CommandInput
-                        placeholder="ابحث عن الاسم"
+                        placeholder={t("students.registration.search")}
                         value={searchValue}
                         onValueChange={setSearchValue}
                         onFocus={() => setIsFocused(true)}
@@ -175,11 +176,11 @@ export default function RegistrationsModal({
                         <CommandList className="max-h-30">
                           {loading ? (
                             <div className="p-4 text-center text-muted-foreground">
-                              جاري البحث...
+                              {t("students.registration.search")}...
                             </div>
                           ) : searchResults.length === 0 ? (
                             <CommandEmpty>
-                              لا توجد نتائج لـ "{searchValue}"
+                              {t("students.registration.noResults", { searchValue })}
                             </CommandEmpty>
                           ) : (
                             searchResults.map((item) => (
@@ -190,12 +191,12 @@ export default function RegistrationsModal({
                                 className="cursor-pointer"
                               >
                                 <div>
-                                  <span className="font-semibold">الاسم:</span>{" "}
+                                  <span className="font-semibold">{t("students.registration.name")}:</span>{" "}
                                   {item.firstName} {item.lastName}
                                 </div>
                                 <div>
                                   <span className="font-semibold">
-                                    تاريخ الميلاد:
+                                    {t("students.registration.birthDate")}:
                                   </span>
                                   {formatDate(item.birthDate)}
                                 </div>
@@ -225,11 +226,11 @@ export default function RegistrationsModal({
                   <CloseSquare size={18} color="currentColor" />
                 </button>
                 <div>
-                  <span className="font-semibold">الاسم:</span>{" "}
+                  <span className="font-semibold">{t("students.registration.name")}:</span>{" "}
                   {selectedStudent.firstName} {selectedStudent.lastName}
                 </div>
                 <div>
-                  <span className="font-semibold">تاريخ الميلاد:</span>
+                  <span className="font-semibold">{t("students.registration.birthDate")}:</span>
                   {formatDate(selectedStudent.birthDate)}
                 </div>
               </div>
@@ -242,20 +243,20 @@ export default function RegistrationsModal({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-muted-foreground text-sm font-medium">
-                    اختيار الفصل
+                    {t("students.registration.class")}
                   </FormLabel>
                   <Select value={field.value} onValueChange={field.onChange}>
                     <FormControl>
                       <SelectTrigger className="border border-border rounded-lg">
-                        <SelectValue placeholder="اختر الفصل" />
+                        <SelectValue placeholder={t("students.registration.selectClass")} />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent className="text-right" align="end">
+                    <SelectContent className="rtl:text-right" align="end">
                       {classes.map((classItem) => (
                         <SelectItem
                           key={classItem._id}
                           value={classItem._id}
-                          className="text-right"
+                          className="rtl:text-right"
                         >
                           {classItem.className}
                         </SelectItem>
@@ -274,7 +275,7 @@ export default function RegistrationsModal({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-muted-foreground text-sm font-medium">
-                    السنة الدراسية الجديدة
+                    {t("students.registration.academicYear")}
                   </FormLabel>
                   <div className="relative">
                     <FormControl>
@@ -301,14 +302,14 @@ export default function RegistrationsModal({
                   type="submit"
                   className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
                 >
-                  حفظ
+                  {t("common.submit")}
                 </Button>
                 <DialogClose asChild>
                   <Button
                     variant="outline"
                     className="flex-1 border-border text-muted-foreground hover:bg-background"
                   >
-                    إلغاء
+                    {t("common.cancel")}
                   </Button>
                 </DialogClose>
               </div>

@@ -21,10 +21,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import useFetch from "@/hooks/useFetch";
 import api from "@/api";
+import { t } from "i18next";
 
 // Validation schema
 const formSchema = z.object({
@@ -60,7 +61,7 @@ export default function ClassStep({ onNext, onPrevious }) {
       await api.post("/onboarding/first-class", values);
       onNext();
     } catch {
-      setError("حدث خطأ أثناء الحفظ.");
+      setError(t("onboarding.errorSave"));
     } finally {
       setLoading(false);
     }
@@ -69,7 +70,7 @@ export default function ClassStep({ onNext, onPrevious }) {
   return (
     <div className="text-center">
       <div className="mb-3">
-        <h2 className="text-xl font-semibold">أنشئ أول قسم دراسي للبدء.</h2>
+        <h2 className="text-xl font-semibold">{t("onboarding.class.title")}</h2>
       </div>
 
       <Card className="max-w-md mx-auto">
@@ -87,13 +88,13 @@ export default function ClassStep({ onNext, onPrevious }) {
                   render={({ field }) => (
                     <FormItem className="space-y-1">
                       <FormLabel className="text-muted-foreground">
-                        اسم الفصل *
+                        {t("onboarding.class.className")}
                       </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
-                          className="text-right"
-                          placeholder="أدخل اسم الفصل"
+                          className="rtl:text-right"
+                          placeholder={t("onboarding.class.classNamePlaceholder")}
                         />
                       </FormControl>
                       <FormMessage />
@@ -108,15 +109,15 @@ export default function ClassStep({ onNext, onPrevious }) {
                   render={({ field }) => (
                     <FormItem className="space-y-1">
                       <FormLabel className="text-muted-foreground">
-                        فئة *
+                        {t("onboarding.class.category")}
                       </FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="text-right">
-                            <SelectValue placeholder="اختر فئة" />
+                          <SelectTrigger className="rtl:text-right">
+                            <SelectValue placeholder={t("onboarding.class.categoryPlaceholder")} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -139,13 +140,12 @@ export default function ClassStep({ onNext, onPrevious }) {
                   render={({ field }) => (
                     <FormItem className="space-y-1">
                       <FormLabel className="text-muted-foreground">
-                        السعة
+                        {t("onboarding.class.capacity")}
                       </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           type="number"
-                          className="text-right"
                           onChange={(e) =>
                             field.onChange(Number(e.target.value))
                           }
@@ -163,15 +163,14 @@ export default function ClassStep({ onNext, onPrevious }) {
                   render={({ field }) => (
                     <FormItem className="space-y-1">
                       <FormLabel className="text-muted-foreground">
-                        سعر الفصل
+                        {t("onboarding.class.price")}
                       </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           type="number"
                           min="0"
-                          className="text-right"
-                          placeholder="أدخل سعر الفصل"
+                          placeholder={t("onboarding.class.pricePlaceholder")}
                           onChange={(e) =>
                             field.onChange(
                               e.target.value === ""
@@ -196,7 +195,7 @@ export default function ClassStep({ onNext, onPrevious }) {
       <div className="flex justify-between items-center mt-8">
         <Button onClick={onPrevious} disabled={loading} variant="ghost">
           <ChevronLeft className="w-4 h-4 rtl:rotate-180" />
-          <span className="text-base">السابق</span>
+          <span className="text-base">{t("common.previous")}</span>
         </Button>
 
         <Button
@@ -204,7 +203,7 @@ export default function ClassStep({ onNext, onPrevious }) {
           disabled={loading}
           className={`flex items-center gap-2 rounded-xl px-8 py-3 text-base font-medium`}
         >
-          {loading ? "جاري الحفظ..." : "التالي"}
+          {loading ? t("common.saving") : t("common.next")}
           {!loading && <ChevronRight className="w-4 h-4 rtl:rotate-180" />}
         </Button>
       </div>

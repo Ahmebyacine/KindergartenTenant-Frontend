@@ -10,6 +10,7 @@ import { Document } from "iconsax-react";
 import { formatDateTime } from "@/utils/dateFormatter";
 import LoadingTable from "@/components/LoadingTable";
 import { getAttendancesBadge } from "@/utils/getStatusBadges";
+import { t } from "i18next";
 
 export default function AttendanceTable({ loading, attendance }) {
   return (
@@ -20,22 +21,22 @@ export default function AttendanceTable({ loading, attendance }) {
             #
           </TableHead>
           <TableHead className="text-right text-muted-foreground font-medium">
-            اسم الطفل
+            {t("attendance.childName")}
           </TableHead>
           <TableHead className="text-right text-muted-foreground font-medium">
-            الفصل
+            {t("attendance.class")}
           </TableHead>
           <TableHead className="text-right text-muted-foreground font-medium">
-            الحالة
+            {t("attendance.status")}
           </TableHead>
           <TableHead className="text-right text-muted-foreground font-medium">
-            توقيت الدخول
+            {t("attendance.checkInTime")}
           </TableHead>
           <TableHead className="text-right text-muted-foreground font-medium">
-            توقيت الخروج
+            {t("attendance.checkOutTime")}
           </TableHead>
           <TableHead className="text-right text-muted-foreground font-medium">
-            الملاحظات
+            {t("attendance.notes")}
           </TableHead>
         </TableRow>
       </TableHeader>
@@ -67,7 +68,7 @@ export default function AttendanceTable({ loading, attendance }) {
                 {att?.checkOutTime ? formatDateTime(att?.checkOutTime) : "--"}
               </TableCell>
               <TableCell className="py-3">
-                {att?.notes || "لا توجد ملاحظات"}
+                {att?.notes || t("attendance.noNotes")}
               </TableCell>
             </TableRow>
           ))}
@@ -81,12 +82,8 @@ export default function AttendanceTable({ loading, attendance }) {
             >
               <div className="flex flex-col items-center justify-center gap-2">
                 <Document size={40} color="CurrentColor" />
-                <p className="text-lg font-medium">
-                  لا توجد بيانات الحضور والغياب متاحة
-                </p>
-                <p className="text-sm">
-                  لم يتم إنشاء أي بيانات الحضور والغياب بعد
-                </p>
+                <p className="text-lg font-medium">{t("attendance.noData")}</p>
+                <p className="text-sm">{t("attendance.noDataDesc")}</p>
               </div>
             </TableCell>
           </TableRow>

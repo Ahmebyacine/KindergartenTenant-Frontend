@@ -7,6 +7,7 @@ import useFetch from "@/hooks/useFetch";
 import { useAuth } from "@/contexts/AuthContext";
 import ErrorPage from "../common/ErrorPage";
 import { fetchStudents } from "@/api/studentsApi";
+import { t } from "i18next";
 
 export default function ReportsTeacher() {
   const [searchParams] = useSearchParams();
@@ -25,30 +26,39 @@ export default function ReportsTeacher() {
                 value="pedagogical"
                 className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
               >
-                تقارير بداغوجية
+                {t("reports.tabs.pedagogical")}
               </TabsTrigger>
               <TabsTrigger
                 value="financial"
-                className="rounded-t-md data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
+                className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
               >
-                تقارير مالية
+                {t("reports.tabs.financial")}
               </TabsTrigger>
               <TabsTrigger
                 value="health"
                 className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
               >
-                تقارير صحية
+                {t("reports.tabs.health")}
               </TabsTrigger>
             </TabsList>
             {/* Move TabsContent inside first Tabs component */}
             <TabsContent value="pedagogical" className="space-y-4">
-              <ReportsPedagogicalTable classes={[user?.assignedClass]} students={students} />
+              <ReportsPedagogicalTable
+                classes={[user?.assignedClass]}
+                students={students}
+              />
             </TabsContent>
             <TabsContent value="financial" className="space-y-4">
-              <ReportsFinancialTable classes={[user?.assignedClass]} students={students} />
+              <ReportsFinancialTable
+                classes={[user?.assignedClass]}
+                students={students}
+              />
             </TabsContent>
             <TabsContent value="health" className="space-y-4">
-              <ReportsHealthTable classes={[user?.assignedClass]} students={students} />
+              <ReportsHealthTable
+                classes={[user?.assignedClass]}
+                students={students}
+              />
             </TabsContent>
           </Tabs>
         </div>

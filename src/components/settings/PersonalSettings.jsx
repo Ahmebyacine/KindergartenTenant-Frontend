@@ -18,31 +18,45 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { t } from "i18next";
 
 // Zod schema for form validation
-const formSchema = z.object({
-  name: z.string().min(2, { message: "يجب أن يتكون الاسم من حرفين على الأقل" }),
-  email: z.string().email({ message: "بريد إلكتروني غير صالح" }),
-  phone: z.string()
-    .min(10, { message: "يجب أن يتكون رقم الهاتف من 10 أرقام على الأقل" })
-    .regex(/^[0-9]+$/, { message: "يجب أن يتكون رقم الهاتف من أرقام فقط" })
-    .optional(),
-});
+const formSchema = (t) =>
+  z.object({
+    name: z
+      .string()
+      .min(2, { message: t("settings.general.validation.nameMin") }),
+    email: z
+      .string()
+      .email({ message: t("settings.general.validation.email") }),
+    phone: z
+      .string()
+      .min(10, { message: t("settings.general.validation.phoneMin") })
+      .regex(/^[0-9]+$/, {
+        message: t("settings.general.validation.phoneInvalid"),
+      })
+      .optional(),
+  });
 
 export default function PersonalSettings() {
-  const { user,setUser } = useAuth();
-  const [preview, setPreview] = useState(user?.image ? import.meta.env.VITE_API_URL_PICTURE + user?.image : img);
+  const { user, setUser } = useAuth();
+  const [preview, setPreview] = useState(
+    user?.image
+      ? import.meta.env.VITE_API_URL_PICTURE + user?.image + ".png"
+      : img
+  );
+  const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
   const [deleteImage, setDeleteImage] = useState(false);
   const fileInputRef = useRef(null);
 
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema(t)),
     defaultValues: {
       name: user?.name || "",
       email: user?.email || "",
       phone: user?.phone || "",
-    }
+    },
   });
 
   const handleImageChange = (e) => {
@@ -64,6 +78,7 @@ export default function PersonalSettings() {
 
   const onSubmit = async (data) => {
     try {
+      setLoading(true);
       const formData = new FormData();
       formData.append("name", data.name);
       formData.append("email", data.email);
@@ -71,7 +86,7 @@ export default function PersonalSettings() {
       if (file) {
         formData.append("image", file);
         if (user?.image) {
-        formData.append("oldImage", user?.image);
+          formData.append("oldImage", user?.image);
         }
       }
       if (deleteImage) {
@@ -80,10 +95,18 @@ export default function PersonalSettings() {
       }
       const response = await api.put("/auth/update-info", formData);
       setUser(response.data);
-      toast.success("تم تحديث الحساب بنجاح");
+      toast.success(t("settings.personal.success"));
     } catch (error) {
       console.error(error);
-      toast.error("حدث خطأ أثناء تحديث البيانات");
+      toast.error(
+        t("settings.personal.error", {
+          description: t(
+            `errorApi.${error.response?.data?.message || "defaultError"}`
+          ),
+        })
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -92,9 +115,11 @@ export default function PersonalSettings() {
       <div className="w-full bg-card rounded-lg shadow-sm">
         {/* Header */}
         <div className="flex items-center justify-between pb-6 px-6 mb-4 border-b border-border">
-          <h1 className="text-lg font-semibold">الحساب الشخصي</h1>
+          <h1 className="text-lg font-semibold">
+            {t("settings.personal.title")}
+          </h1>
         </div>
-        
+
         <Form {...form}>
           <div className="w-full flex flex-col items-center md:flex-row">
             {/* Profile Section */}
@@ -110,12 +135,21 @@ export default function PersonalSettings() {
               </div>
 
               <div className="flex gap-2">
-                <Button type="button" onClick={() => fileInputRef.current.click()} className="flex items-center gap-2">
-                  <Upload className="h-4 w-4" /> تغيير الصورة
+                <Button
+                  type="button"
+                  onClick={() => fileInputRef.current.click()}
+                  className="flex items-center gap-2"
+                >
+                  <Upload className="h-4 w-4" /> {t("settings.personal.changeImage")}
                 </Button>
-                { (user?.image || file) && (
-                  <Button type="button" variant="destructive" onClick={handleDeleteImage} className="flex items-center gap-2">
-                    <Trash2 className="h-4 w-4" /> حذف
+                {(user?.image || file) && (
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={handleDeleteImage}
+                    className="flex items-center gap-2"
+                  >
+                    <Trash2 className="h-4 w-4" /> {t("common.delete")}
                   </Button>
                 )}
               </div>
@@ -129,7 +163,10 @@ export default function PersonalSettings() {
             </div>
 
             {/* Form Fields */}
-            <form onSubmit={form.handleSubmit(onSubmit)} className="w-full md:w-1/2 px-6 pb-8 space-y-6">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="w-full md:w-1/2 px-6 pb-8 space-y-6"
+            >
               {/* Full Name */}
               <FormField
                 control={form.control}
@@ -138,7 +175,7 @@ export default function PersonalSettings() {
                   <FormItem className="space-y-2">
                     <FormLabel className="text-muted-foreground text-sm flex items-center gap-2">
                       <User className="h-4 w-4" />
-                      الاسم الكامل
+                      {t("settings.personal.name")}
                     </FormLabel>
                     <FormControl>
                       <Input {...field} />
@@ -156,7 +193,7 @@ export default function PersonalSettings() {
                   <FormItem className="space-y-2">
                     <FormLabel className="text-muted-foreground text-sm flex items-center gap-2">
                       <Mail className="h-4 w-4" />
-                      البريد الإلكتروني
+                      {t("settings.personal.email")}
                     </FormLabel>
                     <FormControl>
                       <Input {...field} />
@@ -174,7 +211,7 @@ export default function PersonalSettings() {
                   <FormItem className="space-y-2">
                     <FormLabel className="text-muted-foreground text-sm flex items-center gap-2">
                       <Phone className="h-4 w-4" />
-                      رقم الهاتف
+                      {t("settings.personal.phone")}
                     </FormLabel>
                     <FormControl>
                       <Input {...field} />
@@ -188,14 +225,18 @@ export default function PersonalSettings() {
               <div className="space-y-2">
                 <Label className="text-muted-foreground text-sm flex items-center gap-2">
                   <Briefcase className="h-4 w-4" />
-                  الدور
+                  {t("settings.personal.role")}
                 </Label>
-                <Input value={user?.role} disabled />
+                <Input value={t(`settings.personal.roles.${user?.role}`)} disabled />
               </div>
 
               <div className="pt-4">
-                <Button type="submit" className="w-full" disabled={!form.formState.isDirty}>
-                  حفظ التغييرات
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={!form.formState.isDirty || loading}
+                >
+                  {loading ? t("common.saving") : t("common.save")}
                 </Button>
               </div>
             </form>

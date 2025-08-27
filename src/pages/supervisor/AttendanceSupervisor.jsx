@@ -1,4 +1,4 @@
-import { ChevronRight } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -45,6 +45,8 @@ import ScanAttendance from "@/components/attendance/ScanAttendance";
 import ScanCheckOut from "@/components/attendance/ScanCheckOut";
 import useFetch from "@/hooks/useFetch";
 import { attendanceStats } from "@/utils/attendanceStats";
+import { t } from "i18next";
+import { getTextNumberChild } from "@/utils/getTextNumberChild";
 
 export default function AttendanceSupervisor() {
   const [loading, setLoading] = useState(true);
@@ -66,15 +68,17 @@ export default function AttendanceSupervisor() {
         `/attendances?date=${selectedDate}&classId=${classId}`
       );
       setAttendance(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error("Error fetching attendance data:", error);
+      toast.error(
+        t(`errorApi.${error?.response?.data?.message || "defaultError"}`)
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  // fetch attendce
+  // fetch attendance
   useEffect(() => {
     if (date && selectedClass) {
       fetchAttendanceData(date, selectedClass);
@@ -86,7 +90,6 @@ export default function AttendanceSupervisor() {
       if (Array.isArray(data.ids) && data.ids.length > 0) {
         const response = await api.post("/attendances/bulk", data);
         setAttendance((prev) => {
-          // Create a map of new attendance records by student ID
           const newAttendanceMap = new Map();
           response.data.info.forEach((item) => {
             newAttendanceMap.set(item.student._id, {
@@ -97,7 +100,6 @@ export default function AttendanceSupervisor() {
             });
           });
 
-          // Update only affected students, preserve others
           const updatedInfo = prev.info.map((studentInfo) => {
             const newAttendance = newAttendanceMap.get(studentInfo.student._id);
             return newAttendance
@@ -105,11 +107,7 @@ export default function AttendanceSupervisor() {
               : studentInfo;
           });
 
-          return {
-            ...prev,
-            recorded: true,
-            info: updatedInfo,
-          };
+          return { ...prev, recorded: true, info: updatedInfo };
         });
       } else {
         const response = await api.post("/attendances", {
@@ -120,7 +118,6 @@ export default function AttendanceSupervisor() {
           const index = prev.info.findIndex(
             (item) => item.enrollmentId === data.ids
           );
-
           const updatedInfo = [...prev.info];
           updatedInfo[index] = {
             ...updatedInfo[index],
@@ -131,26 +128,24 @@ export default function AttendanceSupervisor() {
               checkInTime: response.data.checkInTime,
             },
           };
-
-          return {
-            ...prev,
-            recorded: true,
-            info: updatedInfo,
-          };
+          return { ...prev, recorded: true, info: updatedInfo };
         });
       }
-      toast.success("تم تسجيل الحضور بنجاح");
+      toast.success(t("attendance.successCheckIn"));
     } catch (error) {
-      console.log(error);
-      toast.error("حدث خطأ أثناء تسجيل الحضور");
+      console.error("Error creating attendance:", error);
+      toast.error(t("attendance.errorCheckIn"), {
+        description: t(
+          `errorApi.${error?.response?.data?.message || "defaultError"}`
+        ),
+      });
     }
   };
 
   const handleAttendanceCheckOut = async (data) => {
     try {
       if (Array.isArray(data) && data.length > 0) {
-        const response = await api.patch("/attendances/check-out/bulk", data);
-        console.log(response.data);
+        await api.patch("/attendances/check-out/bulk", data);
       } else {
         const response = await api.patch("/attendances/check-out", {
           ...data,
@@ -160,52 +155,51 @@ export default function AttendanceSupervisor() {
           const index = prev.info.findIndex(
             (item) => item.attendanceId === response.data._id
           );
-
           const updatedInfo = [...prev.info];
           updatedInfo[index] = {
             ...updatedInfo[index],
             ...{ checkOutTime: response.data.checkOutTime },
           };
-
-          return {
-            ...prev,
-            info: updatedInfo,
-          };
+          return { ...prev, info: updatedInfo };
         });
       }
-      toast.success("تم تسجيل الخروج بنجاح");
+      toast.success(t("attendance.successCheckOut"));
     } catch (error) {
-      console.log(error);
-      toast.error("حدث خطأ أثناء تسجيل الخروج");
+      console.error("Error checking out:", error);
+      toast.error(t("attendance.errorCheckOut"), {
+        description: t(
+          `errorApi.${error?.response?.data?.message || "defaultError"}`
+        ),
+      });
     }
   };
-  
+
   const totals = attendanceStats(attendance?.info || []);
 
   const statsData = [
     {
-      title: "عدد الأطفال",
-      value: `${attendance?.info?.length || 0} طفل`,
+      title: t("attendance.stats.childrenCount"),
+      value: getTextNumberChild(attendance?.info?.length || 0),
       icon: People,
       bgColor: "bg-[#A2F4FD]",
       iconColor: "#00A6F4",
     },
     {
-      title: "الحضور",
-      value: `${totals?.presentCount || 0} حاضر`,
+      title: t("attendance.stats.present"),
+      value: `${totals?.presentCount || 0} ${t("attendance.present")}`,
       icon: TickSquare,
       bgColor: "bg-[#B9F8CF]",
       iconColor: "#008236",
     },
     {
-      title: "الغياب",
-      value: `${totals?.absentCount || 0} غائب`,
+      title: t("attendance.stats.absent"),
+      value: `${totals?.absentCount || 0} ${t("attendance.absent")}`,
       icon: Danger,
       bgColor: "bg-[#FFE2E2]",
       iconColor: "#E7000B",
     },
     {
-      title: "نسبة الحضور",
+      title: t("attendance.stats.percentage"),
       value: `${totals?.presentPercentage || 0}%`,
       icon: Chart2,
       bgColor: "bg-[#EDE9FE]",
@@ -217,8 +211,8 @@ export default function AttendanceSupervisor() {
       <div className="flex flex-col mb-3">
         <Link to="/" className="font-cairo text-muted-foreground">
           <h3 className="text-xl border-border border-b pb-4 mb-4 flex items-center font-bold text-foreground font-cairo">
-            <ChevronRight />
-            سجل الحضور
+            <ChevronLeft className="rtl:rotate-180" />
+            {t("attendance.title")}
           </h3>
         </Link>
         <Breadcrumb>
@@ -226,14 +220,14 @@ export default function AttendanceSupervisor() {
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
                 <Link to="/" className="font-cairo text-muted-foreground">
-                  لوحة التحكم
+                  {t("attendance.breadcrumb.dashboard")}
                 </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator className="text-muted-foreground" />
             <BreadcrumbItem>
               <BreadcrumbPage className="font-cairo text-primary font-medium">
-                الحضور
+                {t("attendance.breadcrumb.attendance")}
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
@@ -241,7 +235,7 @@ export default function AttendanceSupervisor() {
       </div>
       <div className="mx-auto">
         <div className="flex flex-col md:flex-row gap-2 items-center">
-          <div className="flex items-center gap-1 w-full">
+          <div className="flex items-center gap-3 w-full">
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
                 <Button
@@ -249,7 +243,7 @@ export default function AttendanceSupervisor() {
                   id="date-picker"
                   className="w-32 justify-between font-normal"
                 >
-                  {date ? formatDate(date) : "Select date"}
+                  {date ? formatDate(date) : t("attendance.selectDate")}
                   <CalendarSearch color="currentColor" />
                 </Button>
               </PopoverTrigger>
@@ -272,7 +266,7 @@ export default function AttendanceSupervisor() {
             </Popover>
             <Select onValueChange={(value) => setSelectedClass(value)}>
               <SelectTrigger className="bg-background border-border text-right">
-                <SelectValue placeholder="اختيار الفصل" />
+                <SelectValue placeholder={t("attendance.selectClass")} />
               </SelectTrigger>
               <SelectContent>
                 {classes?.map((cls) => (
@@ -340,7 +334,7 @@ export default function AttendanceSupervisor() {
               />
             </div>
             <p className="text-center text-lg">
-              يرجى اختيار التاريخ والفصل لعرض بيانات الحضور والغياب
+              {t("attendance.emptyMessage")}
             </p>
           </div>
         )}

@@ -7,6 +7,8 @@ import LineChartAttendnce from "@/components/dashboard/LineChartAttendnce";
 import api from "@/api";
 import useFetch from "@/hooks/useFetch";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
+import {getTextNumberChild } from "@/utils/getTextNumberChild";
+import { t } from "i18next";
 
 export default function DashboardTeacher() {
   const fetchSummaryAdmin = async () => {
@@ -17,31 +19,31 @@ export default function DashboardTeacher() {
   // Card data as JSON array
   const stats = [
     {
-      title: "عدد الاطفال في القسم",
-      value: `${data?.studentCount} طفلًا`,
+      title: t("teacherDashboard.studentCount"),
+      value: getTextNumberChild(data?.studentCount || 0),
       icon: People,
       iconColor: "#00A6F4",
       bgColor: "bg-[#CEFAFE]",
       to: "/teacher-students",
     },
     {
-      title: "تقاريري هذا الشهر",
-      value: `${data?.reportCount} تقريرًا`,
+      title: t("teacherDashboard.reportsThisMonth"),
+      value: `${data?.reportCount || 0} ${t("teacherDashboard.reportUnit")}`,
       icon: Chart2,
       iconColor: "#FD9A00",
       bgColor: "bg-[#FEF3C6]",
       to: "/teacher-reports",
     },
     {
-      title: "المبالغ المستلمة هذا الشهر",
+      title: t("teacherDashboard.receivedMoney"),
       value: formatCurrencyDZD(data?.totalIncome || 0),
       icon: CardReceive,
       iconColor: "#10B981",
       bgColor: "bg-[#DCFCE7]",
     },
     {
-      title: "الأطفال الغائبون هذا الشهر",
-      value: `${data?.absentCount} أطفال`,
+      title: t("teacherDashboard.absentChildren"),
+      value: `${data?.absentCount || 0} ${t("teacherDashboard.childrenUnit")}`,
       icon: Danger,
       iconColor: "#FB2C36",
       bgColor: "bg-[#FFE2E2]",

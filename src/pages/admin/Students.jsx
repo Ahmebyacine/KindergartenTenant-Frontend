@@ -14,6 +14,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { fetchTabs } from "@/api/categoriesApi";
 import { fetchClasses } from "@/api/classesApi";
 import { fetchStudents } from "@/api/studentsApi";
+import { t } from "i18next";
 
 export default function Students() {
   const [activeTab, setActiveTab] = useState(null);
@@ -44,58 +45,73 @@ export default function Students() {
   }, [tabs]);
 
   const handleAddStudent = async (data) => {
-    try {
-      const response = await api.post("/students", data);
-      setStudents((prev) => [response.data, ...prev]);
-      toast.success("تمت إضافة الطفل بنجاح!");
-    } catch (error) {
-      console.error("Error adding student:", error);
-      toast.error("فشل في إضافة الطفل");
-    }
-  };
+  try {
+    const response = await api.post("/students", data);
+    setStudents((prev) => [response.data, ...prev]);
+    toast.success(t("students.addSuccess"));
+  } catch (error) {
+    console.error("Error adding student:", error);
+    toast.error(t("students.addError"), {
+      description: t(
+        `errorApi.${error?.response?.data?.message || "defaultError"}`
+      ),
+    });
+  }
+};
 
-  const handleRegistrationsStudent = async (data) => {
-    try {
-      const response = await api.post("/enrollments", data);
-      setStudents((prev) => [...prev, response.data]);
-      toast.success("تمت تسجيل الطفل بنجاح!");
-    } catch (error) {
-      console.error("Error adding student:", error);
-      toast.error("فشل في تسجيل الطفل");
-    }
-  };
+const handleRegistrationsStudent = async (data) => {
+  try {
+    const response = await api.post("/enrollments", data);
+    setStudents((prev) => [...prev, response.data]);
+    toast.success(t("students.registerSuccess"));
+  } catch (error) {
+    console.error("Error registering student:", error);
+    toast.error(t("students.registerError"), {
+      description: t(
+        `errorApi.${error?.response?.data?.message || "defaultError"}`
+      ),
+    });
+  }
+};
 
-  const handleUpdateStudent = async (formData, studentId) => {
-    try {
-      const response = await api.put(`/students/${studentId}`, formData);
+const handleUpdateStudent = async (formData, studentId) => {
+  try {
+    const response = await api.put(`/students/${studentId}`, formData);
+    const updatedData = response.data;
 
-      const updatedData = response.data;
+    setStudents((prev) =>
+      prev.map((student) =>
+        student._id === updatedData._id ? updatedData : student
+      )
+    );
 
-      setStudents((prev) =>
-        prev.map((student) =>
-          student._id === updatedData._id ? updatedData : student
-        )
-      );
+    toast.success(t("students.updateSuccess"));
+  } catch (error) {
+    console.error("Error updating student:", error);
+    toast.error(t("students.updateError"), {
+      description: t(
+        `errorApi.${error?.response?.data?.message || "defaultError"}`
+      ),
+    });
+  }
+};
 
-      toast.success("تم تحديث بيانات الطفل بنجاح!");
-    } catch (error) {
-      console.error("Error updating student:", error);
-      toast.error("فشل في تحديث بيانات الطفل");
-    }
-  };
-
-  const handleDeleteEnrollment = async (enrollmentId) => {
-    try {
-      await api.delete(`/enrollments/${enrollmentId}`);
-      setStudents((prev) =>
-        prev.filter((student) => student._id !== enrollmentId)
-      );
-      toast.success("تم حذف تسجيل الطفل بنجاح!");
-    } catch (error) {
-      console.error("Error deleting enrollment:", error);
-      toast.error("فشل في حذف تسجيل الطفل");
-    }
-  };
+const handleDeleteEnrollment = async (enrollmentId) => {
+  try {
+    await api.delete(`/enrollments/${enrollmentId}`);
+    setStudents((prev) =>
+      prev.filter((student) => student._id !== enrollmentId)
+    );
+    toast.success(t("students.deleteEnrollmentSuccess"));
+  } catch (error) {
+    console.error("Error deleting enrollment:", error);
+    toast.error(t("students.deleteEnrollmentError"), {
+      description: t(
+        `errorApi.${error?.response?.data?.message || "defaultError"}`
+      ),
+    });
+  }
+};
 
   const handleFilterStudents = (filters) => {
     setFilters(filters);
@@ -168,7 +184,7 @@ export default function Students() {
                     color="currentColor"
                   />
                   <Input
-                    placeholder="البحث"
+                    placeholder={t("common.search")}
                     className="pr-10 pl-4 py-2 bg-background"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}

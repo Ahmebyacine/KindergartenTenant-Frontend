@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/collapsible";
 import {
   Briefcase,
-  Buliding,
+  Building,
   CardReceive,
   CardSend,
   Category,
@@ -23,48 +23,53 @@ import {
   Setting2,
 } from "iconsax-react";
 import { ChevronRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function SidebarMenuAdmin() {
   const location = useLocation();
+  const { t } = useTranslation();
+
   const items = [
     {
-      title: "لوحة التحكم",
+      title: t("sidebar.dashboard"),
       url: "/",
       icon: Category,
     },
     {
-      title: "الفصول",
+      title: t("sidebar.classes"),
       url: "/classes",
-      icon: Buliding,
+      icon: Building,
     },
     {
-      title: "المعلمين",
+      title: t("sidebar.teachers"),
       url: "/teachers",
       icon: Briefcase,
     },
     {
-      title: "الأطفال",
+      title: t("sidebar.students"),
       url: "/students",
       icon: People,
     },
     {
-      title: "التقارير",
+      title: t("sidebar.reports"),
       url: "/reports",
       icon: Chart2,
     },
   ];
+
   const financialItems = [
     {
-      title: "المداخيل",
+      title: t("sidebar.incomes"),
       url: "/incomes",
       icon: CardReceive,
     },
     {
-      title: "المصاريف",
+      title: t("sidebar.expenses"),
       url: "/expenses",
       icon: CardSend,
     },
   ];
+
   return (
     <SidebarMenu>
       {items.map((item, i) => (
@@ -102,7 +107,7 @@ export default function SidebarMenuAdmin() {
                   size={20}
                 />
                 <span className="group-data-[collapsible=icon]:hidden">
-                  الاداء المالي
+                  {t("sidebar.financialPerformance")}
                 </span>
               </div>
             </NavLink>
@@ -124,8 +129,8 @@ export default function SidebarMenuAdmin() {
                   to={item.url}
                   className={`${
                     location.pathname === item.url &&
-                    "border-r-2 border-sidebar-accent"
-                  } border-border border-r-1`}
+                    "rtl:border-r-2 ltr:border-l-2 border-sidebar-accent"
+                  } border-border rtl:border-r-1 ltr:border-l-1`}
                 >
                   <SidebarMenuItem>
                     <SidebarMenuButton
@@ -149,7 +154,7 @@ export default function SidebarMenuAdmin() {
           </SidebarGroupContent>
         </CollapsibleContent>
       </Collapsible>
-      <SidebarMenuItem key="الاعدادات">
+      <SidebarMenuItem key="settings">
         <SidebarMenuButton asChild isActive={location.pathname === "/settings"}>
           <NavLink to={"/settings"}>
             <Setting2
@@ -159,7 +164,7 @@ export default function SidebarMenuAdmin() {
               className="data-[state=open]:mx-2"
             />
             <span className="font-semibold group-data-[collapsible=icon]:hidden">
-              الاعدادات
+              {t("sidebar.settings")}
             </span>
           </NavLink>
         </SidebarMenuButton>

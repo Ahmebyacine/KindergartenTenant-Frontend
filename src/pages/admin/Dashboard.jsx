@@ -7,16 +7,21 @@ import StatCard from "@/components/StatCard";
 import LineChartAttendnce from "@/components/dashboard/LineChartAttendnce";
 import api from "@/api";
 import useFetch from "@/hooks/useFetch";
+import { getTextNumberChild } from "@/utils/getTextNumberChild";
+import { t } from "i18next";
 
 export default function Dashboard() {
+
   const fetchSummaryAdmin = async () => {
     const res = await api.get(`/statistics/summary/admin`);
     return res.data;
   };
+
   const { data, loading, error } = useFetch(fetchSummaryAdmin);
+
   const stats = [
     {
-      title: "الدخل الشهري",
+      title: t("dashboard.monthlyIncome"),
       value: formatCurrencyDZD(data?.totalIncome || 0),
       icon: Coin,
       iconColor: "#00C951",
@@ -24,7 +29,7 @@ export default function Dashboard() {
       to: "/incomes",
     },
     {
-      title: "المدفوعات الشهرية",
+      title: t("dashboard.monthlyExpenses"),
       value: formatCurrencyDZD(data?.totalExpenses || 0),
       icon: Money2,
       iconColor: "#FB2C36",
@@ -32,21 +37,22 @@ export default function Dashboard() {
       to: "/expenses",
     },
     {
-      title: "تقارير قيد المراجعة",
-      value: "0 تقارير",
+      title: t("dashboard.pendingReports"),
+      value: "0 " + t("dashboard.reports"),
       icon: Chart2,
       iconColor: "#FD9A00",
       bgColor: "bg-[#FEE685]",
     },
     {
-      title: "عدد الأطفال",
-      value: `${data?.studentCount} طفل`,
+      title: t("dashboard.childrenCount"),
+      value: getTextNumberChild(data?.studentCount || 0),
       icon: People,
       iconColor: "#00A6F4",
       bgColor: "bg-[#A2F4FD]",
       to: "/students",
     },
   ];
+
   return (
     <div className="bg-background p-6">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -55,7 +61,9 @@ export default function Dashboard() {
           {loading || error
             ? Array(4)
                 .fill(null)
-                .map((_, idx) => <StatCard key={idx} loading={loading} error={error} />)
+                .map((_, idx) => (
+                  <StatCard key={idx} loading={loading} error={error} />
+                ))
             : stats.map((stat, idx) =>
                 stat.to ? (
                   <Link to={stat.to} className="no-underline" key={idx}>

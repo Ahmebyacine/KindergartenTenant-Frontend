@@ -10,7 +10,7 @@ export default function ErrorPage({ error }) {
           <div className="text-8xl font-bold text-foreground">{error?.status || 404}</div>
 
           {/* Title */}
-          <h1 className="text-2xl font-semibold text-foreground">حدث خطأ أثناء تحميل البيانات</h1>
+          <h1 className="text-2xl font-semibold text-foreground">{t("errorPage.title")}</h1>
 
           {/* Message */}
           <p className="text-muted-foreground text-sm leading-relaxed">

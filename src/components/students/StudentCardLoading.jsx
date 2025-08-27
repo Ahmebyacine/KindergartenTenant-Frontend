@@ -36,7 +36,7 @@ export default function StudentCardLoading() {
 
           {/* QR Code Loading */}
           <div className="w-[50%] sm:w-[45%] flex justify-center my-auto px-2">
-            <div className="relative bg-white rounded-xl shadow-lg border-2 border-border">
+            <div className="relative bg-card rounded-xl shadow-lg border-2 border-border">
               <Skeleton className="w-[120px] h-[120px] rounded-lg" />
             </div>
           </div>

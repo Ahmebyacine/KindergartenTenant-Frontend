@@ -1,4 +1,4 @@
-import { ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -44,6 +44,8 @@ import {
 import StatCard from "@/components/StatCard";
 import useFetch from "@/hooks/useFetch";
 import { attendanceStats } from "@/utils/attendanceStats";
+import {getTextNumberChild } from "@/utils/getTextNumberChild";
+import { t } from "i18next";
 
 export default function Attendance() {
   const [loading, setLoading] = useState(true);
@@ -81,32 +83,31 @@ export default function Attendance() {
   }, [date, selectedClass]);
 
   const totals = attendanceStats(attendance?.info || []);
-
   const statsData = [
     {
-      title: "عدد الأطفال",
-      value: `${attendance?.info?.length || 0} طفل`,
+      title: t("attendance.stats.childrenCount"),
+      value: getTextNumberChild(attendance?.info?.length || 0),
       icon: People,
       bgColor: "bg-[#A2F4FD]",
       iconColor: "#00A6F4",
     },
     {
-      title: "الحضور",
-      value: `${totals?.presentCount || 0} حاضر`,
+      title: t("attendance.stats.present"),
+      value: `${totals?.presentCount || 0} ${t("attendance.present")}`,
       icon: TickSquare,
       bgColor: "bg-[#B9F8CF]",
       iconColor: "#008236",
     },
     {
-      title: "الغياب",
-      value: `${totals?.absentCount || 0} غائب`,
+      title: t("attendance.stats.absent"),
+      value: `${totals?.absentCount || 0} ${t("attendance.absent")}`,
       icon: Danger,
       bgColor: "bg-[#FFE2E2]",
       iconColor: "#E7000B",
     },
     {
-      title: "نسبة الحضور",
-      value: `${totals?.presentPercentage || 0}%`,
+        title: t("attendance.stats.percentage"),
+        value: `${totals?.presentPercentage || 0}%`,
       icon: Chart2,
       bgColor: "bg-[#EDE9FE]",
       iconColor: "#7008E7",
@@ -118,8 +119,8 @@ export default function Attendance() {
       <div className="flex flex-col mb-3">
         <Link to="/" className="font-cairo text-muted-foreground">
           <h3 className="text-xl border-border border-b pb-4 mb-4 flex items-center font-bold text-foreground font-cairo">
-            <ChevronRight />
-            سجل الحضور
+            <ChevronLeft className="rtl:rotate-180" />
+            {t("attendance.title")}
           </h3>
         </Link>
         <Breadcrumb>
@@ -127,14 +128,14 @@ export default function Attendance() {
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
                 <Link to="/" className="font-cairo text-muted-foreground">
-                  لوحة التحكم
+                  {t("attendance.breadcrumb.dashboard")}
                 </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator className="text-muted-foreground" />
             <BreadcrumbItem>
               <BreadcrumbPage className="font-cairo text-primary font-medium">
-                الحضور
+                {t("attendance.breadcrumb.attendance")}
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
@@ -151,7 +152,7 @@ export default function Attendance() {
                     id="date-picker"
                     className="w-32 justify-between font-normal"
                   >
-                    {date ? formatDate(date) : "Select date"}
+                    {date ? formatDate(date) : t("attendance.selectDate")}
                     <CalendarSearch color="currentColor" />
                   </Button>
                 </PopoverTrigger>
@@ -174,7 +175,7 @@ export default function Attendance() {
             </div>
             <Select onValueChange={(value) => setSelectedClass(value)}>
               <SelectTrigger className="bg-background border-border text-right">
-                <SelectValue placeholder="اختيار الفصل" />
+                <SelectValue placeholder={t("attendance.selectClass")} />
               </SelectTrigger>
               <SelectContent>
                 {classes?.map((cls) => (
@@ -184,18 +185,6 @@ export default function Attendance() {
                 ))}
               </SelectContent>
             </Select>
-          </div>
-          <div className="relative w-full sm:w-64">
-            <SearchNormal1
-              size="16"
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
-              color="currentColor"
-            />
-            <Input
-              placeholder="البحث"
-              className="pr-10 pl-4 py-2 bg-background"
-              disabled={!date || !selectedClass || attendance.length === 0}
-            />
           </div>
         </div>
         {date && selectedClass ? (
@@ -244,7 +233,7 @@ export default function Attendance() {
               />
             </div>
             <p className="text-center text-lg">
-              يرجى اختيار التاريخ والفصل لعرض بيانات الحضور والغياب
+              {t("attendance.emptyMessage")}
             </p>
           </div>
         )}

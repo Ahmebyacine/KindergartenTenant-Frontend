@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { t } from "i18next";
 
 export default function SuccesStep({ onPrevious }) {
   const { setConfig } = useAuth();
@@ -11,10 +12,10 @@ export default function SuccesStep({ onPrevious }) {
     <div className="text-center">
       <div className="mb-6">
         <h2 className="text-xl font-semibold ">
-          تهانينا! تم إعداد روضتك بنجاح
+          {t("onboarding.success.title")}
         </h2>
         <h2 className="text-xl font-semibold ">
-          يمكنك الآن بدء استخدام المنصة
+          {t("onboarding.success.description")}
         </h2>
       </div>
 
@@ -28,7 +29,7 @@ export default function SuccesStep({ onPrevious }) {
       <div className="flex justify-between items-center mt-16">
         <Button onClick={onPrevious} variant="ghost">
           <ChevronLeft className="w-4 h-4 rtl:rotate-180" />
-          <span className="text-base">السابق</span>
+          <span className="text-base">{t("common.previous")}</span>
         </Button>
 
         <Link to="/">
@@ -41,7 +42,7 @@ export default function SuccesStep({ onPrevious }) {
               }))
             }
           >
-            ابدأ الآن
+            {t("common.succes.startUsing")}
           </Button>
         </Link>
       </div>

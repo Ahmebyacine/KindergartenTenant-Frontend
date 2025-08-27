@@ -19,26 +19,26 @@ export default function LineChartAttendnce() {
     const res = await api.get(`/attendances/summary`);
     return res.data.map((item) => ({
       ...item,
-      monthLabel: getMonthNameByNumber(item.month),
+      monthLabel: t(getMonthNameByNumber(item.month)),
     }));
   };
   const { data, loading, error } = useFetch(fetchAttendaceSummary);
 
   const chartConfig = {
     attendance: {
-      label: "Attendance",
-      color: "hsl(var(--primary))",
+      label: t("dashboard.attendance"),
+      color: "var(--primary)",
     },
     absence: {
-      label: "Absence",
-      color: "hsl(var(--chart-6))",
+      label: t("dashboard.absence"),
+      color: "var(--chart-6)",
     },
   };
   return (
     <Card dir="ltr">
       <CardHeader>
-        <CardTitle className="text-right text-foreground">
-          مقارنة بين الحضور والغياب شهريا
+        <CardTitle className="rtl:text-right text-foreground">
+          {t("dashboard.attendanceAndAbsence")}
         </CardTitle>
       </CardHeader>
       {error ? (
@@ -52,7 +52,7 @@ export default function LineChartAttendnce() {
             </div>
             <div className="space-y-2">
               <h3 className="text-lg font-medium text-destructive">
-                حدث خطأ أثناء تحميل البيانات
+                {t("errorApi.defaultError")}
               </h3>
               <p className="text-sm text-destructive max-w-sm">
                 {t(`errorApi.${error?.message}`)}
@@ -77,11 +77,10 @@ export default function LineChartAttendnce() {
             </div>
             <div className="space-y-2">
               <h3 className="text-lg font-medium text-foreground">
-                لا توجد بيانات متاحة
+                {t("dashboard.noDataTitle")}
               </h3>
               <p className="text-sm text-muted-foreground max-w-sm">
-                لم يتم العثور على بيانات الحضور والغياب للفترة المحددة. يرجى
-                المحاولة مرة أخرى لاحقاً.
+                {t("dashboard.noDataAttendanceDesc")}
               </p>
             </div>
           </div>
@@ -109,7 +108,7 @@ export default function LineChartAttendnce() {
                     tickLine={false}
                     tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
                   />
-                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <ChartTooltip content={<ChartTooltipContent className="rtl:text-right" />} />
                   <Line
                     type="monotone"
                     dataKey="attendance"
@@ -132,11 +131,11 @@ export default function LineChartAttendnce() {
             <div className="flex justify-center gap-4 mt-4">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-[var(--chart-6)] rounded-full"/>
-                <span className="text-sm text-muted-foreground">الغياب</span>
+                <span className="text-sm text-muted-foreground">{t("dashboard.absence")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-primary rounded-full"/>
-                <span className="text-sm text-muted-foreground">الحضور</span>
+                <span className="text-sm text-muted-foreground">{t("dashboard.attendance")}</span>
               </div>
             </div>
           </CardFooter>

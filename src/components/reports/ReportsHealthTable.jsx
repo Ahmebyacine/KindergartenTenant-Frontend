@@ -30,6 +30,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import ErrorPage from "@/pages/common/ErrorPage";
+import { t } from "i18next";
 
 export default function ReportsHealthTable({ classes, students }) {
   const [search, setSearch] = useState("");
@@ -90,9 +91,12 @@ export default function ReportsHealthTable({ classes, students }) {
     try {
       const response = await api.post("/health-reports", data);
       setReports((prev) => [response.data, ...prev]);
-      toast.success("تمت إضافة التقرير بنجاح!");
+      toast.success(t("reports.health.addSuccess"));
     } catch (error) {
       console.error("Error creating class", error);
+      toast.error(t("reports.health.addError"),{
+        description: t(`errorApi.${error.response?.data?.error || "defaultError"}`)
+      });
     }
   };
 
@@ -109,7 +113,7 @@ export default function ReportsHealthTable({ classes, students }) {
               color="currentColor"
             />
             <Input
-              placeholder="البحث"
+              placeholder={t("common.search")}
               className="pr-10 pl-4 py-2 bg-background"
               onChange={handleSearch}
               value={search}
@@ -127,29 +131,29 @@ export default function ReportsHealthTable({ classes, students }) {
       <Table>
         <TableHeader>
           <TableRow className="bg-muted/50 border-b border-border hover:bg-muted/50">
-            <TableHead className="text-right text-foreground font-medium">
+            <TableHead className="text-muted-foreground font-medium !text-center">
               #
             </TableHead>
-            <TableHead className="text-right text-foreground font-medium">
-              اسم الطفل
+            <TableHead className="text-muted-foreground font-medium">
+              {t("reports.health.childName")}
             </TableHead>
-            <TableHead className="text-right text-foreground font-medium">
-              اسم المعلمة
+            <TableHead className="text-muted-foreground font-medium">
+              {t("reports.health.teacherName")}
             </TableHead>
-            <TableHead className="text-right text-foreground font-medium">
-              الفصل
+            <TableHead className="text-muted-foreground font-medium">
+              {t("reports.health.class")}
             </TableHead>
-            <TableHead className="text-right text-foreground font-medium">
-              التاريخ
+            <TableHead className="text-muted-foreground font-medium">
+              {t("reports.health.date")}
             </TableHead>
-            <TableHead className="text-right text-foreground font-medium">
-              تقييم الحالة
+            <TableHead className="text-muted-foreground font-medium">
+              {t("reports.health.conditionType")}
             </TableHead>
-            <TableHead className="text-right text-foreground font-medium">
-              الحالة
+            <TableHead className="text-muted-foreground font-medium">
+              {t("reports.health.conditionStatus")}
             </TableHead>
-            <TableHead className="text-right text-foreground font-medium">
-              الإجراءات
+            <TableHead className="text-muted-foreground font-medium">
+              {t("common.actions")}
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -190,7 +194,9 @@ export default function ReportsHealthTable({ classes, students }) {
                     variant="link"
                     className="text-primary hover:text-primary/80 p-0 h-auto underline"
                   >
-                    <Link to={`/reports/health/${row._id}`}>عرض التفاصيل</Link>
+                    <Link to={`/reports/health/${row._id}`}>
+                    {t("common.details")}
+                    </Link>
                   </Button>
                 </TableCell>
               </TableRow>
@@ -205,9 +211,9 @@ export default function ReportsHealthTable({ classes, students }) {
               >
                 <div className="flex flex-col items-center justify-center gap-2">
                   <Document size={40} color="CurrentColor" />
-                  <p className="text-lg font-medium">لا توجد تقارير متاحة</p>
+                  <p className="text-lg font-medium">{t("reports.noReports")}</p>
                   <p className="text-sm">
-                    لم يتم إنشاء أي تقارير بعد، قم بإضافة تقرير جديد
+                    {t("reports.noReportsDescription")}
                   </p>
                 </div>
               </TableCell>

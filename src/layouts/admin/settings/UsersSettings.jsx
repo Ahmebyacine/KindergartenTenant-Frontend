@@ -9,6 +9,7 @@ import UserCard from "./UserCars";
 import { generateRandomPassword } from "@/utils/generateRandomPassword";
 import { fetchUsers } from "@/api/usersApi";
 import { useAuth } from "@/contexts/AuthContext";
+import { t } from "i18next";
 
 export default function UsersSettings() {
   const [editingId, setEditingId] = useState(null);
@@ -24,17 +25,23 @@ export default function UsersSettings() {
   const handleAddUser = async (userData) => {
     try {
       const response = await api.post("/users", userData);
-      toast.success("تم إضافة المستخدم بنجاح");
+      toast.success(t("settings.users.addSuccess"));
       setUsers((prevData) => [...prevData, response.data]);
     } catch (error) {
       console.error("Error adding user:", error);
-      toast.error("فشل في إضافة المستخدم. يرجى المحاولة مرة أخرى.");
+      toast.error(
+        t("settings.users.addError", {
+          description: t(
+            `errorApi.${error.response?.data?.error || "defaultError"}`
+          ),
+        })
+      );
     }
   };
   const handleUpdateUser = async (userData, id) => {
     try {
       const response = await api.put(`/users/${id}`, userData);
-      toast.success("تم تحديث المستخدم بنجاح");
+      toast.success(t("settings.users.updateSuccess"));
       setUsers((prevData) =>
         prevData.map((user) =>
           user._id === response.data._id ? response.data : user
@@ -42,17 +49,29 @@ export default function UsersSettings() {
       );
     } catch (error) {
       console.error("Error adding user:", error);
-      toast.error("فشل في تحديث المستخدم. يرجى المحاولة مرة أخرى.");
+      toast.error(
+        t("settings.users.updateError", {
+          description: t(
+            `errorApi.${error.response?.data?.error || "defaultError"}`
+          ),
+        })
+      );
     }
   };
   const handleDeleteUser = async (userId) => {
     try {
       await api.delete(`/users/${userId}`);
       setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
-      toast.success("تم حذف المستخدم بنجاح");
+      toast.success(t("settings.users.deleteSuccess"));
     } catch (error) {
       console.error("Error deleting user:", error);
-      toast.error("فشل في حذف المستخدم. حاول مرة أخرى.");
+      toast.error(
+        t("settings.users.deleteError", {
+          description: t(
+            `errorApi.${error.response?.data?.error || "defaultError"}`
+          ),
+        })
+      );
     }
   };
   const handleChangePassword = async (userId) => {
@@ -61,10 +80,16 @@ export default function UsersSettings() {
         password: generateRandomPassword(12),
       });
 
-      toast.success("تم تغيير كلمة المرور بنجاح");
+      toast.success(t("settings.users.changePasswordSuccess"));
     } catch (error) {
       console.error("Error changing password:", error);
-      toast.error("فشل في تغيير كلمة المرور. حاول مرة أخرى.");
+      toast.error(
+        t("settings.users.changePasswordError", {
+          description: t(
+            `errorApi.${error.response?.data?.error || "defaultError"}`
+          ),
+        })
+      );
     }
   };
 
@@ -72,7 +97,7 @@ export default function UsersSettings() {
     <div>
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-foreground mb-6">
-          اعدادات الحسابات
+          {t("settings.users.title")}
         </h2>
         <div className="flex items-center w-full gap-1 mb-8">
           <div className="w-2/3 md:w-full flex gap-1 items-center">
@@ -83,7 +108,7 @@ export default function UsersSettings() {
                 color="currentColor"
               />
               <Input
-                placeholder="البحث"
+                placeholder={t("common.search")}
                 className="pr-10 pl-4 py-2 bg-background"
                 disabled={!users.length}
               />

@@ -6,6 +6,7 @@ import { ChevronRight } from "lucide-react";
 import api from "@/api";
 import i18n from "@/i18n";
 import { updateDocumentDirection } from "@/utils/updateDocumentDirection";
+import { t } from "i18next";
 
 export default function LanguageStep({ onNext }) {
   const [selectedLanguage, setSelectedLanguage] = useState("");
@@ -26,7 +27,7 @@ export default function LanguageStep({ onNext }) {
       updateDocumentDirection(selectedLanguage);
       onNext();
     } catch {
-      setError("حدث خطأ أثناء الحفظ.");
+      setError(t("onboarding.errorSave"));
     } finally {
       setLoading(false);
     }
@@ -35,7 +36,7 @@ export default function LanguageStep({ onNext }) {
   return (
     <div className="text-center">
       <div className="mb-6">
-        <h2 className="text-xl font-semibold">بأي لغة تفضل استخدام النظام؟</h2>
+        <h2 className="text-xl font-semibold">{t("onboarding.language.title")}</h2>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
@@ -73,7 +74,7 @@ export default function LanguageStep({ onNext }) {
           disabled={loading || !selectedLanguage}
           className={`flex items-center gap-2 rounded-xl px-8 py-3 text-base font-medium`}
         >
-          {loading ? "جاري الحفظ..." : "التالي"}
+          {loading ? t("common.saving") : t("common.next")}
           {!loading && <ChevronRight className="w-4 h-4 rtl:rotate-180" />}
         </Button>
       </div>

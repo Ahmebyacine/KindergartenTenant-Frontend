@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -20,31 +21,32 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useState } from "react";
 import api from "@/api";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { t } from "i18next";
 
-// Zod schema for password validation
-const passwordSchema = z
-  .object({
-    newPassword: z
-      .string()
-      .min(8, "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل")
-      .regex(/[A-Z]/, "يجب أن تحتوي على حرف كبير واحد على الأقل")
-      .regex(/[a-z]/, "يجب أن تحتوي على حرف صغير واحد على الأقل")
-      .regex(/\d/, "يجب أن تحتوي على رقم واحد على الأقل")
-      .regex(
-        /[!@#$%^&*(),.?":{}|<>]/,
-        "يجب أن تحتوي على رمز خاص واحد على الأقل"
-      ),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "كلمات المرور الجديدة غير متطابقة",
-    path: ["confirmPassword"],
-  });
+// Zod schema for password validation with translation
+const passwordSchema = (t) =>
+  z
+    .object({
+      newPassword: z
+        .string()
+        .min(8, t("changePassword.validation.min"))
+        .regex(/[A-Z]/, t("changePassword.validation.upper"))
+        .regex(/[a-z]/, t("changePassword.validation.lower"))
+        .regex(/\d/, t("changePassword.validation.number"))
+        .regex(
+          /[!@#$%^&*(),.?":{}|<>]/,
+          t("changePassword.validation.special")
+        ),
+      confirmPassword: z.string(),
+    })
+    .refine((data) => data.newPassword === data.confirmPassword, {
+      message: t("changePassword.validation.mismatch"),
+      path: ["confirmPassword"],
+    });
 
 export default function ChangePasswordFirstTime() {
   const [success, setSuccess] = useState(false);
@@ -53,7 +55,7 @@ export default function ChangePasswordFirstTime() {
   const { setUser } = useAuth();
 
   const form = useForm({
-    resolver: zodResolver(passwordSchema),
+    resolver: zodResolver(passwordSchema(t)),
     defaultValues: {
       newPassword: "",
       confirmPassword: "",
@@ -64,12 +66,24 @@ export default function ChangePasswordFirstTime() {
   const confirmPasswordValue = form.watch("confirmPassword");
 
   const passwordRequirements = [
-    { text: "8 أحرف على الأقل", met: newPasswordValue.length >= 8 },
-    { text: "يحتوي على حرف كبير", met: /[A-Z]/.test(newPasswordValue) },
-    { text: "يحتوي على حرف صغير", met: /[a-z]/.test(newPasswordValue) },
-    { text: "يحتوي على رقم", met: /\d/.test(newPasswordValue) },
     {
-      text: "يحتوي على رمز خاص",
+      text: t("changePassword.requirements.min"),
+      met: newPasswordValue.length >= 8,
+    },
+    {
+      text: t("changePassword.requirements.upper"),
+      met: /[A-Z]/.test(newPasswordValue),
+    },
+    {
+      text: t("changePassword.requirements.lower"),
+      met: /[a-z]/.test(newPasswordValue),
+    },
+    {
+      text: t("changePassword.requirements.number"),
+      met: /\d/.test(newPasswordValue),
+    },
+    {
+      text: t("changePassword.requirements.special"),
       met: /[!@#$%^&*(),.?":{}|<>]/.test(newPasswordValue),
     },
   ];
@@ -81,17 +95,22 @@ export default function ChangePasswordFirstTime() {
   const onSubmit = async (data) => {
     setIsLoading(true);
 
-    // Simulate API call
     try {
       await api.post("/auth/change-default-password", data);
       setSuccess(true);
       setUser((prev) => ({ ...prev, changedDefaultPassword: true }));
-      toast.success("تم تحديث كلمة المرور بنجاح!");
-    } catch {
+      toast.success(t("changePassword.success"));
+    } catch (error) {
       form.setError("root", {
-        message: "فشل في تحديث كلمة المرور. يرجى المحاولة مرة أخرى.",
+        message: t(
+          `errorApi.${error?.response?.data?.message || "defaultError"}`
+        ),
       });
-      toast.error("فشل في تحديث كلمة المرور. يرجى المحاولة مرة أخرى.");
+      toast.error(t("changePassword.error"), {
+        description: t(
+          `errorApi.${error?.response?.data?.message || "defaultError"}`
+        ),
+      });
     } finally {
       setIsLoading(false);
     }
@@ -108,15 +127,15 @@ export default function ChangePasswordFirstTime() {
               </div>
               <div>
                 <h2 className="text-xl font-semibold">
-                  تم تحديث كلمة المرور بنجاح!
+                  {t("changePassword.successTitle")}
                 </h2>
                 <p className="text-muted-foreground mt-2">
-                  يمكنك الآن الوصول إلى حسابك بكلمة المرور الجديدة.
+                  {t("changePassword.successDescription")}
                 </p>
               </div>
               <Button>
                 <Link to="/" className="w-full">
-                  المتابعة إلى لوحة التحكم
+                  {t("changePassword.goToDashboard")}
                 </Link>
               </Button>
             </div>
@@ -133,10 +152,10 @@ export default function ChangePasswordFirstTime() {
           <div className="mx-auto w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
             <Lock className="w-6 h-6 text-primary" />
           </div>
-          <CardTitle className="text-2xl">تغيير كلمة المرور</CardTitle>
-          <CardDescription>
-            أهلاً بك! يرجى تعيين كلمة مرور جديدة لإكمال إعداد حسابك.
-          </CardDescription>
+          <CardTitle className="text-2xl">
+            {t("changePassword.title")}
+          </CardTitle>
+          <CardDescription>{t("changePassword.description")}</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -156,23 +175,21 @@ export default function ChangePasswordFirstTime() {
                 name="newPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>كلمة المرور الجديدة</FormLabel>
+                    <FormLabel>{t("changePassword.newPassword")}</FormLabel>
                     <FormControl>
-                      <div className="relative">
-                        <Input
-                          {...field}
-                          type="password"
-                          placeholder="أدخل كلمة المرور الجديدة"
-                          className="text-left"
-                        />
-                      </div>
+                      <Input
+                        {...field}
+                        type="password"
+                        placeholder={t("changePassword.newPasswordPlaceholder")}
+                        className="text-left"
+                      />
                     </FormControl>
                     <FormMessage />
 
                     {field.value && (
                       <div className="space-y-2 mt-3">
                         <p className="text-sm font-medium text-gray-700">
-                          متطلبات كلمة المرور:
+                          {t("changePassword.requirements.title")}
                         </p>
                         <ul className="space-y-1">
                           {passwordRequirements.map((req, index) => (
@@ -213,16 +230,16 @@ export default function ChangePasswordFirstTime() {
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>تأكيد كلمة المرور الجديدة</FormLabel>
+                    <FormLabel>{t("changePassword.confirmPassword")}</FormLabel>
                     <FormControl>
-                      <div className="relative">
-                        <Input
-                          {...field}
-                          type="password"
-                          placeholder="أكد كلمة المرور الجديدة"
-                          className="text-left"
-                        />
-                      </div>
+                      <Input
+                        {...field}
+                        type="password"
+                        placeholder={t(
+                          "changePassword.confirmPasswordPlaceholder"
+                        )}
+                        className="text-left"
+                      />
                     </FormControl>
                     <FormMessage />
 
@@ -245,8 +262,8 @@ export default function ChangePasswordFirstTime() {
                           }
                         >
                           {doPasswordsMatch
-                            ? "كلمات المرور متطابقة"
-                            : "كلمات المرور غير متطابقة"}
+                            ? t("changePassword.match")
+                            : t("changePassword.mismatch")}
                         </span>
                       </div>
                     )}
@@ -259,7 +276,9 @@ export default function ChangePasswordFirstTime() {
                 className="w-full"
                 disabled={!isPasswordValid || !doPasswordsMatch || isLoading}
               >
-                {isLoading ? "جاري تحديث كلمة المرور..." : "تحديث كلمة المرور"}
+                {isLoading
+                  ? t("changePassword.loading")
+                  : t("changePassword.submit")}
               </Button>
             </form>
           </Form>

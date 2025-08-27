@@ -32,16 +32,17 @@ import { Add } from "iconsax-react";
 import ImageUpload from "@/components/ImageUpload";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { t } from "i18next";
 
 // Updated student schema to match backend model
-const studentSchema = z.object({
-  firstName: z.string().min(1, "مطلوب"),
-  lastName: z.string().min(1, "مطلوب"),
-  birthDate: z.string().min(1, "مطلوب"),
-  parentEmail: z.string().email("بريد غير صالح").min(1, "مطلوب"),
-  class: z.string().min(1, "مطلوب"),
-  parentName: z.string().min(1, "مطلوب"),
-  parentContact: z.string().min(1, "مطلوب"),
+const studentSchema = (t) => z.object({
+  firstName: z.string().min(1, t("common.required")),
+  lastName: z.string().min(1, t("common.required")),
+  birthDate: z.string().min(1, t("common.required")),
+  parentEmail: z.string().email(t("common.invalidEmail")).min(1, t("common.required")),
+  class: z.string().min(1, t("common.required")),
+  parentName: z.string().min(1, t("common.required")),
+  parentContact: z.string().min(1, t("common.required")),
   bloodGroup: z.string().optional(),
   image: z.any().optional(),
 });
@@ -55,7 +56,7 @@ export default function StudentsModal({
 }) {
   const [open, setOpen] = useState(false);
   const form = useForm({
-    resolver: zodResolver(studentSchema),
+    resolver: zodResolver(studentSchema(t)),
     defaultValues: {
       firstName: editingStudent?.student?.firstName || "",
       lastName: editingStudent?.student?.lastName || "",
@@ -124,14 +125,14 @@ export default function StudentsModal({
             variant="ghost"
             className="text-primary underline p-1 h-auto font-medium m-0"
           >
-            تعديل
+            {t("common.edit")}
           </Button>
         ) : (
           <Button
             onClick={(e) => {
               if (isLimited) {
                 e.preventDefault();
-                toast.error(`تم الوصول إلى الحد الأقصى للتلاميذ `);
+                toast.error(t("students.limitReached"));
               }
             }}
             className={`${
@@ -141,7 +142,7 @@ export default function StudentsModal({
             } rounded-lg px-6 py-2 flex items-center gap-2 w-full sm:w-auto`}
           >
             <Add size="16" color="currentColor" />
-            اضافة طفل
+            {t("students.addChild")}
           </Button>
         )}
       </DialogTrigger>
@@ -150,7 +151,7 @@ export default function StudentsModal({
         <DialogHeader className="border-b-2 pb-4">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
             <DialogTitle className="text-lg sm:text-xl font-semibold text-foreground rtl:text-right ltr:text-left w-full">
-              {editingStudent ? "تعديل الطفل" : "إضافة طفل جديد"}
+              {editingStudent ? t("students.editChild") : t("students.addChild")}
             </DialogTitle>
           </div>
         </DialogHeader>
@@ -166,13 +167,13 @@ export default function StudentsModal({
                   value="basic"
                   className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
                 >
-                  معلومات أساسية
+                  {t("students.basicInfo")}
                 </TabsTrigger>
                 <TabsTrigger
                   value="additional"
                   className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
                 >
-                  معلومات إضافية
+                  {t("students.additionalInfo")}
                 </TabsTrigger>
               </TabsList>
 
@@ -185,10 +186,10 @@ export default function StudentsModal({
                     render={({ field }) => (
                       <FormItem className="space-y-2">
                         <FormLabel className="text-muted-foreground">
-                          الاسم الأول
+                          {t("students.firstName")}
                         </FormLabel>
                         <FormControl>
-                          <Input {...field} className="text-right" />
+                          <Input {...field} className="rtl:text-right" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -202,10 +203,10 @@ export default function StudentsModal({
                     render={({ field }) => (
                       <FormItem className="space-y-2">
                         <FormLabel className="text-muted-foreground">
-                          الاسم الأخير
+                          {t("students.lastName")}
                         </FormLabel>
                         <FormControl>
-                          <Input {...field} className="text-right" />
+                          <Input {...field} className="rtl:text-right" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -219,7 +220,7 @@ export default function StudentsModal({
                     render={({ field }) => (
                       <FormItem className="space-y-2">
                         <FormLabel className="text-muted-foreground">
-                          تاريخ الميلاد
+                          {t("students.birthDate")}
                         </FormLabel>
                         <FormControl>
                           <Input
@@ -240,15 +241,15 @@ export default function StudentsModal({
                     render={({ field }) => (
                       <FormItem className="space-y-2">
                         <FormLabel className="text-muted-foreground">
-                          الفصل
+                          {t("students.class")}
                         </FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           value={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className="text-right">
-                              <SelectValue placeholder="اختر الفصل" />
+                            <SelectTrigger className="rtl:text-right">
+                              <SelectValue placeholder={t("students.selectClass")} />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -271,15 +272,15 @@ export default function StudentsModal({
                     render={({ field }) => (
                       <FormItem className="space-y-2">
                         <FormLabel className="text-muted-foreground">
-                          فصيلة الدم
+                          {t("students.bloodGroup")}
                         </FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           value={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className="text-right">
-                              <SelectValue placeholder="اختر فصيلة الدم" />
+                            <SelectTrigger>
+                              <SelectValue placeholder={t("students.selectBloodGroup")} />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -302,7 +303,7 @@ export default function StudentsModal({
                 {/* Parent Information */}
                 <div className="space-y-4 pt-2">
                   <div className="text-base font-medium text-muted-foreground">
-                    ولي الأمر
+                    {t("students.parent")}
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -312,10 +313,10 @@ export default function StudentsModal({
                       render={({ field }) => (
                         <FormItem className="space-y-2">
                           <FormLabel className="text-muted-foreground">
-                            اسم ولي الأمر
+                            {t("students.parentName")}
                           </FormLabel>
                           <FormControl>
-                            <Input {...field} className="text-right" />
+                            <Input {...field} className="rtl:text-right" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -328,10 +329,10 @@ export default function StudentsModal({
                       render={({ field }) => (
                         <FormItem className="space-y-2">
                           <FormLabel className="text-muted-foreground">
-                            رقم التواصل
+                            {t("students.parentContact")}
                           </FormLabel>
                           <FormControl>
-                            <Input {...field} className="text-right" />
+                            <Input {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -345,7 +346,7 @@ export default function StudentsModal({
                       render={({ field }) => (
                         <FormItem className="space-y-2">
                           <FormLabel className="text-muted-foreground">
-                            البريد الإلكتروني
+                            {t("students.parentEmail")}
                           </FormLabel>
                           <FormControl>
                             <Input type="email" {...field} />
@@ -360,7 +361,7 @@ export default function StudentsModal({
 
               <TabsContent value="additional" className="pt-4">
                 <div className="text-base font-medium text-muted-foreground pb-2">
-                  صورة الطالب (اختياري)
+                  {t("students.image")}
                 </div>
                 <FormField
                   control={form.control}
@@ -390,14 +391,14 @@ export default function StudentsModal({
               disabled={editingStudent && !form.formState.isDirty}
               className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium disabled:opacity-50"
             >
-              {editingStudent ? "تحديث" : "حفظ"}
+              {editingStudent ? t("common.update") : t("common.save")}
             </Button>
             <DialogClose asChild>
               <Button
                 variant="outline"
                 className="flex-1 border-border text-muted-foreground hover:bg-background"
               >
-                إلغاء
+                {t("common.cancel")}
               </Button>
             </DialogClose>
           </div>

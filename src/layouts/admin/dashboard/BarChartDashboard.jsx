@@ -10,7 +10,7 @@ import useFetch from "@/hooks/useFetch";
 import api from "@/api";
 import { getMonthNameByNumber } from "@/utils/getMonthNameByNumber";
 import { t } from "i18next";
-import { Chart1, Danger } from "iconsax-react";
+import { Chart1, Danger, TextalignCenter } from "iconsax-react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import {
   ChartContainer,
@@ -23,25 +23,25 @@ export default function BarChartDashboard() {
     const res = await api.get(`/statistics/financial-performance`);
     return res.data.map((item) => ({
       ...item,
-      monthLabel: getMonthNameByNumber(item.month),
+      monthLabel: t(getMonthNameByNumber(item.month)),
     }));
   };
   const { data, loading, error } = useFetch(fetchFinancialPerformance);
   const chartConfig = {
     expenses: {
-      label: "Expenses",
+      label: t("dashboard.expenses"),
       color: "var(--chart-4)",
     },
     income: {
-      label: "Income",
+      label: t("dashboard.income"),
       color: "var(--primary)",
     },
   };
   return (
     <Card className="gap-3 h-full" dir="ltr">
       <CardHeader>
-        <CardTitle className="text-right text-foreground">
-          ملخص الأداء المالي الشهري
+        <CardTitle className="rtl:text-right text-foreground">
+          {t("dashboard.financialPerformanceSummary")}
         </CardTitle>
       </CardHeader>
       {error ? (
@@ -55,7 +55,7 @@ export default function BarChartDashboard() {
             </div>
             <div className="space-y-2">
               <h3 className="text-lg font-medium text-destructive">
-                حدث خطأ أثناء تحميل البيانات
+                {t(`errorApi.errorDefault`)}
               </h3>
               <p className="text-sm text-destructive max-w-sm">
                 {t(`errorApi.${error?.message}`)}
@@ -80,11 +80,10 @@ export default function BarChartDashboard() {
             </div>
             <div className="space-y-2">
               <h3 className="text-lg font-medium text-foreground">
-                لا توجد بيانات متاحة
+                {t("dashboard.noDataTitle")}
               </h3>
               <p className="text-sm text-muted-foreground max-w-sm">
-                لم يتم العثور على بيانات الحضور والغياب للفترة المحددة. يرجى
-                المحاولة مرة أخرى لاحقاً.
+                {t("dashboard.noDataDesc")}
               </p>
             </div>
           </div>
@@ -109,7 +108,9 @@ export default function BarChartDashboard() {
                     tickLine={false}
                     tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
                   />
-                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <ChartTooltip
+                    content={<ChartTooltipContent className="rtl:text-right" />}
+                  />
                   <Bar
                     dataKey="expenses"
                     fill="var(--chart-4)"
@@ -131,13 +132,13 @@ export default function BarChartDashboard() {
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-primary rounded-full" />
                 <span className="text-sm text-muted-foreground">
-                  الدخل (د.ج)
+                  {t("dashboard.income")} ({t("currency.dzd")})
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-chart-4 rounded-full" />
                 <span className="text-sm text-muted-foreground">
-                  المصروفات (د.ج)
+                  {t("dashboard.expenses")} ({t("currency.dzd")})
                 </span>
               </div>
             </div>

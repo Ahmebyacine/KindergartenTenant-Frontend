@@ -1,289 +1,811 @@
 {
-  "platform_title": "EasyCole Platform",
-  "login": {
-    "title": "Sign In",
-    "description": "Enter your email and password to access your account",
-    "email": "Email",
-    "email_placeholder": "Enter your email",
-    "password": "Password",
-    "password_placeholder": "Enter your password",
-    "sign_in": "Sign In",
-    "signing_in": "Signing in...",
-    "errors": {
-      "email": "Please enter a valid email address",
-      "password": "Password must be at least 6 characters"
-    }
-  },
-  "settings": {
-    "title": "Settings",
-    "description": "Manage your account settings and preferences.",
-    "tabs": {
-      "personal": "Personal Info",
-      "security": "Security",
-      "language": "Language",
-      "theme": "Theme"
-    },
-    "language": {
-      "title": "Interface Language",
-      "description": "Select your preferred language for the user interface.",
-      "searchPlaceholder": "Search language...",
-      "noLanguageFound": "No language found.",
-      "saveButton": "Save Language Preference",
-      "saving": "Saving...",
-      "successTitle": "Language updated",
-      "successDescription": "Your language preference has been set to {{language}}.",
-      "errorTitle": "Error",
-      "errorDescription": "Failed to update language preference. Please try again."
-    },
-    "theme": {
-      "light": "Light",
-      "dark": "Dark",
-      "system": "System"
-    }
-  },
-  "sidebar": {
-    "consoleName": "Console Name",
-    "application": "Application",
-    "programs": "Programs",
-    "courses": "Courses",
-    "trainees": "Trainees",
-    "settings": "Settings",
-    "teamWorkspace": "Team Workspace",
-    "teamAvatarAlt": "Team",
-    "signOut": "Sign Out"
-  },
-  "courseForm": {
-    "nameLabel": "Course Name",
-    "namePlaceholder": "Introduction to React",
-    "durationLabel": "Duration",
-    "durationPlaceholder": "8 weeks",
-    "priceLabel": "Price",
-    "pricePlaceholder": "99.99",
-    "lessonsTitle": "Lessons",
-    "addLessonButton": "Add Lesson",
-    "noLessonsMessage": "No lessons added yet",
-    "addFirstLessonButton": "Add your first lesson",
-    "lessonNumber": "Lesson {number}",
-    "deleteConfirmTitle": "Are you sure?",
-    "deleteConfirmDescription": "This will delete the lesson. This action cannot be undone.",
-    "lessonTitleLabel": "Title",
-    "lessonTitlePlaceholder": "Lesson title",
-    "lessonDurationLabel": "Duration (minutes)",
-    "lessonDurationPlaceholder": "45",
-    "contentLabel": "Content",
-    "contentPlaceholder": "Lesson content or description",
-    "updateButton": "Update Course",
-    "createButton": "Create Course"
-  },
-  "courseTable": {
-    "headers": {
-      "name": "Name",
-      "duration": "Duration",
-      "price": "Price",
-      "lessons": "Lessons",
-      "actions": "Actions"
-    },
-    "emptyState": {
-      "title": "No courses found",
-      "description": "Add a new course to get started"
-    },
-    "expandRow": "Expand row",
-    "collapseRow": "Collapse row",
-    "lessonsTitle": "Lessons",
-    "lessonHeaders": {
-      "order": "Order",
-      "title": "Title",
-      "content": "Content",
-      "duration": "Duration"
-    },
-    "noLessons": "No lessons available",
-    "durationMinutes": "{duration} min",
-    "deleteConfirm": {
-      "title": "Are you absolutely sure?",
-      "description": "This action cannot be undone. This will permanently delete the program and all associated data."
-    }
-  },
-  "programForm": {
-    "fields": {
-      "name": "Program Name",
-      "course": "Course",
-      "startDate": "Start Date",
-      "image": "Landing Page Image",
-      "description": "Description",
-      "onlinePayment": "Enable online payment",
-      "onlinePaymentDescription": "Allow users to pay for this program online"
-    },
-    "selectPlaceholder": {
-      "course": "Select a course"
-    },
-    "datePicker": {
-      "placeholder": "Pick a date"
-    },
-    "imageAlt": "Program cover",
-    "uploadButton": "Upload Image",
-    "descriptionPlaceholder": "Enter program description for the landing page",
-    "lessons": {
-      "title": "Lessons",
-      "addButton": "Add Lesson",
-      "editTitle": "Edit Lesson",
-      "addTitle": "Add New Lesson",
-      "order": "Order",
-      "titleLabel": "Title",
-      "durationLabel": "Duration (min)",
-      "contentLabel": "Content",
-      "updateButton": "Update Lesson",
-      "table": {
-        "order": "Order",
-        "title": "Title",
-        "content": "Content",
-        "duration": "Duration",
-        "actions": "Actions"
-      },
-      "deleteTitle": "Delete Lesson",
-      "deleteDescription": "Are you sure you want to delete this lesson?",
-      "emptyTitle": "No lessons added",
-      "emptyDescription": "Add your first lesson to get started.",
-      "durationMinutes": "{duration} min"
-    },
-    "createButton": "Create Program",
-    "updateButton": "Update Program"
-  },
-  "programsTable": {
-    "headers": {
-      "name": "Name",
-      "startDate": "Start Date",
-      "course": "Course",
-      "landingPage": "Landing Page",
-      "actions": "Actions"
-    },
-    "emptyState": {
-      "title": "No programs found",
-      "description": "Add a new program to get started"
-    },
-    "expandRow": "Expand row",
-    "collapseRow": "Collapse row",
-    "copyLink": "Copy Link",
-    "linkCopied": "Link copied to clipboard!",
-    "viewLandingPage": "View landing page",
-    "createLandingPage": "Create Landing Page",
-    "lessonsTitle": "Lessons",
-    "lessonHeaders": {
-      "order": "Order",
-      "title": "Title",
-      "content": "Content",
-      "duration": "Duration"
-    },
-    "noLessons": "No lessons available",
-    "durationMinutes": "{duration} min",
-    "deleteConfirm": {
-      "title": "Are you absolutely sure?",
-      "description": "This action cannot be undone. This will permanently delete the program and all associated data."
-    }
-  },
-  "email": {
-    "composeTab": "Compose Message",
-    "previewTab": "Preview",
-    "subjectLabel": "Subject",
-    "subjectPlaceholder": "Enter email subject",
-    "messageLabel": "Message",
-    "messagePlaceholder": "Enter your message",
-    "namePlaceholderHint": "Use {name} to include the recipient's name in your message.",
-    "templateLabel": "Email Template",
-    "templatePlaceholder": "Select a template",
-    "noTemplate": "No template",
-    "templateHint": "Select a template or create your own message.",
-    "recipientsLabel": "Recipients",
-    "bulkRecipients": "Sending to {count} trainees in {program}",
-    "noRecipients": "No recipients selected",
-    "sendingStatus": "Sending...",
-    "sendBulk": "Send to {count} Trainees",
-    "sendSingle": "Send Message",
-    "previewTitle": "Message Preview",
-    "previewTo": "To",
-    "previewBulkRecipients": "{count} trainees from {program}",
-    "previewSubject": "Subject",
-    "previewMessage": "Message",
-    "backToCompose": "Back to Compose"
-  },
-  "trainees": {
-    "title": "Trainees Management",
-    "emptyState": "No trainees found. Add trainees to your programs to see them here.",
-    "traineeCount": "{count} trainees",
-    "messageAll": "Message All",
-    "table": {
-      "name": "Name",
-      "phone": "Phone",
-      "email": "Email",
-      "joined": "Joined",
-      "actions": "Actions"
-    },
-    "deleteDialog": {
-      "title": "Delete Trainee",
-      "description": "Are you sure you want to delete {name}? This action cannot be undone."
-    }
-  },
-  "unauthorized": {
-    "title": "Unauthorized Access",
-    "description": "You don't have permission to access this page. Please contact your administrator if you believe this is an error.",
-    "errorText": "Error 401: Unauthorized",
-    "backButton": "Go Back",
-    "loginButton": "Login"
-  },
-  "courses": {
-    "title": "Course Management",
-    "addNew": "Add New Course",
-    "fetchError": "Failed to fetch courses",
-    "deleteSuccess": "Course deleted successfully",
-    "deleteError": "Failed to delete course"
-  },
-  "editCourse": {
-    "fetchError": "Failed to fetch course details",
-    "backLink": "Back to courses",
-    "title": "Edit Course",
-    "subtitle": "Update course information and lessons"
-  },
-  "newCourse": {
-    "backLink": "Back to courses",
-    "title": "Create New Course",
-    "subtitle": "Add a new course to your catalog with lessons and details"
-  },
-  "editProgram": {
-    "fetchError": "Failed to fetch program details",
-    "title": "Edit Program"
-  },
-  "messageProgram": {
-    "fetchError": "Error fetching data:",
-    "backLink": "Back to Trainees",
-    "title": "Send Message to All Trainees",
-    "programLabel": "Program",
-    "recipientsLabel": "Recipients: {count} trainees"
-  },
-  "newProgram": {
-    "title": "Create New Program"
-  },
-  "programs": {
-    "title": "Programs Management",
-    "addNew": "Add New Program",
-    "fetchError": "Failed to fetch programs",
-    "deleteSuccess": "Program deleted successfully",
-    "deleteError": "Failed to delete program",
-    "landingPageSuccess": "Landing page generated successfully",
-    "landingPageError": "Failed to generate landing page"
-  },
-  "messageTrainee": {
-    "fetchError": "Error fetching data:",
-    "backLink": "Back to Trainees",
-    "title": "Send Message to Trainee",
-    "recipientLabel": "Recipient",
-    "emailLabel": "Email",
-    "programLabel": "Program"
-  },
   "common": {
+    "message": "Message",
+    "edit": "Edit",
     "cancel": "Cancel",
     "delete": "Delete",
     "saving": "Saving...",
+    "loading": "Loading...",
+    "search": "Search",
+    "add": "Add",
+    "update": "Update",
+    "required": "Required",
+    "filter": "Filter",
+    "save": "Save",
+    "date": "Date",
+    "time": "Time",
+    "actions": "Actions",
+    "next": "Next",
+    "previous": "Previous",
+    "invalidEmail": "Invalid email",
+    "invalidPhone": "Invalid phone number",
+    "basicInfo": "Basic Information",
+    "additionalInfo": "Additional Information",
+    "image": "User Image",
+    "retry": "Retry",
+    "details": "View Details",
+    "notes": "Notes",
+    "yes": "Yes",
+    "no": "No",
+    "delete_item": "Delete item",
+    "delete_item_confirmation": "Are you sure you want to delete the selected item? This action cannot be undone."
+  },
+  "errorApi": {
+    "Unauthorized": "Unauthorized",
+    "Server error": "Server error occurred",
+    "An error occurred while fetching data": "An error occurred while fetching data",
+    "Financial report removed": "Financial report removed",
+    "Enrollment removed": "Enrollment removed",
+    "Please provide email and password": "Please provide email and password",
+    "Invalid credentials": "Invalid credentials",
+
+    "Email already exists": "Email already exists",
+    "User not found": "User not found",
+
+    "class is required": "Class is required",
+    "Student not found": "Student not found",
+    "Student with the same name and birth date already exists": "Student with the same name and birth date already exists",
+
+    "Category name already exists": "Category name already exists",
+    "Category not found": "Category not found",
+
+    "Class not found": "Class not found",
+    "Class name must be unique": "Class name must be unique",
+
+    "Class has reached maximum capacity": "Class has reached maximum capacity",
+    "Enrollment not found": "Enrollment not found",
+
+    "Category, amount and are required fields": "Category and amount are required fields",
+    "Expense not found": "Expense not found",
+
+    "Enrollment id and recorded id are required": "Enrollment id and record id are required",
+    "Attendance already recorded for this student": "Attendance already recorded for this student",
+    "Missing user or invalid/missing 'ids' array": "Missing user or invalid/missing 'ids' array",
+    "Some enrollments not found": "Some enrollments not found",
+    "Attendance already recorded for all selected students": "Attendance already recorded for all selected students",
+    "Attendance record not found": "Attendance record not found",
+    "enrollmentId is required": "Enrollment ID is required",
+    "No active attendance record found for check-out": "No active attendance record found for check-out",
+    "Invalid or missing students array": "Invalid or missing students array",
+    "Check-out time cannot be in the future": "Check-out time cannot be in the future",
+    "No students found for this class.": "No students found for this class.",
+
+    "Duplicate report entry for this student and month": "Duplicate report entry for this student and month",
+    "Financial report not found": "Financial report not found",
+    "Payment already confirmed": "Payment already confirmed",
+
+    "Health report not found": "Health report not found",
+    "Pedagogical report not found": "Pedagogical report not found",
+
+    "You are not assigned to any class": "You are not assigned to any class"
+  },
+  "dashboard": {
+    "monthlyIncome": "Monthly Income",
+    "monthlyExpenses": "Monthly Expenses",
+    "pendingReports": "Reports Under Review",
+    "childrenCount": "Number of Children",
+    "reports": "Reports",
+    "expenses": "Expenses",
+    "income": "Income",
+    "financialPerformanceSummary": "Monthly Financial Performance Summary",
+    "noDataTitle": "No Data Available",
+    "noDataDesc": "No financial performance data found. Please try again later.",
+    "noDataAttendanceDesc": "No attendance data found. Please try again later.",
+    "attendance": "Attendance",
+    "absence": "Absence",
+    "attendanceAndAbsence": "Monthly Attendance vs Absence Comparison",
+    "recivedMoneyByMonth": "Amounts Received Monthly",
+    "amountrecived": "Amounts Received (DZD)",
+    "recentReports": "Recent Reports Log",
+    "childName": "Child's Name",
+    "teacherName": "Teacher's Name",
+    "class": "Class",
+    "type": "Type",
+    "status": "Status",
+    "failedFetchReports": "Failed to load reports",
+    "noRecentReports": "No recent reports"
+  },
+  "dashboardSupervisor": {
+    "monthlyReceived": "Total received this month",
+    "absentChildren": "Children absent this month",
+    "pendingReports": "Reports under review",
+    "childrenCount": "Number of children"
+  },
+  "teacherDashboard": {
+    "studentCount": "Number of children in the class",
+    "reportsThisMonth": "My reports this month",
+    "reportUnit": "reports",
+    "receivedMoney": "Amounts received this month",
+    "absentChildren": "Absent children this month",
+    "childrenUnit": "children"
+  },
+  "children": {
+    "zero": "{{count}} children",
+    "one": "{{count}} child",
+    "two": "{{count}} children",
+    "few": "{{count}} children",
+    "many": "{{count}} children"
+  },
+  "status": {
+    "paid": "Paid",
+    "unpaid": "Unpaid",
+    "present": "Present",
+    "late": "Late",
+    "absent": "Absent",
+    "not_recorded": "Not Recorded",
+    "available": "Available",
+    "full": "Full"
+  },
+  "assessment": {
+    "mild": "Mild",
+    "moderate": "Moderate",
+    "severe": "Severe"
+  },
+  "overall": {
+    "weak": "Weak",
+    "acceptable": "Acceptable",
+    "good": "Good",
+    "very_good": "Very Good",
+    "excellent": "Excellent"
+  },
+  "report": {
+    "financial": "Financial",
+    "pedagogical": "Pedagogical",
+    "health": "Health"
+  },
+  "condition": {
+    "fever": "Fever",
+    "cough": "Cough",
+    "fatigue": "Fatigue",
+    "nausea": "Nausea",
+    "injury": "Injury"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "classes": "Classes",
+    "teachers": "Teachers",
+    "students": "Students",
+    "reports": "Reports",
+    "incomes": "Incomes",
+    "expenses": "Expenses",
+    "financialPerformance": "Financial Performance",
+    "settings": "Settings",
+    "logout": "Logout",
+    "securitySettings": "Security Settings",
+    "profile": "Profile",
+    "attendance": "Attendance & Absence"
+  },
+  "classes": {
+    "addSuccess": "Class added successfully",
+    "addError": "Failed to create class",
+    "updateSuccess": "Updated successfully",
+    "updateError": "Failed to update class",
+    "deleteSuccess": "Deleted successfully",
+    "deleteError": "Failed to delete class",
+    "limitReached": "Maximum number of classes reached",
+    "addNew": "Add class",
+    "editTitle": "Edit class",
+    "addTitle": "Add new class",
+    "nameLabel": "Class name",
+    "namePlaceholder": "Enter class name",
+    "categoryLabel": "Category",
+    "categoryPlaceholder": "Select category",
+    "capacityLabel": "Capacity",
+    "priceLabel": "Class price",
+    "pricePlaceholder": "Enter class price",
+    "validation": {
+      "minCapacity": "Minimum capacity is 1",
+      "priceNumber": "Price must be a number",
+      "minPrice": "Minimum price is 0"
+    },
+    "studentCountLabel": "Number of students",
+    "actionsLabel": "Actions",
+    "statusLabel": "Status",
+    "noClasses": "No classes available",
+    "noClassesDescription": "No classes have been created yet, please add a new class",
+    "deleteTitle": "Delete class"
+  },
+  "teachers": {
+    "addSuccess": "Teacher added successfully",
+    "addError": "Failed to add teacher",
+    "updateSuccess": "Teacher updated successfully",
+    "updateError": "Failed to update teacher",
+    "deleteSuccess": "Teacher deleted successfully",
+    "deleteError": "Failed to delete teacher",
+    "addTeacher": "Add Teacher",
+    "editTeacher": "Edit Teacher",
+    "fullName": "Full Name",
+    "email": "Email",
+    "phone": "Phone Number",
+    "assignedClass": "Assigned Class",
+    "image": "Teacher Image (optional)",
+    "noClassesAvailable": "No classes available",
+    "signInInfo": "Sign-in Information",
+    "signInDescription": "A random password will be generated and sent to the email",
+    "name": "Teacher Name",
+    "dateOfHiring": "Date of Hiring",
+    "noTeachers": "No teachers available",
+    "noTeachersDescription": "No teachers have been added yet. Please add a new teacher."
+  },
+  "students": {
+    "addChild": "Add Child",
+    "editChild": "Edit Child",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "addSuccess": "Child added successfully",
+    "addError": "Failed to add child",
+    "registerSuccess": "Child registered successfully",
+    "registerError": "Failed to register child",
+    "updateSuccess": "Child data updated successfully",
+    "updateError": "Failed to update child data",
+    "limitReached": "Maximum number of students reached",
+    "deleteEnrollmentSuccess": "Child enrollment deleted successfully",
+    "deleteEnrollmentError": "Failed to delete child enrollment",
+    "delete": "Delete Child",
+    "confirmDelete": "Are you sure you want to delete this child?",
+    "details": "Child Details",
+    "fullName": "Full Name",
+    "birthDate": "Birth Date",
+    "age": "Age",
+    "class": "Class",
+    "selectClass": "Select Class",
+    "bloodGroup": "Blood Group",
+    "selectBloodGroup": "Select Blood Group",
+    "academicYear": "Academic Year",
+    "basicInfo": "Basic Information",
+    "additionalInfo": "Additional Information",
+    "parent": "Parent",
+    "parentName": "Parent's Name",
+    "parentEmail": "Parent's Email",
+    "parentContact": "Parent's Phone Number",
+    "image": "Student Image (Optional)",
+    "noChildren": "No students available",
+    "noChildrenDescription": "No child has been registered yet, please add a new child",
+    "registrationDate": "Registration Date",
+    "selectedItems": "{{count}} item(s) selected",
+    "printCard": {
+      "title": "Print Cards",
+      "description": "Print student cards",
+      "selectFormat": "Select Card Format",
+      "print": "Print",
+      "showCard": "Show Card",
+      "success": "Cards printed successfully",
+      "error": "Failed to print cards"
+    },
+    "registration": {
+      "title": "Re-enrollment",
+      "search": "Search for a child",
+      "noResults": "No results for \"{searchValue}\"",
+      "name": "Child's Name",
+      "birthDate": "Birth Date",
+      "class": "Class",
+      "academicYear": "Academic Year",
+      "success": "Child registered successfully",
+      "error": "Failed to register child"
+    }
+  },
+  "reports": {
+    "title": "Reports",
+    "addReport": "Add Report",
+    "noReports": "No reports available",
+    "noReportsDescription": "No reports have been created yet, please add a new report",
+    "reportNumber": "Report Number",
+    "tabs": {
+      "pedagogical": "Pedagogical Reports",
+      "financial": "Financial Reports",
+      "health": "Health Reports"
+    },
+    "financial": {
+      "title": "Financial Reports",
+      "confirmPaymentSuccess": "Payment confirmed successfully",
+      "confirmPaymentError": "Failed to confirm payment",
+      "viewDetails": "Financial Report Details",
+      "facture": "Invoice:",
+      "studentName": "Child's Name",
+      "selectChild": "Select Child",
+      "noChildren": "No children available",
+      "parentName": "Parent",
+      "className": "Class",
+      "selectClass": "Select Class",
+      "month": "Month",
+      "selectMonth": "Select Month",
+      "amount": "Amount",
+      "createdAt": "Invoice Date",
+      "status": "Status",
+      "selectStatus": "Select Status",
+      "paid": "Paid",
+      "unpaid": "Unpaid",
+      "generatedBy": "Report generated by",
+      "paidTo": "Payment received by",
+      "reminder": "Send Reminder to Parent",
+      "markedAsPaid": "Mark report as paid",
+      "amountMin": "Amount must be greater than 0",
+      "addReportFinancial": "Add Financial Report",
+      "addSuccess": "Financial report added successfully",
+      "addError": "Failed to add financial report"
+    },
+    "health": {
+      "title": "Health Reports",
+      "childInfo": "Child Information",
+      "childName": "Child's Name",
+      "selectChild": "Select Child",
+      "noChildren": "No children available",
+      "generatedBy": "Report generated by",
+      "createdAt": "Report Date",
+      "teacherName": "Teacher's Name",
+      "class": "Class",
+      "selectClass": "Select Class",
+      "date": "Date",
+      "observationTime": "Observation Time",
+      "conditionDetails": "Condition Details",
+      "conditionType": "Condition Type",
+      "selectConditionType": "Select Condition Type",
+      "conditionAssessment": "Condition Assessment",
+      "SelectConditionAssessment": "Select Condition Assessment",
+      "actionTaken": "Action Taken?",
+      "actionType": "Action Type",
+      "addHealthReport": "Add Health Report",
+      "addSuccess": "Health report added successfully",
+      "addError": "Failed to add health report",
+      "conditionTypes": {
+        "fever": "Fever",
+        "cough": "Cough",
+        "fatigue": "Fatigue",
+        "nausea": "Nausea",
+        "injury": "Injury"
+      },
+      "conditionAssessments": {
+        "mild": "Mild",
+        "moderate": "Moderate",
+        "severe": "Severe"
+      }
+    },
+    "pedagogical": {
+      "title": "Pedagogical Reports",
+      "childInfo": "Child Information",
+      "childName": "Child's Name",
+      "selectChild": "Select Child",
+      "noChildren": "No children available",
+      "generatedBy": "Report generated by",
+      "createdAt": "Report Date",
+      "teacherName": "Teacher's Name",
+      "class": "Class",
+      "selectClass": "Select Class",
+      "date": "Date",
+      "languageAndCommunication": "Language & Communication",
+      "selectLanguageAndCommunication": "Select Language & Communication",
+      "behavior": "Behavior",
+      "selectBehavior": "Select Behavior",
+      "skills": "Skills",
+      "selectSkills": "Select Skills",
+      "overall": "Overall Evaluation",
+      "selectOverall": "Select Overall Evaluation",
+      "notes": "Teacher's Notes",
+      "addPedagogicalReport": "Add Pedagogical Report",
+      "addSuccess": "Pedagogical report added successfully",
+      "addError": "Failed to add pedagogical report",
+      "evaluationOptions": {
+        "weak": "Weak",
+        "acceptable": "Acceptable",
+        "good": "Good",
+        "very_good": "Very Good",
+        "excellent": "Excellent"
+      }
+    }
+  },
+  "financialPerformance": {
+    "stats": {
+      "income": {
+        "title": "Total Income",
+        "subLabel": "Amount collected during the current year"
+      },
+      "expenses": {
+        "title": "Total Expenses",
+        "subLabel": "All recorded expenses"
+      },
+      "profit": {
+        "title": "Net Profit",
+        "subLabel": "Difference between income and expenses"
+      },
+      "profitPercentage": {
+        "title": "Profit Percentage",
+        "subLabel": "Comparison between profit and total expenses"
+      }
+    },
+    "title": "Executive Revenue Details by Employee",
+    "selectMonth": "Select month and year",
+    "employee": "Employee",
+    "date": "Date",
+    "operationsCount": "Operations Count",
+    "totalAmount": "Total Amount",
+    "noReports": "No reports available",
+    "noReportsDesc": "No reports have been created yet. Please add a new report.",
+    "noData": "No Data Available",
+    "noDataDesc": "No data is currently available",
+    "expenses": "Expenses",
+    "month": "Month",
+    "year": "Year",
+    "profit": "Profit",
+    "profitMargin": "Profit Margin"
+  },
+  "months": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
+  },
+  "income": {
+    "stats": {
+      "income": {
+        "title": "Total Income",
+        "subLabel": "Amount collected during the current year"
+      },
+      "unpaidInvoices": {
+        "title": "Unpaid Invoices",
+        "subLabel": "Total outstanding invoices"
+      },
+      "invoiceCount": {
+        "title": "Number of Invoices",
+        "unit": "invoice(s)",
+        "subLabel": "Total invoices issued for all classes"
+      },
+      "collectionRate": {
+        "title": "Collection Rate",
+        "subLabel": "Percentage collected from total fees"
+      }
+    },
+    "month": "Month",
+    "yearAcademy": "Academic Year",
+    "numberOfFaturations": "Number of Invoices",
+    "totalAmount": "Total Amount",
+    "averageInvoice": "Average Invoice",
+    "collectionRate": "Collection Rate",
+    "previousMonthComparison": "Previous Month Comparison",
+    "noDataTitle": "No Income Available",
+    "noDataDesc": "No income has been created yet"
+  },
+  "expenses": {
+    "add": {
+      "success": "Expense added successfully!"
+    },
+    "update": {
+      "success": "Updated successfully"
+    },
+    "delete": {
+      "success": "Deleted successfully"
+    },
+    "stats": {
+      "month": {
+        "title": "Expenses this month",
+        "subLabel": "Total expenses for {{month}}"
+      },
+      "year": {
+        "title": "Expenses for the current year",
+        "subLabel": "From January until today"
+      },
+      "count": {
+        "title": "Number of recorded expenses",
+        "unit": "transaction",
+        "subLabel": "During {{month}} only"
+      },
+      "average": {
+        "title": "Average expense",
+        "subLabel": "Per transaction during {{month}}"
+      }
+    },
+    "filterByType": "Filter by Expense Type:",
+    "filterByMonth": "Filter by Month:",
+    "types": {
+      "salaries": "Salaries",
+      "supplies": "Supplies",
+      "maintenance": "Maintenance",
+      "utilities": "Utilities",
+      "other": "Other"
+    },
+    "amountMustBePositive": "Amount must be positive",
+    "addNewExpense": "Add New Expense",
+    "editExpense": "Edit Expense",
+    "category": "Expense Category",
+    "amount": "Expense Amount",
+    "description": "Expense Description",
+    "descriptionPlaceholder": "Enter expense description",
+    "categoryPlaceholder": "Select expense category",
+    "approvedBy": "Approved By",
+    "noExpenses": "No Expenses Available",
+    "noExpensesDescription": "No expenses have been created yet, please add a new expense."
+  },
+  "settings": {
+    "tabs": {
+      "general": "General Settings",
+      "users": "Users",
+      "personal": "Personal Account",
+      "security": "Security"
+    },
+    "general": {
+      "preferences": "Preferences",
+      "kindergartenInfo": "Kindergarten Information",
+      "kindergartenCategories": "Kindergarten Categories",
+      "language": "Language",
+      "languageAndTime": "Language & Time",
+      "languageDescription": "Change the system interface language",
+      "languageChangeSuccess": "Language changed successfully!",
+      "languageChangeError": "Failed to change the language. Please try again.",
+      "theme": "Theme",
+      "themeDescription": "Choose the default system theme",
+      "themeChangeSuccess": "Theme changed successfully!",
+      "themeChangeError": "Failed to change the theme. Please try again.",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System",
+      "categories": "Categories",
+      "maxCategories": "The maximum number of categories is {{max}}",
+      "addCategory": "Add New Category",
+      "addCategoryError": "An error occurred while adding the category",
+      "updateCategorySuccess": "Category updated successfully",
+      "updateCategoryError": "An error occurred while updating the category",
+      "deleteTitle": "Delete Category",
+      "deleteMessage": "Are you sure you want to delete this category? This action cannot be undone.",
+      "deleteSuccess": "Category deleted successfully",
+      "deleteError": "Unable to delete the category. It may be linked to existing classes.",
+      "validation": {
+        "nameMin": "The name must be at least 2 characters long",
+        "email": "Invalid email address",
+        "phoneMin": "Phone number must be at least 10 digits",
+        "phoneInvalid": "Phone number must contain digits only"
+      }
+    },
+    "users": {
+      "title": "User Settings",
+      "changePassword": "Change Password",
+      "editAccount": "Edit Account",
+      "deleteAccount": "Delete Account",
+      "deleteAccountConfirmation": "Are you sure you want to delete the account? This action cannot be undone.",
+      "limitReached": "Maximum number of users reached",
+      "addNewAccount": "Create New Account",
+      "fullName": "Full Name",
+      "email": "Email",
+      "phone": "Phone",
+      "role": "Role",
+      "image": "User Image",
+      "teacher": "Teacher",
+      "supervisor": "Supervisor",
+      "signInInfo": "Login Information",
+      "signInDescription": "A random password will be generated and sent to the email",
+      "addSuccess": "User added successfully",
+      "addError": "Failed to add user. Please try again.",
+      "updateSuccess": "User updated successfully",
+      "updateError": "Failed to update user. Please try again.",
+      "deleteSuccess": "User deleted successfully",
+      "deleteError": "Failed to delete user. Please try again.",
+      "changePasswordSuccess": "Password changed successfully",
+      "changePasswordError": "Failed to change password. Please try again."
+    },
+    "personal": {
+      "title": "Personal Settings",
+      "description": "Update your personal account information.",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "role": "Role",
+      "image": "User Image",
+      "changeImage": "Change Profile Picture",
+      "success": "Personal information updated successfully",
+      "error": "Failed to update personal information.",
+      "roles": {
+        "admin": "Admin",
+        "supervisor": "Supervisor",
+        "teacher": "Teacher"
+      }
+    },
+    "security": {
+      "title": "Security Settings",
+      "description": "Change your account password regularly to keep it secure.",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmNewPassword": "Confirm New Password",
+      "currentPasswordPlaceholder": "Enter current password",
+      "newPasswordPlaceholder": "Enter new password",
+      "confirmNewPasswordPlaceholder": "Confirm new password",
+      "changePassword": "Change Password",
+      "success": "Password changed successfully",
+      "error": "Failed to change password. Please try again.",
+      "validation": {
+        "currentPassword": "Current password is required",
+        "newPassword": {
+          "minLength": "Password must be at least 8 characters",
+          "uppercase": "Must contain at least one uppercase letter",
+          "lowercase": "Must contain at least one lowercase letter",
+          "number": "Must contain at least one number",
+          "special": "Must contain at least one special character"
+        },
+        "confirmPassword": "Password confirmation is required",
+        "mismatch": "New passwords do not match"
+      }
+    }
+  },
+  "auth": {
+    "signin": {
+      "title": "Sign in",
+      "description": "Enter your email and password to access your account",
+      "email": "Email",
+      "password": "Password",
+      "placeholderEmail": "Enter your email",
+      "placeholderPassword": "Enter your password",
+      "submit": "Sign in",
+      "loading": "Signing in..."
+    }
+  },
+  "changePassword": {
+    "title": "Change Password",
+    "description": "Welcome! Please set a new password to complete your account setup.",
+    "newPassword": "New Password",
+    "newPasswordPlaceholder": "Enter new password",
+    "confirmPassword": "Confirm New Password",
+    "confirmPasswordPlaceholder": "Confirm new password",
+    "requirements": {
+      "title": "Password requirements:",
+      "min": "At least 8 characters",
+      "upper": "At least one uppercase letter",
+      "lower": "At least one lowercase letter",
+      "number": "At least one number",
+      "special": "At least one special character"
+    },
+    "validation": {
+      "min": "Password must be at least 8 characters",
+      "upper": "Must contain at least one uppercase letter",
+      "lower": "Must contain at least one lowercase letter",
+      "number": "Must contain at least one number",
+      "special": "Must contain at least one special character",
+      "mismatch": "Passwords do not match"
+    },
+    "match": "Passwords match",
+    "mismatch": "Passwords do not match",
+    "submit": "Update Password",
+    "loading": "Updating password...",
+    "success": "Password updated successfully!",
+    "successTitle": "Password updated successfully!",
+    "successDescription": "You can now log in with your new password.",
+    "goToDashboard": "Continue to Dashboard",
+    "error": "Failed to update password. Please try again."
+  },
+  "errorPage": {
+    "title": "An error occurred while loading data"
+  },
+  "unauthorized": {
+    "title": "Unauthorized Access",
+    "description": "You do not have permission to access this page. Please contact your administrator if you believe this is a mistake.",
+    "errorBox": "Error 401: Unauthorized",
+    "backButton": "Go Back",
+    "loginButton": "Login"
+  },
+  "attendance": {
+    "title": "Attendance Record",
+    "breadcrumb": {
+      "dashboard": "Dashboard",
+      "attendance": "Attendance"
+    },
+    "stats": {
+      "childrenCount": "Number of Children",
+      "present": "Present",
+      "absent": "Absent",
+      "percentage": "Attendance Percentage"
+    },
+    "selectDate": "Select Date",
+    "selectClass": "Select Class",
+    "present": "Present",
+    "late": "Late",
+    "absent": "Absent",
+    "totalChildren": "Total Children",
+    "attendanceRate": "Attendance Rate",
+    "emptyMessage": "Please select a date and class to view attendance data",
+    "successCheckIn": "Check-in recorded successfully",
+    "errorCheckIn": "An error occurred while recording check-in",
+    "successCheckOut": "Check-out recorded successfully",
+    "errorCheckOut": "An error occurred while recording check-out",
+    "children": "Children",
+    "childName": "Child's Name",
+    "class": "Class",
+    "status": "Status",
+    "statusPlaceholder": "Select attendance status",
+    "checkInTime": "Check-in Time",
+    "checkOutTime": "Check-out Time",
+    "notes": "Notes",
+    "noNotes": "No notes available",
+    "noData": "No data available",
+    "noDataDesc": "No attendance data has been created yet",
+    "checkIn": "Check In",
+    "checkOut": "Check Out",
+    "selected": "{{count}} items selected",
+    "scanQRCode": "Scan QR Code",
+    "instructions": "Point the camera at the QR code"
+  },
+  "category": {
     "edit": "Edit",
-    "dash": "—",
-    "message": "Message"
+    "limitReached": "Maximum number of categories reached",
+    "addNew": "Add custom category",
+    "editTitle": "Edit category",
+    "addTitle": "Add new category",
+    "nameLabel": "Category name",
+    "namePlaceholder": "Enter category name"
+  },
+  "currency": {
+    "dzd": "DZD"
+  },
+  "filter": {
+    "all": "All",
+    "applyFilters": "Apply Filters",
+    "resetFilters": "Reset Filters"
+  },
+  "onboarding": {
+    "categories": {
+      "nursery": "Nursery",
+      "preparatory": "Preparatory",
+      "kindergarten": "Kindergarten",
+      "limitReached": "You cannot select more than {{limit}} categories",
+      "title": "What categories are available in your kindergarten?"
+    },
+    "class": {
+      "title": "Create your first class to get started.",
+      "className": "Class name",
+      "classNamePlaceholder": "Enter class name",
+      "category": "Category",
+      "categoryPlaceholder": "Select a category",
+      "capacity": "Capacity",
+      "capacityPlaceholder": "Enter class capacity",
+      "price": "Class price",
+      "pricePlaceholder": "Enter class price",
+      "addAnotherClass": "Add another class"
+    },
+    "currency": {
+      "title": "What currency do you use in your kindergarten?",
+      "dzd": "Algerian Dinar (DZD)"
+    },
+    "language": {
+      "title": "Which language would you like to use in your kindergarten?"
+    },
+    "success": {
+      "title": "Congratulations! Your kindergarten has been successfully set up",
+      "description": "You can now start using the platform",
+      "startUsing": "Start now"
+    },
+    "errorSave": "An error occurred while saving."
+  },
+  "routes": {
+    "home": "Dashboard",
+    "adminDashboard": "Admin Dashboard",
+    "students": "Students",
+    "teachers": "Teachers",
+    "settings": "Settings",
+    "incomes": "Incomes",
+    "expenses": "Expenses",
+    "financialPerformance": "Financial Performance",
+    "attendance": "Attendance",
+    "supervisorDashboard": "Supervisor Dashboard",
+    "supervisorClasses": "Classes",
+    "supervisorAttendance": "Supervisor Attendance",
+    "supervisorTeachers": "Teachers",
+    "teacherDashboard": "Teacher Dashboard",
+    "teacherStudents": "Teacher's Students",
+    "teacherReports": "Teacher's Reports",
+    "teacherAttendance": "Teacher's Attendance",
+    "reports": "Reports",
+    "classes": "Classes",
+    "settingsUser": "Settings",
+    "unauthorized": "Unauthorized Access",
+    "loading": "Loading",
+    "noTenantError": "Tenant Error"
+  },
+  "imageUpload": {
+    "drag": "Drag the file here or click to choose a file",
+    "description": "Please select an image from your device.",
+    "choose": "Choose a file"
   }
 }

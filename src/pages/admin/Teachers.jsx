@@ -11,12 +11,12 @@ import ErrorPage from "../common/ErrorPage";
 import { fetchClasses } from "@/api/classesApi";
 import { fetchTabs } from "@/api/categoriesApi";
 import { fetchTeachers } from "@/api/usersApi";
+import { t } from "i18next";
 
 export default function Teachers() {
   const [addLoading, setAddLoading] = useState(false);
   const [activeTab, setActiveTab] = useState(null);
   const [search, setSearch] = useState("");
-
 
   const { data: tabs, error: tabsError } = useFetch(fetchTabs);
 
@@ -44,10 +44,14 @@ export default function Teachers() {
     try {
       const res = await api.post("/users", data);
       setTeachers((prev) => [res.data, ...prev]);
-      toast.success("تمت إضافة معلم بنجاح!");
+      toast.success(t("teachers.addSuccess"));
     } catch (error) {
       console.error("Error creating teacher", error);
-      toast.error("حدث خطأ أثناء الإضافة");
+      toast.error(t("teachers.addError"), {
+        description: t(
+          `errorApi.${error?.response?.data?.message || "defaultError"}`
+        ),
+      });
     } finally {
       setAddLoading(false);
     }
@@ -59,10 +63,14 @@ export default function Teachers() {
       setTeachers((prev) =>
         prev.map((item) => (item._id === id ? res.data : item))
       );
-      toast.success("تم التحديث بنجاح");
+      toast.success(t("teachers.updateSuccess"));
     } catch (error) {
       console.error("Update failed:", error);
-      toast.error("حدث خطأ أثناء التحديث");
+      toast.error(t("teachers.updateError"), {
+        description: t(
+          `errorApi.${error?.response?.data?.message || "defaultError"}`
+        ),
+      });
     }
   };
 
@@ -70,10 +78,14 @@ export default function Teachers() {
     try {
       await api.delete(`/users/${id}`);
       setTeachers((prev) => prev.filter((item) => item._id !== id));
-      toast.success("تم الحذف بنجاح");
+      toast.success(t("teachers.deleteSuccess"));
     } catch (error) {
       console.error("Delete failed:", error);
-      toast.error("حدث خطأ أثناء الحذف");
+      toast.error(t("teachers.deleteError"), {
+        description: t(
+          `errorApi.${error?.response?.data?.message || "defaultError"}`
+        ),
+      });
     }
   };
 
@@ -124,7 +136,7 @@ export default function Teachers() {
                     color="currentColor"
                   />
                   <Input
-                    placeholder="البحث"
+                    placeholder={t("common.search")}
                     className="pr-10 pl-4 py-2 bg-background"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}

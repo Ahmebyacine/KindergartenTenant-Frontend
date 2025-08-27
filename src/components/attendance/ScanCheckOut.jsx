@@ -22,6 +22,7 @@ import { Scan, ScanBarcode } from "iconsax-react";
 import api from "@/api";
 import StudentCardInforamtion from "../students/StudentCardInforamtion";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { t } from "i18next";
 
 export default function ScanCheckOut({ onAttendanceCheckOut }) {
   const [isScanning, setIsScanning] = useState(false);
@@ -29,10 +30,12 @@ export default function ScanCheckOut({ onAttendanceCheckOut }) {
   const [loading, setLoading] = useState(false);
   const [cameraError, setCameraError] = useState("");
   const [student, setStudent] = useState({});
+  const [focused, setFocused] = useState(false);
 
   const videoRef = useRef(null);
   const qrScannerRef = useRef(null);
   const lastScannedRef = useRef(null);
+  const inputRef = useRef(null);
 
   const isMobile = useIsMobile();
 
@@ -114,12 +117,14 @@ export default function ScanCheckOut({ onAttendanceCheckOut }) {
       }}
     >
       <DialogTrigger className="w-full">
-        <Button variant="outline" className="w-full sm:w-auto mx-2">تسجيل الخروج</Button>
+        <Button variant="outline" className="w-full sm:w-auto mx-2">
+          {t("attendance.checkOut")}
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold rtl:text-right">
-            تسجيل الخروج
+            {t("attendance.checkOut")}
           </DialogTitle>
         </DialogHeader>
         <div className="space-y-6">
@@ -131,30 +136,38 @@ export default function ScanCheckOut({ onAttendanceCheckOut }) {
                   className="border-primary text-primary border-2"
                   onClick={startScanning}
                 >
-                  مسح رمز الاستجابة السريعة
+                  {t("attendance.scanQRCode")}
                   <ScanBarcode color="currentColor" />
                 </Button>
               </div>
             ) : (
-              <div className="w-full flex justify-center">
+              <div className="w-full flex justify-center relative">
                 <Button
-                  variant="outline"
-                  className="border-primary text-primary border-2"
+                  variant={focused ? "default" : "outline"}
+                  className={
+                    focused ? "" : "border-primary text-primary border-2"
+                  }
+                  onClick={() => {
+                    inputRef.current?.focus();
+                  }}
                 >
-                  مسح رمز الاستجابة السريعة
+                  {t("attendance.scanQRCode")}
                   <Scan color="currentColor" />
                 </Button>
+
                 <input
+                  ref={inputRef}
                   type="text"
                   autoFocus
                   className="absolute opacity-0 pointer-events-none"
+                  onFocus={() => setFocused(true)}
+                  onBlur={() => setFocused(false)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       e.preventDefault();
                       const scannedValue = e.currentTarget.value.trim();
                       if (scannedValue) {
                         handleQRResult(scannedValue);
-                        setScannedData(true);
                         e.currentTarget.value = "";
                       }
                     }
@@ -170,10 +183,10 @@ export default function ScanCheckOut({ onAttendanceCheckOut }) {
                   <p className="text-red-600 text-sm mb-4">{cameraError}</p>
                   <div className="flex gap-2 justify-center">
                     <Button onClick={startScanning} size="sm" variant="outline">
-                      إعادة المحاولة
+                      {t("common.retry")}
                     </Button>
                     <Button onClick={stopScanning} size="sm" variant="outline">
-                      إلغاء
+                      {t("common.cancel")}
                     </Button>
                   </div>
                 </div>
@@ -188,7 +201,7 @@ export default function ScanCheckOut({ onAttendanceCheckOut }) {
                   <div className="absolute inset-0 pointer-events-none">
                     {/* Instructions */}
                     <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-black/70 text-white px-3 py-1 rounded-full text-sm">
-                      وجه الكاميرا نحو رمز الاستجابة السريعة
+                      {t("attendance.instructions")}
                     </div>
                   </div>
 

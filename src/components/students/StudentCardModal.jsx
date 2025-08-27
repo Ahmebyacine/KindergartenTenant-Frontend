@@ -10,6 +10,7 @@ import {
 
 import StudentCardInforamtion from "./StudentCardInforamtion";
 import api from "@/api";
+import { t } from "i18next";
 
 export default function StudentCardModal({ enrollment, isOpen, onOpenChange }) {
   const [loading, setLoading] = useState(false);
@@ -43,7 +44,7 @@ export default function StudentCardModal({ enrollment, isOpen, onOpenChange }) {
         {/* Header */}
         <DialogHeader className="flex flex-row items-center justify-between pb-4 border-b border-border">
           <DialogTitle className="text-xl font-semibold">
-            عرض البطاقة
+            {t("students.printCard.showCard")}
           </DialogTitle>
         </DialogHeader>
 
@@ -54,14 +55,14 @@ export default function StudentCardModal({ enrollment, isOpen, onOpenChange }) {
         <DialogFooter>
           <div className="flex gap-4 mt-6 justify-center">
             <Button onClick={handlePrint} disabled={loading}>
-              {loading ? "جارٍ التحميل..." : "طباعة"}
+              {loading ? t("common.loading") : t("students.printCard.print")}
             </Button>
             <Button
               variant="outline"
               onClick={() => onOpenChange(false)}
               className="text-muted-foreground"
             >
-              إلغاء
+              {t("common.cancel")}
             </Button>
           </div>
         </DialogFooter>

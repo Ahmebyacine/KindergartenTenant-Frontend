@@ -1,11 +1,34 @@
 {
   "common": {
-    "dash": "—",
     "message": "رسالة",
     "edit": "تعديل",
     "cancel": "إلغاء",
     "delete": "حذف",
-    "saving": "جاري الحفظ..."
+    "saving": "جاري الحفظ...",
+    "loading": "جاري التحميل...",
+    "search": "البحث",
+    "add": "إضافة",
+    "update": "تحديث",
+    "required": "مطلوب",
+    "filter": "فلاترة",
+    "save": "حفظ",
+    "date": "تاريخ",
+    "time": "وقت",
+    "actions": "الإجراءات",
+    "next": "التالي",
+    "previous": "السابق",
+    "invalidEmail": "بريد إلكتروني غير صالح",
+    "invalidPhone": "رقم هاتف غير صالح",
+    "basicInfo": "معلومات أساسية",
+    "additionalInfo": "معلومات إضافية",
+    "image": "صورة المستخدم",
+    "retry": "إعادة المحاولة",
+    "details": "عرض التفاصيل",
+    "notes": "ملاحظات",
+    "yes": "نعم",
+    "no": "لا",
+    "delete_item": "حذف العنصر",
+    "delete_item_confirmation": "هل أنت متأكد من حذف العنصر المحدد؟ لا يمكن التراجع عن هذا الإجراء."
   },
   "errorApi": {
     "Unauthorized": "غير مصرح",
@@ -54,6 +77,740 @@
     "Health report not found": "التقرير الصحي غير موجود",
     "Pedagogical report not found": "التقرير التربوي غير موجود",
 
-    "You are not assigned to any class": "لم يتم تعيينك إلى أي صف"
+    "You are not assigned to any class": "لم يتم تعيينك إلى أي صف",
+
+    "defaultError": "حدث خطأ غير متوقع"
+  },
+  "dashboard": {
+    "monthlyIncome": "الدخل الشهري",
+    "monthlyExpenses": "المدفوعات الشهرية",
+    "pendingReports": "تقارير قيد المراجعة",
+    "childrenCount": "عدد الأطفال",
+    "reports": "تقارير",
+    "expenses": "المصاريف",
+    "income": "الدخل",
+    "financialPerformanceSummary": "ملخص الأداء المالي الشهري",
+    "noDataTitle": "لا توجد بيانات متاحة",
+    "noDataDesc": "لم يتم العثور على بيانات الأداء المالي. يرجى المحاولة مرة أخرى لاحقًا.",
+    "noDataAttendanceDesc": "لم يتم العثور على بيانات الحضور والغياب. يرجى المحاولة مرة أخرى لاحقًا.",
+    "attendance": "الحضور",
+    "absence": "الغياب",
+    "attendanceAndAbsence": "مقارنة بين الحضور والغياب شهريًا",
+    "recivedMoneyByMonth": "المبالغ المستلمة شهريًا",
+    "amountrecived": "المبالغ المستلمة (د.ج)",
+    "recentReports": "سجل التقارير الأخيرة",
+    "childName": "اسم الطفل",
+    "teacherName": "اسم المعلم",
+    "class": "الفصل",
+    "type": "النوع",
+    "status": "الحالة",
+    "failedFetchReports": "فشل تحميل التقارير",
+    "noRecentReports": "لا توجد تقارير حديثة"
+  },
+  "dashboardSupervisor": {
+    "monthlyReceived": "إجمالي المبالغ المستلمة هذا الشهر",
+    "absentChildren": "الأطفال الغائبون هذا الشهر",
+    "pendingReports": "تقارير قيد المراجعة",
+    "childrenCount": "عدد الأطفال"
+  },
+  "teacherDashboard": {
+    "studentCount": "عدد الأطفال في القسم",
+    "reportsThisMonth": "تقاريري هذا الشهر",
+    "reportUnit": "تقريرًا",
+    "receivedMoney": "المبالغ المستلمة هذا الشهر",
+    "absentChildren": "الأطفال الغائبون هذا الشهر",
+    "childrenUnit": "أطفال"
+  },
+  "children": {
+    "zero": "{{count}} أطفال",
+    "one": "{{count}} طفل",
+    "two": "{{count}} طفلان",
+    "few": "{{count}} أطفال",
+    "many": "{{count}} طفلًا"
+  },
+  "status": {
+    "paid": "مدفوع",
+    "unpaid": "غير مدفوع",
+    "present": "حاضر",
+    "late": "متأخر",
+    "absent": "غائب",
+    "not_recorded": "غير مسجل",
+    "available": "متاح",
+    "full": "مكتمل"
+  },
+  "assessment": {
+    "mild": "خفيفة",
+    "moderate": "متوسطة",
+    "severe": "شديدة"
+  },
+  "overall": {
+    "weak": "ضعيف",
+    "acceptable": "مقبول",
+    "good": "جيد",
+    "very_good": "جيد جداً",
+    "excellent": "ممتاز"
+  },
+  "report": {
+    "financial": "مالي",
+    "pedagogical": "بيداغوجي",
+    "health": "صحي"
+  },
+  "condition": {
+    "fever": "حرارة",
+    "cough": "سعال",
+    "fatigue": "إعياء",
+    "nausea": "غثيان",
+    "injury": "إصابة"
+  },
+  "sidebar": {
+    "dashboard": "لوحة التحكم",
+    "classes": "الفصول",
+    "teachers": "المعلمين",
+    "students": "الأطفال",
+    "reports": "التقارير",
+    "incomes": "المداخيل",
+    "expenses": "المصاريف",
+    "financialPerformance": "الأداء المالي",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج",
+    "securitySettings": "اعدادات الامان",
+    "profile": "الملف الشخصي",
+    "attendance": "الحضور والغياب"
+  },
+  "classes": {
+    "addSuccess": "تمت إضافة القسم بنجاح",
+    "addError": "تعذر إنشاء القسم",
+    "updateSuccess": "تم التحديث بنجاح",
+    "updateError": "تعذر تحديث بيانات القسم",
+    "deleteSuccess": "تم الحذف بنجاح",
+    "deleteError": "تعذر حذف القسم",
+    "limitReached": "تم الوصول إلى الحد الأقصى للفصول",
+    "addNew": "إضافة فصل",
+    "editTitle": "تعديل الفصل",
+    "addTitle": "إضافة فصل جديد",
+    "nameLabel": "اسم الفصل",
+    "namePlaceholder": "أدخل اسم الفصل",
+    "categoryLabel": "فئة",
+    "categoryPlaceholder": "اختر فئة",
+    "capacityLabel": "السعة",
+    "priceLabel": "سعر الفصل",
+    "pricePlaceholder": "أدخل سعر الفصل",
+    "validation": {
+      "minCapacity": "الحد الأدنى للقدرة هو 1",
+      "priceNumber": "يجب أن يكون السعر رقمًا",
+      "minPrice": "الحد الأدنى للسعر هو 0"
+    },
+    "studentCountLabel": "عدد الطلاب",
+    "actionsLabel": "الإجراءات",
+    "statusLabel": "حالة الفصل",
+    "noClasses": "لا توجد فصول متاحة",
+    "noClassesDescription": "لم يتم إنشاء أي فصول بعد، قم بإضافة فصل جديد",
+    "deleteTitle": "حذف الفصل"
+  },
+  "teachers": {
+    "addSuccess": "تمت إضافة المعلم بنجاح",
+    "addError": "تعذر إضافة المعلم",
+    "updateSuccess": "تم تحديث بيانات المعلم بنجاح",
+    "updateError": "تعذر تحديث بيانات المعلم",
+    "deleteSuccess": "تم حذف المعلم بنجاح",
+    "deleteError": "تعذر حذف المعلم",
+    "addTeacher": "إضافة معلم",
+    "editTeacher": "تعديل المعلم",
+    "fullName": "الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "phone": "رقم الهاتف",
+    "assignedClass": "الفصل المعين",
+    "image": "صورة المعلم (اختياري)",
+    "noClassesAvailable": "لا يوجد أقسام متاحة",
+    "signInInfo": "معلومات تسجيل الدخول",
+    "signInDescription": "سيتم إنشاء كلمة مرور عشوائية وإرسالها إلى البريد الإلكتروني",
+    "name": "اسم المعلم",
+    "dateOfHiring": "تاريخ التعيين",
+    "noTeachers": "لا توجد معلمين متاحين",
+    "noTeachersDescription": "لم يتم إضافة أي معلمين بعد، قم بإضافة معلم جديد"
+  },
+  "students": {
+    "addChild": "إضافة طفل",
+    "editChild": "تعديل الطفل",
+    "firstName": "الاسم الأول",
+    "lastName": "الاسم الأخير",
+    "addSuccess": "تمت إضافة الطفل بنجاح",
+    "addError": "تعذر إضافة الطفل",
+    "registerSuccess": "تم تسجيل الطفل بنجاح",
+    "registerError": "تعذر تسجيل الطفل",
+    "updateSuccess": "تم تحديث بيانات الطفل بنجاح",
+    "updateError": "تعذر تحديث بيانات الطفل",
+    "limitReached": "تم الوصول إلى الحد الأقصى للتلاميذ",
+    "deleteEnrollmentSuccess": "تم حذف تسجيل الطفل بنجاح",
+    "deleteEnrollmentError": "تعذر حذف تسجيل الطفل",
+    "delete": "حذف الطفل",
+    "confirmDelete": "هل أنت متأكد أنك تريد حذف هذا الطفل؟",
+    "details": "تفاصيل الطفل",
+    "fullName": "الاسم الكامل",
+    "birthDate": "تاريخ الميلاد",
+    "age": "العمر",
+    "class": "الفصل",
+    "selectClass": "اختر الفصل",
+    "bloodGroup": "فصيلة الدم",
+    "selectBloodGroup": "اختر فصيلة الدم",
+    "academicYear": "السنة الدراسية",
+    "basicInfo": "معلومات أساسية",
+    "additionalInfo": "معلومات إضافية",
+    "parent": "ولي الأمر",
+    "parentName": "اسم ولي الأمر",
+    "parentEmail": "البريد الإلكتروني لولي الأمر",
+    "parentContact": "رقم هاتف ولي الأمر",
+    "image": "صورة الطالب (اختياري)",
+    "noChildren": "لا يوجد أطفال متاحون",
+    "noChildrenDescription": "لم يتم تسجيل أي طفل بعد، قم بإضافة طفل جديد",
+    "registrationDate": "تاريخ التسجيل",
+    "selectedItems": "تم تحديد {{count}} عنصر",
+    "printCard": {
+      "title": "طباعة البطاقات",
+      "description": "طباعة بطاقات الأطفال",
+      "selectFormat": "اختر تنسيق البطاقة",
+      "print": "طباعة",
+      "showCard": "عرض البطاقة",
+      "success": "تمت طباعة البطاقات بنجاح",
+      "error": "تعذر طباعة البطاقات"
+    },
+    "registration": {
+      "title": "إعادة تسجيل",
+      "search": "البحث عن طفل",
+      "noResults": "لا توجد نتائج لـ \"{searchValue}\"",
+      "name": "اسم الطفل",
+      "birthDate": "تاريخ الميلاد",
+      "class": "الفصل",
+      "academicYear": "السنة الدراسية",
+      "success": "تم تسجيل الطفل بنجاح",
+      "error": "تعذر تسجيل الطفل"
+    }
+  },
+  "reports": {
+    "title": "التقارير",
+    "addReport": "إضافة تقرير",
+    "noReports": "لا توجد تقارير متاحة",
+    "noReportsDescription": "لم يتم إنشاء أي تقارير بعد، قم بإضافة تقرير جديد",
+    "reportNumber": "رقم التقرير",
+    "tabs": {
+      "pedagogical": "تقارير بيداغوجية",
+      "financial": "تقارير مالية",
+      "health": "تقارير صحية"
+    },
+    "financial": {
+      "title": "التقارير المالية",
+      "confirmPaymentSuccess": "تم تأكيد الدفع بنجاح",
+      "confirmPaymentError": "تعذر تأكيد الدفع",
+      "viewDetails": "تفاصيل التقرير المالي",
+      "facture": "فاتورة :",
+      "studentName": "اسم الطفل",
+      "selectChild": "اختيار الطفل",
+      "noChildren": "لا يوجد أطفال",
+      "parentName": "ولي الأمر",
+      "className": "الفصل",
+      "selectClass": "اختيار الفصل",
+      "month": "الشهر",
+      "selectMonth": "اختيار الشهر",
+      "amount": "المبلغ",
+      "createdAt": "تاريخ إصدار الفاتورة",
+      "status": "الحالة",
+      "selectStatus": "اختيار الحالة",
+      "paid": "مدفوع",
+      "unpaid": "غير مدفوع",
+      "generatedBy": "تم إنشاء التقرير بواسطة",
+      "paidTo": "الموظف المستلم للمبلغ",
+      "reminder": "رسال تذكير لولي الأمر",
+      "markedAsPaid": "تمييز التقرير كمدفوع",
+      "amountMin": "يجب أن يكون المبلغ أكبر من 0",
+      "addReportFinancial": "إضافة تقرير مالي",
+      "addSuccess": "تمت إضافة التقرير المالي بنجاح",
+      "addError": "تعذر إضافة التقرير المالي"
+    },
+    "health": {
+      "title": "لتقرير الصحي",
+      "childInfo": "معلومات الطفل",
+      "childName": "اسم الطفل",
+      "selectChild": "اختيار الطفل",
+      "noChildren": "لا يوجد أطفال",
+      "generatedBy": "تم إنشاء التقرير بواسطة",
+      "createdAt": "تاريخ إنشاء التقرير",
+      "teacherName": "اسم المعلم",
+      "class": "الفصل",
+      "selectClass": "اختيار الفصل",
+      "date": "تاريخ",
+      "observationTime": "وقت الملاحظة",
+      "conditionDetails": "تفاصيل الحالة",
+      "conditionType": "نوع الحالة",
+      "selectConditionType": "اختيار نوع الحالة",
+      "conditionAssessment": "تقييم الحالة",
+      "SelectConditionAssessment": "اختيار تقييم الحالة",
+      "actionTaken": "تم اتخاذ إجراء؟",
+      "actionType": "نوع الإجراء",
+      "addHealthReport": "إضافة تقرير صحي",
+      "addSuccess": "تمت إضافة التقرير الصحي بنجاح",
+      "addError": "تعذر إضافة التقرير الصحي",
+      "conditionTypes": {
+        "fever": "حرارة",
+        "cough": "سعال",
+        "fatigue": "إعياء",
+        "nausea": "غثيان",
+        "injury": "إصابة"
+      },
+      "conditionAssessments": {
+        "mild": "خفيفة",
+        "moderate": "متوسطة",
+        "severe": "شديدة"
+      }
+    },
+    "pedagogical": {
+      "title": "التقارير البيداغوجية",
+      "childInfo": "معلومات الطفل",
+      "childName": "اسم الطفل",
+      "selectChild": "اختيار الطفل",
+      "noChildren": "لا يوجد أطفال",
+      "generatedBy": "تم إنشاء التقرير بواسطة",
+      "createdAt": "تاريخ إنشاء التقرير",
+      "teacherName": "اسم المعلم",
+      "class": "الفصل",
+      "selectClass": "اختيار الفصل",
+      "date": "تاريخ",
+      "languageAndCommunication": "اللغة والتواصل",
+      "selectLanguageAndCommunication": "اختيار اللغة والتواصل",
+      "behavior": "السلوك",
+      "selectBehavior": "اختيار السلوك",
+      "skills": "المهارات",
+      "selectSkills": "اختيار المهارات",
+      "overall": "التقييم العام",
+      "selectOverall": "اختيار التقييم العام",
+      "notes": "ملاحظات المعلم",
+      "addPedagogicalReport": "إضافة تقرير بيداغوجي",
+      "addSuccess": "تمت إضافة التقرير البيداغوجي بنجاح",
+      "addError": "تعذر إضافة التقرير البيداغوجي",
+      "evaluationOptions": {
+        "weak": "ضعيف",
+        "acceptable": "مقبول",
+        "good": "جيد",
+        "very_good": "جيد جداً",
+        "excellent": "ممتاز"
+      }
+    }
+  },
+  "financialPerformance": {
+    "stats": {
+      "income": {
+        "title": "إجمالي المداخيل",
+        "subLabel": "المبلغ المحصل خلال السنة الحالية"
+      },
+      "expenses": {
+        "title": "إجمالي المصاريف",
+        "subLabel": "جميع المصاريف المسجلة"
+      },
+      "profit": {
+        "title": "صافي الربح",
+        "subLabel": "الفرق بين المداخيل والمصاريف"
+      },
+      "profitPercentage": {
+        "title": "نسبة الربح",
+        "subLabel": "مقارنة بين الربح والمصاريف الإجمالية"
+      }
+    },
+    "title": "تفاصيل المداخيل التنفيذية حسب الموظف",
+    "selectMonth": "اختر الشهر والسنة",
+    "employee": "الموظف",
+    "operationsCount": "عدد العمليات",
+    "totalAmount": "مجموع المبالغ",
+    "noReports": "لا توجد تقارير متاحة",
+    "noReportsDesc": "لم يتم إنشاء أي تقارير بعد، قم بإضافة تقرير جديد",
+    "noData": "لا توجد بيانات متاحة",
+    "noDataDesc": "لا توجد بيانات متاحة حالياً",
+    "expenses": "المصاريف",
+    "income": "المداخيل",
+    "month": "الشهر",
+    "year": "السنة",
+    "profit": "الربح",
+    "profitMargin": "هامش الربح"
+  },
+  "months": {
+    "january": "جانفي",
+    "february": "فيفري",
+    "march": "مارس",
+    "april": "أفريل",
+    "may": "ماي",
+    "june": "جوان",
+    "july": "جويلية",
+    "august": "أوت",
+    "september": "سبتمبر",
+    "october": "أكتوبر",
+    "november": "نوفمبر",
+    "december": "ديسمبر"
+  },
+  "income": {
+    "stats": {
+      "income": {
+        "title": "إجمالي المداخيل",
+        "subLabel": "المبلغ المحصل خلال السنة الحالية"
+      },
+      "unpaidInvoices": {
+        "title": "فواتير غير مسددة",
+        "subLabel": "إجمالي الفواتير الغير مسددة"
+      },
+      "invoiceCount": {
+        "title": "عدد الفواتير",
+        "unit": "فاتورة",
+        "subLabel": "إجمالي الفواتير الصادرة لجميع الفصول"
+      },
+      "collectionRate": {
+        "title": "نسبة التحصيل",
+        "subLabel": "نسبة ما تم تحصيله من مجموع الرسوم"
+      }
+    },
+    "month": "الشهر",
+    "yearAcademy": "السنة الدراسية",
+    "numberOfFaturations": "عدد الفواتير",
+    "totalAmount": "المبلغ الإجمالي",
+    "averageInvoice": "معدل الفاتورة",
+    "collectionRate": "نسبة التحصيل",
+    "previousMonthComparison": "مقارنة الشهر السابق",
+    "noDataTitle": "لا توجد مداخيل متاحة",
+    "noDataDesc": "لم يتم إنشاء أي مداخيل بعد"
+  },
+  "expenses": {
+    "add": {
+      "success": "تمت إضافة المصروف بنجاح!"
+    },
+    "update": {
+      "success": "تم التحديث بنجاح"
+    },
+    "delete": {
+      "success": "تم الحذف بنجاح"
+    },
+    "stats": {
+      "month": {
+        "title": "مصاريف هذا الشهر",
+        "subLabel": "إجمالي المصاريف لشهر {{month}}"
+      },
+      "year": {
+        "title": "مصاريف السنة الحالية",
+        "subLabel": "منذ يناير حتى اليوم"
+      },
+      "count": {
+        "title": "عدد المصاريف المسجلة",
+        "unit": "عملية",
+        "subLabel": "خلال شهر {{month}} فقط"
+      },
+      "average": {
+        "title": "متوسط المصروف",
+        "subLabel": "لكل عملية خلال شهر {{month}}"
+      }
+    },
+    "filterByType": "فلاترة حسب نوع المصروف:",
+    "filterByMonth": "فلاترة حسب الشهر:",
+    "types": {
+      "salaries": "رواتب",
+      "supplies": "أدوات",
+      "maintenance": "صيانة",
+      "utilities": "خدمات",
+      "other": "أخرى"
+    },
+    "amountMustBePositive": "يجب أن يكون المبلغ أكبر من 0",
+    "addNewExpense": "إضافة مصروف جديد",
+    "editExpense": "تعديل المصروف",
+    "category": "نوع المصروف",
+    "amount": "مبلغ المصروف",
+    "description": "وصف المصروف",
+    "descriptionPlaceholder": "أدخل وصف المصروف",
+    "categoryPlaceholder": "اختر نوع المصروف",
+    "approvedBy": "محرر العملية",
+    "noExpenses": "لا توجد مصاريف متاحة",
+    "noExpensesDescription": "لم يتم إنشاء أي مصاريف بعد، قم بإضافة مصروف جديد"
+  },
+  "settings": {
+    "tabs": {
+      "general": "الإعدادات العامة",
+      "users": "المستخدمون",
+      "personal": "الحساب الشخصي",
+      "security": "الأمان"
+    },
+    "general": {
+      "preferences": "التفضيلات",
+      "kindergartenInfo": "معلومات الروضة",
+      "kindergartenCategories": "فئات الروضة",
+      "language": "اللغة",
+      "languageAndTime": "اللغة والوقت",
+      "languageDescription": "قم بتغيير لغة واجهة النظام",
+      "languageChangeSuccess": "تم تغيير اللغة بنجاح!",
+      "languageChangeError": "فشل في تغيير اللغة. يرجى المحاولة مرة أخرى.",
+      "theme": "المظهر",
+      "themeDescription": "اختر المظهر الافتراضي للنظام",
+      "themeChangeSuccess": "تم تغيير المظهر بنجاح!",
+      "themeChangeError": "فشل في تغيير المظهر. يرجى المحاولة مرة أخرى.",
+      "light": "فاتح",
+      "dark": "داكن",
+      "system": "النظام",
+      "categories": "الفئات",
+      "maxCategories": "الحد الأقصى للفئات هو {{max}}",
+      "addCategory": "إضافة فئة جديدة",
+      "addCategoryError": "حدث خطأ أثناء إضافة التصنيف",
+      "updateCategorySuccess": "تم تحديث التصنيف بنجاح",
+      "updateCategoryError": "حدث خطأ أثناء تحديث التصنيف",
+      "deleteTitle": "حذف الفئة",
+      "deleteMessage": "هل أنت متأكد أنك تريد حذف هذه الفئة؟ لا يمكن التراجع عن هذا الإجراء.",
+      "deleteSuccess": "تم حذف الفئة بنجاح",
+      "deleteError": "تعذر حذف الفئة. قد يكون هناك فصول مرتبطة بهذه الفئة.",
+      "validation": {
+        "nameMin": "يجب أن يتكون الاسم من حرفين على الأقل",
+        "email": "بريد إلكتروني غير صالح",
+        "phoneMin": "يجب أن يتكون رقم الهاتف من 10 أرقام على الأقل",
+        "phoneInvalid": "يجب أن يتكون رقم الهاتف من أرقام فقط"
+      }
+    },
+    "users": {
+      "title": "إعدادات المستخدمين",
+      "changePassword": "تغيير كلمة المرور",
+      "editAccount": "تعديل الحساب",
+      "deleteAccount": "حذف الحساب",
+      "deleteAccountConfirmation": "هل أنت متأكد من حذف الحساب؟ لا يمكن التراجع عن هذا الإجراء.",
+      "limitReached": "تم الوصول إلى الحد الأقصى للمستخدمين",
+      "addNewAccount": "إنشاء حساب جديد",
+      "fullName": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "role": "الدور",
+      "image": "صورة المستخدم",
+      "teacher": "معلم",
+      "supervisor": "مراقب",
+      "signInInfo": "معلومات تسجيل الدخول",
+      "signInDescription": "سيتم إنشاء كلمة مرور عشوائية وإرسالها إلى البريد الإلكتروني",
+      "addSuccess": "تم إضافة المستخدم بنجاح",
+      "addError": "فشل في إضافة المستخدم. يرجى المحاولة مرة أخرى.",
+      "updateSuccess": "تم تحديث المستخدم بنجاح",
+      "updateError": "فشل في تحديث المستخدم. يرجى المحاولة مرة أخرى.",
+      "deleteSuccess": "تم حذف المستخدم بنجاح",
+      "deleteError": "فشل في حذف المستخدم. يرجى المحاولة مرة أخرى.",
+      "changePasswordSuccess": "تم تغيير كلمة المرور بنجاح",
+      "changePasswordError": "فشل في تغيير كلمة المرور. يرجى المحاولة مرة أخرى."
+    },
+    "personal": {
+      "title": "الإعدادات الشخصية",
+      "description": "قم بتحديث معلومات حسابك الشخصية.",
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "role": "الدور",
+      "image": "صورة المستخدم",
+      "changeImage": "تغيير الصورة الشخصية",
+      "success": "تم تحديث المعلومات الشخصية بنجاح",
+      "error": "فشل في تحديث المعلومات الشخصية.",
+      "roles": {
+        "admin": "مسؤول",
+        "supervisor": "مراقب",
+        "teacher": "معلم"
+      }
+    },
+    "security": {
+      "title": "إعدادات الأمان",
+      "description": "قم بتغيير كلمة المرور الخاصة بحسابك بانتظام للحفاظ على أمان حسابك.",
+      "currentPassword": "كلمة المرور الحالية",
+      "newPassword": "كلمة المرور الجديدة",
+      "confirmNewPassword": "تأكيد كلمة المرور الجديدة",
+      "currentPasswordPlaceholder": "أدخل كلمة المرور الحالية",
+      "newPasswordPlaceholder": "أدخل كلمة المرور الجديدة",
+      "confirmNewPasswordPlaceholder": "أكد كلمة المرور الجديدة",
+      "changePassword": "تغيير كلمة المرور",
+      "success": "تم تغيير كلمة المرور بنجاح",
+      "error": "فشل في تغيير كلمة المرور. يرجى المحاولة مرة أخرى.",
+      "validation": {
+        "currentPassword": "كلمة المرور الحالية مطلوبة",
+        "newPassword": {
+          "minLength": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل",
+          "uppercase": "يجب أن تحتوي على حرف كبير واحد على الأقل",
+          "lowercase": "يجب أن تحتوي على حرف صغير واحد على الأقل",
+          "number": "يجب أن تحتوي على رقم واحد على الأقل",
+          "special": "يجب أن تحتوي على رمز خاص واحد على الأقل"
+        },
+        "confirmPassword": "تأكيد كلمة المرور الجديدة مطلوب",
+        "mismatch": "كلمات المرور الجديدة غير متطابقة"
+      }
+    }
+  },
+  "auth": {
+    "signin": {
+      "title": "تسجيل الدخول",
+      "description": "أدخل بريدك الإلكتروني وكلمة المرور للوصول إلى حسابك",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "placeholderEmail": "أدخل بريدك الإلكتروني",
+      "placeholderPassword": "أدخل كلمة المرور",
+      "submit": "تسجيل الدخول",
+      "loading": "جاري التسجيل..."
+    }
+  },
+  "changePassword": {
+    "title": "تغيير كلمة المرور",
+    "description": "أهلاً بك! يرجى تعيين كلمة مرور جديدة لإكمال إعداد حسابك.",
+    "newPassword": "كلمة المرور الجديدة",
+    "newPasswordPlaceholder": "أدخل كلمة المرور الجديدة",
+    "confirmPassword": "تأكيد كلمة المرور الجديدة",
+    "confirmPasswordPlaceholder": "أكد كلمة المرور الجديدة",
+    "requirements": {
+      "title": "متطلبات كلمة المرور:",
+      "min": "8 أحرف على الأقل",
+      "upper": "يحتوي على حرف كبير",
+      "lower": "يحتوي على حرف صغير",
+      "number": "يحتوي على رقم",
+      "special": "يحتوي على رمز خاص"
+    },
+    "validation": {
+      "min": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل",
+      "upper": "يجب أن تحتوي على حرف كبير واحد على الأقل",
+      "lower": "يجب أن تحتوي على حرف صغير واحد على الأقل",
+      "number": "يجب أن تحتوي على رقم واحد على الأقل",
+      "special": "يجب أن تحتوي على رمز خاص واحد على الأقل",
+      "mismatch": "كلمات المرور الجديدة غير متطابقة"
+    },
+    "match": "كلمات المرور متطابقة",
+    "mismatch": "كلمات المرور غير متطابقة",
+    "submit": "تحديث كلمة المرور",
+    "loading": "جاري تحديث كلمة المرور...",
+    "success": "تم تحديث كلمة المرور بنجاح!",
+    "successTitle": "تم تحديث كلمة المرور بنجاح!",
+    "successDescription": "يمكنك الآن الوصول إلى حسابك بكلمة المرور الجديدة.",
+    "goToDashboard": "المتابعة إلى لوحة التحكم",
+    "error": "فشل في تحديث كلمة المرور. يرجى المحاولة مرة أخرى."
+  },
+  "errorPage": {
+    "title": "حدث خطأ أثناء تحميل البيانات"
+  },
+  "unauthorized": {
+    "title": "وصول غير مصرح به",
+    "description": "ليس لديك الصلاحية للوصول إلى هذه الصفحة. يرجى الاتصال بمسؤولك إذا كنت تعتقد أن هذا خطأ.",
+    "errorBox": "خطأ 401: غير مصرح",
+    "backButton": "العودة",
+    "loginButton": "تسجيل الدخول"
+  },
+  "attendance": {
+    "title": "سجل الحضور",
+    "breadcrumb": {
+      "dashboard": "لوحة التحكم",
+      "attendance": "الحضور"
+    },
+    "stats": {
+      "childrenCount": "عدد الأطفال",
+      "present": "الحضور",
+      "absent": "الغياب",
+      "percentage": "نسبة الحضور"
+    },
+    "selectDate": "اختر التاريخ",
+    "selectClass": "اختيار الفصل",
+    "present": "حاضر",
+    "late": "متأخر",
+    "absent": "غائب",
+    "totalChildren": "عدد الأطفال",
+    "attendanceRate": "نسبة الحضور",
+    "emptyMessage": "يرجى اختيار التاريخ والفصل لعرض بيانات الحضور والغياب",
+    "successCheckIn": "تم تسجيل الحضور بنجاح",
+    "errorCheckIn": "حدث خطأ أثناء تسجيل الحضور",
+    "successCheckOut": "تم تسجيل الخروج بنجاح",
+    "errorCheckOut": "حدث خطأ أثناء تسجيل الخروج",
+    "children": "أطفال",
+    "childName": "اسم الطفل",
+    "class": "الفصل",
+    "status": "الحالة",
+    "statusPlaceholder": "اختر حالة الحضور",
+    "checkInTime": "توقيت الدخول",
+    "checkOutTime": "توقيت الخروج",
+    "notes": "الملاحظات",
+    "noNotes": "لا توجد ملاحظات",
+    "noData": "لا توجد بيانات",
+    "noDataDesc": "لم يتم إنشاء أي بيانات الحضور والغياب بعد",
+    "checkIn": "تسجيل الحضور",
+    "checkOut": "تسجيل الخروج",
+    "selected": "تم تحديد {{count}} عناصر",
+    "scanQRCode": "مسح رمز الاستجابة السريعة",
+    "instructions": "وجه الكاميرا نحو رمز الاستجابة السريعة"
+  },
+  "category": {
+    "edit": "تعديل",
+    "limitReached": "تم الوصول إلى الحد الأقصى للفئات",
+    "addNew": "أضف فئة مخصصة",
+    "editTitle": "تعديل الفصل",
+    "addTitle": "إضافة فصل جديد",
+    "nameLabel": "اسم الفئة",
+    "namePlaceholder": "أدخل اسم الفئة"
+  },
+  "currency": {
+    "dzd": "د.ج"
+  },
+  "filter": {
+    "all": "الكل",
+    "applyFilters": "تطبيق الفلاتر",
+    "resetFilters": "إعادة تعيين الفلاتر",
+    "optionFilters": "خيارات الفلترة",
+    "byClass": "فلاترة حسب الفصل:",
+    "byMonth": "فلاترة حسب الشهر:"
+  },
+  "onboarding": {
+    "categories": {
+      "nursery": "حضانة",
+      "preparatory": "تمهيدي",
+      "kindergarten": "تحضيري",
+      "limitReached": "لا يمكنك اختيار أكثر من {{limit}} تصنيفات",
+      "title": "ما هي الفئات الموجودة في الروضة الخاصة بك؟ "
+    },
+    "class": {
+      "title": "أنشئ أول قسم دراسي للبدء.",
+      "className": "اسم القسم",
+      "classNamePlaceholder": "أدخل اسم القسم",
+      "category": "الفئة",
+      "categoryPlaceholder": "اختر فئة",
+      "capacity": "السعة",
+      "capacityPlaceholder": "أدخل سعة القسم",
+      "price": "سعر الفصل",
+      "pricePlaceholder": "أدخل سعر الفصل",
+      "addAnotherClass": "إضافة قسم آخر"
+    },
+    "currency": {
+      "title": "ما هي العملة التي تستخدمها في الروضة الخاصة بك؟",
+      "dzd": "دينار جزائري (DZD)"
+    },
+    "language": {
+      "title": "ما هي اللغة التي تفضل استخدامها في الروضة الخاصة بك؟"
+    },
+    "success": {
+      "title": "تهانينا! تم إعداد روضتك بنجاح",
+      "description": "يمكنك الآن بدء استخدام المنصة",
+      "startUsing": "ابدأ الآن"
+    },
+    "errorSave": "حدث خطأ أثناء الحفظ."
+  },
+  "imageUpload": {
+    "drag": "اسحب الملف إلى هنا أو انقر لاختيار ملف",
+    "description": "يرجى اختيار صورة من جهازك.",
+    "choose": "اختر ملفاً"
+  },
+  "routes": {
+    "home": "لوحة التحكم",
+    "adminDashboard": "لوحة تحكم المدير",
+    "students": "الطلاب",
+    "teachers": "المعلمون",
+    "settings": "الإعدادات",
+    "incomes": "الإيرادات",
+    "expenses": "المصروفات",
+    "financialPerformance": "الأداء المالي",
+    "attendance": "الحضور",
+    "supervisorDashboard": "لوحة تحكم المشرف",
+    "supervisorClasses": "الفصول",
+    "supervisorAttendance": "حضور المشرف",
+    "supervisorTeachers": "المعلمون",
+    "teacherDashboard": "لوحة تحكم المعلم",
+    "teacherStudents": "طلاب المعلم",
+    "teacherReports": "تقارير المعلم",
+    "teacherAttendance": "حضور المعلم",
+    "reports": "التقارير",
+    "classes": "الفصول",
+    "settingsUser": "الإعدادات",
+    "unauthorized": "وصول غير مصرح به",
+    "loading": "جاري التحميل",
+    "noTenantError": "خطأ في المستأجر"
   }
 }

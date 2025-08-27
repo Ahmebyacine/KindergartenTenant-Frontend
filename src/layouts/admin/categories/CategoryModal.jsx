@@ -23,10 +23,12 @@ import {
 import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
+import { t } from "i18next";
 
-const categorySchema = z.object({
-  name: z.string().min(1, "مطلوب"),
-});
+const categorySchema = (t) =>
+  z.object({
+    name: z.string().min(1, t("common.required")),
+  });
 
 export default function CategoryModal({
   onAddCategory,
@@ -36,7 +38,7 @@ export default function CategoryModal({
 }) {
   const [open, setOpen] = useState(false);
   const form = useForm({
-    resolver: zodResolver(categorySchema),
+    resolver: zodResolver(categorySchema(t)),
     defaultValues: {
       name: editingCategory?.name || "",
     },
@@ -57,23 +59,20 @@ export default function CategoryModal({
     form.reset();
     setOpen(false);
   };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {editingCategory ? (
-          <Button
-            variant="link"
-            size="sm"
-            className="underline"
-          >
-            تعديل
+          <Button variant="link" size="sm" className="underline">
+            {t("category.edit")}
           </Button>
         ) : (
           <Button
             onClick={(e) => {
               if (isLimited) {
                 e.preventDefault();
-                toast.error(`تم الوصول إلى الحد الأقصى للفئات `);
+                toast.error(t("category.limitReached"));
               }
             }}
             className={`${
@@ -82,7 +81,7 @@ export default function CategoryModal({
             } rounded-xl`}
           >
             <Plus />
-            أضف فئة مخصصة
+            <span className="hidden sm:block">{t("category.addNew")}</span>
           </Button>
         )}
       </DialogTrigger>
@@ -91,7 +90,9 @@ export default function CategoryModal({
         <DialogHeader className="border-b-2 pb-4">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
             <DialogTitle className="text-lg sm:text-xl font-semibold text-foreground rtl:text-right ltr:text-left w-full">
-              {editingCategory ? "تعديل الفصل" : "إضافة فصل جديد"}
+              {editingCategory
+                ? t("category.editTitle")
+                : t("category.addTitle")}
             </DialogTitle>
           </div>
         </DialogHeader>
@@ -102,20 +103,20 @@ export default function CategoryModal({
             className="space-y-6 pt-2"
           >
             <div className="grid grid-cols-1 gap-4">
-              {/* Class Name */}
+              {/* Category Name */}
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem className="space-y-1">
                     <FormLabel className="text-muted-foreground">
-                      اسم الفئة *
+                      {t("category.nameLabel")} *
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        className="text-right"
-                        placeholder="أدخل اسم الفئة"
+                        className="rtl:text-right"
+                        placeholder={t("category.namePlaceholder")}
                       />
                     </FormControl>
                     <FormMessage />
@@ -135,14 +136,14 @@ export default function CategoryModal({
               className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
               disabled={editingCategory && !form.formState.isDirty}
             >
-              {editingCategory ? "تحديث" : "إضافة"}
+              {editingCategory ? t("common.update") : t("common.add")}
             </Button>
             <DialogClose asChild>
               <Button
                 variant="outline"
                 className="flex-1 border-border text-muted-foreground hover:bg-background"
               >
-                إلغاء
+                {t("common.cancel")}
               </Button>
             </DialogClose>
           </div>

@@ -9,13 +9,14 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Link, useParams } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import DetailItem from "../DetailItem";
 import api from "@/api";
 import useFetch from "@/hooks/useFetch";
 import Loading from "@/pages/common/Loading";
 import { formatDate } from "@/utils/dateFormatter";
 import { getConditionBadge } from "@/utils/getStatusBadges";
+import { t } from "i18next";
 
 export default function ReportHealthDetails() {
   const { reportId } = useParams();
@@ -39,8 +40,8 @@ export default function ReportHealthDetails() {
             className="font-cairo text-muted-foreground"
           >
             <h1 className="text-2xl flex items-center font-bold text-foreground font-cairo mb-2">
-              <ChevronRight />
-              تفاصيل التقرير الصحي
+              <ChevronLeft className="rtl:rotate-180" />
+              {t("reports.health.title")}
             </h1>
           </Link>
           <Breadcrumb>
@@ -51,7 +52,7 @@ export default function ReportHealthDetails() {
                     to="/reports"
                     className="font-cairo text-muted-foreground"
                   >
-                    التقارير
+                    {t("reports.title")}
                   </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
@@ -62,14 +63,14 @@ export default function ReportHealthDetails() {
                     to="/reports?tab=health"
                     className="font-cairo text-muted-foreground"
                   >
-                    التقارير الصحية
+                    {t("reports.health.title")}
                   </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="text-muted-foreground" />
               <BreadcrumbItem>
                 <BreadcrumbPage className="font-cairo text-primary font-medium">
-                  عرض التفاصيل
+                  {t("common.details")}
                 </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
@@ -80,34 +81,34 @@ export default function ReportHealthDetails() {
         <Card className="bg-card border border-border shadow-sm">
           <CardHeader className="border-b border-border px-6">
             <CardTitle className="text-lg font-semibold text-foreground font-cairo">
-              رقم التقرير: {reportDetails.reportId}
+              {t("reports.reportNumber")} : {reportDetails._id}
             </CardTitle>
           </CardHeader>
           <CardContent className="px-6 space-y-4">
             {/* Child Information */}
             <div>
               <h2 className="text-base font-semibold text-foreground mb-3 pb-3 border-b border-border font-cairo">
-                بيانات الطفل
+                {t("reports.health.childInfo")}
               </h2>
               <div className="space-y-1">
                 <DetailItem
-                  label="اسم الطفل"
+                  label={t("reports.health.childName")}
                   value={`${reportDetails?.student?.firstName} ${reportDetails?.student?.lastName}`}
                 />
                 <DetailItem
-                  label="المعلمة"
+                  label={t("reports.health.generatedBy")}
                   value={reportDetails?.generatedBy?.name}
                 />
                 <DetailItem
-                  label="الفصل"
-                  value={reportDetails?.class?.className}
-                />
-                <DetailItem
-                  label="التاريخ"
+                  label={t("reports.health.createdAt")}
                   value={formatDate(reportDetails.createdAt)}
                 />
                 <DetailItem
-                  label="وقت الملاحظة"
+                  label={t("reports.health.class")}
+                  value={reportDetails?.class?.className}
+                />
+                <DetailItem
+                  label={t("reports.health.observationTime")}
                   value={reportDetails.observationTime}
                 />
               </div>
@@ -116,15 +117,15 @@ export default function ReportHealthDetails() {
             {/* Condition Details */}
             <div>
               <h2 className="text-base font-semibold text-foreground mb-3 py-3 border-y border-border font-cairo">
-                تفاصيل الحالة
+                {t("reports.health.conditionDetails")}
               </h2>
               <div className="space-y-1">
                 <DetailItem
-                  label="نوع الحالة"
+                  label={t("reports.health.conditionType")}
                   value={getConditionBadge(reportDetails.conditionType)}
                 />
                 <DetailItem
-                  label="تقييم الحالة"
+                  label={t("reports.health.conditionAssessment")}
                   value={
                     <Badge className="bg-[#fef3c6] text-[#e17100] hover:bg-[#fef3c6] border-0 rounded-md px-3 py-1 font-cairo">
                       {reportDetails.conditionAssessment}
@@ -132,12 +133,12 @@ export default function ReportHealthDetails() {
                   }
                 />
                 <DetailItem
-                  label="تم اتخاذ إجراء؟"
-                  value={reportDetails?.actionTaken ? "نعم" : "لا"}
+                  label={t("reports.health.actionTaken")}
+                  value={reportDetails?.actionTaken ? t("common.yes") : t("common.no")}
                 />
                 {reportDetails?.actionTaken && (
                   <DetailItem
-                    label="نوع الإجراء"
+                    label={t("reports.health.actionType")}
                     value={reportDetails.actionType}
                   />
                 )}
@@ -148,7 +149,7 @@ export default function ReportHealthDetails() {
             {reportDetails.notes && (
               <div>
                 <h2 className="text-base font-semibold text-foreground mb-3 pb-3 border-b border-border font-cairo">
-                  ملاحظات
+                  {t("common.notes")}
                 </h2>
                 <p className="text-foreground leading-relaxed font-cairo">
                   {reportDetails.notes}

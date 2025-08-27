@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GeneralSettingsUser } from "@/components/settings/GeneralSettingsUser";
 import SecuritySettings from "@/components/settings/SecuritySettings";
 import PersonalSettings from "@/components/settings/PersonalSettings";
+import { t } from "i18next";
 
 export default function SettingsUser() {
   const [searchParams] = useSearchParams();
@@ -14,24 +15,24 @@ export default function SettingsUser() {
         <div className="flex justify-start">
           <Tabs defaultValue={defaultTab} className="w-full">
             {/* Keep existing TabsList and TabsTrigger styles */}
-            <TabsList className="w-full grid grid-cols-3 lg:grid-cols-8 md:grid-cols-6  bg-transparent h-auto p-0 gap-8 border-b mb-2">
+            <TabsList className="w-full grid grid-cols-3 lg:grid-cols-6 md:grid-cols-4 bg-transparent h-auto p-0 gap-8 border-b mb-2">
               <TabsTrigger
                 value="generalSettings"
                 className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
               >
-                الإعدادات العامة
+                {t("settings.tabs.general")}
               </TabsTrigger>
               <TabsTrigger
                 value="personalSettings"
                 className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
               >
-                الإعدادات الشخصية
+                {t("settings.tabs.personal")}
               </TabsTrigger>
               <TabsTrigger
                 value="security"
                 className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
               >
-                الأمان
+                {t("settings.tabs.security")}
               </TabsTrigger>
             </TabsList>
             {/* Move TabsContent inside first Tabs component */}

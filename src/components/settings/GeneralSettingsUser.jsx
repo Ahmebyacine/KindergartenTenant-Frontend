@@ -8,6 +8,7 @@ import i18n from "@/i18n";
 import api from "@/api";
 import { toast } from "sonner";
 import { updateDocumentDirection } from "@/utils/updateDocumentDirection";
+import { t } from "i18next";
 export function GeneralSettingsUser() {
   const { theme, setTheme } = useTheme();
   const [autoTimeZone, setAutoTimeZone] = useState(true);
@@ -19,17 +20,16 @@ export function GeneralSettingsUser() {
     return () => i18n.off("languageChanged", onLangChange);
   }, []);
 
-
   const handleLanguageChange = async (lang) => {
     try {
       i18n.changeLanguage(lang);
       updateDocumentDirection(lang);
       setSelectedLang(lang);
       await api.put("/auth/update-info", { language: lang });
-      toast.success("تم تغيير اللغة بنجاح!");
+      toast.success(t("settings.general.languageChangeSuccess"));
     } catch (error) {
       console.error("Error updating language:", error);
-      toast.error("فشل في تغيير اللغة. يرجى المحاولة مرة أخرى.");
+      toast.error(t("settings.general.languageChangeError"));
     }
   };
 
@@ -37,10 +37,10 @@ export function GeneralSettingsUser() {
     try {
       await api.put("/auth/update-info", { theme: themeValue });
       setTheme(themeValue);
-      toast.success("تم تغيير المظهر بنجاح!");
+      toast.success(t("settings.general.themeChangeSuccess"));
     } catch (error) {
       console.error("Error updating theme:", error);
-      toast.error("فشل في تغيير المظهر. يرجى المحاولة مرة أخرى.");
+      toast.error(t("settings.general.themeChangeError"));
     }
   };
 
@@ -48,15 +48,17 @@ export function GeneralSettingsUser() {
     <div className="space-y-8">
       {/* Preferences Section */}
       <div>
-        <h2 className="text-2xl font-semibold mb-4 text-right">التفضيلات</h2>
+        <h2 className="text-2xl font-semibold mb-4 rtl:text-right">
+          {t("settings.general.preferences")}
+        </h2>
       </div>
 
       {/* Appearance Section */}
       <div className="space-y-4">
         <div className="flex flex-col justify-start">
-          <h3 className="text-xl font-medium">المظهر</h3>
+          <h3 className="text-xl font-medium">{t("settings.general.theme")}</h3>
           <p className="text-sm text-muted-foreground">
-            اختر المظهر الافتراضي للنظام
+            {t("settings.general.themeDescription")}
           </p>
         </div>
 
@@ -80,7 +82,7 @@ export function GeneralSettingsUser() {
                 </div>
               </div>
             </div>
-            <span className="text-sm">داكن</span>
+            <span className="text-sm">{t("settings.general.dark")}</span>
           </div>
 
           <div className="flex flex-col items-center gap-2">
@@ -102,7 +104,7 @@ export function GeneralSettingsUser() {
                 </div>
               </div>
             </div>
-            <span className="text-sm">فاتح</span>
+            <span className="text-sm">{t("settings.general.light")}</span>
           </div>
 
           <div className="flex flex-col items-center gap-2">
@@ -124,22 +126,22 @@ export function GeneralSettingsUser() {
                 </div>
               </div>
             </div>
-            <span className="text-sm">النظام</span>
+            <span className="text-sm">{t("settings.general.system")}</span>
           </div>
         </div>
       </div>
 
       {/* Language and Time Section */}
       <div>
-        <h2 className="text-2xl font-semibold mb-4 text-right">اللغة والوقت</h2>
+        <h2 className="text-2xl font-semibold mb-4 rtl:text-right">{t("settings.general.languageAndTime")}</h2>
         <div className="border-t border-border mb-6"></div>
 
         <div className="space-y-6">
           <div className="flex flex-col md:flex-row md:justify-between md:items-center">
             <div className="flex flex-col items-start">
-              <h3 className="text-lg font-medium">اللغة</h3>
+              <h3 className="text-lg font-medium">{t("settings.general.language")}</h3>
               <p className="text-sm text-muted-foreground w-full md:w-auto">
-                قم بتغيير لغة واجهة النظام
+                {t("settings.general.languageDescription")}
               </p>
             </div>
             <div className="flex gap-6 mt-3 md:m-0">
@@ -164,13 +166,13 @@ export function GeneralSettingsUser() {
             </div>
           </div>
 
-          <div className="flex justify-between items-center pt-4">
+          <div className="hidden justify-between items-center pt-4">
             <div className="flex flex-col items-end">
               <h3 className="text-lg font-medium">
-                تحديد المنطقة الزمنية تلقائيا باستخدام الموقع
+                {t("settings.general.autoTimeZone")}
               </h3>
               <p className="text-sm text-muted-foreground">
-                سيتم ضبط التوقيت والإشعارات تلقائيا حسب موقعك الجغرافي
+                {t("settings.general.autoTimeZoneDescription")}
               </p>
             </div>
             <div className="flex items-center gap-2">

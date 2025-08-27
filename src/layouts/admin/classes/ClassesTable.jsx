@@ -12,6 +12,7 @@ import LoadingTable from "@/components/LoadingTable";
 import ClassesModal from "./ClassesModal";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import DeleteAlertDialog from "@/components/DeleteAlertDialog";
+import { t } from "i18next";
 
 export default function ClassesTable({
   classes,
@@ -28,19 +29,19 @@ export default function ClassesTable({
             #
           </TableHead>
           <TableHead className="text-muted-foreground font-medium">
-            اسم الفصل
+            {t("classes.nameLabel")}
           </TableHead>
           <TableHead className="text-muted-foreground font-medium">
-            عدد الطلاب
+            {t("classes.studentCountLabel")}
           </TableHead>
           <TableHead className="text-muted-foreground font-medium">
-            سعر الفصل
+            {t("classes.priceLabel")}
           </TableHead>
           <TableHead className="text-muted-foreground font-medium">
-            حالة الفصل
+            {t("classes.statusLabel")}
           </TableHead>
           <TableHead className="text-muted-foreground font-medium">
-            الإجراءات
+            {t("classes.actionsLabel")}
           </TableHead>
         </TableRow>
       </TableHeader>
@@ -77,7 +78,7 @@ export default function ClassesTable({
                   onUpdateClass={onUpdateClass}
                 />
                 <DeleteAlertDialog
-                  title="حذف الفصل"
+                  title={t("classes.deleteTitle")}
                   item={classItem._id}
                   onDelete={onDeleteClass}
                 />
@@ -92,10 +93,10 @@ export default function ClassesTable({
               className="text-center py-12 text-muted-foreground"
             >
               <div className="flex flex-col items-center justify-center gap-2">
-                <FileTextIcon size={40} color="CurrentColor" />{" "}
-                <p className="text-lg font-medium">لا توجد اقسام متاحة</p>
+                <FileTextIcon size={40} color="CurrentColor" />
+                <p className="text-lg font-medium">{t("classes.noClasses")}</p>
                 <p className="text-sm">
-                  لم يتم إنشاء أي اقسام بعد، قم بإضافة قسم جديد
+                  {t("classes.noClassesDescription")}
                 </p>
               </div>
             </TableCell>

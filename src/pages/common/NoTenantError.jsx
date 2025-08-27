@@ -6,7 +6,7 @@ export default function NoTenantError({
   description = "يرجى الدخول الى عنوان مستأجر صالح",
 }) {
   return (
-    <div className="flex items-center justify-center min-h-[80vh]" dir="rtl">
+    <div className="flex items-center justify-center min-h-[80vh]">
       <Card className="max-w-md w-full">
         <CardHeader className="space-y-1 flex flex-col items-center text-center pb-2">
           <div className="w-12 h-12 rounded-full bg-destructive/10 flex items-center justify-center mb-2">

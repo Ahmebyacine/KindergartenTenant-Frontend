@@ -28,6 +28,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import ScanAttendance from "@/components/attendance/ScanAttendance";
 import ScanCheckOut from "@/components/attendance/ScanCheckOut";
 import { attendanceStats } from "@/utils/attendanceStats";
+import { getTextNumberChild } from "@/utils/getTextNumberChild";
+import { t } from "i18next";
 
 export default function AttendanceTeacher() {
   const [loading, setLoading] = useState(true);
@@ -115,10 +117,14 @@ export default function AttendanceTeacher() {
           };
         });
       }
-      toast.success("تم تسجيل الحضور بنجاح");
+      toast.success(t("attendance.successCheckIn"));
     } catch (error) {
       console.log(error);
-      toast.error("حدث خطأ أثناء تسجيل الحضور");
+      toast.error(t("attendance.errorCheckIn"), {
+        description: t(
+          `errorApi.${error?.response?.data?.message || "defaultError"}`
+        ),
+      });
     }
   };
 
@@ -149,39 +155,42 @@ export default function AttendanceTeacher() {
           };
         });
       }
-      toast.success("تم تسجيل الخروج بنجاح");
+      toast.success(t("attendance.successCheckOut"));
     } catch (error) {
       console.log(error);
-      toast.error("حدث خطأ أثناء تسجيل الخروج");
+      toast.error(t("attendance.errorCheckOut"), {
+        description: t(
+          `errorApi.${error?.response?.data?.message || "defaultError"}`
+        ),
+      });
     }
   };
 
   const totals = attendanceStats(attendance?.info || []);
-
   const statsData = [
     {
-      title: "عدد الأطفال",
-      value: `${attendance?.info?.length || 0} طفل`,
+      title: t("attendance.stats.childrenCount"),
+      value: getTextNumberChild(attendance?.info?.length || 0),
       icon: People,
       bgColor: "bg-[#A2F4FD]",
       iconColor: "#00A6F4",
     },
     {
-      title: "الحضور",
-      value: `${totals?.presentCount || 0} حاضر`,
+      title: t("attendance.stats.present"),
+      value: `${totals?.presentCount || 0} ${t("attendance.present")}`,
       icon: TickSquare,
       bgColor: "bg-[#B9F8CF]",
       iconColor: "#008236",
     },
     {
-      title: "الغياب",
-      value: `${totals?.absentCount || 0} غائب`,
+      title: t("attendance.stats.absent"),
+      value: `${totals?.absentCount || 0} ${t("attendance.absent")}`,
       icon: Danger,
       bgColor: "bg-[#FFE2E2]",
       iconColor: "#E7000B",
     },
     {
-      title: "نسبة الحضور",
+      title: t("attendance.stats.percentage"),
       value: `${totals?.presentPercentage || 0}%`,
       icon: Chart2,
       bgColor: "bg-[#EDE9FE]",

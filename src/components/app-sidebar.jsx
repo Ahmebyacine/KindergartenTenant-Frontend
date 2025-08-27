@@ -27,6 +27,7 @@ import SidebarMenuTeacher from "@/layouts/teacher/SidebarMenuTeacher";
 import img from "@/assets/images/avatar.png";
 import logoAr from "@/assets/images/logoSidebarArabic.png";
 import logoLt from "@/assets/images/logoSidebarLatino.png";
+import { t } from "i18next";
 
 export function AppSidebar() {
   const { user } = useAuth();
@@ -72,7 +73,7 @@ export function AppSidebar() {
                       <img
                         src={
                           user?.image
-                            ? import.meta.env.VITE_API_URL_PICTURE + user?.image
+                            ? import.meta.env.VITE_API_URL_PICTURE + user?.image + ".png"
                             : img
                         }
                         alt="User"
@@ -96,7 +97,6 @@ export function AppSidebar() {
               <DropdownMenuContent
                 side="top"
                 className="w-[var(--radix-popper-anchor-width)] rounded-lg"
-                dir="rtl"
               >
                 <DropdownMenuItem className="p-0">
                   <LogoutButton />
@@ -110,7 +110,7 @@ export function AppSidebar() {
                 >
                   <DropdownMenuItem className="p-0">
                     <Button
-                      className="w-full justify-start text-foreground hover:text-red-400 border-b"
+                      className="w-full justify-start text-foreground border-b"
                       variant="ghost"
                     >
                       <Setting2
@@ -119,7 +119,7 @@ export function AppSidebar() {
                         color="var(--foreground)"
                         className="size-5"
                       />
-                      <span>اعدادات الامان</span>
+                      <span>{t("sidebar.securitySettings")}</span>
                     </Button>
                   </DropdownMenuItem>
                 </Link>
@@ -132,7 +132,7 @@ export function AppSidebar() {
                 >
                   <DropdownMenuItem className="p-0">
                     <Button
-                      className="w-full justify-start text-foreground hover:text-red-400 border-b"
+                      className="w-full justify-start text-foreground border-b"
                       variant="ghost"
                     >
                       <ProfileCircle
@@ -141,7 +141,7 @@ export function AppSidebar() {
                         color="var(--foreground)"
                         className="size-5"
                       />
-                      <span>الملف الشخصي</span>
+                      <span>{t("sidebar.profile")}</span>
                     </Button>
                   </DropdownMenuItem>
                 </Link>

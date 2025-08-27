@@ -30,14 +30,15 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Add } from "iconsax-react";
 import { useEffect, useState } from "react";
+import { t } from "i18next";
 
 // Updated schema with student instead of childName
-const healthReportSchema = z.object({
-  student: z.string().min(1, "مطلوب"),
-  classId: z.string().min(1, "مطلوب"),
-  observationTime: z.string().min(1, "مطلوب"),
-  conditionType: z.string().min(1, "مطلوب"),
-  conditionAssessment: z.string().min(1, "مطلوب"),
+const healthReportSchema = (t) => z.object({
+  student: z.string().min(1, t("common.required")),
+  classId: z.string().min(1, t("common.required")),
+  observationTime: z.string().min(1, t("common.required")),
+  conditionType: z.string().min(1, t("common.required")),
+  conditionAssessment: z.string().min(1, t("common.required")),
   actionTaken: z.boolean(),
   actionType: z.string().optional(),
   notes: z.string().optional(),
@@ -47,7 +48,7 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
   const [filteredChildren, setFilteredChildren] = useState([]);
   const [open, setOpen] = useState(false);
   const form = useForm({
-    resolver: zodResolver(healthReportSchema),
+    resolver: zodResolver(healthReportSchema(t)),
     defaultValues: {
       student: "",
       classId: "",
@@ -81,18 +82,18 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
   };
 
   const conditionTypes = [
-    { value: "fever", label: "حرارة" },
-    { value: "cough", label: "سعال" },
-    { value: "fatigue", label: "إعياء" },
-    { value: "nausea", label: "غثيان" },
-    { value: "injury", label: "إصابة" },
+    { value: "fever"},
+    { value: "cough" },
+    { value: "fatigue" },
+    { value: "nausea" },
+    { value: "injury" },
   ];
 
   // Condition assessments
   const conditionAssessments = [
-    { value: "mild", label: "خفيفة" },
-    { value: "moderate", label: "متوسطة" },
-    { value: "severe", label: "شديدة" },
+    { value: "mild"},
+    { value: "moderate"},
+    { value: "severe"},
   ];
 
   return (
@@ -100,14 +101,14 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
       <DialogTrigger asChild>
         <Button>
           <Add size="20" color="currentColor" />
-          إضافة تقرير
+          {t("reports.addReport")}
         </Button>
       </DialogTrigger>
 
       <DialogContent className="w-full max-w-full sm:max-w-2xl bg-card p-6 rounded-lg sm:rounded-2xl">
         <DialogHeader className="border-b-2 pb-4">
           <DialogTitle className="text-lg sm:text-xl rtl:text-right ltr:text-left font-semibold text-foreground">
-            إضافة تقرير صحي
+            {t("reports.health.addHealthReport")}
           </DialogTitle>
         </DialogHeader>
 
@@ -125,12 +126,12 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                 render={({ field }) => (
                   <FormItem className="space-y-2">
                     <FormLabel className="text-muted-foreground">
-                      الفصل
+                      {t("reports.health.class")}
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <SelectTrigger className="text-right">
-                          <SelectValue placeholder="اختر الفصل" />
+                        <SelectTrigger className="rtl:text-right">
+                          <SelectValue placeholder={t("reports.health.selectClass")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -153,7 +154,7 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                 render={({ field }) => (
                   <FormItem className="space-y-2">
                     <FormLabel className="text-muted-foreground">
-                      اسم الطفل
+                      {t("reports.health.childName")}
                     </FormLabel>
                     <Select
                       onValueChange={field.onChange}
@@ -161,8 +162,8 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                       disabled={!classId}
                     >
                       <FormControl>
-                        <SelectTrigger className="text-right">
-                          <SelectValue placeholder="اختر الطفل" />
+                        <SelectTrigger className="rtl:text-right">
+                          <SelectValue placeholder={t("reports.health.selectChild")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="max-h-60 overflow-y-auto">
@@ -178,7 +179,7 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                           ))
                         ) : (
                           <SelectItem value="none" disabled>
-                            لا يوجد أطفال
+                            {t("reports.health.noChildren")}
                           </SelectItem>
                         )}
                       </SelectContent>
@@ -195,13 +196,12 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                 render={({ field }) => (
                   <FormItem className="space-y-2">
                     <FormLabel className="text-muted-foreground">
-                      وقت الملاحظة
+                      {t("reports.health.observationTime")}
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        className="text-right"
-                        placeholder="صباحاً 10:00"
+                        className="rtl:text-right"
                       />
                     </FormControl>
                     <FormMessage />
@@ -216,18 +216,18 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                 render={({ field }) => (
                   <FormItem className="space-y-2">
                     <FormLabel className="text-muted-foreground">
-                      نوع الحالة
+                      {t("reports.health.conditionType")}
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <SelectTrigger className="text-right">
-                          <SelectValue placeholder="اختر نوع الحالة" />
+                        <SelectTrigger className="rtl:text-right">
+                          <SelectValue placeholder={t("reports.health.selectConditionType")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {conditionTypes.map((type) => (
                           <SelectItem key={type.value} value={type.value}>
-                            {type.label}
+                            {t(`reports.health.conditionTypes.${type.value}`)}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -244,12 +244,12 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                 render={({ field }) => (
                   <FormItem className="space-y-2">
                     <FormLabel className="text-muted-foreground">
-                      تقييم الحالة
+                      {t("reports.health.conditionAssessment")}
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <SelectTrigger className="text-right">
-                          <SelectValue placeholder="اختر التقييم" />
+                        <SelectTrigger className="rtl:text-right">
+                          <SelectValue placeholder={t("reports.health.selectConditionAssessment")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -258,7 +258,7 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                             key={assessment.value}
                             value={assessment.value}
                           >
-                            {assessment.label}
+                            {t(`reports.health.conditionAssessments.${assessment.value}`)}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -275,12 +275,12 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                 render={({ field }) => (
                   <FormItem className="space-y-2">
                     <FormLabel className="text-muted-foreground">
-                      تم اتخاذ إجراء؟
+                      {t("reports.health.actionTaken")}
                     </FormLabel>
                     <div className="flex gap-4">
                       {[
-                        { label: "نعم", value: true },
-                        { label: "لا", value: false },
+                        { label: t("common.yes"), value: true },
+                        { label: t("common.no"), value: false },
                       ].map(({ label, value }) => (
                         <label
                           key={label}
@@ -310,13 +310,12 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                   render={({ field }) => (
                     <FormItem className="space-y-2">
                       <FormLabel className="text-muted-foreground">
-                        نوع الإجراء
+                        {t("reports.health.actionType")}
                       </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
-                          className="text-right"
-                          placeholder="راحة في العيادة لمدة ساعة"
+                          className="rtl:text-right"
                         />
                       </FormControl>
                       <FormMessage />
@@ -333,7 +332,7 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
               render={({ field }) => (
                 <FormItem className="space-y-2">
                   <FormLabel className="text-muted-foreground">
-                    ملاحظات
+                    {t("common.notes")}
                   </FormLabel>
                   <FormControl>
                     <Textarea
@@ -357,7 +356,7 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
               onClick={form.handleSubmit(onSubmit)}
               className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
             >
-              حفظ
+              {t("common.save")}
             </Button>
             <DialogClose asChild>
               <Button
@@ -367,7 +366,7 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                   form.reset();
                 }}
               >
-                إلغاء
+                {t("common.cancel")}
               </Button>
             </DialogClose>
           </div>

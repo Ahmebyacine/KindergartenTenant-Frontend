@@ -12,6 +12,7 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
 import api from "@/api";
 import { toast } from "sonner";
+import { t } from "i18next";
 
 export default function PrintStudentsModal({ enrollments }) {
   const [open, setOpen] = useState(false);
@@ -64,16 +65,16 @@ export default function PrintStudentsModal({ enrollments }) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button size="sm" className="text-primary" variant={"ghost"}>
-          طباعة البطاقات
+          {t("students.printCards.title")}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>طباعة بطاقات الاطفال</DialogTitle>
+          <DialogTitle>{t("students.printCards.description")}</DialogTitle>
         </DialogHeader>
         <div className="py-4">
           <Label className="text-base font-medium mb-3 block">
-            اختر تنسيق البطاقة / Select Card Format
+            {t("students.printCards.selectFormat")}
           </Label>
           <RadioGroup
             value={selectedFormat}
@@ -97,14 +98,14 @@ export default function PrintStudentsModal({ enrollments }) {
         <DialogFooter>
           <div className="flex gap-4 mt-6 justify-center">
             <Button onClick={handlePrint} disabled={loading}>
-              {loading ? "جارٍ التحميل..." : "طباعة"}
+              {loading ? t("common.loading") : t("students.printCards.print")}
             </Button>
             <Button
               variant="outline"
               onClick={() => setOpen(false)}
               className="text-muted-foreground"
             >
-              إلغاء
+              {t("common.cancel")}
             </Button>
           </div>
         </DialogFooter>

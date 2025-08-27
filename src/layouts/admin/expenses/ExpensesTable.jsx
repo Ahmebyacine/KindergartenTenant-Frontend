@@ -12,6 +12,8 @@ import LoadingTable from "@/components/LoadingTable";
 import { formatDateTime } from "@/utils/dateFormatter";
 import ExpensesModal from "./ExpensesModal";
 import DeleteAlertDialog from "@/components/DeleteAlertDialog";
+import { t } from "i18next";
+import { expenseTypes } from "@/assets/data/data";
 
 export default function ExpensesTable({
   expenses,
@@ -24,15 +26,15 @@ export default function ExpensesTable({
       <TableHeader>
         <TableRow className="bg-muted/50 border-b border-border hover:bg-muted/50">
           <TableHead className="text-foreground font-medium">#</TableHead>
-          <TableHead className="text-foreground font-medium">الوصف</TableHead>
-          <TableHead className="text-foreground font-medium">التاريخ</TableHead>
-          <TableHead className="text-foreground font-medium">التصنيف</TableHead>
-          <TableHead className="text-foreground font-medium">المبلغ</TableHead>
+          <TableHead className="text-foreground font-medium">{t("expenses.description")}</TableHead>
+          <TableHead className="text-foreground font-medium">{t("common.time")}</TableHead>
+          <TableHead className="text-foreground font-medium">{t("expenses.category")}</TableHead>
+          <TableHead className="text-foreground font-medium">{t("expenses.amount")}</TableHead>
           <TableHead className="text-foreground font-medium">
-            محرر العملية
+            {t("expenses.approvedBy")}
           </TableHead>
           <TableHead className="text-foreground font-medium">
-            الإجراءات
+            {t("common.actions")}
           </TableHead>
         </TableRow>
       </TableHeader>
@@ -57,7 +59,7 @@ export default function ExpensesTable({
                 {formatDateTime(row.createdAt)}
               </TableCell>
               <TableCell className="text-foreground py-3">
-                {row.category}
+                {t(expenseTypes.filter((type) => type.value === row.category)[0]?.key)}
               </TableCell>
               <TableCell className="text-foreground py-3">
                 {formatCurrencyDZD(row.amount)}
@@ -85,9 +87,9 @@ export default function ExpensesTable({
             >
               <div className="flex flex-col items-center justify-center gap-2">
                 <MoneySend size={40} color="CurrentColor" />
-                <p className="text-lg font-medium">لا توجد مصريف متاحة</p>
+                <p className="text-lg font-medium">{t("expenses.noExpenses")}</p>
                 <p className="text-sm">
-                  لم يتم إنشاء أي مصريف بعد، قم بإضافة مصروف جديد
+                  {t("expenses.noExpensesDescription")}
                 </p>
               </div>
             </TableCell>

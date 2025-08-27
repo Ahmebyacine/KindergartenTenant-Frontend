@@ -11,12 +11,13 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Trash } from "lucide-react";
 import { Button } from "./ui/button";
+import { t } from "i18next";
 
 export default function DeleteAlertDialog({
-  trigger = "حذف",
+  trigger = t("common.delete"),
   onDelete,
-  title = "حذف العنصر",
-  description = "هل أنت متأكد من حذف العنصر المحدد؟ لا يمكن التراجع عن هذا الإجراء.",
+  title = t("common.delete_item"),
+  description = t("common.delete_item_confirmation"),
   item,
 }) {
   return (
@@ -47,9 +48,9 @@ export default function DeleteAlertDialog({
         </AlertDialogHeader>
 
         <AlertDialogFooter>
-          <AlertDialogCancel>إلغاء</AlertDialogCancel>
+          <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
           <AlertDialogAction onClick={() => onDelete?.(item)}>
-            حذف
+            {t("common.delete")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

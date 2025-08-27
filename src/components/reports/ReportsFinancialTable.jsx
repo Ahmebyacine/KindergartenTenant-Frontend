@@ -30,6 +30,7 @@ import LoadingTable from "@/components/LoadingTable";
 import ReportsFilter from "@/components/reports/ReportsFilter";
 import usePaginatedFetch from "@/hooks/usePaginatedFetch";
 import getPageNumbers from "@/utils/getPageNumbers";
+import { t } from "i18next";
 
 export default function ReportsFinancialTable({ classes, students }) {
   const [search, setSearch] = useState("");
@@ -90,8 +91,11 @@ export default function ReportsFinancialTable({ classes, students }) {
     try {
       const response = await api.post("/financial-reports", data);
       setReports((prev) => [response.data, ...prev]);
-      toast.success("تمت إضافة التقرير بنجاح!");
+      toast.success(t("reports.financial.addSuccess"));
     } catch (error) {
+      toast.error(t("reports.financial.addError"),{
+        description: `apiError.${error?.response?.data?.message || "errorDefault"}`
+      });
       console.error("Error creating class", error);
     }
   };
@@ -109,7 +113,7 @@ export default function ReportsFinancialTable({ classes, students }) {
               color="currentColor"
             />
             <Input
-              placeholder="البحث"
+              placeholder={t("common.search")}
               className="pr-10 pl-4 py-2 bg-background"
               onChange={handleSearch}
               value={search}
@@ -131,25 +135,25 @@ export default function ReportsFinancialTable({ classes, students }) {
               #
             </TableHead>
             <TableHead className="text-muted-foreground font-medium">
-              الطفل
+              {t("reports.financial.studentName")}
             </TableHead>
             <TableHead className="text-muted-foreground font-medium">
-              ولي الأمر
+              {t("reports.financial.parentName")}
             </TableHead>
             <TableHead className="text-muted-foreground font-medium">
-              الفصل
+              {t("reports.financial.className")}
             </TableHead>
             <TableHead className="text-muted-foreground font-medium">
-              الشهر
+              {t("reports.financial.month")}
             </TableHead>
             <TableHead className="text-muted-foreground font-medium">
-              المبلغ
+              {t("reports.financial.amount")}
             </TableHead>
             <TableHead className="text-muted-foreground font-medium">
-              الحالة
+              {t("reports.financial.status")}
             </TableHead>
             <TableHead className="text-muted-foreground font-medium">
-              الإجراءات
+              {t("common.actions")}
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -189,7 +193,7 @@ export default function ReportsFinancialTable({ classes, students }) {
                     className="text-primary hover:text-primary/80 p-0 h-auto underline"
                   >
                     <Link to={`/reports/financial/${report._id}`}>
-                      التفاصيل
+                      {t("common.details")}
                     </Link>
                   </Button>
                 </TableCell>
@@ -205,9 +209,9 @@ export default function ReportsFinancialTable({ classes, students }) {
               >
                 <div className="flex flex-col items-center justify-center gap-2">
                   <Document size={40} color="CurrentColor" />
-                  <p className="text-lg font-medium">لا توجد تقارير متاحة</p>
+                  <p className="text-lg font-medium">{t("reports.noReports")}</p>
                   <p className="text-sm">
-                    لم يتم إنشاء أي تقارير بعد، قم بإضافة تقرير جديد
+                    {t("reports.noReportsDescription")}
                   </p>
                 </div>
               </TableCell>

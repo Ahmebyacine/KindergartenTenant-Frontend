@@ -3,11 +3,8 @@ import {
   CardSend,
   Chart2,
   DollarSquare,
-  SearchNormal1,
 } from "iconsax-react";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
-import { Input } from "@/components/ui/input";
-import IncomesFilter from "@/layouts/admin/incomes/IncomesFilter";
 import FinancialJournalChart from "@/layouts/admin/financialPerformance/FinancialJournalChart";
 import FinancialJournalTable from "@/layouts/admin/financialPerformance/FInancialJournalTable";
 import EmployeeJournalTable from "@/layouts/admin/financialPerformance/EmployeeJournalTable";
@@ -16,13 +13,14 @@ import api from "@/api";
 import { getMonthNameByNumber } from "@/utils/getMonthNameByNumber";
 import useFetch from "@/hooks/useFetch";
 import ErrorPage from "../common/ErrorPage";
+import { t } from "i18next";
 
 export default function FinancialPerformance() {
   const fetchFinancialPerformance = async () => {
     const res = await api.get(`/statistics/financial-performance`);
     return res.data.map((item) => ({
       ...item,
-      monthLabel: getMonthNameByNumber(item.month),
+      monthLabel: t(getMonthNameByNumber(item.month)),
     }));
   };
   const { data, loading, error } = useFetch(fetchFinancialPerformance);
@@ -43,39 +41,39 @@ export default function FinancialPerformance() {
       : "0%";
 
   const statsData = [
-    {
-      title: "إجمالي المداخيل",
-      value: formatCurrencyDZD(totals?.income || 0),
-      subLabel: "المبلغ المحصل خلال السنة الحالية",
-      icon: CardReceive,
-      bgColor: "bg-[#DCFCE7]",
-      iconColor: "#00A63E",
-    },
-    {
-      title: "إجمالي المصاريف",
-      value: formatCurrencyDZD(totals?.expenses || 0),
-      icon: CardSend,
-      bgColor: "bg-[#FFE2E2]",
-      iconColor: "#FB2C36",
-      subLabel: "جميع المصاريف المسجلة",
-    },
-    {
-      title: "صافي الربح",
-      value: formatCurrencyDZD(profit),
-      icon: DollarSquare,
-      bgColor: "bg-[#FEF3C6]",
-      iconColor: "#D08700",
-      subLabel: "الفرق بين المداخيل والمصاريف",
-    },
-    {
-      title: "نسبة الربح",
-      value: profitPercentage,
-      icon: Chart2,
-      bgColor: "bg-[#DBEAFE]",
-      iconColor: "#1447E6",
-      subLabel: "مقارنة بين الربح والمصاريف الإجمالية",
-    },
-  ];
+  {
+    title: t("financialPerformance.stats.income.title"),
+    value: formatCurrencyDZD(totals?.income || 0),
+    subLabel: t("financialPerformance.stats.income.subLabel"),
+    icon: CardReceive,
+    bgColor: "bg-[#DCFCE7]",
+    iconColor: "#00A63E",
+  },
+  {
+    title: t("financialPerformance.stats.expenses.title"),
+    value: formatCurrencyDZD(totals?.expenses || 0),
+    subLabel: t("financialPerformance.stats.expenses.subLabel"),
+    icon: CardSend,
+    bgColor: "bg-[#FFE2E2]",
+    iconColor: "#FB2C36",
+  },
+  {
+    title: t("financialPerformance.stats.profit.title"),
+    value: formatCurrencyDZD(profit),
+    subLabel: t("financialPerformance.stats.profit.subLabel"),
+    icon: DollarSquare,
+    bgColor: "bg-[#FEF3C6]",
+    iconColor: "#D08700",
+  },
+  {
+    title: t("financialPerformance.stats.profitPercentage.title"),
+    value: profitPercentage,
+    subLabel: t("financialPerformance.stats.profitPercentage.subLabel"),
+    icon: Chart2,
+    bgColor: "bg-[#DBEAFE]",
+    iconColor: "#1447E6",
+  },
+];
 
   if (error) return <ErrorPage error={error} />;
 

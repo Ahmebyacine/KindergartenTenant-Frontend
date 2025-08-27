@@ -30,6 +30,7 @@ import LoadingTable from "@/components/LoadingTable";
 import ReportsFilter from "@/components/reports/ReportsFilter";
 import usePaginatedFetch from "@/hooks/usePaginatedFetch";
 import getPageNumbers from "@/utils/getPageNumbers";
+import { t } from "i18next";
 
 export default function ReportsPedagogicalTable({ classes, students }) {
   const [search, setSearch] = useState("");
@@ -90,9 +91,12 @@ export default function ReportsPedagogicalTable({ classes, students }) {
     try {
       const response = await api.post("/pedagogical-reports", data);
       setReports((prev) => [response.data, ...prev]);
-      toast("تمت إضافة التقرير بنجاح!");
+      toast.success(t("reports.pedagogical.addSuccess"));
     } catch (error) {
       console.error("Error creating report", error);
+      toast.error(t("reports.pedagogical.addError"),{
+        description: t(`errorApi.${error?.response?.data?.message || "defaultError"}`)
+      });
     }
   };
 
@@ -109,7 +113,7 @@ export default function ReportsPedagogicalTable({ classes, students }) {
               color="currentColor"
             />
             <Input
-              placeholder="البحث"
+              placeholder={t("common.search")}
               className="pr-10 pl-4 py-2 bg-background"
               value={search}
               onChange={handleSearch}
@@ -128,13 +132,13 @@ export default function ReportsPedagogicalTable({ classes, students }) {
         <TableHeader>
           <TableRow className="bg-muted/50 border-b border-border hover:bg-muted/50">
             <TableHead>#</TableHead>
-            <TableHead>اسم الطفل</TableHead>
-            <TableHead>اسم المعلمة</TableHead>
-            <TableHead>الفصل</TableHead>
-            <TableHead>التاريخ</TableHead>
-            <TableHead>التقييم العام</TableHead>
-            <TableHead>الحالة</TableHead>
-            <TableHead>الإجراءات</TableHead>
+            <TableHead>{t("reports.pedagogical.childName")}</TableHead>
+            <TableHead>{t("reports.pedagogical.teacherName")}</TableHead>
+            <TableHead>{t("reports.pedagogical.class")}</TableHead>
+            <TableHead>{t("reports.pedagogical.date")}</TableHead>
+            <TableHead>{t("reports.pedagogical.overallEvaluation")}</TableHead>
+            <TableHead>{t("reports.pedagogical.status")}</TableHead>
+            <TableHead>{t("common.actions")}</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -169,7 +173,7 @@ export default function ReportsPedagogicalTable({ classes, students }) {
                       variant="link"
                       className="text-primary p-0 h-auto underline"
                     >
-                      عرض التفاصيل
+                      {t("common.details")}
                     </Button>
                   </Link>
                 </TableCell>
@@ -185,9 +189,9 @@ export default function ReportsPedagogicalTable({ classes, students }) {
               >
                 <div className="flex flex-col items-center justify-center gap-2">
                   <Document size={40} color="CurrentColor" />
-                  <p className="text-lg font-medium">لا توجد تقارير متاحة</p>
+                  <p className="text-lg font-medium">{t("reports.noReports")}</p>
                   <p className="text-sm">
-                    لم يتم إنشاء أي تقارير بعد، قم بإضافة تقرير جديد
+                    {t("reports.noReportsDescription")}
                   </p>
                 </div>
               </TableCell>

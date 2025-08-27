@@ -11,6 +11,7 @@ import ErrorPage from "../common/ErrorPage";
 import { useAuth } from "@/contexts/AuthContext";
 import { fetchTabs } from "@/api/categoriesApi";
 import { fetchClasses } from "@/api/classesApi";
+import { t } from "i18next";
 
 export default function Classes() {
   const [activeTab, setActiveTab] = useState(null);
@@ -38,10 +39,12 @@ export default function Classes() {
     try {
       const response = await api.post("/classes", data);
       setClasses((prev) => [...prev, response.data]);
-      toast.success("تمت إضافة القسم بنجاح!");
+      toast.success(t("classes.addSuccess"));
     } catch (error) {
       console.error("Error creating class", error);
-      toast.error("حدث خطأ أثناء إضافة القسم");
+      toast.error(t("classes.addError"), {
+        description: t(`errorApi.${error?.response?.data?.message || "defaultError"}`),
+      });
     }
   };
 
@@ -58,10 +61,12 @@ export default function Classes() {
           item._id === updatedItem._id ? response.data : item
         )
       );
-      toast.success("تم التحديث بنجاح");
+      toast.success(t("classes.updateSuccess"));
     } catch (error) {
       console.error("Update failed:", error);
-      toast.error("حدث خطأ أثناء التحديث");
+      toast.error(t("classes.updateError"), {
+        description: t(`errorApi.${error?.response?.data?.message || "defaultError"}`),
+      });
     }
   };
 
@@ -69,10 +74,12 @@ export default function Classes() {
     try {
       await api.delete(`/classes/${id}`);
       setClasses((prev) => prev.filter((item) => item._id !== id));
-      toast.success("تم الحذف بنجاح");
+      toast.success(t("classes.deleteSuccess"));
     } catch (error) {
       console.error("Delete failed:", error);
-      toast.error("حدث خطأ أثناء الحذف");
+      toast.error(t("classes.deleteError"), {
+        description: t(`errorApi.${error?.response?.data?.message || "defaultError"}`),
+      });
     }
   };
 
@@ -122,7 +129,7 @@ export default function Classes() {
                     color="currentColor"
                   />
                   <Input
-                    placeholder="البحث"
+                    placeholder={t("common.search")}
                     className="pr-10 pl-4 py-2 bg-background"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}

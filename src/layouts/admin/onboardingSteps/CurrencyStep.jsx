@@ -4,6 +4,7 @@ import api from "@/api";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import ReactCountryFlag from "react-country-flag";
+import { t } from "i18next";
 
 export default function CurrencyStep({ onNext, onPrevious }) {
   const [selectedCurrency, setSelectedCurrency] = useState("");
@@ -12,9 +13,9 @@ export default function CurrencyStep({ onNext, onPrevious }) {
 
 
   const currencys = [
-    { id: "DZD", name: "دينار جزائري (DZD)", flag: "DZ" },
-    //{ id: "USD", name: "English", flag: "US" },
-    //{ id: "EUR", name: "Français", flag: "EU" },
+    { id: "DZD", name: t("onboarding.currency.dzd"), flag: "DZ" },
+    //{ id: "USD", name: t("onboarding.currency.usd"), flag: "US" },
+    //{ id: "EUR", name: t("onboarding.currency.eur"), flag: "EU" },
   ];
 
   const handleSubmit = async () => {
@@ -23,7 +24,7 @@ export default function CurrencyStep({ onNext, onPrevious }) {
       await api.post("/onboarding/currency", { currency: selectedCurrency });
       onNext();
     } catch {
-      setError("حدث خطأ أثناء الحفظ.");
+      setError(t("onboarding.errorSave"));
     } finally {
       setLoading(false);
     }
@@ -32,8 +33,8 @@ export default function CurrencyStep({ onNext, onPrevious }) {
   return (
     <div className="text-center">
       <div className="mb-6">
-        <h2 className="text-xl font-semibold ">
-          ما هي العملة التي تستخدمها في الروضة الخاصة بك؟
+        <h2 className="text-xl font-semibold">
+          {t("onboarding.currency.title")}
         </h2>
       </div>
 
@@ -70,7 +71,7 @@ export default function CurrencyStep({ onNext, onPrevious }) {
           variant="ghost"
         >
           <ChevronLeft className="w-4 h-4 rtl:rotate-180" />
-          <span className="text-base">السابق</span>
+          <span className="text-base">{t("common.previous")}</span>
         </Button>
 
         <Button
@@ -79,8 +80,8 @@ export default function CurrencyStep({ onNext, onPrevious }) {
           className={`flex items-center gap-2 rounded-xl px-8 py-3 text-base font-medium`}
         >
           {loading
-            ? "جاري الحفظ..."
-            : "التالي"}
+            ? t("common.saving")
+            : t("common.next")}
           {!loading && <ChevronRight className="w-4 h-4 rtl:rotate-180" />}
         </Button>
       </div>

@@ -3,10 +3,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Trash2, Edit } from "lucide-react";
 import { DocumentUpload } from "iconsax-react";
+import { t } from "i18next";
 
 export default function ImageUpload({ value, onChange }) {
   const [preview, setPreview] = useState(null);
-  const [fileName, setFileName] = useState("");
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef(null);
   const inputId = useId();
@@ -14,20 +14,16 @@ export default function ImageUpload({ value, onChange }) {
   useEffect(() => {
     if (value instanceof File) {
       setPreview(URL.createObjectURL(value));
-      setFileName(value.name);
     } else if (typeof value === "string" && value) {
-      setPreview(`${import.meta.env.VITE_API_URL_PICTURE}${value}`);
-      setFileName(value.split("/").pop());
+      setPreview(`${import.meta.env.VITE_API_URL_PICTURE}${value}.png`);
     } else {
       setPreview(null);
-      setFileName("");
     }
   }, [value]);
 
   const handleFileSelect = (file) => {
     if (file && file.type.startsWith("image/")) {
       setPreview(URL.createObjectURL(file));
-      setFileName(file.name);
       onChange?.(file);
     }
   };
@@ -56,7 +52,6 @@ export default function ImageUpload({ value, onChange }) {
 
   const handleDelete = () => {
     setPreview(null);
-    setFileName("");
     if (fileInputRef.current) fileInputRef.current.value = "";
     onChange?.(null);
   };
@@ -84,9 +79,9 @@ export default function ImageUpload({ value, onChange }) {
               <DocumentUpload size={50} color="var(--primary)" />
             </div>
             <p className="text-center text-muted-foreground mb-2">
-              اسحب الملف إلى هنا أو{" "}
+              {t("imageUpload.drag")}
               <span className="text-primary underline font-medium">
-                اختر ملفاً
+                {t("imageUpload.choose")}
               </span>
             </p>
             <p className="text-sm text-muted-foreground/70">
@@ -125,11 +120,6 @@ export default function ImageUpload({ value, onChange }) {
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
-            </div>
-            <div className="p-4 bg-muted">
-              <p className="text-sm text-center text-muted-foreground max-w-md line-clamp-1">
-                <span className="font-medium">Name:</span> {fileName}
-              </p>
             </div>
           </CardContent>
         </Card>

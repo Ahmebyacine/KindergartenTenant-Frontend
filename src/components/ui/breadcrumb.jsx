@@ -79,7 +79,7 @@ function BreadcrumbSeparator({
       aria-hidden="true"
       className={cn("[&>svg]:size-3.5", className)}
       {...props}>
-      {children ?? <ChevronLeft />} {/*The default siârtore is Right in ltr but in rtl is Left make it dynamin whene add latin language  */}
+      {children ?? <ChevronLeft className="rtl:rotate-180" />} {/*The default siârtore is Right in ltr but in rtl is Left make it dynamin whene add latin language  */}
     </li>
   );
 }

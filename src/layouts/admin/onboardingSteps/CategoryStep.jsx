@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -7,18 +7,21 @@ import CategoryModal from "../categories/CategoryModal";
 import api from "@/api";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import { t } from "i18next";
 
 export default function CategoryStep({ onNext, onPrevious }) {
   const { config } = useAuth();
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState([
-    { name: "حضانة" },
-    { name: "تمهيدي" },
-    { name: "تحضيري" },
-  ]);
-
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    setCategories([
+      { name: t("onboarding.categories.nursery") },
+      { name: t("onboarding.categories.preparatory") },
+      { name: t("onboarding.categories.kindergarten") },
+    ]);
+  }, []);
   const handleCategoryToggle = (categoryName) => {
     if (typeof categoryName !== "string") return;
 
@@ -32,9 +35,7 @@ export default function CategoryStep({ onNext, onPrevious }) {
 
       // If adding exceeds the limit → block it
       if (prev.length >= config.limits.categories) {
-        toast.warning(
-          `لا يمكنك اختيار أكثر من ${config.limits.categories} تصنيفات`
-        );
+        toast.warning(t("onboarding.limitReached", { limit: config.limits.categories }));
         return prev;
       }
 
@@ -49,9 +50,7 @@ export default function CategoryStep({ onNext, onPrevious }) {
 
     // Prevent adding more than the limit
     if (selectedCategories.length >= config.limits.categories) {
-      toast.warning(
-        `لا يمكنك اختيار أكثر من ${config.limits.categories} تصنيفات`
-      );
+      toast.warning(t("onboarding.limitReached", { limit: config.limits.categories }));
       return;
     }
 
@@ -72,7 +71,7 @@ export default function CategoryStep({ onNext, onPrevious }) {
       });
       onNext();
     } catch {
-      setError("حدث خطأ أثناء الحفظ.");
+      setError(t("onboarding.errorSave"));
     } finally {
       setLoading(false);
     }
@@ -82,7 +81,7 @@ export default function CategoryStep({ onNext, onPrevious }) {
     <div className="text-center">
       <div className="mb-3">
         <h2 className="text-xl font-semibold">
-          ما هي الفئات الموجودة في الروضة الخاصة بك؟
+          {t("onboarding.categories.title")}
         </h2>
       </div>
 
@@ -128,7 +127,7 @@ export default function CategoryStep({ onNext, onPrevious }) {
       <div className="flex justify-between items-center mt-8">
         <Button onClick={onPrevious} disabled={loading} variant="ghost">
           <ChevronLeft className="w-4 h-4 rtl:rotate-180" />
-          <span className="text-base">السابق</span>
+          <span className="text-base">{t("common.previous")}</span>
         </Button>
 
         <Button
@@ -136,7 +135,7 @@ export default function CategoryStep({ onNext, onPrevious }) {
           disabled={loading || !selectedCategories}
           className={`flex items-center gap-2 rounded-xl px-8 py-3 text-base font-medium`}
         >
-          {loading ? "جاري الحفظ..." : "التالي"}
+          {loading ? t("common.saving") : t("common.next")}
           {!loading && <ChevronRight className="w-4 h-4 rtl:rotate-180" />}
         </Button>
       </div>

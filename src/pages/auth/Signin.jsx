@@ -24,19 +24,22 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import img from '@/assets/images/logoSignin.png'
-
-const signInSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email address" }),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters" }),
-});
+import img from "@/assets/images/logoSignin.png";
+import { t } from "i18next";
 
 export default function Signin() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [errorKey, setErrorKey] = useState(null);
+
+  const signInSchema = z.object({
+    email: z
+      .string()
+      .email({ message: t("errorApi.invalidEmail", "Invalid email") }),
+    password: z
+      .string()
+      .min(6, { message: t("errorApi.shortPassword", "Password too short") }),
+  });
 
   const form = useForm({
     resolver: zodResolver(signInSchema),
@@ -48,16 +51,17 @@ export default function Signin() {
 
   const onSubmit = async (data) => {
     setIsLoading(true);
-    setError("");
+    setErrorKey(null);
 
     try {
       await api.post("/auth/signin", data);
       navigate("/");
     } catch (error) {
-      setError(
-        error.response?.data?.message || "An error occurred. Please try again."
-      );
-      console.error("Login error:", error);
+      const key =
+        error.response?.data?.message && t(`errorApi.${error.response.data.message}`, "")
+          ? error.response.data.message
+          : "defaultError";
+      setErrorKey(key);
     } finally {
       setIsLoading(false);
     }
@@ -67,25 +71,25 @@ export default function Signin() {
     <div className="flex items-center justify-center bg-background px-4 py-12">
       <div className="w-full max-w-md">
         <div className="flex justify-center my-2">
-          <div className="flex items-center text-primary">
-            <img src={img} alt="rawdayee logo"  className="h-32"/>
-          </div>
+          <img src={img} alt="rawdayee logo" className="h-32" />
         </div>
 
         <Card className="bg-card">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold text-center text-card-foreground">
-              تسجيل الدخول
+              {t("auth.signin.title")}
             </CardTitle>
             <CardDescription className="text-center">
-              أدخل بريدك الإلكتروني وكلمة المرور للوصول إلى حسابك
+              {t("auth.signin.description")}
             </CardDescription>
           </CardHeader>
 
           <CardContent>
-            {error && (
+            {errorKey && (
               <Alert variant="destructive" className="mb-4 text-right">
-                <AlertDescription>{error}</AlertDescription>
+                <AlertDescription>
+                  {t(`errorApi.${errorKey}`)}
+                </AlertDescription>
               </Alert>
             )}
 
@@ -100,15 +104,13 @@ export default function Signin() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-foreground">
-                        البريد الإلكتروني
-                      </FormLabel>
+                      <FormLabel>{t("auth.signin.email")}</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="أدخل بريدك الإلكتروني"
+                          placeholder={t("auth.signin.placeholderEmail")}
                           type="email"
                           autoComplete="email"
-                          className="text-right bg-background text-foreground"
+                          className="text-right"
                           {...field}
                           disabled={isLoading}
                         />
@@ -122,39 +124,30 @@ export default function Signin() {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-foreground">
-                        كلمة المرور
-                      </FormLabel>
+                      <FormLabel>{t("auth.signin.password")}</FormLabel>
                       <FormControl>
-                        <div className="relative">
-                          <Input
-                            placeholder="أدخل كلمة المرور"
-                            type="password"
-                            autoComplete="current-password"
-                            className="text-right bg-background text-foreground"
-                            {...field}
-                            disabled={isLoading}
-                          />
-                        </div>
+                        <Input
+                          placeholder={t("auth.signin.placeholderPassword")}
+                          type="password"
+                          autoComplete="current-password"
+                          className="text-right"
+                          {...field}
+                          disabled={isLoading}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
-                <Button
-                  type="submit"
-                  className="w-full"
-                  disabled={isLoading}
-                  aria-disabled={isLoading}
-                >
+                <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading ? (
                     <>
                       <Loader2 className="ml-2 h-4 w-4 animate-spin" />
-                      جاري التسجيل...
+                      {t("auth.signin.loading")}
                     </>
                   ) : (
-                    "تسجيل الدخول"
+                    t("auth.signin.submit")
                   )}
                 </Button>
               </form>

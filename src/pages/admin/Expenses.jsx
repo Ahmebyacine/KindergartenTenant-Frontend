@@ -28,6 +28,7 @@ import useFetch from "@/hooks/useFetch";
 import usePaginatedFetch from "@/hooks/usePaginatedFetch";
 import getPageNumbers from "@/utils/getPageNumbers";
 import ErrorPage from "../common/ErrorPage";
+import { t } from "i18next";
 
 export default function Expenses() {
   const [search, setSearch] = useState("");
@@ -51,6 +52,7 @@ export default function Expenses() {
     const res = await api.get(`/expenses/statistics?${params.toString()}`);
     return res.data;
   };
+
   const {
     data: expenses,
     setData: setExpenses,
@@ -58,14 +60,14 @@ export default function Expenses() {
     page: actualPage,
     pages,
     refetch: refetchExpenses,
-    error: errorExpenses
-  } = usePaginatedFetch(() => fetchExpenses({ page: page }));
+    error: errorExpenses,
+  } = usePaginatedFetch(() => fetchExpenses({ page }));
 
   const {
     data: expensesStatistics,
     loading: loadingStatistics,
     refetch: refetchStatistics,
-    error: errorStatistics
+    error: errorStatistics,
   } = useFetch(() => fetchExpensesStatistics());
 
   const handlePageChange = (newPage) => {
@@ -92,9 +94,12 @@ export default function Expenses() {
       const response = await api.post("/expenses", data);
       setExpenses((prev) => [response.data, ...prev]);
       refetchStatistics(fetchExpensesStatistics);
-      toast.success("تمت إضافة المصروف بنجاح!");
+      toast.success(t("expenses.add.success"));
     } catch (error) {
-      console.error("Error creating class", error);
+      console.error("Error creating expense", error);
+      toast.error(
+        t(`errorApi.${error?.response?.data?.message || "defaultError"}`)
+      );
     }
   };
 
@@ -106,24 +111,26 @@ export default function Expenses() {
         prev.map((item) => (item._id === data._id ? response.data : item))
       );
       refetchStatistics && refetchStatistics(() => fetchExpensesStatistics());
-      toast.success("تم التحديث بنجاح");
+      toast.success(t("expenses.update.success"));
     } catch (error) {
       console.error("Update failed:", error);
-      toast.error("حدث خطأ أثناء التحديث");
+      toast.error(
+        t(`errorApi.${error?.response?.data?.message || "defaultError"}`)
+      );
     }
   };
-  
+
   const handleDeleteExpenses = async (id) => {
     try {
       await api.delete(`/expenses/${id}`);
-      setExpenses((prev) =>
-        prev.filter((item) => item._id !== id)
-      );
+      setExpenses((prev) => prev.filter((item) => item._id !== id));
       refetchStatistics && refetchStatistics(() => fetchExpensesStatistics());
-      toast.success("تم الحذف بنجاح");
+      toast.success(t("expenses.delete.success"));
     } catch (error) {
-      console.error("حذف العملية فشل:", error);
-      toast.error("حدث خطأ أثناء الحذف");
+      console.error("Delete failed:", error);
+      toast.error(
+        t(`errorApi.${error?.response?.data?.message || "defaultError"}`)
+      );
     }
   };
 
@@ -137,46 +144,48 @@ export default function Expenses() {
     refetchStatistics(() => fetchExpensesStatistics({ month }));
   };
 
-  // Card data as JSON array
+  // Translatable stats
   const stats = [
     {
-      title: "مصاريف هذا الشهر",
+      title: t("expenses.stats.month.title"),
       value: formatCurrencyDZD(expensesStatistics?.totalMonth || 0),
-      subLabel: `إجمالي المصاريف لشهر ${getMonthNameByNumber(
-        expensesStatistics?.month || 0
-      )}`,
+      subLabel: t("expenses.stats.month.subLabel", {
+        month: t(getMonthNameByNumber(expensesStatistics?.month || 0)),
+      }),
       icon: Calendar,
       iconColor: "var(--primary)",
       bgColor: "bg-[#EDE9FE]",
     },
     {
-      title: "مصاريف السنة الحالية",
+      title: t("expenses.stats.year.title"),
       value: formatCurrencyDZD(expensesStatistics?.totalYear || 0),
-      subLabel: "منذ يناير حتى اليوم",
+      subLabel: t("expenses.stats.year.subLabel"),
       icon: DollarSquare,
       iconColor: "#1447E6",
       bgColor: "bg-[#DBEAFE]",
     },
     {
-      title: "عدد المصاريف المسجلة",
-      value: `${expensesStatistics?.operationCount || 0} عملية`,
-      subLabel: `خلال شهر ${getMonthNameByNumber(
-        expensesStatistics?.month || 0
-      )} فقط`,
+      title: t("expenses.stats.count.title"),
+      value: `${expensesStatistics?.operationCount || 0} ${t(
+        "expenses.stats.count.unit"
+      )}`,
+      subLabel: t("expenses.stats.count.subLabel", {
+        month: t(getMonthNameByNumber(expensesStatistics?.month || 0)),
+      }),
       icon: MoneyArchive,
       iconColor: "#E17100",
       bgColor: "bg-[#FEF3C6]",
     },
     {
-      title: "متوسط المصروف",
+      title: t("expenses.stats.average.title"),
       value: formatCurrencyDZD(
         Math.round(
           expensesStatistics?.totalMonth / expensesStatistics?.operationCount
         ) || 0
       ),
-      subLabel: `لكل عملية خلال شهر ${getMonthNameByNumber(
-        expensesStatistics?.month || 0
-      )}`,
+      subLabel: t("expenses.stats.average.subLabel", {
+        month: t(getMonthNameByNumber(expensesStatistics?.month || 0)),
+      }),
       icon: CardIcon,
       iconColor: "#5EA500",
       bgColor: "bg-[#ECFCCA]",
@@ -193,10 +202,17 @@ export default function Expenses() {
           {loadingStatistics || errorStatistics
             ? Array(4)
                 .fill(null)
-                .map((_, idx) => <StatCard key={idx} loading={loadingStatistics} error={errorStatistics} />)
+                .map((_, idx) => (
+                  <StatCard
+                    key={idx}
+                    loading={loadingStatistics}
+                    error={errorStatistics}
+                  />
+                ))
             : stats.map((stat, idx) => <StatCard key={idx} stat={stat} />)}
         </div>
-        {/* search and add expenses secion */}
+
+        {/* Search & Filters */}
         <div className="flex justify-between items-center">
           <div className="w-2/3 md:w-full flex gap-1 items-center">
             <div className="relative w-2/3 md:w-1/3">
@@ -206,7 +222,7 @@ export default function Expenses() {
                 color="currentColor"
               />
               <Input
-                placeholder="البحث"
+                placeholder={t("common.search")}
                 className="pr-10 pl-4 py-2 bg-background"
                 value={search}
                 onChange={handleSearch}
@@ -217,14 +233,15 @@ export default function Expenses() {
           <ExpensesModal onAddExpense={handleAddExpense} />
         </div>
 
-        {/* Reports Table */}
+        {/* Table */}
         <ExpensesTable
           expenses={expenses}
           loading={loading}
           handleUpdateExpenses={handleUpdateExpenses}
           handleDeleteExpenses={handleDeleteExpenses}
         />
-        {/* Pagination Controls */}
+
+        {/* Pagination */}
         {pages > 1 && (
           <Pagination>
             <PaginationContent>

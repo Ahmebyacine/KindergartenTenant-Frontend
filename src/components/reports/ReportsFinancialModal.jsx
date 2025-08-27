@@ -31,13 +31,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Add } from "iconsax-react";
 import { useEffect, useState } from "react";
 import { getAcademicYearMonths } from "@/utils/getAcademicYear";
+import { t } from "i18next";
 
 // Updated schema with student instead of childName
-const financialReportSchema = z.object({
-  student: z.string().min(1, "مطلوب"),
-  classId: z.string().min(1, "مطلوب"),
-  month: z.string().min(1, "مطلوب"),
-  amount: z.number().min(1, "يجب أن يكون المبلغ أكبر من 0"),
+const financialReportSchema = (t) => z.object({
+  student: z.string().min(1, t("common.required")),
+  classId: z.string().min(1, t("common.required")),
+  month: z.string().min(1, t("common.required")),
+  amount: z.number().min(1, t("reports.financial.amountMin")),
   status: z.enum(["paid", "unpaid"]),
   notes: z.string().optional(),
 });
@@ -50,7 +51,7 @@ export default function ReportsFinancialModal({
   const [filteredChildren, setFilteredChildren] = useState([]);
   const [open, setOpen] = useState(false)
   const form = useForm({
-    resolver: zodResolver(financialReportSchema),
+    resolver: zodResolver(financialReportSchema(t)),
     defaultValues: {
       student: "",
       classId: "",
@@ -87,14 +88,14 @@ export default function ReportsFinancialModal({
       <DialogTrigger asChild>
         <Button>
           <Add size="20" color="currentColor" />
-          إضافة تقرير
+          {t("reports.addReport")}
         </Button>
       </DialogTrigger>
 
       <DialogContent className="w-full max-w-full sm:max-w-2xl bg-card p-6 rounded-lg sm:rounded-2xl">
         <DialogHeader className="border-b-2 pb-4">
-          <DialogTitle className="text-lg sm:text-xl font-semibold rtl:text-right ltr:text-left text-foreground">
-            إضافة تقرير مالي
+          <DialogTitle className="text-lg sm:text-xl font-semibold rtl:text-right text-foreground">
+            {t("reports.financial.addReportFinancial")}
           </DialogTitle>
         </DialogHeader>
 
@@ -102,7 +103,6 @@ export default function ReportsFinancialModal({
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-6 max-h-[70vh] overflow-y-auto pt-2 px-1 sm:px-2"
-            dir="rtl"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Class Selection */}
@@ -112,12 +112,12 @@ export default function ReportsFinancialModal({
                 render={({ field }) => (
                   <FormItem className="space-y-2">
                     <FormLabel className="text-muted-foreground">
-                      الفصل
+                      {t("reports.financial.className")}
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <SelectTrigger className="text-right">
-                          <SelectValue placeholder="اختر الفصل" />
+                        <SelectTrigger className="rtl:text-right">
+                          <SelectValue placeholder={t("reports.financial.selectClass")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -140,7 +140,7 @@ export default function ReportsFinancialModal({
                 render={({ field }) => (
                   <FormItem className="space-y-2">
                     <FormLabel className="text-muted-foreground">
-                      اسم الطفل
+                      {t("reports.financial.studentName")}
                     </FormLabel>
                     <div className="space-y-2">
                       <Select
@@ -149,8 +149,8 @@ export default function ReportsFinancialModal({
                         disabled={!classId}
                       >
                         <FormControl>
-                          <SelectTrigger className="text-right">
-                            <SelectValue placeholder="اختر الطفل" />
+                          <SelectTrigger className="rtl:text-right">
+                            <SelectValue placeholder={t("reports.financial.selectChild")} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className="max-h-60 overflow-y-auto">
@@ -166,7 +166,7 @@ export default function ReportsFinancialModal({
                             ))
                           ) : (
                             <SelectItem value="none" disabled>
-                              لا يوجد أطفال
+                              {t("reports.financial.noChildren")}
                             </SelectItem>
                           )}
                         </SelectContent>
@@ -184,12 +184,12 @@ export default function ReportsFinancialModal({
                 render={({ field }) => (
                   <FormItem className="space-y-2">
                     <FormLabel className="text-muted-foreground">
-                      الشهر
+                      {t("reports.financial.month")}
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <SelectTrigger className="text-right">
-                          <SelectValue placeholder="اختر الشهر" />
+                        <SelectTrigger className="rtl:text-right">
+                          <SelectValue placeholder={t("reports.financial.selectMonth")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -212,12 +212,12 @@ export default function ReportsFinancialModal({
                 render={({ field }) => (
                   <FormItem className="space-y-2">
                     <FormLabel className="text-muted-foreground">
-                      المبلغ (دج)
+                      {t("reports.financial.amount")}
                     </FormLabel>
                     <FormControl>
                       <Input
                         type="number"
-                        className="text-right"
+                        className="rtl:text-right"
                         placeholder="8000"
                         {...field}
                         onChange={(e) => field.onChange(Number(e.target.value))}
@@ -235,17 +235,17 @@ export default function ReportsFinancialModal({
                 render={({ field }) => (
                   <FormItem className="space-y-2">
                     <FormLabel className="text-muted-foreground">
-                      الحالة
+                      {t("reports.financial.status")}
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <SelectTrigger className="text-right">
-                          <SelectValue placeholder="اختر الحالة" />
+                        <SelectTrigger className="rtl:text-right">
+                          <SelectValue placeholder={t("reports.financial.selectStatus")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="paid">مدفوع</SelectItem>
-                        <SelectItem value="unpaid">غير مدفوع</SelectItem>
+                        <SelectItem value="paid">{t("reports.financial.paid")}</SelectItem>
+                        <SelectItem value="unpaid">{t("reports.financial.unpaid")}</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -261,13 +261,12 @@ export default function ReportsFinancialModal({
               render={({ field }) => (
                 <FormItem className="space-y-2">
                   <FormLabel className="text-muted-foreground">
-                    ملاحظات
+                    {t("common.notes")}
                   </FormLabel>
                   <FormControl>
                     <Textarea
                       {...field}
-                      className="text-right min-h-[100px]"
-                      placeholder="بانتظار السداد من ولي الأمر"
+                      className="rtl:text-right min-h-[100px]"
                     />
                   </FormControl>
                   <FormMessage />
@@ -285,7 +284,7 @@ export default function ReportsFinancialModal({
               onClick={form.handleSubmit(onSubmit)}
               className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
             >
-              حفظ
+              {t("common.save")}
             </Button>
             <DialogClose asChild>
               <Button
@@ -295,7 +294,7 @@ export default function ReportsFinancialModal({
                   form.reset();
                 }}
               >
-                إلغاء
+                {t("common.cancel")}
               </Button>
             </DialogClose>
           </div>

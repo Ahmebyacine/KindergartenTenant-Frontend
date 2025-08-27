@@ -33,7 +33,7 @@ export default function StatCard({ stat, loading = false, error = null }) {
               )}
             </div>
 
-            <div className="text-right mt-1">
+            <div className="rtl:text-right mt-1">
               {loading ? (
                 <>
                   <Skeleton className="h-6 w-20 mb-2 ml-auto" />

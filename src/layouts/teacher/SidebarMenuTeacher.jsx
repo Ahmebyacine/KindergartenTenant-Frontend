@@ -11,32 +11,33 @@ import {
   Setting2,
   TaskSquare,
 } from "iconsax-react";
+import { t } from "i18next";
 
 export default function SidebarMenuTeacher() {
   const location = useLocation();
   const items = [
     {
-      title: "لوحة التحكم",
+      title: t("sidebar.dashboard"),
       url: "/teacher-dashboard",
       icon: Category,
     },
     {
-      title: "الأطفال",
+      title: t("sidebar.students"),
       url: "/teacher-students",
       icon: People,
     },
     {
-      title: "الحضور والغياب",
+      title: t("sidebar.attendance"),
       url: "/teacher-attendance",
       icon: TaskSquare,
     },
     {
-      title: "التقارير",
+      title: t("sidebar.reports"),
       url: "/teacher-reports",
       icon: Chart2,
     },
     {
-      title: "الاعدادات",
+      title: t("sidebar.settings"),
       url: "/settings-user",
       icon: Setting2,
     },

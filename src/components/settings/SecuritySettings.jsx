@@ -15,19 +15,20 @@ import {
 import { useState } from "react";
 import api from "@/api";
 import { toast } from "sonner";
+import { t } from "i18next";
 
 // Zod schema for password validation
-const passwordSchema = z.object({
-  currentPassword: z.string().min(1, { message: "كلمة المرور الحالية مطلوبة" }),
+const passwordSchema = (t) => z.object({
+  currentPassword: z.string().min(1, { message: t("settings.security.validation.currentPassword") }),
   newPassword: z.string()
-    .min(8, { message: "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل" })
-    .regex(/[A-Z]/, { message: "يجب أن تحتوي على حرف كبير واحد على الأقل" })
-    .regex(/[a-z]/, { message: "يجب أن تحتوي على حرف صغير واحد على الأقل" })
-    .regex(/\d/, { message: "يجب أن تحتوي على رقم واحد على الأقل" })
-    .regex(/[!@#$%^&*(),.?":{}|<>]/, { message: "يجب أن تحتوي على رمز خاص واحد على الأقل" }),
+    .min(8, { message: t("settings.security.validation.newPassword.minLength") })
+    .regex(/[A-Z]/, { message: t("settings.security.validation.newPassword.uppercase") })
+    .regex(/[a-z]/, { message: t("settings.security.validation.newPassword.lowercase") })
+    .regex(/\d/, { message: t("settings.security.validation.newPassword.number") })
+    .regex(/[!@#$%^&*(),.?":{}|<>]/, { message: t("settings.security.validation.newPassword.special") }),
   confirmPassword: z.string(),
 }).refine(data => data.newPassword === data.confirmPassword, {
-  message: "كلمات المرور الجديدة غير متطابقة",
+  message: t("settings.security.validation.confirmPassword"),
   path: ["confirmPassword"],
 });
 
@@ -35,7 +36,7 @@ export default function SecuritySettings() {
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
 
   const form = useForm({
-    resolver: zodResolver(passwordSchema),
+    resolver: zodResolver(passwordSchema(t)),
     defaultValues: {
       currentPassword: "",
       newPassword: "",
@@ -47,10 +48,10 @@ export default function SecuritySettings() {
     try{
       await api.patch("/auth/update-password", data)
       form.reset();
-      toast.success("تم تحديث كلمة المرور بنجاح!");
+      toast.success(t("settings.security.success"));
     } catch (error) {
       console.log(error)
-      toast.error("فشل في تحديث كلمة المرور")
+      toast.error(t("settings.security.error"));
     }
     form.reset();
   };
@@ -61,7 +62,7 @@ export default function SecuritySettings() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="mb-12">
-            <h2 className="text-l md:text-xl font-semibold mb-8">تغيير كلمة المرور</h2>
+            <h2 className="text-l md:text-xl font-semibold mb-8">{t("settings.security.changePassword")}</h2>
 
             <div className="space-y-6">
               {/* Current Password */}
@@ -71,14 +72,13 @@ export default function SecuritySettings() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-medium mb-2 block">
-                      كلمة المرور الحالية *
+                      {t("settings.security.currentPassword")} *
                     </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
                           {...field}
                           type="password"
-                          className="text-right border-border focus:border-primary focus:ring-primary"
                         />
                       </div>
                     </FormControl>
@@ -94,14 +94,13 @@ export default function SecuritySettings() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-medium mb-2 block">
-                      كلمة المرور الجديدة *
+                      {t("settings.security.newPassword")} *
                     </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
                           {...field}
                           type="password"
-                          className="text-right border-border focus:border-primary focus:ring-primary"
                         />
                       </div>
                     </FormControl>
@@ -117,14 +116,13 @@ export default function SecuritySettings() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-medium mb-2 block">
-                      تأكيد كلمة المرور الجديدة *
+                      {t("settings.security.confirmPassword")} *
                     </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
                           {...field}
                           type="password"
-                          className="text-right border-border focus:border-primary focus:ring-primary"
                         />
                       </div>
                     </FormControl>
@@ -135,14 +133,14 @@ export default function SecuritySettings() {
 
               {/* Action Buttons */}
               <div className="flex justify-end space-x space-x-4 mt-8">
-                <Button type="submit">حفظ التغييرات</Button>
+                <Button type="submit">{t("common.save")}</Button>
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => form.reset()}
                   className="text-muted-foreground border-border hover:bg-backround bg-transparent"
                 >
-                  إلغاء
+                  {t("common.cancel")}
                 </Button>
               </div>
             </div>
@@ -151,9 +149,9 @@ export default function SecuritySettings() {
       </Form>
 
       {/* Two-Factor Authentication Section */}
-      <div className="border-t border-border pt-8">
+      <div className="border-t border-border pt-8 hidden">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-l md:text-xl font-semibold">التحقق بخطوتين</h3>
+          <h3 className="text-l md:text-xl font-semibold">{t("settings.security.twoFactorAuthentication")}</h3>
           <Switch
             checked={twoFactorEnabled}
             onCheckedChange={setTwoFactorEnabled}
@@ -162,11 +160,11 @@ export default function SecuritySettings() {
         </div>
         <div className="flex items-start space-x-reverse space-x-3">
           <div className="text-muted-foreground leading-relaxed">
-            في حالة التفعيل، يتم إرسال رمز مؤقت للهاتف عند تسجيل الدخول
+            {t("settings.security.twoFactorDescription")}
           </div>
         </div>
         <div className="mt-4">
-          <span className="font-medium">تفعيل التحقق بخطوتين</span>
+          <span className="font-medium">{t("settings.security.enableTwoFactor")}</span>
         </div>
       </div>
     </div>

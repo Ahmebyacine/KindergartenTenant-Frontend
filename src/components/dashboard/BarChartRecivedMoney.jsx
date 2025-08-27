@@ -19,7 +19,7 @@ export default function BarChartRecivedMoney() {
     const res = await api.get(`/financial-reports/summary/user`);
     return res.data.map((item) => ({
       ...item,
-      monthLabel: getMonthNameByNumber(item.month),
+      monthLabel: t(getMonthNameByNumber(item.month)),
     }));
   };
   const { data, loading, error } = useFetch(fetchAttendaceSummary);
@@ -32,8 +32,8 @@ export default function BarChartRecivedMoney() {
   return (
     <Card dir="ltr">
       <CardHeader>
-        <CardTitle className="text-right text-foreground">
-          المبالغ المستلمة شهريا
+        <CardTitle className="rtl:text-right text-foreground">
+          {t("dashboard.recivedMoneyByMonth")}
         </CardTitle>
       </CardHeader>
       {error ? (
@@ -47,7 +47,7 @@ export default function BarChartRecivedMoney() {
             </div>
             <div className="space-y-2">
               <h3 className="text-lg font-medium text-destructive">
-                حدث خطأ أثناء تحميل البيانات
+                {t("errorApi.defaultError")}
               </h3>
               <p className="text-sm text-destructive max-w-sm">
                 {t(`errorApi.${error?.message}`)}
@@ -72,11 +72,10 @@ export default function BarChartRecivedMoney() {
             </div>
             <div className="space-y-2">
               <h3 className="text-lg font-medium text-foreground">
-                لا توجد بيانات متاحة
+                {t("dashboard.noDataTitle")}
               </h3>
               <p className="text-sm text-muted-foreground max-w-sm">
-                لم يتم العثور على بيانات المبالغ المستلمة شهريا. يرجى المحاولة
-                مرة أخرى لاحقاً.
+                {t("dashboard.noDataDesc")}
               </p>
             </div>
           </div>
@@ -118,9 +117,9 @@ export default function BarChartRecivedMoney() {
           <CardFooter className={"justify-center"}>
             <div className="flex justify-center gap-4">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-primary rounded-full"></div>
+                <div className="w-3 h-3 bg-primary rounded-full"/>
                 <span className="text-sm text-muted-foreground">
-                  المبالغ المستلمة (د.ج)
+                  {t("dashboard.amountrecived")}
                 </span>
               </div>
             </div>

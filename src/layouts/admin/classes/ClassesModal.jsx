@@ -30,14 +30,15 @@ import {
 } from "@/components/ui/form";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { t } from "i18next";
 
-const classSchema = z.object({
-  className: z.string().min(1, "مطلوب"),
-  category: z.string().min(1, "مطلوب"),
-  capacity: z.number().min(1, "الحد الأدنى للقدرة هو 1"),
+const classSchema = (t) => z.object({
+  className: z.string().min(1, t("common.required")),
+  category: z.string().min(1, t("common.required")),
+  capacity: z.number().min(1, t("classes.validation.minCapacity")),
   price: z
-    .number({ invalid_type_error: "يجب أن يكون السعر رقمًا" })
-    .min(0, "الحد الأدنى للسعر هو 0")
+    .number({ invalid_type_error: t("classes.validation.priceNumber") })
+    .min(0, t("classes.validation.minPrice"))
     .optional(),
 });
 
@@ -48,9 +49,10 @@ export default function ClassesModal({
   editingClass = null,
   isLimited = false,
 }) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
+
   const form = useForm({
-    resolver: zodResolver(classSchema),
+    resolver: zodResolver(classSchema(t)),
     defaultValues: {
       className: editingClass?.className || "",
       category: editingClass?.category?._id || "",
@@ -75,25 +77,22 @@ export default function ClassesModal({
       await onAddClass(data);
     }
     form.reset();
-    setOpen(false)
+    setOpen(false);
   };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {editingClass ? (
-          <Button
-            variant="link"
-            size="sm"
-            className="text-primary hover:text-primary/80 p-1 h-auto underline text-xs sm:text-sm justify-start sm:justify-center"
-          >
-            تعديل
+          <Button variant="link" size="sm" className="underline">
+            {t("common.edit")}
           </Button>
         ) : (
           <Button
             onClick={(e) => {
               if (isLimited) {
                 e.preventDefault();
-                toast.error(`تم الوصول إلى الحد الأقصى للفصول `);
+                toast.error(t("classes.limitReached"));
               }
             }}
             className={`${
@@ -102,7 +101,7 @@ export default function ClassesModal({
             } rounded-lg px-6 py-2 flex items-center gap-2`}
           >
             <Add size="20" color="currentColor" />
-            إضافة فصل
+            {t("classes.addNew")}
           </Button>
         )}
       </DialogTrigger>
@@ -111,16 +110,13 @@ export default function ClassesModal({
         <DialogHeader className="border-b-2 pb-4">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
             <DialogTitle className="text-lg sm:text-xl font-semibold text-foreground rtl:text-right ltr:text-left w-full">
-              {editingClass ? "تعديل الفصل" : "إضافة فصل جديد"}
+              {editingClass ? t("classes.editTitle") : t("classes.addTitle")}
             </DialogTitle>
           </div>
         </DialogHeader>
 
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-6 pt-2"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 pt-2">
             <div className="grid grid-cols-1 gap-4">
               {/* Class Name */}
               <FormField
@@ -129,13 +125,13 @@ export default function ClassesModal({
                 render={({ field }) => (
                   <FormItem className="space-y-1">
                     <FormLabel className="text-muted-foreground">
-                      اسم الفصل *
+                      {t("classes.nameLabel")} *
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        className="text-right"
-                        placeholder="أدخل اسم الفصل"
+                        className="rtl:text-right"
+                        placeholder={t("classes.namePlaceholder")}
                       />
                     </FormControl>
                     <FormMessage />
@@ -150,15 +146,15 @@ export default function ClassesModal({
                 render={({ field }) => (
                   <FormItem className="space-y-1">
                     <FormLabel className="text-muted-foreground">
-                      فئة *
+                      {t("classes.categoryLabel")} *
                     </FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="text-right">
-                          <SelectValue placeholder="اختر فئة" />
+                        <SelectTrigger className="rtl:text-right">
+                          <SelectValue placeholder={t("classes.categoryPlaceholder")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -181,13 +177,13 @@ export default function ClassesModal({
                 render={({ field }) => (
                   <FormItem className="space-y-1">
                     <FormLabel className="text-muted-foreground">
-                      السعة
+                      {t("classes.capacityLabel")}
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         type="number"
-                        className="text-right"
+                        className="rtl:text-right"
                         onChange={(e) => field.onChange(Number(e.target.value))}
                       />
                     </FormControl>
@@ -195,6 +191,7 @@ export default function ClassesModal({
                   </FormItem>
                 )}
               />
+
               {/* Price */}
               <FormField
                 control={form.control}
@@ -202,15 +199,15 @@ export default function ClassesModal({
                 render={({ field }) => (
                   <FormItem className="space-y-1">
                     <FormLabel className="text-muted-foreground">
-                      سعر الفصل
+                      {t("classes.priceLabel")}
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         type="number"
                         min="0"
-                        className="text-right"
-                        placeholder="أدخل سعر الفصل"
+                        className="rtl:text-right"
+                        placeholder={t("classes.pricePlaceholder")}
                         onChange={(e) =>
                           field.onChange(
                             e.target.value === "" ? "" : Number(e.target.value)
@@ -235,14 +232,14 @@ export default function ClassesModal({
               className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
               disabled={editingClass && !form.formState.isDirty}
             >
-              {editingClass ? "تحديث" : "إضافة"}
+              {editingClass ? t("common.update") : t("common.add")}
             </Button>
             <DialogClose asChild>
               <Button
                 variant="outline"
                 className="flex-1 border-border text-muted-foreground hover:bg-background"
               >
-                إلغاء
+                {t("common.cancel")}
               </Button>
             </DialogClose>
           </div>

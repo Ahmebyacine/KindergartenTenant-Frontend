@@ -11,6 +11,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import useFetch from "@/hooks/useFetch";
 import ErrorPage from "../common/ErrorPage";
 import { fetchStudents } from "@/api/studentsApi";
+import { t } from "i18next";
 
 export default function StudentsTeacher() {
   const { user } = useAuth();
@@ -28,9 +29,14 @@ export default function StudentsTeacher() {
     try {
       const response = await api.post("/students", data);
       setStudents((prev) => [...prev, response.data]);
-      toast("تمت إضافة الطفل بنجاح!");
+      toast.success(t("students.addSuccess"));
     } catch (error) {
       console.error("Error creating student", error);
+      toast.error(t("students.addError"), {
+        description: t(
+          `errorApi.${error?.response?.data?.message || "defaultError"}`
+        ),
+      });
     }
   };
 
@@ -38,19 +44,20 @@ export default function StudentsTeacher() {
     try {
       const response = await api.post("/enrollments", data);
       setStudents((prev) => [...prev, response.data]);
-      toast.success("تمت تسجيل الطفل بنجاح!");
+      toast.success(t("students.registerSuccess"));
     } catch (error) {
       console.error("Error adding student:", error);
-      toast.error("فشل في تسجيل الطفل");
+      toast.error(t("students.registerError"), {
+        description: t(
+          `errorApi.${error?.response?.data?.message || "defaultError"}`
+        ),
+      });
     }
   };
 
-  const handleUpdateStudent = async (updatedStudent) => {
+  const handleUpdateStudent = async (updatedStudent, studentId) => {
     try {
-      const response = await api.put(
-        `/students/${updatedStudent.student._id}`,
-        updatedStudent
-      );
+      const response = await api.put(`/students/${studentId}`, updatedStudent);
       const updatedData = response.data;
 
       setStudents((prev) =>
@@ -59,10 +66,14 @@ export default function StudentsTeacher() {
         )
       );
 
-      toast.success("تم تحديث بيانات الطفل بنجاح!");
+      toast.success(t("students.updateSuccess"));
     } catch (error) {
       console.error("Error updating student:", error);
-      toast.error("فشل في تحديث بيانات الطفل");
+      toast.error(t("students.updateError"), {
+        description: t(
+          `errorApi.${error?.response?.data?.message || "defaultError"}`
+        ),
+      });
     }
   };
 
@@ -72,10 +83,14 @@ export default function StudentsTeacher() {
       setStudents((prev) =>
         prev.filter((student) => student._id !== enrollmentId)
       );
-      toast.success("تم حذف تسجيل الطفل بنجاح!");
+      toast.success(t("students.deleteEnrollmentSuccess"));
     } catch (error) {
       console.error("Error deleting enrollment:", error);
-      toast.error("فشل في حذف تسجيل الطفل");
+      toast.error(t("students.deleteEnrollmentError"), {
+        description: t(
+          `errorApi.${error?.response?.data?.message || "defaultError"}`
+        ),
+      });
     }
   };
 
@@ -110,7 +125,7 @@ export default function StudentsTeacher() {
                   color="currentColor"
                 />
                 <Input
-                  placeholder="البحث عن اسم الطفل"
+                  placeholder={t("common.search")}
                   className="pr-10 pl-4 py-2 bg-background"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}

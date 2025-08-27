@@ -19,6 +19,7 @@ import {
   getReportTypeBadge,
   getStatusPayBadge,
 } from "@/utils/getStatusBadges";
+import { t } from "i18next";
 
 export default function RecentReportsTable() {
   const fetchReports = async () => {
@@ -29,32 +30,20 @@ export default function RecentReportsTable() {
   return (
     <Card className="bg-card border-border">
       <CardHeader>
-        <CardTitle className="text-right text-foreground">
-          سجل التقارير الأخيرة
+        <CardTitle className="rtl:text-right text-foreground">
+          {t("dashboard.recentReports")}
         </CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="text-right text-muted-foreground">
-                اسم الطفل
-              </TableHead>
-              <TableHead className="text-right text-muted-foreground">
-                اسم المعلمة
-              </TableHead>
-              <TableHead className="text-right text-muted-foreground">
-                الفصل
-              </TableHead>
-              <TableHead className="text-right text-muted-foreground">
-                النوع
-              </TableHead>
-              <TableHead className="text-right text-muted-foreground">
-                الحالة
-              </TableHead>
-              <TableHead className="text-right text-muted-foreground">
-                الإجراءات
-              </TableHead>
+              <TableHead className="text-muted-foreground">{t("dashboard.childName")}</TableHead>
+              <TableHead className="text-muted-foreground">{t("dashboard.teacherName")}</TableHead>
+              <TableHead className="text-muted-foreground">{t("dashboard.class")}</TableHead>
+              <TableHead className="text-muted-foreground">{t("dashboard.type")}</TableHead>
+              <TableHead className="text-muted-foreground">{t("dashboard.status")}</TableHead>
+              <TableHead className="text-muted-foreground">{t("common.actions")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -62,14 +51,17 @@ export default function RecentReportsTable() {
               <LoadingTable />
             ) : error ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-red-500">
-                  فشل تحميل التقارير
+                <TableCell
+                  colSpan={6}
+                  className="!text-center text-red-500 text-xl"
+                >
+                  {t("dashboard.failedFetchReports")}
                 </TableCell>
               </TableRow>
             ) : reports.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center">
-                  لا توجد تقارير حديثة
+                <TableCell colSpan={6} className="!text-center text-xl">
+                  {t("dashboard.noRecentReports")}
                 </TableCell>
               </TableRow>
             ) : (
@@ -105,7 +97,7 @@ export default function RecentReportsTable() {
                               `/reports/health/${report._id}`
                         }
                       >
-                        عرض التفاصيل
+                        {t("common.details")}
                       </Link>
                     </Button>
                   </TableCell>

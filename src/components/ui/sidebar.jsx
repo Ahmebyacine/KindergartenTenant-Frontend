@@ -240,9 +240,9 @@ function SidebarTrigger({
       }}
       {...props}>
       {state === "collapsed" ? (
-        <SidebarLeft variant="Outline" color="CurrentColor" className="size-6"/>
+        <SidebarLeft variant="Outline" color="CurrentColor" className="size-6 ltr:rotate-180"/>
       ) : (
-        <SidebarRight variant="Outline" color="CurrentColor" className="size-6"/>)
+        <SidebarRight variant="Outline" color="CurrentColor" className="size-6 ltr:rotate-180"/>)
       }
       <span className="sr-only">Toggle Sidebar</span>
     </Button>

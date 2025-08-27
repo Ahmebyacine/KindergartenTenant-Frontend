@@ -7,6 +7,7 @@ import useFetch from "@/hooks/useFetch";
 import ErrorPage from "../common/ErrorPage";
 import { fetchTabs } from "@/api/categoriesApi";
 import { fetchClasses } from "@/api/classesApi";
+import { t } from "i18next";
 
 export default function ClassesSupervisor() {
   const [activeTab, setActiveTab] = useState(null);
@@ -67,7 +68,7 @@ export default function ClassesSupervisor() {
                   color="currentColor"
                 />
                 <Input
-                  placeholder="البحث"
+                  placeholder={t("common.search")}
                   className="pr-10 pl-4 py-2 w-64 border border-border rounded-lg bg-background"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}

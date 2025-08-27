@@ -10,6 +10,7 @@ import { Setting4, Trash } from "iconsax-react";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { expenseTypes, months } from "@/assets/data/data";
 import { useState } from "react";
+import { t } from "i18next";
 
 export default function ExpensesFilter({ onApplyFilters }) {
   const [selectedExpenseType, setSelectedExpenseType] = useState("");
@@ -23,7 +24,7 @@ export default function ExpensesFilter({ onApplyFilters }) {
             className={`data-[state=open]:text-primary data-[state=open]:border-primary w-full `}
           >
             <Setting4 size={14} color="currentColor" />
-            <span className="hidden md:block">فلاترة</span>
+            <span className="hidden md:block">{t("common.filter")}</span>
           </Button>
         </DialogTrigger>
 
@@ -35,7 +36,7 @@ export default function ExpensesFilter({ onApplyFilters }) {
             {/* Filter by expense type section */}
             <div>
               <h3 className="text-lg font-semibold mb-3">
-                فلاترة حسب نوع المصروف:
+                {t("expenses.filterByType")}
               </h3>
               <div className="flex flex-wrap gap-2 justify-start">
                 {expenseTypes.map((type) => (
@@ -53,7 +54,7 @@ export default function ExpensesFilter({ onApplyFilters }) {
                       )
                     }
                   >
-                    {type.label}
+                    {t(type.key)}
                   </Button>
                 ))}
               </div>
@@ -61,7 +62,7 @@ export default function ExpensesFilter({ onApplyFilters }) {
 
             {/* Filter by month section */}
             <div>
-              <h3 className="text-lg font-semibold mb-3">فلاترة حسب الشهر:</h3>
+              <h3 className="text-lg font-semibold mb-3">{t("expenses.filterByMonth")}</h3>
               <div className="flex flex-wrap gap-2 justify-start">
                 {months.map((month) => (
                   <Button
@@ -78,7 +79,7 @@ export default function ExpensesFilter({ onApplyFilters }) {
                       )
                     }
                   >
-                    {month.label}
+                    {t(month.key)}
                   </Button>
                 ))}
               </div>
@@ -97,13 +98,13 @@ export default function ExpensesFilter({ onApplyFilters }) {
               }}
             >
               <Trash size={14} color="currentColor" />
-              إعادة تعيين الكل
+              {t("filter.resetFilters")}
             </Button>
             <Button
               className="bg-primary rounded-lg px-6 py-3 hover:bg-primary/90"
               onClick={() => onApplyFilters(selectedExpenseType, selectedMonth)}
             >
-              تطبيق الفلاتر
+              {t("filter.applyFilters")}
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -15,9 +15,10 @@ import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import { formatDateMonth } from "@/utils/dateFormatter";
 import { Document } from "iconsax-react";
 import { Input } from "@/components/ui/input";
+import { t } from "i18next";
 
 export default function EmployeeJournalTable() {
-  const [monthFilter, setMonthFilter] = useState("");
+  const [monthFilter, setMonthFilter] = useState(new Date().toISOString().slice(0, 7));
   const fetchFinancialPerformance = async (filters = {}) => {
     const params = new URLSearchParams();
     if (filters.month) params.append("month", filters.month);
@@ -30,7 +31,7 @@ export default function EmployeeJournalTable() {
   return (
     <Card className="shadow-sm">
       <CardHeader className="pb-4">
-        <CardTitle>تفاصيل المداخيل التنفيذية حسب الموظف</CardTitle>
+        <CardTitle>{t("financialPerformance.title")}</CardTitle>
         <CardAction>
           <Input
             type="month"
@@ -38,9 +39,9 @@ export default function EmployeeJournalTable() {
             onChange={(e) => {
               const value = e.target.value;
               setMonthFilter(value);
-              refetch(()=>fetchFinancialPerformance({ month: value }));
+              refetch(() => fetchFinancialPerformance({ month: value }));
             }}
-            placeholder="اختر الشهر والسنة"
+            placeholder={t("financialPerformance.selectMonth")}
           />
         </CardAction>
       </CardHeader>
@@ -48,16 +49,16 @@ export default function EmployeeJournalTable() {
         <TableHeader>
           <TableRow className="bg-muted/50 border-b border-border hover:bg-muted/50">
             <TableHead className="text-foreground font-medium">
-              الموظف
+              {t("financialPerformance.employee")}
             </TableHead>
             <TableHead className="text-foreground font-medium">
-              التاريخ
+              {t("common.date")}
             </TableHead>
             <TableHead className="text-foreground font-medium">
-              عدد العمليات
+              {t("financialPerformance.operationsCount")}
             </TableHead>
             <TableHead className="text-foreground font-medium">
-              مجموع المبالغ
+              {t("financialPerformance.totalAmount")}
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -96,9 +97,11 @@ export default function EmployeeJournalTable() {
               >
                 <div className="flex flex-col items-center justify-center gap-2">
                   <Document size={40} color="CurrentColor" />
-                  <p className="text-lg font-medium">لا توجد تقارير متاحة</p>
+                  <p className="text-lg font-medium">
+                    {t("financialPerformance.noReports")}
+                  </p>
                   <p className="text-sm">
-                    لم يتم إنشاء أي تقارير بعد، قم بإضافة تقرير جديد
+                    {t("financialPerformance.noReportsDesc")}
                   </p>
                 </div>
               </TableCell>

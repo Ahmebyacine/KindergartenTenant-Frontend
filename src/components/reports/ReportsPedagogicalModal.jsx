@@ -29,15 +29,16 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Add } from "iconsax-react";
 import { useEffect, useState } from "react";
+import { t } from "i18next";
 
 // Updated report schema
-const reportSchema = z.object({
-  student: z.string().min(1, "مطلوب"),
-  classId: z.string().min(1, "مطلوب"),
-  languageCommunication: z.string().min(1, "مطلوب"),
-  behavior: z.string().min(1, "مطلوب"),
-  skills: z.string().min(1, "مطلوب"),
-  overall: z.string().min(1, "مطلوب"),
+const reportSchema = (t) => z.object({
+  student: z.string().min(1, t("common.required")),
+  classId: z.string().min(1, t("common.required")),
+  languageCommunication: z.string().min(1, t("common.required")),
+  behavior: z.string().min(1, t("common.required")),
+  skills: z.string().min(1, t("common.required")),
+  overall: z.string().min(1, t("common.required")),
   notes: z.string().optional(),
 });
 
@@ -49,7 +50,7 @@ export default function ReportsPedagogicalModal({
   const [filteredChildren, setFilteredChildren] = useState([]);
   const [open, setOpen] = useState(false);
   const form = useForm({
-    resolver: zodResolver(reportSchema),
+    resolver: zodResolver(reportSchema(t)),
     defaultValues: {
       student: "",
       classId: "",
@@ -81,11 +82,11 @@ export default function ReportsPedagogicalModal({
   };
 
   const evaluationOptions = [
-    { label: "ممتاز", value: "excellent" },
-    { label: "جيد جداً", value: "very_good" },
-    { label: "جيد", value: "good" },
-    { label: "مقبول", value: "acceptable" },
-    { label: "ضعيف", value: "weak" },
+    { value: "excellent" },
+    { value: "very_good" },
+    { value: "good" },
+    { value: "acceptable" },
+    { value: "weak" },
   ];
 
   return (
@@ -93,14 +94,14 @@ export default function ReportsPedagogicalModal({
       <DialogTrigger asChild>
         <Button>
           <Add size="20" color="currentColor" />
-          إضافة تقرير
+          {t("reports.addReport")}
         </Button>
       </DialogTrigger>
 
       <DialogContent className="w-full max-w-full sm:max-w-2xl bg-card p-2 sm:p-6 rounded-lg sm:rounded-2xl overflow-y-auto">
         <DialogHeader className="border-b-2 pb-4">
           <DialogTitle className="text-lg sm:text-xl font-semibold text-foreground rtl:text-right ltr:text-left w-full">
-            إضافة تقرير بيداغوجي
+            {t("reports.pedagogical.addPedagogicalReport")}
           </DialogTitle>
         </DialogHeader>
 
@@ -117,12 +118,12 @@ export default function ReportsPedagogicalModal({
                 render={({ field }) => (
                   <FormItem className="space-y-1">
                     <FormLabel className="text-muted-foreground">
-                      الفصل
+                      {t("reports.pedagogical.class")}
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <SelectTrigger className="text-right">
-                          <SelectValue placeholder="اختر الفصل" />
+                        <SelectTrigger className="rtl:text-right">
+                          <SelectValue placeholder={t("reports.pedagogical.selectClass")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -145,7 +146,7 @@ export default function ReportsPedagogicalModal({
                 render={({ field }) => (
                   <FormItem className="space-y-1">
                     <FormLabel className="text-muted-foreground">
-                      اسم الطفل
+                      {t("reports.pedagogical.childName")}
                     </FormLabel>
                     <div className="space-y-2">
                       <Select
@@ -154,8 +155,8 @@ export default function ReportsPedagogicalModal({
                         disabled={!classId}
                       >
                         <FormControl>
-                          <SelectTrigger className="text-right">
-                            <SelectValue placeholder="اختر الطفل" />
+                          <SelectTrigger className="rtl:text-right">
+                            <SelectValue placeholder={t("reports.pedagogical.selectChild")} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className="max-h-60 overflow-y-auto">
@@ -171,7 +172,7 @@ export default function ReportsPedagogicalModal({
                             ))
                           ) : (
                             <SelectItem value="none" disabled>
-                              لا يوجد أطفال
+                              {t("reports.pedagogical.noChildren")}
                             </SelectItem>
                           )}
                         </SelectContent>
@@ -191,18 +192,18 @@ export default function ReportsPedagogicalModal({
                 render={({ field }) => (
                   <FormItem className="space-y-1">
                     <FormLabel className="text-muted-foreground">
-                      تقييم اللغة والتواصل
+                      {t("reports.pedagogical.languageAndCommunication")}
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <SelectTrigger className="text-right">
-                          <SelectValue placeholder="اختر التقييم" />
+                        <SelectTrigger className="rtl:text-right">
+                          <SelectValue placeholder={t("reports.pedagogical.selectLanguageAndCommunication")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {evaluationOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
-                            {option.label}
+                            {t(`reports.pedagogical.evaluationOptions.${option.value}`)}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -219,18 +220,18 @@ export default function ReportsPedagogicalModal({
                 render={({ field }) => (
                   <FormItem className="space-y-1">
                     <FormLabel className="text-muted-foreground">
-                      تقييم السلوك
+                      {t("reports.pedagogical.behavior")}
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <SelectTrigger className="text-right">
-                          <SelectValue placeholder="اختر التقييم" />
+                        <SelectTrigger className="rtl:text-right">
+                          <SelectValue placeholder={t("reports.pedagogical.selectBehavior")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {evaluationOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
-                            {option.label}
+                            {t(`reports.pedagogical.evaluationOptions.${option.value}`)}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -247,18 +248,18 @@ export default function ReportsPedagogicalModal({
                 render={({ field }) => (
                   <FormItem className="space-y-1">
                     <FormLabel className="text-muted-foreground">
-                      تقييم المهارات
+                      {t("reports.pedagogical.skills")}
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <SelectTrigger className="text-right">
-                          <SelectValue placeholder="اختر التقييم" />
+                        <SelectTrigger className="rtl:text-right">
+                          <SelectValue placeholder={t("reports.pedagogical.selectSkills")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {evaluationOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
-                            {option.label}
+                            {t(`reports.pedagogical.evaluationOptions.${option.value}`)}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -275,18 +276,18 @@ export default function ReportsPedagogicalModal({
                 render={({ field }) => (
                   <FormItem className="space-y-1">
                     <FormLabel className="text-muted-foreground">
-                      التقييم العام
+                      {t("report.pedagogical.overall")}
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <SelectTrigger className="text-right">
-                          <SelectValue placeholder="اختر التقييم" />
+                        <SelectTrigger className="rtl:text-right">
+                          <SelectValue placeholder={t("reports.pedagogical.placeholder")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {evaluationOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
-                            {option.label}
+                            {t(`reports.pedagogical.evaluationOptions.${option.value}`)}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -304,13 +305,12 @@ export default function ReportsPedagogicalModal({
               render={({ field }) => (
                 <FormItem className="space-y-1">
                   <FormLabel className="text-muted-foreground">
-                    ملاحظات
+                    {t("common.notes")}
                   </FormLabel>
                   <FormControl>
                     <Textarea
                       {...field}
-                      className="text-right"
-                      placeholder="أظهر تحسناً في المهارات الحركية الدقيقة. ننصح بزيادة الأنشطة البدنية."
+                      className="rtl:text-right"
                     />
                   </FormControl>
                   <FormMessage />

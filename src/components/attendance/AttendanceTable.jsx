@@ -13,9 +13,9 @@ import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Check, X } from "lucide-react";
-import { toast } from "sonner";
 import { getAttendancesBadge } from "@/utils/getStatusBadges";
 import { isSameDay } from "@/utils/isSameDay";
+import { t } from "i18next";
 
 export default function AttendanceTable({
   loading,
@@ -29,10 +29,6 @@ export default function AttendanceTable({
   const today = new Date();
 
   const onCheckIn = async (ids) => {
-    if (!ids) {
-      toast.dismiss("يرجى تحديد الطلاب لتسجيل الحضور");
-      return;
-    }
     const data = {
       ids,
       status: "present",
@@ -45,7 +41,6 @@ export default function AttendanceTable({
     }
   };
   const onCheckOut = async (ids) => {
-    // Call the API or perform the action to check in the selected students
     await onAttendanceCheckOut(ids);
 
     if (Array.isArray(ids) && ids.length > 0) {
@@ -53,10 +48,6 @@ export default function AttendanceTable({
     }
   };
   const onCheckLate = async (ids) => {
-    if (!ids) {
-      toast.dismiss("يرجى تحديد الطلاب لتسجيل المتأخرين");
-      return;
-    }
     const data = {
       ids,
       status: "late",
@@ -68,10 +59,6 @@ export default function AttendanceTable({
     }
   };
   const onAbsent = async (ids) => {
-    if (!ids) {
-      toast.dismiss("يرجى تحديد الطلاب لتسجيل الغياب");
-      return;
-    }
     const data = {
       ids,
       status: "absent",
@@ -117,25 +104,25 @@ export default function AttendanceTable({
               #
             </TableHead>
             <TableHead className="text-right text-muted-foreground font-medium">
-              اسم الطفل
+              {t("attendance.childName")}
             </TableHead>
             <TableHead className="text-right text-muted-foreground font-medium">
-              الفصل
+              {t("attendance.class")}
             </TableHead>
             <TableHead className="text-right text-muted-foreground font-medium">
-              الحالة
+              {t("attendance.status")}
             </TableHead>
             <TableHead className="text-right text-muted-foreground font-medium">
-              توقيت الدخول
+              {t("attendance.checkInTime")}
             </TableHead>
             <TableHead className="text-right text-muted-foreground font-medium">
-              توقيت الخروج
+              {t("attendance.checkOutTime")}
             </TableHead>
             <TableHead className="text-right text-muted-foreground font-medium">
-              الملاحظات
+              {t("attendance.notes")}
             </TableHead>
             <TableHead className="text-right text-muted-foreground font-medium">
-              الاجراءات
+              {t("common.actions")}
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -199,7 +186,7 @@ export default function AttendanceTable({
                     : "--"}
                 </TableCell>
                 <TableCell className="py-3">
-                  {att?.notes || "لا توجد ملاحظات"}
+                  {att?.notes || t("attendance.noNotes")}
                 </TableCell>
                 <TableCell className="py-3">
                   {isSameDay(selectedDate, today) ? (
@@ -210,11 +197,11 @@ export default function AttendanceTable({
                         variant="outline"
                         onClick={() => onCheckIn(att.enrollmentId)}
                       >
-                        تسجيل الحضور
+                        {t("attendance.checkIn")}
                       </Button>
                     ) : att.checkOutTime || att.status === "absent" ? (
-                      <Button variant="link" size="sm">
-                        تعديل
+                      <Button variant="link" size="sm" disabled>
+                        {t("common.edit")}
                       </Button>
                     ) : (
                       <Button
@@ -223,12 +210,12 @@ export default function AttendanceTable({
                         className="bg-[#ffe2e2] text-[#c10007]"
                         onClick={() => onCheckOut(att.enrollmentId)}
                       >
-                        تسجيل الخروج
+                        {t("attendance.checkOut")}
                       </Button>
                     )
                   ) : (
-                    <Button variant="link" size="sm">
-                      تعديل
+                    <Button variant="link" size="sm" disabled>
+                      {t("common.edit")}
                     </Button>
                   )}
                 </TableCell>
@@ -245,10 +232,10 @@ export default function AttendanceTable({
                 <div className="flex flex-col items-center justify-center gap-2">
                   <Document size={40} color="CurrentColor" />
                   <p className="text-lg font-medium">
-                    لا توجد بيانات الحضور والغياب متاحة
+                    {t("attendance.noData")}
                   </p>
                   <p className="text-sm">
-                    لم يتم إنشاء أي بيانات الحضور والغياب بعد
+                    {t("attendance.noDataDesc")}
                   </p>
                 </div>
               </TableCell>
@@ -263,7 +250,7 @@ export default function AttendanceTable({
               <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                 {/* Left side - Status or info */}
                 <div className="flex items-center gap-2 text-sm text-foreground ">
-                  <span>تم تحديد {studentsSelection.length} عناصر</span>
+                  <span>{t("attendance.selected", { count: studentsSelection.length })}</span>
                 </div>
 
                 {/* Right side - Action buttons */}
@@ -277,7 +264,7 @@ export default function AttendanceTable({
                         onClick={() => onCheckIn(studentsSelection)}
                       >
                         <Check className="w-4 h-4" />
-                        حاضر
+                        {t("attendance.present")}
                       </Button>
                       <Button
                         variant="ghost"
@@ -285,7 +272,7 @@ export default function AttendanceTable({
                         className={"text-amber-500"}
                         onClick={() => onCheckLate(studentsSelection)}
                       >
-                        متأخر
+                        {t("attendance.late")}
                       </Button>
                       <Button
                         variant="ghost"
@@ -294,7 +281,7 @@ export default function AttendanceTable({
                         onClick={() => onAbsent(studentsSelection)}
                       >
                         <X className="w-4 h-4" />
-                        غائب
+                        {t("attendance.absent")}
                       </Button>
                     </>
                   )}
