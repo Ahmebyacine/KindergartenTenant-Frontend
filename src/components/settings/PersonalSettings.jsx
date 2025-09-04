@@ -42,7 +42,7 @@ export default function PersonalSettings() {
   const { user, setUser } = useAuth();
   const [preview, setPreview] = useState(
     user?.image
-      ? import.meta.env.VITE_API_URL_PICTURE + user?.image + ".png"
+      ? import.meta.env.VITE_API_URL_PICTURE + user?.image
       : img
   );
   const [loading, setLoading] = useState(false);

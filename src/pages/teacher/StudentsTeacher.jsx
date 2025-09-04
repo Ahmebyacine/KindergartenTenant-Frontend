@@ -79,10 +79,17 @@ export default function StudentsTeacher() {
 
   const handleDeleteEnrollment = async (enrollmentId) => {
     try {
-      await api.delete(`/enrollments/${enrollmentId}`);
-      setStudents((prev) =>
-        prev.filter((student) => student._id !== enrollmentId)
-      );
+      if (Array.isArray(enrollmentId)) {
+        await api.delete(`/enrollments/bulk`, { ids: enrollmentId });
+        setStudents((prev) =>
+          prev.filter((student) => !enrollmentId.includes(student._id))
+        );
+      } else {
+        await api.delete(`/enrollments/${enrollmentId}`);
+        setStudents((prev) =>
+          prev.filter((student) => student._id !== enrollmentId)
+        );
+      }
       toast.success(t("students.deleteEnrollmentSuccess"));
     } catch (error) {
       console.error("Error deleting enrollment:", error);

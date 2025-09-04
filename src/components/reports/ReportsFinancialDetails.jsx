@@ -62,7 +62,17 @@ export default function ReportsFinancialDetails() {
     }
   };
 
-  if (loading) return <Loading sidebar={false}/>;
+  const handleSendNotification = async () => {
+    try {
+      await api.post(`/financial-reports/${reportId}/reminder-notification`);
+      toast.success(t("reports.financial.sendNotificationSuccess"));
+    } catch (error) {
+      console.error(error);
+      toast.error(t("reports.financial.sendNotificationError"));
+    }
+  };
+
+  if (loading) return <Loading sidebar={false} />;
   return (
     <div className="bg-background p-6 font-cairo">
       <div className="max-w-4xl mx-auto space-y-6">
@@ -172,7 +182,11 @@ export default function ReportsFinancialDetails() {
           </CardContent>
           {reportDetails.status === "unpaid" && (
             <CardFooter className={"gap-4 flex-col sm:flex-row justify-end"}>
-              <Button variant={"outline"} className={"text-foreground"}>
+              <Button
+                variant={"outline"}
+                className={"text-foreground"}
+                onClick={handleSendNotification}
+              >
                 <Notification color="#EFB100" />
                 {t("reports.financial.reminder")}
               </Button>
@@ -183,7 +197,9 @@ export default function ReportsFinancialDetails() {
                 disabled={confirming}
               >
                 <TickSquare color="currentColor" />
-                {confirming ? t("common.saving") : t("reports.financial.markAsPaid")}
+                {confirming
+                  ? t("common.saving")
+                  : t("reports.financial.markAsPaid")}
               </Button>
             </CardFooter>
           )}

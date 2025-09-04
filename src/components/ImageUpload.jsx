@@ -15,7 +15,7 @@ export default function ImageUpload({ value, onChange }) {
     if (value instanceof File) {
       setPreview(URL.createObjectURL(value));
     } else if (typeof value === "string" && value) {
-      setPreview(`${import.meta.env.VITE_API_URL_PICTURE}${value}.png`);
+      setPreview(`${import.meta.env.VITE_API_URL_PICTURE}${value}`);
     } else {
       setPreview(null);
     }
@@ -97,7 +97,7 @@ export default function ImageUpload({ value, onChange }) {
                 <img
                   src={preview}
                   alt="Uploaded image"
-                  className="h-45 object-cover"
+                  className="h-45 w-45 object-cover"
                 />
               </div>
               <div className="absolute top-2 right-2 flex gap-2">

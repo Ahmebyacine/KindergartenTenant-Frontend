@@ -22,7 +22,6 @@ export default function Students() {
   const [filters, setFilters] = useState({ classId: null, category: null });
   const { config } = useAuth();
 
-
   const { data: tabs, error: tabsError } = useFetch(fetchTabs);
 
   const {
@@ -45,73 +44,80 @@ export default function Students() {
   }, [tabs]);
 
   const handleAddStudent = async (data) => {
-  try {
-    const response = await api.post("/students", data);
-    setStudents((prev) => [response.data, ...prev]);
-    toast.success(t("students.addSuccess"));
-  } catch (error) {
-    console.error("Error adding student:", error);
-    toast.error(t("students.addError"), {
-      description: t(
-        `errorApi.${error?.response?.data?.message || "defaultError"}`
-      ),
-    });
-  }
-};
+    try {
+      const response = await api.post("/students", data);
+      setStudents((prev) => [response.data, ...prev]);
+      toast.success(t("students.addSuccess"));
+    } catch (error) {
+      console.error("Error adding student:", error);
+      toast.error(t("students.addError"), {
+        description: t(
+          `errorApi.${error?.response?.data?.message || "defaultError"}`
+        ),
+      });
+    }
+  };
 
-const handleRegistrationsStudent = async (data) => {
-  try {
-    const response = await api.post("/enrollments", data);
-    setStudents((prev) => [...prev, response.data]);
-    toast.success(t("students.registerSuccess"));
-  } catch (error) {
-    console.error("Error registering student:", error);
-    toast.error(t("students.registerError"), {
-      description: t(
-        `errorApi.${error?.response?.data?.message || "defaultError"}`
-      ),
-    });
-  }
-};
+  const handleRegistrationsStudent = async (data) => {
+    try {
+      const response = await api.post("/enrollments", data);
+      setStudents((prev) => [...prev, response.data]);
+      toast.success(t("students.registerSuccess"));
+    } catch (error) {
+      console.error("Error registering student:", error);
+      toast.error(t("students.registerError"), {
+        description: t(
+          `errorApi.${error?.response?.data?.message || "defaultError"}`
+        ),
+      });
+    }
+  };
 
-const handleUpdateStudent = async (formData, studentId) => {
-  try {
-    const response = await api.put(`/students/${studentId}`, formData);
-    const updatedData = response.data;
+  const handleUpdateStudent = async (formData, studentId) => {
+    try {
+      const response = await api.put(`/students/${studentId}`, formData);
+      const updatedData = response.data;
 
-    setStudents((prev) =>
-      prev.map((student) =>
-        student._id === updatedData._id ? updatedData : student
-      )
-    );
+      setStudents((prev) =>
+        prev.map((student) =>
+          student._id === updatedData._id ? updatedData : student
+        )
+      );
 
-    toast.success(t("students.updateSuccess"));
-  } catch (error) {
-    console.error("Error updating student:", error);
-    toast.error(t("students.updateError"), {
-      description: t(
-        `errorApi.${error?.response?.data?.message || "defaultError"}`
-      ),
-    });
-  }
-};
+      toast.success(t("students.updateSuccess"));
+    } catch (error) {
+      console.error("Error updating student:", error);
+      toast.error(t("students.updateError"), {
+        description: t(
+          `errorApi.${error?.response?.data?.message || "defaultError"}`
+        ),
+      });
+    }
+  };
 
-const handleDeleteEnrollment = async (enrollmentId) => {
-  try {
-    await api.delete(`/enrollments/${enrollmentId}`);
-    setStudents((prev) =>
-      prev.filter((student) => student._id !== enrollmentId)
-    );
-    toast.success(t("students.deleteEnrollmentSuccess"));
-  } catch (error) {
-    console.error("Error deleting enrollment:", error);
-    toast.error(t("students.deleteEnrollmentError"), {
-      description: t(
-        `errorApi.${error?.response?.data?.message || "defaultError"}`
-      ),
-    });
-  }
-};
+  const handleDeleteEnrollment = async (enrollmentId) => {
+    try {
+      if (Array.isArray(enrollmentId)) {
+        await api.delete(`/enrollments/bulk`, { ids: enrollmentId });
+        setStudents((prev) =>
+          prev.filter((student) => !enrollmentId.includes(student._id))
+        );
+      } else {
+        await api.delete(`/enrollments/${enrollmentId}`);
+        setStudents((prev) =>
+          prev.filter((student) => student._id !== enrollmentId)
+        );
+      }
+      toast.success(t("students.deleteEnrollmentSuccess"));
+    } catch (error) {
+      console.error("Error deleting enrollment:", error);
+      toast.error(t("students.deleteEnrollmentError"), {
+        description: t(
+          `errorApi.${error?.response?.data?.message || "defaultError"}`
+        ),
+      });
+    }
+  };
 
   const handleFilterStudents = (filters) => {
     setFilters(filters);

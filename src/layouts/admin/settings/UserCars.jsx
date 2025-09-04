@@ -76,7 +76,7 @@ export default function UserCard({
               <img
                 src={
                   user?.image
-                    ? import.meta.env.VITE_API_URL_PICTURE + user?.image + ".png"
+                    ? import.meta.env.VITE_API_URL_PICTURE + user?.image
                     : img
                 }
                 alt="User"

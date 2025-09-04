@@ -17,6 +17,7 @@ import StudentDetails from "./StudentDetails";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import PrintStudentsModal from "./PrintStudentsModal";
 import { t } from "i18next";
+import DeleteAlertDialog from "../DeleteAlertDialog";
 
 export default function StudentsTable({
   loading,
@@ -64,10 +65,10 @@ export default function StudentsTable({
             >
               <div className="flex flex-col items-center justify-center gap-2">
                 <ProfileDelete size={40} color="CurrentColor" />
-                <p className="text-lg font-medium">{t("students.noChildren")}</p>
-                <p className="text-sm">
-                  {t("students.noChildrenDescription")}
+                <p className="text-lg font-medium">
+                  {t("students.noChildren")}
                 </p>
+                <p className="text-sm">{t("students.noChildrenDescription")}</p>
               </div>
             </TableCell>
           </TableRow>
@@ -205,22 +206,35 @@ export default function StudentsTable({
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                 {/* Left side - Status or info */}
                 <div className="flex items-center gap-2 text-sm text-foreground ">
-                  <span>{t("students.selectedItems", { count: rowSelection.length })}</span>
+                  <span>
+                    {t("students.selectedItems", {
+                      count: rowSelection.length,
+                    })}
+                  </span>
                 </div>
 
                 {/* Right side - Action buttons */}
                 <div className="flex items-center gap-3">
                   <PrintStudentsModal
-                    enrollments={students.filter(s => rowSelection.includes(s._id))}
+                    enrollments={students.filter((s) =>
+                      rowSelection.includes(s._id)
+                    )}
                   />
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-destructive"
-                  >
-                    <Trash color="currentColor" />
-                    {t("students.delete")}
-                  </Button>
+                  <DeleteAlertDialog
+                    trigger={
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-destructive"
+                      >
+                        <Trash color="currentColor" />
+                        {t("students.delete")}
+                      </Button>
+                    }
+                    description={t("students.confirmDelete")}
+                    item={rowSelection}
+                    onDelete={onDeleteEnrollment}
+                  />
                   <Button
                     variant="ghost"
                     size="sm"

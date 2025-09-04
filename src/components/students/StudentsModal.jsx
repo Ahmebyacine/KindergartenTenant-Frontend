@@ -35,17 +35,21 @@ import { toast } from "sonner";
 import { t } from "i18next";
 
 // Updated student schema to match backend model
-const studentSchema = (t) => z.object({
-  firstName: z.string().min(1, t("common.required")),
-  lastName: z.string().min(1, t("common.required")),
-  birthDate: z.string().min(1, t("common.required")),
-  parentEmail: z.string().email(t("common.invalidEmail")).min(1, t("common.required")),
-  class: z.string().min(1, t("common.required")),
-  parentName: z.string().min(1, t("common.required")),
-  parentContact: z.string().min(1, t("common.required")),
-  bloodGroup: z.string().optional(),
-  image: z.any().optional(),
-});
+const studentSchema = (t) =>
+  z.object({
+    firstName: z.string().min(1, t("common.required")),
+    lastName: z.string().min(1, t("common.required")),
+    birthDate: z.string().min(1, t("common.required")),
+    parentEmail: z
+      .string()
+      .email(t("common.invalidEmail"))
+      .min(1, t("common.required")),
+    class: z.string().min(1, t("common.required")),
+    parentName: z.string().min(1, t("common.required")),
+    parentContact: z.string().min(1, t("common.required")),
+    bloodGroup: z.string().optional(),
+    image: z.any().optional(),
+  });
 
 export default function StudentsModal({
   onAddStudent,
@@ -55,6 +59,7 @@ export default function StudentsModal({
   isLimited = false,
 }) {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const form = useForm({
     resolver: zodResolver(studentSchema(t)),
     defaultValues: {
@@ -85,36 +90,41 @@ export default function StudentsModal({
   }, [editingStudent, form]);
 
   const onSubmit = async (data) => {
-    const formData = new FormData();
-    formData.append("firstName", data.firstName);
-    formData.append("lastName", data.lastName);
-    formData.append("birthDate", data.birthDate);
-    formData.append("class", data.class);
-    formData.append("parentName", data.parentName);
-    formData.append("parentEmail", data.parentEmail);
-    formData.append("parentContact", data.parentContact);
+    try {
+      setLoading(true);
+      const formData = new FormData();
+      formData.append("firstName", data.firstName);
+      formData.append("lastName", data.lastName);
+      formData.append("birthDate", data.birthDate);
+      formData.append("class", data.class);
+      formData.append("parentName", data.parentName);
+      formData.append("parentEmail", data.parentEmail);
+      formData.append("parentContact", data.parentContact);
 
-    if (data.bloodGroup) {
-      formData.append("bloodGroup", data.bloodGroup);
-    }
-    if (data.image && data.image instanceof File) {
-      if (editingStudent?.student?.image) {
+      if (data.bloodGroup) {
+        formData.append("bloodGroup", data.bloodGroup);
+      }
+      if (data.image && data.image instanceof File) {
+        if (editingStudent?.student?.image) {
+          formData.append("oldImage", editingStudent.student.image);
+        }
+        formData.append("image", data.image);
+      }
+      // Handle image deletion
+      if (!data.image && editingStudent?.student?.image) {
+        formData.append("deleteImage", "true");
         formData.append("oldImage", editingStudent.student.image);
       }
-      formData.append("image", data.image);
+      if (editingStudent) {
+        await onUpdateStudent(formData, editingStudent?.student?._id);
+      } else {
+        await onAddStudent(formData);
+      }
+      form.reset();
+      setOpen(false);
+    } finally {
+      setLoading(false);
     }
-    // Handle image deletion
-    if (!data.image && editingStudent?.student?.image) {
-      formData.append("deleteImage", "true");
-      formData.append("oldImage", editingStudent.student.image);
-    }
-    if (editingStudent) {
-      await onUpdateStudent(formData, editingStudent?.student?._id);
-    } else {
-      await onAddStudent(formData);
-    }
-    form.reset();
-    setOpen(false);
   };
 
   return (
@@ -151,7 +161,9 @@ export default function StudentsModal({
         <DialogHeader className="border-b-2 pb-4">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
             <DialogTitle className="text-lg sm:text-xl font-semibold text-foreground rtl:text-right ltr:text-left w-full">
-              {editingStudent ? t("students.editChild") : t("students.addChild")}
+              {editingStudent
+                ? t("students.editChild")
+                : t("students.addChild")}
             </DialogTitle>
           </div>
         </DialogHeader>
@@ -249,7 +261,9 @@ export default function StudentsModal({
                         >
                           <FormControl>
                             <SelectTrigger className="rtl:text-right">
-                              <SelectValue placeholder={t("students.selectClass")} />
+                              <SelectValue
+                                placeholder={t("students.selectClass")}
+                              />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -280,7 +294,9 @@ export default function StudentsModal({
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder={t("students.selectBloodGroup")} />
+                              <SelectValue
+                                placeholder={t("students.selectBloodGroup")}
+                              />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -388,10 +404,14 @@ export default function StudentsModal({
             <Button
               type="submit"
               onClick={form.handleSubmit(onSubmit)}
-              disabled={editingStudent && !form.formState.isDirty}
+              disabled={(editingStudent && !form.formState.isDirty) || loading}
               className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium disabled:opacity-50"
             >
-              {editingStudent ? t("common.update") : t("common.save")}
+              {loading
+                ? t("common.loading")
+                : editingStudent
+                ? t("common.update")
+                : t("common.save")}
             </Button>
             <DialogClose asChild>
               <Button

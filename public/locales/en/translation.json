@@ -322,7 +322,9 @@
       "amountMin": "Amount must be greater than 0",
       "addReportFinancial": "Add Financial Report",
       "addSuccess": "Financial report added successfully",
-      "addError": "Failed to add financial report"
+      "addError": "Failed to add financial report",
+      "sendNotificationSuccess": "Reminder notification sent successfully",
+      "sendNotificationError": "Failed to send reminder notification"
     },
     "health": {
       "title": "Health Reports",

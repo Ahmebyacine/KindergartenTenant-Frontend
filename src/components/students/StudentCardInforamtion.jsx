@@ -33,7 +33,7 @@ export default function StudentCardInforamtion({
               src={
                 enrollment?.student?.image
                   ? import.meta.env.VITE_API_URL_PICTURE +
-                    enrollment?.student?.image +".png"
+                    enrollment?.student?.image
                   : img
               }
               alt="Student Photo"

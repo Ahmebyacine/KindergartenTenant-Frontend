@@ -324,7 +324,9 @@
       "amountMin": "يجب أن يكون المبلغ أكبر من 0",
       "addReportFinancial": "إضافة تقرير مالي",
       "addSuccess": "تمت إضافة التقرير المالي بنجاح",
-      "addError": "تعذر إضافة التقرير المالي"
+      "addError": "تعذر إضافة التقرير المالي",
+      "sendNotificationSuccess": "تم إرسال إشعار التذكير بنجاح",
+      "sendNotificationError": "تعذر إرسال إشعار التذكير"
     },
     "health": {
       "title": "لتقرير الصحي",

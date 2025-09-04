@@ -65,16 +65,16 @@ export default function PrintStudentsModal({ enrollments }) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button size="sm" className="text-primary" variant={"ghost"}>
-          {t("students.printCards.title")}
+          {t("students.printCard.title")}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{t("students.printCards.description")}</DialogTitle>
+          <DialogTitle>{t("students.printCard.description")}</DialogTitle>
         </DialogHeader>
         <div className="py-4">
           <Label className="text-base font-medium mb-3 block">
-            {t("students.printCards.selectFormat")}
+            {t("students.printCard.selectFormat")}
           </Label>
           <RadioGroup
             value={selectedFormat}
@@ -98,7 +98,7 @@ export default function PrintStudentsModal({ enrollments }) {
         <DialogFooter>
           <div className="flex gap-4 mt-6 justify-center">
             <Button onClick={handlePrint} disabled={loading}>
-              {loading ? t("common.loading") : t("students.printCards.print")}
+              {loading ? t("common.loading") : t("students.printCard.print")}
             </Button>
             <Button
               variant="outline"

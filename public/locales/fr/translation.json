@@ -322,7 +322,9 @@
       "amountMin": "Le montant doit être supérieur à 0",
       "addReportFinancial": "Ajouter un rapport financier",
       "addSuccess": "Rapport financier ajouté avec succès",
-      "addError": "Échec de l'ajout du rapport financier"
+      "addError": "Échec de l'ajout du rapport financier",
+      "sendNotificationSuccess": "Notification de rappel envoyée avec succès",
+      "sendNotificationError": "Échec de l'envoi de la notification de rappel"
     },
     "health": {
       "title": "Rapports de santé",
