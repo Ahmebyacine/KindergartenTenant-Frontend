@@ -4,12 +4,12 @@
     "edit": "Modifier",
     "cancel": "Annuler",
     "delete": "Supprimer",
-    "saving": "Enregistrement...",
-    "loading": "Chargement...",
+    "saving": "Enregistrement en cours...",
+    "loading": "Chargement en cours...",
     "search": "Rechercher",
     "add": "Ajouter",
     "update": "Mettre à jour",
-    "required": "Obligatoire",
+    "required": "Requis",
     "filter": "Filtrer",
     "save": "Enregistrer",
     "date": "Date",
@@ -17,86 +17,77 @@
     "actions": "Actions",
     "next": "Suivant",
     "previous": "Précédent",
-    "invalidEmail": "Email invalide",
+    "invalidEmail": "Adresse email invalide",
     "invalidPhone": "Numéro de téléphone invalide",
     "basicInfo": "Informations de base",
     "additionalInfo": "Informations supplémentaires",
-    "image": "Image de l’utilisateur",
+    "image": "Image de l'utilisateur",
     "retry": "Réessayer",
-    "details": "Voir les détails",
-    "notes": "Remarques",
+    "details": "Afficher les détails",
+    "notes": "Notes",
     "yes": "Oui",
     "no": "Non",
-    "delete_item": "Supprimer l’élément",
-    "delete_item_confirmation": "Êtes-vous sûr de vouloir supprimer l’élément sélectionné ? Cette action est irréversible."
+    "delete_item": "Supprimer l'élément",
+    "delete_item_confirmation": "Êtes-vous sûr de vouloir supprimer l'élément sélectionné ? Cette action est irréversible."
   },
   "errorApi": {
     "Unauthorized": "Non autorisé",
-    "Server error": "Erreur du serveur",
+    "Server error": "Une erreur est survenue sur le serveur",
     "An error occurred while fetching data": "Une erreur est survenue lors de la récupération des données",
-    "Financial report removed": "Rapport financier supprimé",
-    "Enrollment removed": "Inscription supprimée",
-    "Please provide email and password": "Veuillez fournir un e-mail et un mot de passe",
+    "Financial report removed": "Le rapport financier a été supprimé",
+    "Enrollment removed": "L'inscription a été supprimée",
+    "Please provide email and password": "Veuillez fournir l'email et le mot de passe",
     "Invalid credentials": "Identifiants invalides",
-
-    "Email already exists": "L'e-mail existe déjà",
-    "User not found": "Utilisateur non trouvé",
-
+    "Email already exists": "Cet email existe déjà",
+    "User not found": "Utilisateur introuvable",
     "class is required": "La classe est requise",
-    "Student not found": "Élève non trouvé",
-    "Student with the same name and birth date already exists": "Un élève avec le même nom et la même date de naissance existe déjà",
-
+    "Student not found": "Étudiant introuvable",
+    "Student with the same name and birth date already exists": "Un étudiant avec le même nom et la même date de naissance existe déjà",
     "Category name already exists": "Le nom de la catégorie existe déjà",
-    "Category not found": "Catégorie non trouvée",
-
-    "Class not found": "Classe non trouvée",
+    "Category not found": "Catégorie introuvable",
+    "Class not found": "Classe introuvable",
     "Class name must be unique": "Le nom de la classe doit être unique",
-
     "Class has reached maximum capacity": "La classe a atteint sa capacité maximale",
-    "Enrollment not found": "Inscription non trouvée",
-
-    "Category, amount and are required fields": "La catégorie et le montant sont obligatoires",
-    "Expense not found": "Dépense non trouvée",
-
-    "Enrollment id and recorded id are required": "L'identifiant d'inscription et l'identifiant d'enregistrement sont requis",
-    "Attendance already recorded for this student": "La présence a déjà été enregistrée pour cet élève",
+    "Enrollment not found": "Inscription introuvable",
+    "Category, amount and are required fields": "La catégorie et le montant sont des champs obligatoires",
+    "Expense not found": "Dépense introuvable",
+    "Enrollment id and recorded id are required": "L'ID d'inscription et l'ID enregistré sont requis",
+    "Attendance already recorded for this student": "L'assiduité a déjà été enregistrée pour cet étudiant",
     "Missing user or invalid/missing 'ids' array": "Utilisateur manquant ou tableau 'ids' invalide/manquant",
-    "Some enrollments not found": "Certaines inscriptions non trouvées",
-    "Attendance already recorded for all selected students": "La présence a déjà été enregistrée pour tous les élèves sélectionnés",
-    "Attendance record not found": "Enregistrement de présence non trouvé",
-    "enrollmentId is required": "L'identifiant d'inscription est requis",
-    "No active attendance record found for check-out": "Aucun enregistrement de présence actif trouvé pour la sortie",
-    "Invalid or missing students array": "Tableau d'élèves invalide ou manquant",
-    "Check-out time cannot be in the future": "L'heure de sortie ne peut pas être dans le futur",
-    "No students found for this class.": "Aucun élève trouvé pour cette classe.",
-
-    "Duplicate report entry for this student and month": "Entrée de rapport en double pour cet élève et ce mois",
-    "Financial report not found": "Rapport financier non trouvé",
+    "Some enrollments not found": "Certaines inscriptions sont introuvables",
+    "Attendance already recorded for all selected students": "L'assiduité a déjà été enregistrée pour tous les étudiants sélectionnés",
+    "Attendance record not found": "Enregistrement d'assiduité introuvable",
+    "enrollmentId is required": "L'ID d'inscription est requis",
+    "No active attendance record found for check-out": "Aucun enregistrement d'assiduité actif trouvé pour le départ",
+    "Invalid or missing students array": "Tableau d'étudiants invalide ou manquant",
+    "Check-out time cannot be in the future": "L'heure de départ ne peut pas être dans le futur",
+    "No students found for this class.": "Aucun étudiant trouvé pour cette classe.",
+    "Duplicate report entry for this student and month": "Entrée de rapport en double pour cet étudiant et ce mois",
+    "Financial report not found": "Rapport financier introuvable",
     "Payment already confirmed": "Paiement déjà confirmé",
-
-    "Health report not found": "Rapport de santé non trouvé",
-    "Pedagogical report not found": "Rapport pédagogique non trouvé",
-
-    "You are not assigned to any class": "Vous n'êtes affecté à aucune classe"
+    "Health report not found": "Rapport de santé introuvable",
+    "Pedagogical report not found": "Rapport pédagogique introuvable",
+    "You are not assigned to any class": "Vous n'êtes assigné à aucune classe",
+    "defaultError": "Une erreur inattendue est survenue"
   },
   "dashboard": {
-    "monthlyIncome": "Revenu mensuel",
+    "monthlyIncome": "Revenus mensuels",
     "monthlyExpenses": "Dépenses mensuelles",
-    "pendingReports": "Rapports en cours de révision",
+    "pendingReports": "Rapports en attente",
     "childrenCount": "Nombre d'enfants",
     "reports": "Rapports",
     "expenses": "Dépenses",
     "income": "Revenus",
-    "financialPerformanceSummary": "Résumé des performances financières mensuelles",
+    "financialPerformanceSummary": "Résumé de la performance financière mensuelle",
     "noDataTitle": "Aucune donnée disponible",
-    "noDataDesc": "Aucune donnée sur les performances financières trouvée. Veuillez réessayer plus tard.",
-    "noDataAttendanceDesc": "Aucune donnée de présence trouvée. Veuillez réessayer plus tard.",
+    "noDataDesc": "Aucune donnée de performance financière n'a été trouvée. Veuillez réessayer plus tard.",
+    "noDataAttendanceDesc": "Aucune donnée d'assiduité et d'absence n'a été trouvée. Veuillez réessayer plus tard.",
     "attendance": "Présence",
     "absence": "Absence",
-    "attendanceAndAbsence": "Comparaison mensuelle entre présence et absence",
-    "recivedMoneyByMonth": "Montants reçus mensuellement",
+    "attendanceAndAbsence": "Comparaison mensuelle de la présence et de l'absence",
+    "recivedMoneyByMonth": "Montants reçus par mois",
     "amountrecived": "Montants reçus (DZD)",
-    "recentReports": "Journal des rapports récents",
+    "recentReports": "Historique des rapports récents",
     "childName": "Nom de l'enfant",
     "teacherName": "Nom de l'enseignant",
     "class": "Classe",
@@ -106,13 +97,13 @@
     "noRecentReports": "Aucun rapport récent"
   },
   "dashboardSupervisor": {
-    "monthlyReceived": "Total reçu ce mois-ci",
+    "monthlyReceived": "Total des montants reçus ce mois-ci",
     "absentChildren": "Enfants absents ce mois-ci",
     "pendingReports": "Rapports en attente",
     "childrenCount": "Nombre d'enfants"
   },
   "teacherDashboard": {
-    "studentCount": "Nombre d'enfants dans la classe",
+    "studentCount": "Nombre d'enfants dans la section",
     "reportsThisMonth": "Mes rapports ce mois-ci",
     "reportUnit": "rapports",
     "receivedMoney": "Montants reçus ce mois-ci",
@@ -137,8 +128,8 @@
     "full": "Complet"
   },
   "assessment": {
-    "mild": "Léger",
-    "moderate": "Modéré",
+    "mild": "Légère",
+    "moderate": "Modérée",
     "severe": "Sévère"
   },
   "overall": {
@@ -164,25 +155,25 @@
     "dashboard": "Tableau de bord",
     "classes": "Classes",
     "teachers": "Enseignants",
-    "students": "Élèves",
+    "students": "Enfants",
     "reports": "Rapports",
     "incomes": "Revenus",
     "expenses": "Dépenses",
     "financialPerformance": "Performance financière",
     "settings": "Paramètres",
-    "logout": "Se déconnecter",
+    "logout": "Déconnexion",
     "securitySettings": "Paramètres de sécurité",
     "profile": "Profil",
-    "attendance": "Présence & Absence"
+    "attendance": "Assiduité et absences"
   },
   "classes": {
     "addSuccess": "Classe ajoutée avec succès",
     "addError": "Échec de la création de la classe",
     "updateSuccess": "Mise à jour réussie",
-    "updateError": "Échec de la mise à jour de la classe",
+    "updateError": "Échec de la mise à jour des données de la classe",
     "deleteSuccess": "Suppression réussie",
     "deleteError": "Échec de la suppression de la classe",
-    "limitReached": "Nombre maximum de classes atteint",
+    "limitReached": "La limite maximale de classes a été atteinte",
     "addNew": "Ajouter une classe",
     "editTitle": "Modifier la classe",
     "addTitle": "Ajouter une nouvelle classe",
@@ -194,51 +185,52 @@
     "priceLabel": "Prix de la classe",
     "pricePlaceholder": "Entrez le prix de la classe",
     "validation": {
-      "minCapacity": "La capacité minimale est 1",
+      "minCapacity": "La capacité minimale est de 1",
       "priceNumber": "Le prix doit être un nombre",
-      "minPrice": "Le prix minimum est 0"
+      "minPrice": "Le prix minimum est de 0"
     },
-    "studentCountLabel": "Nombre d'élèves",
+    "studentCountLabel": "Nombre d'étudiants",
     "actionsLabel": "Actions",
-    "statusLabel": "Statut",
+    "statusLabel": "Statut de la classe",
     "noClasses": "Aucune classe disponible",
-    "noClassesDescription": "Aucune classe n'a encore été créée, veuillez ajouter une nouvelle classe",
+    "noClassesDescription": "Aucune classe n'a été créée. Veuillez en ajouter une nouvelle.",
     "deleteTitle": "Supprimer la classe"
   },
   "teachers": {
     "addSuccess": "Enseignant ajouté avec succès",
     "addError": "Échec de l'ajout de l'enseignant",
-    "updateSuccess": "Enseignant mis à jour avec succès",
-    "updateError": "Échec de la mise à jour de l'enseignant",
+    "updateSuccess": "Données de l'enseignant mises à jour avec succès",
+    "updateError": "Échec de la mise à jour des données de l'enseignant",
     "deleteSuccess": "Enseignant supprimé avec succès",
     "deleteError": "Échec de la suppression de l'enseignant",
     "addTeacher": "Ajouter un enseignant",
     "editTeacher": "Modifier l'enseignant",
     "fullName": "Nom complet",
-    "email": "E-mail",
+    "email": "Adresse email",
     "phone": "Numéro de téléphone",
     "assignedClass": "Classe assignée",
     "image": "Image de l'enseignant (optionnel)",
-    "noClassesAvailable": "Aucune classe disponible",
+    "noClassesAvailable": "Aucune section disponible",
     "signInInfo": "Informations de connexion",
-    "signInDescription": "Un mot de passe aléatoire sera généré et envoyé par e-mail",
+    "signInDescription": "Un mot de passe aléatoire sera généré et envoyé à l'adresse email",
     "name": "Nom de l'enseignant",
     "dateOfHiring": "Date d'embauche",
     "noTeachers": "Aucun enseignant disponible",
-    "noTeachersDescription": "Aucun enseignant n'a encore été ajouté, veuillez en ajouter un nouveau."
+    "noTeachersDescription": "Aucun enseignant n'a été ajouté. Veuillez en ajouter un nouveau.",
+    "noAssigned": "Non assigné"
   },
   "students": {
     "addChild": "Ajouter un enfant",
     "editChild": "Modifier l'enfant",
     "firstName": "Prénom",
-    "lastName": "Nom",
+    "lastName": "Nom de famille",
     "addSuccess": "Enfant ajouté avec succès",
     "addError": "Échec de l'ajout de l'enfant",
-    "registerSuccess": "Enfant inscrit avec succès",
-    "registerError": "Échec de l'inscription de l'enfant",
+    "registerSuccess": "Enfant enregistré avec succès",
+    "registerError": "Échec de l'enregistrement de l'enfant",
     "updateSuccess": "Données de l'enfant mises à jour avec succès",
     "updateError": "Échec de la mise à jour des données de l'enfant",
-    "limitReached": "Nombre maximum d'élèves atteint",
+    "limitReached": "La limite maximale d'étudiants a été atteinte",
     "deleteEnrollmentSuccess": "Inscription de l'enfant supprimée avec succès",
     "deleteEnrollmentError": "Échec de la suppression de l'inscription de l'enfant",
     "delete": "Supprimer l'enfant",
@@ -248,25 +240,25 @@
     "birthDate": "Date de naissance",
     "age": "Âge",
     "class": "Classe",
-    "selectClass": "Sélectionner une classe",
+    "selectClass": "Sélectionnez une classe",
     "bloodGroup": "Groupe sanguin",
-    "selectBloodGroup": "Sélectionner un groupe sanguin",
-    "academicYear": "Année scolaire",
+    "selectBloodGroup": "Sélectionnez un groupe sanguin",
+    "academicYear": "Année académique",
     "basicInfo": "Informations de base",
     "additionalInfo": "Informations supplémentaires",
     "parent": "Parent",
     "parentName": "Nom du parent",
     "parentEmail": "Email du parent",
     "parentContact": "Numéro de téléphone du parent",
-    "image": "Photo de l'élève (Optionnel)",
-    "noChildren": "Aucun élève disponible",
-    "noChildrenDescription": "Aucun enfant n'a encore été inscrit, veuillez ajouter un nouvel enfant",
+    "image": "Image de l'étudiant (optionnel)",
+    "noChildren": "Aucun enfant disponible",
+    "noChildrenDescription": "Aucun enfant n'a été enregistré. Veuillez en ajouter un nouveau.",
     "registrationDate": "Date d'inscription",
     "selectedItems": "{{count}} élément(s) sélectionné(s)",
     "printCard": {
       "title": "Imprimer les cartes",
-      "description": "Imprimer les cartes des élèves",
-      "selectFormat": "Sélectionner le format de la carte",
+      "description": "Imprimer les cartes des enfants",
+      "selectFormat": "Sélectionnez le format de la carte",
       "print": "Imprimer",
       "showCard": "Afficher la carte",
       "success": "Cartes imprimées avec succès",
@@ -279,16 +271,16 @@
       "name": "Nom de l'enfant",
       "birthDate": "Date de naissance",
       "class": "Classe",
-      "academicYear": "Année scolaire",
-      "success": "Enfant inscrit avec succès",
-      "error": "Échec de l'inscription de l'enfant"
+      "academicYear": "Année académique",
+      "success": "Enfant enregistré avec succès",
+      "error": "Échec de l'enregistrement de l'enfant"
     }
   },
   "reports": {
     "title": "Rapports",
     "addReport": "Ajouter un rapport",
     "noReports": "Aucun rapport disponible",
-    "noReportsDescription": "Aucun rapport n'a encore été créé, veuillez ajouter un nouveau rapport",
+    "noReportsDescription": "Aucun rapport n'a été créé. Veuillez en ajouter un nouveau.",
     "reportNumber": "Numéro du rapport",
     "tabs": {
       "pedagogical": "Rapports pédagogiques",
@@ -302,21 +294,21 @@
       "viewDetails": "Détails du rapport financier",
       "facture": "Facture :",
       "studentName": "Nom de l'enfant",
-      "selectChild": "Sélectionner un enfant",
-      "noChildren": "Aucun enfant disponible",
-      "parentName": "Parent",
+      "selectChild": "Sélectionner l'enfant",
+      "noChildren": "Aucun enfant",
+      "parentName": "Nom du parent",
       "className": "Classe",
       "selectClass": "Sélectionner une classe",
       "month": "Mois",
       "selectMonth": "Sélectionner un mois",
       "amount": "Montant",
-      "createdAt": "Date de la facture",
+      "createdAt": "Date d'émission de la facture",
       "status": "Statut",
-      "selectStatus": "Sélectionner un statut",
+      "selectStatus": "Sélectionner le statut",
       "paid": "Payé",
       "unpaid": "Non payé",
       "generatedBy": "Rapport généré par",
-      "paidTo": "Paiement reçu par",
+      "paidTo": "Employé ayant reçu le montant",
       "reminder": "Envoyer un rappel au parent",
       "markedAsPaid": "Marquer le rapport comme payé",
       "amountMin": "Le montant doit être supérieur à 0",
@@ -327,28 +319,29 @@
       "sendNotificationError": "Échec de l'envoi de la notification de rappel"
     },
     "health": {
-      "title": "Rapports de santé",
+      "title": "Rapport de santé",
       "childInfo": "Informations sur l'enfant",
       "childName": "Nom de l'enfant",
-      "selectChild": "Sélectionner un enfant",
-      "noChildren": "Aucun enfant disponible",
+      "selectChild": "Sélectionner l'enfant",
+      "noChildren": "Aucun enfant",
       "generatedBy": "Rapport généré par",
-      "createdAt": "Date du rapport",
+      "createdAt": "Date de création du rapport",
       "teacherName": "Nom de l'enseignant",
       "class": "Classe",
       "selectClass": "Sélectionner une classe",
       "date": "Date",
-      "observationTime": "Heure d'observation",
-      "conditionDetails": "Détails de l'état",
-      "conditionType": "Type d'état",
-      "selectConditionType": "Sélectionner le type d'état",
-      "conditionAssessment": "Évaluation de l'état",
-      "SelectConditionAssessment": "Sélectionner une évaluation",
-      "actionTaken": "Action entreprise ?",
+      "observationTime": "Heure de l'observation",
+      "conditionDetails": "Détails de la condition",
+      "conditionType": "Type de condition",
+      "selectConditionType": "Sélectionner le type de condition",
+      "conditionAssessment": "Évaluation de la condition",
+      "SelectConditionAssessment": "Sélectionner l'évaluation de la condition",
+      "actionTaken": "Action prise ?",
       "actionType": "Type d'action",
       "addHealthReport": "Ajouter un rapport de santé",
       "addSuccess": "Rapport de santé ajouté avec succès",
       "addError": "Échec de l'ajout du rapport de santé",
+      "conditionStatus": "État de l'enfant",
       "conditionTypes": {
         "fever": "Fièvre",
         "cough": "Toux",
@@ -357,40 +350,42 @@
         "injury": "Blessure"
       },
       "conditionAssessments": {
-        "mild": "Léger",
-        "moderate": "Modéré",
-        "severe": "Grave"
+        "mild": "Légère",
+        "moderate": "Modérée",
+        "severe": "Sévère"
       }
     },
     "pedagogical": {
       "title": "Rapports pédagogiques",
       "childInfo": "Informations sur l'enfant",
       "childName": "Nom de l'enfant",
-      "selectChild": "Sélectionner un enfant",
-      "noChildren": "Aucun enfant disponible",
+      "selectChild": "Sélectionner l'enfant",
+      "noChildren": "Aucun enfant",
       "generatedBy": "Rapport généré par",
-      "createdAt": "Date du rapport",
+      "createdAt": "Date de création du rapport",
       "teacherName": "Nom de l'enseignant",
       "class": "Classe",
       "selectClass": "Sélectionner une classe",
       "date": "Date",
-      "languageAndCommunication": "Langue et communication",
-      "selectLanguageAndCommunication": "Sélectionner langue et communication",
+      "languageAndCommunication": "Langage et communication",
+      "selectLanguageAndCommunication": "Sélectionner langage et communication",
       "behavior": "Comportement",
       "selectBehavior": "Sélectionner un comportement",
       "skills": "Compétences",
       "selectSkills": "Sélectionner des compétences",
-      "overall": "Évaluation globale",
-      "selectOverall": "Sélectionner une évaluation globale",
-      "notes": "Remarques de l'enseignant",
+      "overall": "Évaluation générale",
+      "selectOverall": "Sélectionner une évaluation générale",
+      "notes": "Notes de l'enseignant",
       "addPedagogicalReport": "Ajouter un rapport pédagogique",
       "addSuccess": "Rapport pédagogique ajouté avec succès",
       "addError": "Échec de l'ajout du rapport pédagogique",
+      "status": "Statut",
+      "overallEvaluation": "Évaluation générale",
       "evaluationOptions": {
         "weak": "Faible",
         "acceptable": "Acceptable",
-        "good": "Bon",
-        "very_good": "Très bon",
+        "good": "Bien",
+        "very_good": "Très bien",
         "excellent": "Excellent"
       }
     }
@@ -398,30 +393,29 @@
   "financialPerformance": {
     "stats": {
       "income": {
-        "title": "Revenu total",
-        "subLabel": "Montant perçu durant l'année en cours"
+        "title": "Total des revenus",
+        "subLabel": "Montant collecté pendant l'année en cours"
       },
       "expenses": {
-        "title": "Dépenses totales",
+        "title": "Total des dépenses",
         "subLabel": "Toutes les dépenses enregistrées"
       },
       "profit": {
         "title": "Bénéfice net",
-        "subLabel": "Différence entre revenus et dépenses"
+        "subLabel": "Différence entre les revenus et les dépenses"
       },
       "profitPercentage": {
         "title": "Pourcentage de bénéfice",
-        "subLabel": "Comparaison entre bénéfice et dépenses totales"
+        "subLabel": "Comparaison du bénéfice par rapport aux dépenses totales"
       }
     },
-    "title": "Détails des revenus exécutifs par employé",
-    "selectMonth": "Sélectionnez le mois et l'année",
+    "title": "Détails des revenus d'exploitation par employé",
+    "selectMonth": "Sélectionner le mois et l'année",
     "employee": "Employé",
-    "date": "Date",
     "operationsCount": "Nombre d'opérations",
     "totalAmount": "Montant total",
     "noReports": "Aucun rapport disponible",
-    "noReportsDesc": "Aucun rapport n'a encore été créé. Veuillez ajouter un nouveau rapport.",
+    "noReportsDesc": "Aucun rapport n'a été créé. Veuillez en ajouter un nouveau.",
     "noData": "Aucune donnée disponible",
     "noDataDesc": "Aucune donnée n'est actuellement disponible",
     "expenses": "Dépenses",
@@ -434,7 +428,7 @@
   "months": {
     "january": "Janvier",
     "february": "Février",
-    "march": "March",
+    "march": "Mars",
     "april": "Avril",
     "may": "Mai",
     "june": "Juin",
@@ -448,12 +442,12 @@
   "income": {
     "stats": {
       "income": {
-        "title": "Revenu total",
-        "subLabel": "Montant perçu durant l'année en cours"
+        "title": "Total des revenus",
+        "subLabel": "Montant collecté pendant l'année en cours"
       },
       "unpaidInvoices": {
         "title": "Factures impayées",
-        "subLabel": "Total des factures non réglées"
+        "subLabel": "Total des factures impayées"
       },
       "invoiceCount": {
         "title": "Nombre de factures",
@@ -462,18 +456,18 @@
       },
       "collectionRate": {
         "title": "Taux de recouvrement",
-        "subLabel": "Pourcentage perçu sur le total des frais"
+        "subLabel": "Pourcentage du montant total des frais collectés"
       }
     },
     "month": "Mois",
     "yearAcademy": "Année académique",
-    "numberOfFaturations": "Nombre de factures",
+    "numberOfFaturations": "Nombre de facturations",
     "totalAmount": "Montant total",
-    "averageInvoice": "Moyenne des factures",
+    "averageInvoice": "Facture moyenne",
     "collectionRate": "Taux de recouvrement",
     "previousMonthComparison": "Comparaison avec le mois précédent",
     "noDataTitle": "Aucun revenu disponible",
-    "noDataDesc": "Aucun revenu n'a encore été créé"
+    "noDataDesc": "Aucun revenu n'a encore été généré"
   },
   "expenses": {
     "add": {
@@ -483,47 +477,47 @@
       "success": "Mise à jour réussie"
     },
     "delete": {
-      "success": "Supprimé avec succès"
+      "success": "Suppression réussie"
     },
     "stats": {
       "month": {
         "title": "Dépenses de ce mois",
-        "subLabel": "Total des dépenses pour {{month}}"
+        "subLabel": "Total des dépenses pour le mois de {{month}}"
       },
       "year": {
         "title": "Dépenses de l'année en cours",
-        "subLabel": "De janvier jusqu’à aujourd’hui"
+        "subLabel": "De Janvier à aujourd'hui"
       },
       "count": {
         "title": "Nombre de dépenses enregistrées",
-        "unit": "opération",
-        "subLabel": "Durant {{month}} seulement"
+        "unit": "opération(s)",
+        "subLabel": "Pour le mois de {{month}} uniquement"
       },
       "average": {
         "title": "Dépense moyenne",
-        "subLabel": "Par opération durant {{month}}"
+        "subLabel": "Par opération pour le mois de {{month}}"
       }
     },
-    "filterByType": "Filtrer par type de dépense:",
-    "filterByMonth": "Filtrer par mois:",
+    "filterByType": "Filtrer par type de dépense :",
+    "filterByMonth": "Filtrer par mois :",
     "types": {
       "salaries": "Salaires",
       "supplies": "Fournitures",
       "maintenance": "Maintenance",
       "utilities": "Services publics",
-      "other": "Autre"
+      "other": "Autres"
     },
-    "amountMustBePositive": "Le montant doit être positif",
-    "addNewExpense": "Ajouter un nouveau dépense",
-    "editExpense": "Modifier le dépense",
-    "category": "Catégorie de dépense",
-    "amount": "Montant du dépense",
-    "description": "Description du dépense",
-    "descriptionPlaceholder": "Entrez la description du dépense",
-    "categoryPlaceholder": "Sélectionnez la catégorie de dépense",
-    "approvedBy": "Approuvé par",
+    "amountMustBePositive": "Le montant doit être un nombre positif",
+    "addNewExpense": "Ajouter une nouvelle dépense",
+    "editExpense": "Modifier la dépense",
+    "category": "Type de dépense",
+    "amount": "Montant de la dépense",
+    "description": "Description de la dépense",
+    "descriptionPlaceholder": "Entrez la description de la dépense",
+    "categoryPlaceholder": "Sélectionnez le type de dépense",
+    "approvedBy": "Éditeur de l'opération",
     "noExpenses": "Aucune dépense disponible",
-    "noExpensesDescription": "Aucune dépense n'a encore été créée, veuillez ajouter une nouvelle dépense."
+    "noExpensesDescription": "Aucune dépense n'a été ajoutée. Veuillez en ajouter une nouvelle."
   },
   "settings": {
     "tabs": {
@@ -538,29 +532,29 @@
       "kindergartenCategories": "Catégories de la maternelle",
       "language": "Langue",
       "languageAndTime": "Langue et heure",
-      "languageDescription": "Modifier la langue de l’interface du système",
+      "languageDescription": "Changer la langue de l'interface du système",
       "languageChangeSuccess": "Langue changée avec succès !",
       "languageChangeError": "Échec du changement de langue. Veuillez réessayer.",
       "theme": "Thème",
-      "themeDescription": "Choisissez le thème par défaut du système",
+      "themeDescription": "Sélectionnez le thème par défaut du système",
       "themeChangeSuccess": "Thème changé avec succès !",
       "themeChangeError": "Échec du changement de thème. Veuillez réessayer.",
       "light": "Clair",
       "dark": "Sombre",
       "system": "Système",
       "categories": "Catégories",
-      "maxCategories": "Le nombre maximum de catégories est {{max}}",
+      "maxCategories": "La limite maximale de catégories est de {{max}}",
       "addCategory": "Ajouter une nouvelle catégorie",
-      "addCategoryError": "Une erreur est survenue lors de l’ajout de la catégorie",
+      "addCategoryError": "Une erreur est survenue lors de l'ajout de la catégorie",
       "updateCategorySuccess": "Catégorie mise à jour avec succès",
       "updateCategoryError": "Une erreur est survenue lors de la mise à jour de la catégorie",
       "deleteTitle": "Supprimer la catégorie",
       "deleteMessage": "Êtes-vous sûr de vouloir supprimer cette catégorie ? Cette action est irréversible.",
       "deleteSuccess": "Catégorie supprimée avec succès",
-      "deleteError": "Impossible de supprimer la catégorie. Elle peut être liée à des classes existantes.",
+      "deleteError": "Échec de la suppression de la catégorie. Il se peut que des classes soient associées à cette catégorie.",
       "validation": {
         "nameMin": "Le nom doit contenir au moins 2 caractères",
-        "email": "Adresse e-mail invalide",
+        "email": "Adresse email invalide",
         "phoneMin": "Le numéro de téléphone doit contenir au moins 10 chiffres",
         "phoneInvalid": "Le numéro de téléphone doit contenir uniquement des chiffres"
       }
@@ -571,23 +565,23 @@
       "editAccount": "Modifier le compte",
       "deleteAccount": "Supprimer le compte",
       "deleteAccountConfirmation": "Êtes-vous sûr de vouloir supprimer ce compte ? Cette action est irréversible.",
-      "limitReached": "Nombre maximum d’utilisateurs atteint",
+      "limitReached": "La limite maximale d'utilisateurs a été atteinte",
       "addNewAccount": "Créer un nouveau compte",
       "fullName": "Nom complet",
-      "email": "E-mail",
-      "phone": "Téléphone",
+      "email": "Adresse email",
+      "phone": "Numéro de téléphone",
       "role": "Rôle",
-      "image": "Image de l’utilisateur",
+      "image": "Image de l'utilisateur",
       "teacher": "Enseignant",
       "supervisor": "Superviseur",
       "signInInfo": "Informations de connexion",
-      "signInDescription": "Un mot de passe aléatoire sera généré et envoyé par e-mail",
+      "signInDescription": "Un mot de passe aléatoire sera généré et envoyé à l'adresse email",
       "addSuccess": "Utilisateur ajouté avec succès",
-      "addError": "Échec de l’ajout de l’utilisateur. Veuillez réessayer.",
+      "addError": "Échec de l'ajout de l'utilisateur. Veuillez réessayer.",
       "updateSuccess": "Utilisateur mis à jour avec succès",
-      "updateError": "Échec de la mise à jour de l’utilisateur. Veuillez réessayer.",
+      "updateError": "Échec de la mise à jour de l'utilisateur. Veuillez réessayer.",
       "deleteSuccess": "Utilisateur supprimé avec succès",
-      "deleteError": "Échec de la suppression de l’utilisateur. Veuillez réessayer.",
+      "deleteError": "Échec de la suppression de l'utilisateur. Veuillez réessayer.",
       "changePasswordSuccess": "Mot de passe changé avec succès",
       "changePasswordError": "Échec du changement de mot de passe. Veuillez réessayer."
     },
@@ -595,11 +589,11 @@
       "title": "Paramètres personnels",
       "description": "Mettez à jour les informations de votre compte personnel.",
       "name": "Nom",
-      "email": "E-mail",
-      "phone": "Téléphone",
+      "email": "Adresse email",
+      "phone": "Numéro de téléphone",
       "role": "Rôle",
-      "image": "Image de l’utilisateur",
-      "changeImage": "Changer la photo de profil",
+      "image": "Image de l'utilisateur",
+      "changeImage": "Changer l'image de profil",
       "success": "Informations personnelles mises à jour avec succès",
       "error": "Échec de la mise à jour des informations personnelles.",
       "roles": {
@@ -610,7 +604,7 @@
     },
     "security": {
       "title": "Paramètres de sécurité",
-      "description": "Changez régulièrement le mot de passe de votre compte pour le sécuriser.",
+      "description": "Changez régulièrement le mot de passe de votre compte pour garantir sa sécurité.",
       "currentPassword": "Mot de passe actuel",
       "newPassword": "Nouveau mot de passe",
       "confirmNewPassword": "Confirmer le nouveau mot de passe",
@@ -624,23 +618,23 @@
         "currentPassword": "Le mot de passe actuel est requis",
         "newPassword": {
           "minLength": "Le mot de passe doit contenir au moins 8 caractères",
-          "uppercase": "Doit contenir au moins une majuscule",
-          "lowercase": "Doit contenir au moins une minuscule",
+          "uppercase": "Doit contenir au moins une lettre majuscule",
+          "lowercase": "Doit contenir au moins une lettre minuscule",
           "number": "Doit contenir au moins un chiffre",
           "special": "Doit contenir au moins un caractère spécial"
         },
-        "confirmPassword": "La confirmation du mot de passe est requise",
+        "confirmPassword": "La confirmation du nouveau mot de passe est requise",
         "mismatch": "Les nouveaux mots de passe ne correspondent pas"
       }
     }
   },
   "auth": {
     "signin": {
-      "title": "Connexion",
-      "description": "Entrez votre e-mail et mot de passe pour accéder à votre compte",
-      "email": "E-mail",
+      "title": "Se connecter",
+      "description": "Entrez votre email et mot de passe pour accéder à votre compte",
+      "email": "Adresse email",
       "password": "Mot de passe",
-      "placeholderEmail": "Entrez votre e-mail",
+      "placeholderEmail": "Entrez votre email",
       "placeholderPassword": "Entrez votre mot de passe",
       "submit": "Se connecter",
       "loading": "Connexion en cours..."
@@ -648,18 +642,18 @@
   },
   "changePassword": {
     "title": "Changer le mot de passe",
-    "description": "Bienvenue ! Veuillez définir un nouveau mot de passe pour terminer la configuration de votre compte.",
+    "description": "Bienvenue ! Veuillez définir un nouveau mot de passe pour finaliser la configuration de votre compte.",
     "newPassword": "Nouveau mot de passe",
     "newPasswordPlaceholder": "Entrez le nouveau mot de passe",
     "confirmPassword": "Confirmer le nouveau mot de passe",
     "confirmPasswordPlaceholder": "Confirmez le nouveau mot de passe",
     "requirements": {
       "title": "Exigences du mot de passe :",
-      "min": "Au moins 8 caractères",
-      "upper": "Au moins une lettre majuscule",
-      "lower": "Au moins une lettre minuscule",
-      "number": "Au moins un chiffre",
-      "special": "Au moins un caractère spécial"
+      "min": "8 caractères minimum",
+      "upper": "Contient une lettre majuscule",
+      "lower": "Contient une lettre minuscule",
+      "number": "Contient un chiffre",
+      "special": "Contient un caractère spécial"
     },
     "validation": {
       "min": "Le mot de passe doit contenir au moins 8 caractères",
@@ -667,7 +661,7 @@
       "lower": "Doit contenir au moins une lettre minuscule",
       "number": "Doit contenir au moins un chiffre",
       "special": "Doit contenir au moins un caractère spécial",
-      "mismatch": "Les mots de passe ne correspondent pas"
+      "mismatch": "Les nouveaux mots de passe ne correspondent pas"
     },
     "match": "Les mots de passe correspondent",
     "mismatch": "Les mots de passe ne correspondent pas",
@@ -680,20 +674,20 @@
     "error": "Échec de la mise à jour du mot de passe. Veuillez réessayer."
   },
   "errorPage": {
-    "title": "Une erreur s'est produite lors du chargement des données"
+    "title": "Une erreur est survenue lors du chargement des données"
   },
   "unauthorized": {
     "title": "Accès non autorisé",
     "description": "Vous n'avez pas la permission d'accéder à cette page. Veuillez contacter votre administrateur si vous pensez qu'il s'agit d'une erreur.",
-    "errorBox": "Erreur 401 : Non autorisé",
+    "errorBox": "Erreur 401: Non autorisé",
     "backButton": "Retour",
     "loginButton": "Se connecter"
   },
   "attendance": {
-    "title": "Registre de présence",
+    "title": "Journal d'assiduité",
     "breadcrumb": {
       "dashboard": "Tableau de bord",
-      "attendance": "Présence"
+      "attendance": "Assiduité"
     },
     "stats": {
       "childrenCount": "Nombre d'enfants",
@@ -708,34 +702,34 @@
     "absent": "Absent",
     "totalChildren": "Nombre total d'enfants",
     "attendanceRate": "Taux de présence",
-    "emptyMessage": "Veuillez sélectionner une date et une classe pour afficher les données de présence",
-    "successCheckIn": "Présence enregistrée avec succès",
-    "errorCheckIn": "Une erreur est survenue lors de l'enregistrement de la présence",
-    "successCheckOut": "Départ enregistré avec succès",
+    "emptyMessage": "Veuillez sélectionner une date et une classe pour afficher les données de présence et d'absence",
+    "successCheckIn": "Enregistrement de l'arrivée réussi",
+    "errorCheckIn": "Une erreur est survenue lors de l'enregistrement de l'arrivée",
+    "successCheckOut": "Enregistrement du départ réussi",
     "errorCheckOut": "Une erreur est survenue lors de l'enregistrement du départ",
-    "children": "Enfants",
+    "children": "enfants",
     "childName": "Nom de l'enfant",
     "class": "Classe",
     "status": "Statut",
-    "statusPlaceholder": "Sélectionner le statut de présence",
+    "statusPlaceholder": "Sélectionnez le statut d'assiduité",
     "checkInTime": "Heure d'arrivée",
     "checkOutTime": "Heure de départ",
-    "notes": "Remarques",
-    "noNotes": "Aucune remarque",
-    "noData": "Aucune donnée disponible",
-    "noDataDesc": "Aucune donnée de présence n'a encore été créée",
+    "notes": "Notes",
+    "noNotes": "Aucune note",
+    "noData": "Aucune donnée",
+    "noDataDesc": "Aucune donnée d'assiduité n'a encore été créée",
     "checkIn": "Enregistrer l'arrivée",
     "checkOut": "Enregistrer le départ",
-    "selected": "{{count}} éléments sélectionnés",
-    "scanQRCode": "Scanner le code QR",
-    "instructions": "Pointez la caméra vers le code QR"
+    "selected": "{{count}} élément(s) sélectionné(s)",
+    "scanQRCode": "Scanner le QR code",
+    "instructions": "Dirigez la caméra vers le QR code"
   },
   "category": {
     "edit": "Modifier",
-    "limitReached": "Nombre maximum de catégories atteint",
+    "limitReached": "La limite maximale de catégories a été atteinte",
     "addNew": "Ajouter une catégorie personnalisée",
-    "editTitle": "Modifier la catégorie",
-    "addTitle": "Ajouter une nouvelle catégorie",
+    "editTitle": "Modifier la classe",
+    "addTitle": "Ajouter une nouvelle classe",
     "nameLabel": "Nom de la catégorie",
     "namePlaceholder": "Entrez le nom de la catégorie"
   },
@@ -745,22 +739,25 @@
   "filter": {
     "all": "Tout",
     "applyFilters": "Appliquer les filtres",
-    "resetFilters": "Réinitialiser les filtres"
+    "resetFilters": "Réinitialiser les filtres",
+    "optionFilters": "Options de filtrage",
+    "byClass": "Filtrer par classe :",
+    "byMonth": "Filtrer par mois :"
   },
   "onboarding": {
     "categories": {
       "nursery": "Crèche",
       "preparatory": "Préparatoire",
-      "kindergarten": "Jardin d'enfants",
-      "limitReached": "Vous ne pouvez pas sélectionner plus de {{limit}} catégories",
-      "title": "Quelles catégories existent dans votre jardin d'enfants ?"
+      "kindergarten": "Maternelle",
+      "limitReached": "Vous ne pouvez pas choisir plus de {{limit}} catégories",
+      "title": "Quelles catégories existent dans votre maternelle ?"
     },
     "class": {
       "title": "Créez votre première classe pour commencer.",
       "className": "Nom de la classe",
       "classNamePlaceholder": "Entrez le nom de la classe",
       "category": "Catégorie",
-      "categoryPlaceholder": "Choisissez une catégorie",
+      "categoryPlaceholder": "Sélectionnez une catégorie",
       "capacity": "Capacité",
       "capacityPlaceholder": "Entrez la capacité de la classe",
       "price": "Prix de la classe",
@@ -768,47 +765,47 @@
       "addAnotherClass": "Ajouter une autre classe"
     },
     "currency": {
-      "title": "Quelle devise utilisez-vous dans votre jardin d'enfants ?",
-      "dzd": "Dinar Algérien (DZD)"
+      "title": "Quelle devise utilisez-vous dans votre maternelle ?",
+      "dzd": "Dinar algérien (DZD)"
     },
     "language": {
-      "title": "Quelle langue souhaitez-vous utiliser dans votre jardin d'enfants ?"
+      "title": "Quelle langue préférez-vous utiliser dans votre maternelle ?"
     },
     "success": {
-      "title": "Félicitations ! Votre jardin d'enfants a été configuré avec succès",
+      "title": "Félicitations ! Votre maternelle est configurée avec succès",
       "description": "Vous pouvez maintenant commencer à utiliser la plateforme",
       "startUsing": "Commencer maintenant"
     },
-    "errorSave": "Une erreur s'est produite lors de l'enregistrement."
+    "errorSave": "Une erreur est survenue lors de l'enregistrement."
+  },
+  "imageUpload": {
+    "drag": "Glissez-déposez un fichier ici ou cliquez pour choisir un fichier",
+    "description": "Veuillez choisir une image depuis votre appareil.",
+    "choose": "Choisir un fichier"
   },
   "routes": {
     "home": "Tableau de bord",
-    "adminDashboard": "Tableau de bord administrateur",
-    "students": "Élèves",
+    "adminDashboard": "Tableau de bord de l'administrateur",
+    "students": "Étudiants",
     "teachers": "Enseignants",
     "settings": "Paramètres",
     "incomes": "Revenus",
     "expenses": "Dépenses",
     "financialPerformance": "Performance financière",
-    "attendance": "Présence",
-    "supervisorDashboard": "Tableau de bord superviseur",
-    "supervisorClasses": "Classes",
-    "supervisorAttendance": "Présence du superviseur",
-    "supervisorTeachers": "Enseignants",
-    "teacherDashboard": "Tableau de bord enseignant",
-    "teacherStudents": "Élèves de l’enseignant",
-    "teacherReports": "Rapports de l’enseignant",
-    "teacherAttendance": "Présence de l’enseignant",
+    "attendance": "Assiduité",
+    "supervisorDashboard": "Tableau de bord du superviseur",
+    "supervisorClasses": "Classes du superviseur",
+    "supervisorAttendance": "Assiduité du superviseur",
+    "supervisorTeachers": "Enseignants du superviseur",
+    "teacherDashboard": "Tableau de bord de l'enseignant",
+    "teacherStudents": "Étudiants de l'enseignant",
+    "teacherReports": "Rapports de l'enseignant",
+    "teacherAttendance": "Assiduité de l'enseignant",
     "reports": "Rapports",
     "classes": "Classes",
     "settingsUser": "Paramètres",
     "unauthorized": "Accès non autorisé",
-    "loading": "Chargement",
+    "loading": "Chargement en cours",
     "noTenantError": "Erreur de locataire"
-  },
-  "imageUpload": {
-    "drag": "Glissez le fichier ici ou cliquez pour choisir un fichier",
-    "description": "Veuillez sélectionner une image depuis votre appareil.",
-    "choose": "Choisir un fichier"
   }
 }

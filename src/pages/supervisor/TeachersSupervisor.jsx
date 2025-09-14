@@ -13,7 +13,17 @@ export default function TeachersSupervisor() {
   const [activeTab, setActiveTab] = useState(null);
   const [search, setSearch] = useState("");
 
-  const { data: tabs, error: tabsError } = useFetch(fetchTabs);
+  // Fetch dynamic tabs
+  const { data: tabsData, error: tabsError } = useFetch(fetchTabs);
+
+  // Add static tab for "No Assigned Teacher"
+  const tabs = useMemo(() => {
+    return [
+      ...tabsData,
+      { id: "no-assigned", label: t("teachers.noAssigned") },
+    ];
+  }, [tabsData]);
+
 
   const { data: teachers, loading, error: teachersError } = useFetch(fetchTeachers);
 
@@ -25,15 +35,16 @@ export default function TeachersSupervisor() {
 
   const filteredTeachers = useMemo(() => {
     if (!search.trim())
-      return (
-        teachers?.filter(
-          (teacher) => teacher?.assignedClass?.category === activeTab
-        ) || []
-      );
+      return teachers?.filter((teacher) => {
+        if (activeTab === "no-assigned") {
+          return !teacher?.assignedClass;
+        }
+        return teacher?.assignedClass?.category === activeTab;
+      }) || [];
 
     return teachers.filter((teacher) => {
       const name = teacher.name?.toLowerCase() || "";
-      return name.includes(search.toLowerCase()) || "";
+      return name.includes(search.toLowerCase());
     });
   }, [teachers, search, activeTab]);
 

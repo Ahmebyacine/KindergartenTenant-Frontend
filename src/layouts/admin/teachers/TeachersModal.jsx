@@ -41,7 +41,7 @@ const teacherSchema = (t) =>
     phone: z.string().regex(/^\+?[0-9]{10,15}$/, t("common.invalidPhone")),
     assignedClass: z.string().min(1, t("common.required")).optional(),
     image: z.any().optional(),
-});
+  });
 
 export default function TeachersModal({
   onAddTeacher,
@@ -125,7 +125,9 @@ export default function TeachersModal({
         <DialogHeader className="border-b-2 pb-4">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
             <DialogTitle className="text-lg sm:text-xl font-semibold text-foreground rtl:text-right ltr:text-left w-full">
-              {editingTeacher ? t("teacher.editTeacher") : t("teacher.addTeacher")}
+              {editingTeacher
+                ? t("teacher.editTeacher")
+                : t("teacher.addTeacher")}
             </DialogTitle>
           </div>
         </DialogHeader>
@@ -180,10 +182,7 @@ export default function TeachersModal({
                         {t("teachers.email")}
                       </FormLabel>
                       <FormControl>
-                        <Input
-                          {...field}
-                          type="email"
-                        />
+                        <Input {...field} type="email" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -200,7 +199,7 @@ export default function TeachersModal({
                         {t("teachers.phone")}
                       </FormLabel>
                       <FormControl>
-                        <Input {...field}/>
+                        <Input {...field} type="tel" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -235,7 +234,9 @@ export default function TeachersModal({
                         >
                           <FormControl>
                             <SelectTrigger className="rtl:text-right">
-                              <SelectValue placeholder={t("teachers.assignedClass")} />
+                              <SelectValue
+                                placeholder={t("teachers.assignedClass")}
+                              />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>

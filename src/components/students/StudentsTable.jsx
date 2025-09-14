@@ -130,7 +130,7 @@ export default function StudentsTable({
                     {t("students.registrationDate")}
                   </TableHead>
                   <TableHead className="text-muted-foreground font-medium">
-                    {t("students.actions")}
+                    {t("common.actions")}
                   </TableHead>
                 </TableRow>
               </TableHeader>

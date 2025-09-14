@@ -41,9 +41,7 @@ const formSchema = (t) =>
 export default function PersonalSettings() {
   const { user, setUser } = useAuth();
   const [preview, setPreview] = useState(
-    user?.image
-      ? import.meta.env.VITE_API_URL_PICTURE + user?.image
-      : img
+    user?.image ? import.meta.env.VITE_API_URL_PICTURE + user?.image : img
   );
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
@@ -140,7 +138,8 @@ export default function PersonalSettings() {
                   onClick={() => fileInputRef.current.click()}
                   className="flex items-center gap-2"
                 >
-                  <Upload className="h-4 w-4" /> {t("settings.personal.changeImage")}
+                  <Upload className="h-4 w-4" />{" "}
+                  {t("settings.personal.changeImage")}
                 </Button>
                 {(user?.image || file) && (
                   <Button
@@ -214,7 +213,7 @@ export default function PersonalSettings() {
                       {t("settings.personal.phone")}
                     </FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field} type="tel" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -227,7 +226,10 @@ export default function PersonalSettings() {
                   <Briefcase className="h-4 w-4" />
                   {t("settings.personal.role")}
                 </Label>
-                <Input value={t(`settings.personal.roles.${user?.role}`)} disabled />
+                <Input
+                  value={t(`settings.personal.roles.${user?.role}`)}
+                  disabled
+                />
               </div>
 
               <div className="pt-4">

@@ -66,9 +66,9 @@ export default function TeachersTable({
                   {teacher.name}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {teacher.assignedClass.className}
+                  {teacher?.assignedClass?.className || t("teachers.noAssigned")}
                 </TableCell>
-                <TableCell className="text-foreground py-3">
+                <TableCell dir="ltr" className="text-foreground py-3">
                   {teacher.phone}
                 </TableCell>
                 <TableCell className="text-foreground py-3">

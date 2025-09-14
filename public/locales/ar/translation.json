@@ -227,7 +227,8 @@
     "name": "اسم المعلم",
     "dateOfHiring": "تاريخ التعيين",
     "noTeachers": "لا توجد معلمين متاحين",
-    "noTeachersDescription": "لم يتم إضافة أي معلمين بعد، قم بإضافة معلم جديد"
+    "noTeachersDescription": "لم يتم إضافة أي معلمين بعد، قم بإضافة معلم جديد",
+    "noAssigned":"بدون تعيين"
   },
   "students": {
     "addChild": "إضافة طفل",
@@ -351,6 +352,7 @@
       "addHealthReport": "إضافة تقرير صحي",
       "addSuccess": "تمت إضافة التقرير الصحي بنجاح",
       "addError": "تعذر إضافة التقرير الصحي",
+      "conditionStatus": "حالة الطفل",
       "conditionTypes": {
         "fever": "حرارة",
         "cough": "سعال",
@@ -388,6 +390,8 @@
       "addPedagogicalReport": "إضافة تقرير بيداغوجي",
       "addSuccess": "تمت إضافة التقرير البيداغوجي بنجاح",
       "addError": "تعذر إضافة التقرير البيداغوجي",
+      "status":"الحالة",
+      "overallEvaluation": "التقييم العام",
       "evaluationOptions": {
         "weak": "ضعيف",
         "acceptable": "مقبول",
