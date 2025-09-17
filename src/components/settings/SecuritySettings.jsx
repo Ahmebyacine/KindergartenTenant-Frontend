@@ -116,7 +116,7 @@ export default function SecuritySettings() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-medium mb-2 block">
-                      {t("settings.security.confirmPassword")} *
+                      {t("settings.security.confirmNewPassword")} *
                     </FormLabel>
                     <FormControl>
                       <div className="relative">

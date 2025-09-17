@@ -28,7 +28,8 @@
     "yes": "Yes",
     "no": "No",
     "delete_item": "Delete Item",
-    "delete_item_confirmation": "Are you sure you want to delete the selected item? This action cannot be undone."
+    "delete_item_confirmation": "Are you sure you want to delete the selected item? This action cannot be undone.",
+    "start": "Start Now"
   },
   "errorApi": {
     "Unauthorized": "Unauthorized",
@@ -335,7 +336,7 @@
       "conditionType": "Condition Type",
       "selectConditionType": "Select Condition Type",
       "conditionAssessment": "Condition Assessment",
-      "SelectConditionAssessment": "Select Condition Assessment",
+      "selectConditionAssessment": "Select Condition Assessment",
       "actionTaken": "Action taken?",
       "actionType": "Action Type",
       "addHealthReport": "Add Health Report",

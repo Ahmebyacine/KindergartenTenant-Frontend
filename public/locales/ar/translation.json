@@ -28,7 +28,8 @@
     "yes": "نعم",
     "no": "لا",
     "delete_item": "حذف العنصر",
-    "delete_item_confirmation": "هل أنت متأكد من حذف العنصر المحدد؟ لا يمكن التراجع عن هذا الإجراء."
+    "delete_item_confirmation": "هل أنت متأكد من حذف العنصر المحدد؟ لا يمكن التراجع عن هذا الإجراء.",
+    "start": " ابدأ الآن"
   },
   "errorApi": {
     "Unauthorized": "غير مصرح",
@@ -228,7 +229,7 @@
     "dateOfHiring": "تاريخ التعيين",
     "noTeachers": "لا توجد معلمين متاحين",
     "noTeachersDescription": "لم يتم إضافة أي معلمين بعد، قم بإضافة معلم جديد",
-    "noAssigned":"بدون تعيين"
+    "noAssigned": "بدون تعيين"
   },
   "students": {
     "addChild": "إضافة طفل",
@@ -346,7 +347,7 @@
       "conditionType": "نوع الحالة",
       "selectConditionType": "اختيار نوع الحالة",
       "conditionAssessment": "تقييم الحالة",
-      "SelectConditionAssessment": "اختيار تقييم الحالة",
+      "selectConditionAssessment": "اختيار تقييم الحالة",
       "actionTaken": "تم اتخاذ إجراء؟",
       "actionType": "نوع الإجراء",
       "addHealthReport": "إضافة تقرير صحي",
@@ -390,7 +391,7 @@
       "addPedagogicalReport": "إضافة تقرير بيداغوجي",
       "addSuccess": "تمت إضافة التقرير البيداغوجي بنجاح",
       "addError": "تعذر إضافة التقرير البيداغوجي",
-      "status":"الحالة",
+      "status": "الحالة",
       "overallEvaluation": "التقييم العام",
       "evaluationOptions": {
         "weak": "ضعيف",

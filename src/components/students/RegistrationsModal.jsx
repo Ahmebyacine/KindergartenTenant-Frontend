@@ -248,7 +248,7 @@ export default function RegistrationsModal({
                   <Select value={field.value} onValueChange={field.onChange}>
                     <FormControl>
                       <SelectTrigger className="border border-border rounded-lg">
-                        <SelectValue placeholder={t("students.registration.selectClass")} />
+                        <SelectValue placeholder={t("students.selectClass")} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="rtl:text-right" align="end">

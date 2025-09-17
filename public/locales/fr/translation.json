@@ -28,7 +28,8 @@
     "yes": "Oui",
     "no": "Non",
     "delete_item": "Supprimer l'élément",
-    "delete_item_confirmation": "Êtes-vous sûr de vouloir supprimer l'élément sélectionné ? Cette action est irréversible."
+    "delete_item_confirmation": "Êtes-vous sûr de vouloir supprimer l'élément sélectionné ? Cette action est irréversible.",
+    "start": "Commencer maintenant"
   },
   "errorApi": {
     "Unauthorized": "Non autorisé",
@@ -335,7 +336,7 @@
       "conditionType": "Type de condition",
       "selectConditionType": "Sélectionner le type de condition",
       "conditionAssessment": "Évaluation de la condition",
-      "SelectConditionAssessment": "Sélectionner l'évaluation de la condition",
+      "selectConditionAssessment": "Sélectionner l'évaluation de la condition",
       "actionTaken": "Action prise ?",
       "actionType": "Type d'action",
       "addHealthReport": "Ajouter un rapport de santé",

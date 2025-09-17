@@ -281,7 +281,7 @@ export default function ReportsPedagogicalModal({
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="rtl:text-right">
-                          <SelectValue placeholder={t("reports.pedagogical.placeholder")} />
+                          <SelectValue placeholder={t("reports.pedagogical.selectOverall")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>

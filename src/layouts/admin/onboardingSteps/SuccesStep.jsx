@@ -42,7 +42,7 @@ export default function SuccesStep({ onPrevious }) {
               }))
             }
           >
-            {t("common.succes.startUsing")}
+            {t("common.start")}
           </Button>
         </Link>
       </div>
