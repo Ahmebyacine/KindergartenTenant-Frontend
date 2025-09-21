@@ -393,6 +393,7 @@
       "addError": "تعذر إضافة التقرير البيداغوجي",
       "status": "الحالة",
       "overallEvaluation": "التقييم العام",
+      "conditionDetails": "تفاصيل التقييم",
       "evaluationOptions": {
         "weak": "ضعيف",
         "acceptable": "مقبول",

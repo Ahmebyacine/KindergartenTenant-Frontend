@@ -112,12 +112,12 @@ export default function ReportsPedagogicalDetails() {
             {/* Condition Details */}
             <div>
               <h2 className="text-base font-semibold text-foreground mb-3 pb-3 border-b border-border font-cairo">
-                التقييمات
+                {t("reports.pedagogical.conditionDetails")}
               </h2>
               <div className="space-y-1">
                 <DetailItem
                   label={t("reports.pedagogical.languageAndCommunication")}
-                  value={reportDetails?.languageAndCommunication}
+                  value={t(`reports.pedagogical.evaluationOptions.${reportDetails?.languageCommunication}`)}
                 />
                 <DetailItem
                   label={t("reports.pedagogical.behavior")}

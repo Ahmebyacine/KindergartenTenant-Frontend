@@ -363,6 +363,7 @@
       "selectChild": "Sélectionner l'enfant",
       "noChildren": "Aucun enfant",
       "generatedBy": "Rapport généré par",
+      "conditionDetails": "Détails de la condition",
       "createdAt": "Date de création du rapport",
       "teacherName": "Nom de l'enseignant",
       "class": "Classe",
