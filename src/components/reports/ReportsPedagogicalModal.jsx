@@ -276,7 +276,7 @@ export default function ReportsPedagogicalModal({
                 render={({ field }) => (
                   <FormItem className="space-y-1">
                     <FormLabel className="text-muted-foreground">
-                      {t("report.pedagogical.overall")}
+                      {t("reports.pedagogical.overall")}
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>

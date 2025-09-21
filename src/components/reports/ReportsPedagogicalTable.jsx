@@ -137,7 +137,6 @@ export default function ReportsPedagogicalTable({ classes, students }) {
             <TableHead>{t("reports.pedagogical.class")}</TableHead>
             <TableHead>{t("reports.pedagogical.date")}</TableHead>
             <TableHead>{t("reports.pedagogical.overallEvaluation")}</TableHead>
-            <TableHead>{t("reports.pedagogical.status")}</TableHead>
             <TableHead>{t("common.actions")}</TableHead>
           </TableRow>
         </TableHeader>
@@ -158,15 +157,6 @@ export default function ReportsPedagogicalTable({ classes, students }) {
                 <TableCell>{row.class?.className}</TableCell>
                 <TableCell>{formatDateTime(row.createdAt)}</TableCell>
                 <TableCell>{getOverallBadge(row.overall)}</TableCell>
-                <TableCell>
-                  {row.overall === "جديد" ? (
-                    <Badge className="bg-primary-foreground text-[#1447e6] hover:bg-primary-foreground">
-                      {row.overall}
-                    </Badge>
-                  ) : (
-                    <span className="text-foreground">{row.overall}</span>
-                  )}
-                </TableCell>
                 <TableCell>
                   <Link to={`/reports/pedagogical/${row._id}`}>
                     <Button

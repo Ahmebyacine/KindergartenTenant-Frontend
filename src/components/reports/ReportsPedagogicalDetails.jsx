@@ -8,7 +8,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Link, useParams } from "react-router-dom";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import api from "@/api";
 import useFetch from "@/hooks/useFetch";
 import Loading from "@/pages/common/Loading";
@@ -80,7 +80,7 @@ export default function ReportsPedagogicalDetails() {
         <Card className="bg-card border border-border shadow-sm">
           <CardHeader className="border-b border-border px-6">
             <CardTitle className="text-lg font-semibold text-foreground font-cairo">
-              {t("reports.reportNumber")}: {reportDetails.reportId}
+              {t("reports.reportNumber")}: {reportDetails._id}
             </CardTitle>
           </CardHeader>
           <CardContent className="px-6 space-y-4">
@@ -121,11 +121,11 @@ export default function ReportsPedagogicalDetails() {
                 />
                 <DetailItem
                   label={t("reports.pedagogical.behavior")}
-                  value={reportDetails?.behavior}
+                  value={t(`reports.pedagogical.evaluationOptions.${reportDetails?.behavior}`)}
                 />
                 <DetailItem
                   label={t("reports.pedagogical.skills")}
-                  value={reportDetails?.skills}
+                  value={t(`reports.pedagogical.evaluationOptions.${reportDetails?.skills}`)}
                 />
                 <DetailItem
                   label={t("reports.pedagogical.overall")}

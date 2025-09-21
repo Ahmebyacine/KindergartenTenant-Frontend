@@ -302,7 +302,7 @@ export default function RegistrationsModal({
                   type="submit"
                   className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
                 >
-                  {t("common.submit")}
+                  {t("common.save")}
                 </Button>
                 <DialogClose asChild>
                   <Button
