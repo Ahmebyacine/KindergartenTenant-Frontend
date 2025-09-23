@@ -14,7 +14,7 @@ export default function ErrorPage({ error }) {
 
           {/* Message */}
           <p className="text-muted-foreground text-sm leading-relaxed">
-            {t(`errorApi.${error?.message || "unknownError"}`)}
+            {t(`errorApi.${error?.message || error?.statusText || "defaultError"}`)}
           </p>
         </CardContent>
       </Card>

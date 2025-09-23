@@ -80,7 +80,8 @@
 
     "You are not assigned to any class": "لم يتم تعيينك إلى أي صف",
 
-    "defaultError": "حدث خطأ غير متوقع"
+    "defaultError": "حدث خطأ غير متوقع",
+    "Not Found": "لم يتم العثور على الصفحة"
   },
   "dashboard": {
     "monthlyIncome": "الدخل الشهري",

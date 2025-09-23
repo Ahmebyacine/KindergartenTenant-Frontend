@@ -69,7 +69,8 @@
     "Health report not found": "Rapport de santé introuvable",
     "Pedagogical report not found": "Rapport pédagogique introuvable",
     "You are not assigned to any class": "Vous n'êtes assigné à aucune classe",
-    "defaultError": "Une erreur inattendue est survenue"
+    "defaultError": "Une erreur inattendue est survenue",
+    "Not Found": "Introuvable"
   },
   "dashboard": {
     "monthlyIncome": "Revenus mensuels",

@@ -69,7 +69,8 @@
     "Health report not found": "Health report not found",
     "Pedagogical report not found": "Pedagogical report not found",
     "You are not assigned to any class": "You are not assigned to any class",
-    "defaultError": "An unexpected error occurred"
+    "defaultError": "An unexpected error occurred",
+    "Not Found": "Not Found"
   },
   "dashboard": {
     "monthlyIncome": "Monthly Income",

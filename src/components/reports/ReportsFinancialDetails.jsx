@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Link, useParams } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
-import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import api from "@/api";
 import useFetch from "@/hooks/useFetch";
 import Loading from "@/pages/common/Loading";
@@ -27,6 +26,7 @@ import DetailItem from "../DetailItem";
 import { useState } from "react";
 import { toast } from "sonner";
 import { t } from "i18next";
+import DetailAmountItem from "../DetailAmountItem";
 
 export default function ReportsFinancialDetails() {
   const { reportId } = useParams();
@@ -47,7 +47,8 @@ export default function ReportsFinancialDetails() {
     setConfirming(true);
     try {
       const response = await api.patch(
-        `/financial-reports/${reportId}/confirm-payment`
+        `/financial-reports/${reportId}/confirm-payment`,
+        { amount: reportDetails.amount }
       );
       setReportDetails((prev) => ({
         ...prev,
@@ -71,7 +72,6 @@ export default function ReportsFinancialDetails() {
       toast.error(t("reports.financial.sendNotificationError"));
     }
   };
-
   if (loading) return <Loading sidebar={false} />;
   return (
     <div className="bg-background p-6 font-cairo">
@@ -146,9 +146,16 @@ export default function ReportsFinancialDetails() {
                   label={t("reports.financial.month")}
                   value={formatDateMonth(reportDetails.month)}
                 />
-                <DetailItem
+                <DetailAmountItem
                   label={t("reports.financial.amount")}
-                  value={formatCurrencyDZD(reportDetails.amount)}
+                  value={reportDetails.amount}
+                  onChange={(newAmount) =>
+                    setReportDetails((prev) => ({
+                      ...prev,
+                      amount: newAmount,
+                    }))
+                  }
+                  editable={reportDetails.status === "unpaid"}
                 />
                 <DetailItem
                   label={t("reports.financial.createdAt")}
@@ -199,7 +206,7 @@ export default function ReportsFinancialDetails() {
                 <TickSquare color="currentColor" />
                 {confirming
                   ? t("common.saving")
-                  : t("reports.financial.markAsPaid")}
+                  : t("reports.financial.markedAsPaid")}
               </Button>
             </CardFooter>
           )}
