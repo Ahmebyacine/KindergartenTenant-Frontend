@@ -31,10 +31,12 @@ import ReportsTeacher from "./pages/teacher/ReportsTeacher";
 import SettingsUser from "./pages/supervisor/SettingsUser";
 import ChangePasswordFirstTime from "./pages/auth/ChangePasswordFirstTime";
 import Onboarding from "./pages/admin/Onboarding";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const router = createHashRouter([
   {
     path: "/",
+    errorElement: <ErrorBoundary />,
     element: (
       <CheckTenant>
         <AuthProvider>

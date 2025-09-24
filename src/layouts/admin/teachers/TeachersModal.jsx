@@ -33,6 +33,8 @@ import ImageUpload from "@/components/ImageUpload";
 import { generateRandomPassword } from "@/utils/generateRandomPassword";
 import { useEffect, useState } from "react";
 import { t } from "i18next";
+import { Shield } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 
 const teacherSchema = (t) =>
   z.object({
@@ -40,6 +42,11 @@ const teacherSchema = (t) =>
     email: z.string().email(t("common.invalidEmail")),
     phone: z.string().regex(/^\+?[0-9]{10,15}$/, t("common.invalidPhone")),
     assignedClass: z.string().min(1, t("common.required")).optional(),
+    permissions: z.object({
+      reportPedagogique: z.boolean().optional(),
+      reportFinancial: z.boolean().optional(),
+      reportHealth: z.boolean().optional(),
+    }),
     image: z.any().optional(),
   });
 
@@ -57,6 +64,11 @@ export default function TeachersModal({
       email: editingTeacher?.email || "",
       phone: editingTeacher?.phone || "",
       assignedClass: editingTeacher?.assignedClass?._id || "",
+      permissions: editingTeacher?.permissions || {
+        reportPedagogique: true,
+        reportFinancial: true,
+        reportHealth: true,
+      },
       image: editingTeacher?.image || null,
     },
   });
@@ -67,6 +79,11 @@ export default function TeachersModal({
       email: editingTeacher?.email || "",
       phone: editingTeacher?.phone || "",
       assignedClass: editingTeacher?.assignedClass?._id || "",
+      permissions: editingTeacher?.permissions || {
+        reportPedagogique: true,
+        reportFinancial: true,
+        reportHealth: true,
+      },
       image: editingTeacher?.image || null,
     });
   }, [editingTeacher, form]);
@@ -76,7 +93,7 @@ export default function TeachersModal({
     formData.append("name", data.name);
     formData.append("email", data.email);
     formData.append("phone", data.phone);
-
+    formData.append("permissions", JSON.stringify(data.permissions || {}));
     if (data.assignedClass)
       formData.append("assignedClass", data.assignedClass);
 
@@ -145,6 +162,12 @@ export default function TeachersModal({
                   className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
                 >
                   {t("common.basicInfo")}
+                </TabsTrigger>
+                <TabsTrigger
+                  value="permissions"
+                  className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
+                >
+                  {t("common.permissions")}
                 </TabsTrigger>
                 <TabsTrigger
                   value="image"
@@ -266,6 +289,80 @@ export default function TeachersModal({
                     </div>
                   </div>
                 )}
+              </TabsContent>
+
+              <TabsContent value="permissions" className="space-y-4 pt-2">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Shield className="h-4 w-4 text-muted-foreground" />
+                    <h3 className="text-sm font-medium">
+                      {t("settings.users.setPermissions")}
+                    </h3>
+                  </div>
+
+                  {/* Pedagogical Report Permission */}
+                  <FormField
+                    control={form.control}
+                    name="permissions.reportPedagogique"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                        <div className="space-y-0.5">
+                          <FormLabel>
+                            {t("settings.users.reportPedagogical")}
+                          </FormLabel>
+                        </div>
+                        <FormControl>
+                          <Switch
+                            checked={field.value !== false}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  {/* Financial Report Permission */}
+                  <FormField
+                    control={form.control}
+                    name="permissions.reportFinancial"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                        <div className="space-y-0.5">
+                          <FormLabel>
+                            {t("settings.users.reportFinancial")}
+                          </FormLabel>
+                        </div>
+                        <FormControl>
+                          <Switch
+                            checked={field.value !== false}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  {/* Health Report Permission */}
+                  <FormField
+                    control={form.control}
+                    name="permissions.reportHealth"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                        <div className="space-y-0.5">
+                          <FormLabel>
+                            {t("settings.users.reportHealth")}
+                          </FormLabel>
+                        </div>
+                        <FormControl>
+                          <Switch
+                            checked={field.value !== false}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </TabsContent>
 
               <TabsContent value="image" className="pt-4">

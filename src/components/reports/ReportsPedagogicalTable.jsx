@@ -31,6 +31,7 @@ import ReportsFilter from "@/components/reports/ReportsFilter";
 import usePaginatedFetch from "@/hooks/usePaginatedFetch";
 import getPageNumbers from "@/utils/getPageNumbers";
 import { t } from "i18next";
+import ErrorPage from "@/pages/common/ErrorPage";
 
 export default function ReportsPedagogicalTable({ classes, students }) {
   const [search, setSearch] = useState("");

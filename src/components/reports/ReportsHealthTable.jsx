@@ -54,7 +54,7 @@ export default function ReportsHealthTable({ classes, students }) {
     page: actualPage,
     pages,
     refetch,
-    error
+    error,
   } = usePaginatedFetch(() => fetchReports({ page: page }));
 
   const handlePageChange = (newPage) => {
@@ -94,8 +94,10 @@ export default function ReportsHealthTable({ classes, students }) {
       toast.success(t("reports.health.addSuccess"));
     } catch (error) {
       console.error("Error creating class", error);
-      toast.error(t("reports.health.addError"),{
-        description: t(`errorApi.${error.response?.data?.error || "defaultError"}`)
+      toast.error(t("reports.health.addError"), {
+        description: t(
+          `errorApi.${error.response?.data?.error || "defaultError"}`
+        ),
       });
     }
   };
@@ -195,7 +197,7 @@ export default function ReportsHealthTable({ classes, students }) {
                     className="text-primary hover:text-primary/80 p-0 h-auto underline"
                   >
                     <Link to={`/reports/health/${row._id}`}>
-                    {t("common.details")}
+                      {t("common.details")}
                     </Link>
                   </Button>
                 </TableCell>
@@ -211,10 +213,10 @@ export default function ReportsHealthTable({ classes, students }) {
               >
                 <div className="flex flex-col items-center justify-center gap-2">
                   <Document size={40} color="CurrentColor" />
-                  <p className="text-lg font-medium">{t("reports.noReports")}</p>
-                  <p className="text-sm">
-                    {t("reports.noReportsDescription")}
+                  <p className="text-lg font-medium">
+                    {t("reports.noReports")}
                   </p>
+                  <p className="text-sm">{t("reports.noReportsDescription")}</p>
                 </div>
               </TableCell>
             </TableRow>
