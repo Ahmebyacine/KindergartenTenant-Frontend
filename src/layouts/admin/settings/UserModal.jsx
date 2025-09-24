@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { User, Mail, Phone } from "lucide-react";
+import { User, Mail, Phone, Shield } from "lucide-react";
 import {
   Dialog,
   DialogClose,
@@ -35,17 +35,24 @@ import ImageUpload from "@/components/ImageUpload";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { t } from "i18next";
+import { Switch } from "@/components/ui/switch";
 
 // Define the form schema with validation
-const userSchema = (t) => z.object({
-  name: z.string().min(1, t("common.required")),
-  email: z.string().email(t("common.invalidEmail")),
-  phone: z.string().regex(/^\+?[0-9]{10,15}$/, t("common.invalidPhone")),
-  role: z.enum(["teacher", "supervisor"], {
-    required_error: t("common.required"),
-  }),
-  image: z.any().optional(),
-});
+const userSchema = (t) =>
+  z.object({
+    name: z.string().min(1, t("common.required")),
+    email: z.string().email(t("common.invalidEmail")),
+    phone: z.string().regex(/^\+?[0-9]{10,15}$/, t("common.invalidPhone")),
+    role: z.enum(["teacher", "supervisor"], {
+      required_error: t("common.required"),
+    }),
+    permissions: z.object({
+      reportPedagogique: z.boolean().optional(),
+      reportFinancial: z.boolean().optional(),
+      reportHealth: z.boolean().optional(),
+    }),
+    image: z.any().optional(),
+  });
 
 export default function UserModal({
   onAddUser,
@@ -63,6 +70,11 @@ export default function UserModal({
       email: editingUser?.email || "",
       phone: editingUser?.phone || "",
       role: editingUser?.role || "teacher",
+      permissions: editingUser?.permissions || {
+        reportPedagogique: true,
+        reportFinancial: true,
+        reportHealth: true,
+      },
       image: editingUser?.image || null,
     },
   });
@@ -72,6 +84,11 @@ export default function UserModal({
       email: editingUser?.email || "",
       phone: editingUser?.phone || "",
       role: editingUser?.role || "teacher",
+      permissions: editingUser?.permissions || {
+        reportPedagogique: true,
+        reportFinancial: true,
+        reportHealth: true,
+      },
       image: editingUser?.image || null,
     });
   }, [editingUser, form]);
@@ -82,6 +99,7 @@ export default function UserModal({
     formData.append("email", data.email);
     formData.append("phone", data.phone);
     formData.append("role", data.role);
+    formData.append("permissions", JSON.stringify(data.permissions || {}));
     if (data.image && data.image instanceof File) {
       if (editingUser?.image) {
         formData.append("oldImage", editingUser?.image);
@@ -127,7 +145,9 @@ export default function UserModal({
           {/* Header */}
           <DialogHeader className="border-b-2 mb-4 pb-4">
             <DialogTitle className="text-lg sm:text-xl rtl:text-right font-semibold text-foreground">
-              {editingUser ? t("settings.users.editAccount") : t("settings.users.addNewAccount")}
+              {editingUser
+                ? t("settings.users.editAccount")
+                : t("settings.users.addNewAccount")}
             </DialogTitle>
           </DialogHeader>
 
@@ -141,6 +161,12 @@ export default function UserModal({
                     className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
                   >
                     {t("common.basicInfo")}
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="permissions"
+                    className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
+                  >
+                    {t("common.permissions")}
                   </TabsTrigger>
                   <TabsTrigger
                     value="image"
@@ -237,12 +263,18 @@ export default function UserModal({
                         >
                           <FormControl>
                             <SelectTrigger className="border-border focus:border-primary focus:ring-primary">
-                              <SelectValue placeholder={t("settings.users.role")} />
+                              <SelectValue
+                                placeholder={t("settings.users.role")}
+                              />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="teacher">{t("settings.users.teacher")}</SelectItem>
-                            <SelectItem value="supervisor">{t("settings.users.supervisor")}</SelectItem>
+                            <SelectItem value="teacher">
+                              {t("settings.users.teacher")}
+                            </SelectItem>
+                            <SelectItem value="supervisor">
+                              {t("settings.users.supervisor")}
+                            </SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -262,6 +294,74 @@ export default function UserModal({
                       </div>
                     </div>
                   )}
+                </TabsContent>
+
+                <TabsContent value="permissions" className="space-y-4 pt-2">
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Shield className="h-4 w-4 text-muted-foreground" />
+                      <h3 className="text-sm font-medium">
+                        {t("settings.users.setPermissions")}
+                      </h3>
+                    </div>
+
+                    {/* Pedagogical Report Permission */}
+                    <FormField
+                      control={form.control}
+                      name="permissions.reportPedagogique"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                          <div className="space-y-0.5">
+                            <FormLabel>{t("settings.users.reportPedagogical")}</FormLabel>
+                          </div>
+                          <FormControl>
+                            <Switch
+                              checked={field.value !== false}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+
+                    {/* Financial Report Permission */}
+                    <FormField
+                      control={form.control}
+                      name="permissions.reportFinancial"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                          <div className="space-y-0.5">
+                            <FormLabel>{t("settings.users.reportFinancial")}</FormLabel>
+                          </div>
+                          <FormControl>
+                            <Switch
+                              checked={field.value !== false}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+
+                    {/* Health Report Permission */}
+                    <FormField
+                      control={form.control}
+                      name="permissions.reportHealth"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                          <div className="space-y-0.5">
+                            <FormLabel>{t("settings.users.reportHealth")}</FormLabel>
+                          </div>
+                          <FormControl>
+                            <Switch
+                              checked={field.value !== false}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </TabsContent>
 
                 <TabsContent value="image" className="pt-4">

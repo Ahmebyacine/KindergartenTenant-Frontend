@@ -9,8 +9,11 @@ import api from "@/api";
 import useFetch from "@/hooks/useFetch";
 import { getTextNumberChild } from "@/utils/getTextNumberChild";
 import { t } from "i18next";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function DashboardSupervisor() {
+  const { user } = useAuth();
+
   const fetchSummarySupervisor = async () => {
     const res = await api.get(`/statistics/summary/user`);
     return res.data;
@@ -19,7 +22,7 @@ export default function DashboardSupervisor() {
   const { data, loading, error } = useFetch(fetchSummarySupervisor);
 
   const stats = [
-    {
+    user?.permissions?.reportFinancial !== false && {
       title: t("dashboardSupervisor.monthlyReceived"),
       value: formatCurrencyDZD(data?.totalIncome || 0),
       icon: Coin,
@@ -49,7 +52,7 @@ export default function DashboardSupervisor() {
       bgColor: "bg-[#A2F4FD]",
       to: "/students",
     },
-  ];
+  ].filter(Boolean);
 
   return (
     <div className="bg-background p-6">
@@ -74,8 +77,14 @@ export default function DashboardSupervisor() {
         </div>
 
         {/* Charts Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <BarChartRecivedMoney />
+        <div
+          className={`grid grid-cols-1 ${
+            user?.permissions?.reportFinancial !== false && "lg:grid-cols-2"
+          } gap-6`}
+        >
+          {user?.permissions?.reportFinancial !== false && (
+            <BarChartRecivedMoney />
+          )}
           <Link to="/supervisor-attendance" className="no-underline">
             <LineChartAttendnce />
           </Link>

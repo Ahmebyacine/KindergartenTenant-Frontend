@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Danger, Edit2, More, Trash } from "iconsax-react";
+import { Danger, Edit2, More, PasswordCheck, Trash } from "iconsax-react";
 import img from "@/assets/images/avatar.png";
 import { getRoleTagColors } from "@/utils/getStatusBadges";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -121,8 +121,10 @@ export default function UserCard({
                   variant="ghost"
                   onClick={() => onChangePassword?.(user)}
                 >
-                  <Edit2 size={10} color="var(--foreground)" />
-                  <span className="ml-2">{t("settings.users.changePassword")}</span>
+                  <PasswordCheck size={10} color="var(--foreground)" />
+                  <span className="ml-2">
+                    {t("settings.users.changePassword")}
+                  </span>
                 </Button>
               </DropdownMenuItem>
               <DropdownMenuItem>
@@ -131,7 +133,10 @@ export default function UserCard({
                   variant="ghost"
                   onClick={() => onEdit?.(user)}
                 >
-                  <span className="ml-2">{t("settings.users.editAccount")}</span>
+                  <Edit2 size={10} color="var(--foreground)" />
+                  <span className="ml-2">
+                    {t("settings.users.editAccount")}
+                  </span>
                 </Button>
               </DropdownMenuItem>
               <DropdownMenuItem>
@@ -141,7 +146,9 @@ export default function UserCard({
                   onClick={() => setOpen(true)}
                 >
                   <Trash size={10} color="var(--destructive)" />
-                  <span className="ml-2">{t("settings.users.deleteAccount")}</span>
+                  <span className="ml-2">
+                    {t("settings.users.deleteAccount")}
+                  </span>
                 </Button>
               </DropdownMenuItem>
             </DropdownMenuContent>

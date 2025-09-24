@@ -22,24 +22,30 @@ export default function ReportsTeacher() {
           <Tabs defaultValue={defaultTab} className="w-full">
             {/* Keep existing TabsList and TabsTrigger styles */}
             <TabsList className="grid w-full grid-cols-3 bg-transparent h-auto p-0 gap-8 md:grid-cols-4 lg:grid-cols-6 border-b mb-2">
-              <TabsTrigger
-                value="pedagogical"
-                className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
-              >
-                {t("reports.tabs.pedagogical")}
-              </TabsTrigger>
-              <TabsTrigger
-                value="financial"
-                className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
-              >
-                {t("reports.tabs.financial")}
-              </TabsTrigger>
-              <TabsTrigger
-                value="health"
-                className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
-              >
-                {t("reports.tabs.health")}
-              </TabsTrigger>
+              {user?.permissions?.reportPedagogique !== false && (
+                <TabsTrigger
+                  value="pedagogical"
+                  className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
+                >
+                  {t("reports.tabs.pedagogical")}
+                </TabsTrigger>
+              )}
+              {user?.permissions?.reportFinancial !== false && (
+                <TabsTrigger
+                  value="financial"
+                  className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
+                >
+                  {t("reports.tabs.financial")}
+                </TabsTrigger>
+              )}
+              {user?.permissions?.reportHealth !== false && (
+                <TabsTrigger
+                  value="health"
+                  className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
+                >
+                  {t("reports.tabs.health")}
+                </TabsTrigger>
+              )}
             </TabsList>
             {/* Move TabsContent inside first Tabs component */}
             <TabsContent value="pedagogical" className="space-y-4">

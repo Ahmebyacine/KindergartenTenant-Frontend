@@ -7,10 +7,13 @@ import LineChartAttendnce from "@/components/dashboard/LineChartAttendnce";
 import api from "@/api";
 import useFetch from "@/hooks/useFetch";
 import { formatCurrencyDZD } from "@/utils/currencyFormatter";
-import {getTextNumberChild } from "@/utils/getTextNumberChild";
+import { getTextNumberChild } from "@/utils/getTextNumberChild";
 import { t } from "i18next";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function DashboardTeacher() {
+  const { user } = useAuth();
+
   const fetchSummaryAdmin = async () => {
     const res = await api.get(`/statistics/summary/user`);
     return res.data;
@@ -34,7 +37,7 @@ export default function DashboardTeacher() {
       bgColor: "bg-[#FEF3C6]",
       to: "/teacher-reports",
     },
-    {
+    user?.permissions?.reportFinancial !== false && {
       title: t("teacherDashboard.receivedMoney"),
       value: formatCurrencyDZD(data?.totalIncome || 0),
       icon: CardReceive,
@@ -49,7 +52,7 @@ export default function DashboardTeacher() {
       bgColor: "bg-[#FFE2E2]",
       to: "/teacher-attendance",
     },
-  ];
+  ].filter(Boolean);
   return (
     <div className="bg-background p-6">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -58,7 +61,9 @@ export default function DashboardTeacher() {
           {loading || error
             ? Array(4)
                 .fill(null)
-                .map((_, idx) => <StatCard key={idx} loading={loading} error={error} />)
+                .map((_, idx) => (
+                  <StatCard key={idx} loading={loading} error={error} />
+                ))
             : stats.map((stat, idx) =>
                 stat.to ? (
                   <Link to={stat.to} className="no-underline" key={idx}>
@@ -70,8 +75,14 @@ export default function DashboardTeacher() {
               )}
         </div>
         {/* Charts Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <BarChartRecivedMoney />
+        <div
+          className={`grid grid-cols-1 ${
+            user?.permissions?.reportFinancial !== false && "lg:grid-cols-2"
+          } gap-6`}
+        >
+          {user?.permissions?.reportFinancial !== false && (
+            <BarChartRecivedMoney />
+          )}
           <Link to="/teacher-attendance" className="no-underline">
             <LineChartAttendnce />
           </Link>

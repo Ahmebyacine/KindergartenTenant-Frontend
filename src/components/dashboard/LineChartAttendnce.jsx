@@ -90,7 +90,7 @@ export default function LineChartAttendnce() {
           <CardContent className="overflow-x-auto px-0">
             <ChartContainer
               config={chartConfig}
-              className="h-full w-full min-w-[500px]"
+              className="h-full w-full min-w-[500px] max-h-64"
             >
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
