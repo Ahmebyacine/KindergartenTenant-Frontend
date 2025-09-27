@@ -176,7 +176,7 @@ export default function StudentsTable({
                       {enrollment?.student?.lastName}
                     </TableCell>
                     <TableCell className="text-foreground py-3">
-                      {enrollment?.student?.parents?.name}
+                      {enrollment?.student?.parents?.name || enrollment?.student?.parents?.father?.name}
                     </TableCell>
                     <TableCell className="text-foreground py-3">
                       {enrollment?.student?.parents?.contact}
