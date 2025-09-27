@@ -1,55 +1,69 @@
 import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Add } from "iconsax-react";
-import ImageUpload from "@/components/ImageUpload";
+import { Add, ArrowLeft2, ArrowRight2 } from "iconsax-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { t } from "i18next";
+import { cn } from "@/lib/utils";
+import { Progress } from "../ui/progress";
+import BasicInfoStep from "./studentModalSteps/BasicInfoStep";
+import HealthInfoStep from "./studentModalSteps/HealthInfoStep";
+import ParentInfoStep from "./studentModalSteps/ParentInfoStep";
+import PhotoReviewStep from "./studentModalSteps/PhotoReviewStep";
 
-// Updated student schema to match backend model
 const studentSchema = (t) =>
   z.object({
     firstName: z.string().min(1, t("common.required")),
     lastName: z.string().min(1, t("common.required")),
     birthDate: z.string().min(1, t("common.required")),
-    parentEmail: z
-      .string()
-      .email(t("common.invalidEmail"))
-      .min(1, t("common.required")),
     class: z.string().min(1, t("common.required")),
-    parentName: z.string().min(1, t("common.required")),
-    parentContact: z.string().min(1, t("common.required")),
     bloodGroup: z.string().optional(),
+    gender: z.enum(["male", "female"], {
+      required_error: t("common.required"),
+    }),
+    adress: z.string().optional(),
+    healthStatus: z.enum(["good", "needs_followup"]).optional(),
+    illnessOrAllergy: z.string().optional(),
+    takesMedicineRegularly: z.boolean().optional(),
+    medicineDetails: z.string().optional(),
+    parents: z.object({
+      father: z.object({
+        name: z.string().min(1, t("common.required")),
+        profession: z.string().min(1, t("common.required")),
+      }),
+      mother: z.object({
+        name: z.string().min(1, t("common.required")),
+        profession: z.string().min(1, t("common.required")),
+      }),
+      guardian: z.object({
+        relation: z.enum(["father", "mother", "other"]).optional(),
+        name: z.string().optional(),
+      }),
+      email: z.string().email(t("common.invalidEmail")),
+      contact: z.string().min(1, t("common.required")),
+      secondaryContact: z.string().optional(),
+      thirdContact: z.string().optional(),
+    }),
     image: z.any().optional(),
   });
+
+const STEPS = [
+  { id: 1, title: "Basic Information" },
+  { id: 2, title: "Health Information" },
+  { id: 3, title: "Parent Information" },
+  { id: 4, title: "Photo & Review" },
+];
 
 export default function StudentsModal({
   onAddStudent,
@@ -60,70 +74,214 @@ export default function StudentsModal({
 }) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
+
   const form = useForm({
     resolver: zodResolver(studentSchema(t)),
     defaultValues: {
-      firstName: editingStudent?.student?.firstName || "",
-      lastName: editingStudent?.student?.lastName || "",
-      birthDate: editingStudent?.student?.birthDate?.split("T")[0] || "",
-      parentEmail: editingStudent?.student?.parents?.email || "",
-      parentName: editingStudent?.student?.parents?.name || "",
-      parentContact: editingStudent?.student?.parents?.contact || "",
-      class: editingStudent?.class?._id || "",
-      bloodGroup: editingStudent?.student?.bloodGroup || "",
-      image: editingStudent?.student?.image || null,
+      firstName: "",
+      lastName: "",
+      birthDate: "",
+      class: "",
+      bloodGroup: "",
+      gender: "male",
+      adress: "",
+      healthStatus: "good",
+      illnessOrAllergy: "",
+      takesMedicineRegularly: false,
+      medicineDetails: "",
+      parents: {
+        father: { name: "", profession: "" },
+        mother: { name: "", profession: "" },
+        guardian: { relation: "father", name: "" },
+        email: "",
+        contact: "",
+        secondaryContact: "",
+        thirdContact: "",
+      },
+      image: null,
     },
   });
 
+  // Reset form when editing student changes
   useEffect(() => {
-    form.reset({
-      firstName: editingStudent?.student?.firstName || "",
-      lastName: editingStudent?.student?.lastName || "",
-      birthDate: editingStudent?.student?.birthDate?.split("T")[0] || "",
-      parentEmail: editingStudent?.student?.parents?.email || "",
-      parentName: editingStudent?.student?.parents?.name || "",
-      parentContact: editingStudent?.student?.parents?.contact || "",
-      class: editingStudent?.class?._id || "",
-      bloodGroup: editingStudent?.student?.bloodGroup || "",
-      image: editingStudent?.student?.image || null,
-    });
+    if (editingStudent) {
+      form.reset({
+        firstName: editingStudent?.student?.firstName || "",
+        lastName: editingStudent?.student?.lastName || "",
+        birthDate: editingStudent?.student?.birthDate?.split("T")[0] || "",
+        class: editingStudent?.class?._id || "",
+        bloodGroup: editingStudent?.student?.bloodGroup || "",
+        gender: editingStudent?.student?.gender || "male",
+        adress: editingStudent?.student?.adress || "",
+        healthStatus: editingStudent?.student?.healthStatus || "good",
+        illnessOrAllergy: editingStudent?.student?.illnessOrAllergy || "",
+        takesMedicineRegularly:
+          editingStudent?.student?.takesMedicineRegularly || false,
+        medicineDetails: editingStudent?.student?.medicineDetails || "",
+        parents: {
+          father: {
+            name: editingStudent?.student?.parents?.father?.name || "",
+            profession:
+              editingStudent?.student?.parents?.father?.profession || "",
+          },
+          mother: {
+            name: editingStudent?.student?.parents?.mother?.name || "",
+            profession:
+              editingStudent?.student?.parents?.mother?.profession || "",
+          },
+          guardian: {
+            relation:
+              editingStudent?.student?.parents?.guardian?.relation || "father",
+            name: editingStudent?.student?.parents?.guardian?.name || "",
+          },
+          email: editingStudent?.student?.parents?.email || "",
+          contact: editingStudent?.student?.parents?.contact || "",
+          secondaryContact:
+            editingStudent?.student?.parents?.secondaryContact || "",
+          thirdContact: editingStudent?.student?.parents?.thirdContact || "",
+        },
+        image: editingStudent?.student?.image || null,
+      });
+    } else {
+      form.reset();
+    }
   }, [editingStudent, form]);
+
+  const nextStep = () => {
+    if (currentStep < STEPS.length) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const prevStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const validateCurrentStep = async () => {
+    let fieldsToValidate = [];
+
+    switch (currentStep) {
+      case 1:
+        fieldsToValidate = [
+          "firstName",
+          "lastName",
+          "birthDate",
+          "class",
+          "gender",
+        ];
+        break;
+      case 2:
+        return true;
+      case 3:
+        fieldsToValidate = [
+          "parents.email",
+          "parents.contact",
+          "parents.father.name",
+          "parents.father.profession",
+          "parents.mother.name",
+          "parents.mother.profession",
+        ];
+        break;
+      case 4:
+        return true;
+      default:
+        return true;
+    }
+
+    if (fieldsToValidate.length > 0) {
+      return await form.trigger(fieldsToValidate);
+    }
+    return true;
+  };
 
   const onSubmit = async (data) => {
     try {
       setLoading(true);
       const formData = new FormData();
+
+      // Basic info
       formData.append("firstName", data.firstName);
       formData.append("lastName", data.lastName);
       formData.append("birthDate", data.birthDate);
       formData.append("class", data.class);
-      formData.append("parentName", data.parentName);
-      formData.append("parentEmail", data.parentEmail);
-      formData.append("parentContact", data.parentContact);
+      formData.append("gender", data.gender);
+      formData.append("adress", data.adress || "");
+      formData.append("bloodGroup", data.bloodGroup || "");
 
-      if (data.bloodGroup) {
-        formData.append("bloodGroup", data.bloodGroup);
-      }
+      // Health info
+      formData.append("healthStatus", data.healthStatus || "good");
+      formData.append("illnessOrAllergy", data.illnessOrAllergy || "");
+      formData.append("takesMedicineRegularly", data.takesMedicineRegularly);
+      formData.append("medicineDetails", data.medicineDetails || "");
+
+      // Parent info
+      formData.append("parents[father][name]", data.parents.father.name || "");
+      formData.append(
+        "parents[father][profession]",
+        data.parents.father.profession || ""
+      );
+      formData.append("parents[mother][name]", data.parents.mother.name || "");
+      formData.append(
+        "parents[mother][profession]",
+        data.parents.mother.profession || ""
+      );
+      formData.append(
+        "parents[guardian][relation]",
+        data.parents.guardian.relation || ""
+      );
+      formData.append(
+        "parents[guardian][name]",
+        data.parents.guardian.name || ""
+      );
+      formData.append("parents[email]", data.parents.email || "");
+      formData.append("parents[contact]", data.parents.contact || "");
+      formData.append(
+        "parents[secondaryContact]",
+        data.parents.secondaryContact || ""
+      );
+      formData.append("parents[thirdContact]", data.parents.thirdContact || "");
+
+      // Image handling
       if (data.image && data.image instanceof File) {
         if (editingStudent?.student?.image) {
           formData.append("oldImage", editingStudent.student.image);
         }
         formData.append("image", data.image);
       }
-      // Handle image deletion
       if (!data.image && editingStudent?.student?.image) {
         formData.append("deleteImage", "true");
         formData.append("oldImage", editingStudent.student.image);
       }
+
       if (editingStudent) {
         await onUpdateStudent(formData, editingStudent?.student?._id);
       } else {
         await onAddStudent(formData);
       }
+
       form.reset();
+      setCurrentStep(1);
       setOpen(false);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case 1:
+        return <BasicInfoStep form={form} classes={classes} />;
+      case 2:
+        return <HealthInfoStep form={form} />;
+      case 3:
+        return <ParentInfoStep form={form} />;
+      case 4:
+        return <PhotoReviewStep form={form} />;
+      default:
+        return null;
     }
   };
 
@@ -145,11 +303,11 @@ export default function StudentsModal({
                 toast.error(t("students.limitReached"));
               }
             }}
-            className={`${
-              isLimited
-                ? "bg-primary/30 hover:bg-primary/20 cursor-not-allowed"
-                : ""
-            } rounded-lg px-6 py-2 flex items-center gap-2 w-full sm:w-auto`}
+            className={cn(
+              "rounded-lg px-6 py-2 flex items-center gap-2 w-full sm:w-auto",
+              isLimited &&
+                "bg-primary/30 hover:bg-primary/20 cursor-not-allowed"
+            )}
           >
             <Add size="16" color="currentColor" />
             {t("students.addChild")}
@@ -157,270 +315,81 @@ export default function StudentsModal({
         )}
       </DialogTrigger>
 
-      <DialogContent className="w-full max-w-full sm:max-w-2xl bg-card p-2 sm:p-6 rounded-lg sm:rounded-2xl overflow-y-auto">
-        <DialogHeader className="border-b-2 pb-4">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
-            <DialogTitle className="text-lg sm:text-xl font-semibold text-foreground rtl:text-right ltr:text-left w-full">
-              {editingStudent
-                ? t("students.editChild")
-                : t("students.addChild")}
-            </DialogTitle>
+      <DialogContent className="w-full bg-card p-6 rounded-2xl max-h-[95vh] overflow-hidden">
+        <DialogHeader className="border-b pb-4">
+          <DialogTitle className="text-xl font-semibold text-foreground">
+            {editingStudent ? t("students.editChild") : t("students.addChild")}
+          </DialogTitle>
+
+          {/* Step Indicator */}
+
+          <div className="text-center mt-2">
+            <p className="text-sm text-muted-foreground">
+              Step {currentStep} of {STEPS.length}:{" "}
+              {STEPS[currentStep - 1].title}
+            </p>
+          </div>
+
+          <div className="w-full mt-4">
+            <Progress
+              value={(currentStep / STEPS.length) * 100}
+              className="h-1 w-full"
+            />
           </div>
         </DialogHeader>
 
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-6 max-h-[70vh] overflow-y-auto pt-2 px-1 sm:px-2"
+            className="flex-1 overflow-hidden"
           >
-            <Tabs defaultValue="basic" className="w-full">
-              <TabsList className="w-full flex justify-between bg-transparent border-b border-border px-1">
-                <TabsTrigger
-                  value="basic"
-                  className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
-                >
-                  {t("students.basicInfo")}
-                </TabsTrigger>
-                <TabsTrigger
-                  value="additional"
-                  className="data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=active]:bg-primary-foreground data-[state=active]:text-primary data-[state=active]:border-0 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none pb-2"
-                >
-                  {t("students.additionalInfo")}
-                </TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="basic" className="space-y-4 pt-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* First Name */}
-                  <FormField
-                    control={form.control}
-                    name="firstName"
-                    render={({ field }) => (
-                      <FormItem className="space-y-2">
-                        <FormLabel className="text-muted-foreground">
-                          {t("students.firstName")}
-                        </FormLabel>
-                        <FormControl>
-                          <Input {...field} className="rtl:text-right" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  {/* Last Name */}
-                  <FormField
-                    control={form.control}
-                    name="lastName"
-                    render={({ field }) => (
-                      <FormItem className="space-y-2">
-                        <FormLabel className="text-muted-foreground">
-                          {t("students.lastName")}
-                        </FormLabel>
-                        <FormControl>
-                          <Input {...field} className="rtl:text-right" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  {/* Birth Date */}
-                  <FormField
-                    control={form.control}
-                    name="birthDate"
-                    render={({ field }) => (
-                      <FormItem className="space-y-2">
-                        <FormLabel className="text-muted-foreground">
-                          {t("students.birthDate")}
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            type="date"
-                            {...field}
-                            className="rtl:justify-end"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  {/* Class Select */}
-                  <FormField
-                    control={form.control}
-                    name="class"
-                    render={({ field }) => (
-                      <FormItem className="space-y-2">
-                        <FormLabel className="text-muted-foreground">
-                          {t("students.class")}
-                        </FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          value={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger className="rtl:text-right">
-                              <SelectValue
-                                placeholder={t("students.selectClass")}
-                              />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {classes.map((cls) => (
-                              <SelectItem key={cls._id} value={cls._id}>
-                                {cls.className}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  {/* Blood Group */}
-                  <FormField
-                    control={form.control}
-                    name="bloodGroup"
-                    render={({ field }) => (
-                      <FormItem className="space-y-2">
-                        <FormLabel className="text-muted-foreground">
-                          {t("students.bloodGroup")}
-                        </FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          value={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue
-                                placeholder={t("students.selectBloodGroup")}
-                              />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="A+">A+</SelectItem>
-                            <SelectItem value="A-">A-</SelectItem>
-                            <SelectItem value="B+">B+</SelectItem>
-                            <SelectItem value="B-">B-</SelectItem>
-                            <SelectItem value="AB+">AB+</SelectItem>
-                            <SelectItem value="AB-">AB-</SelectItem>
-                            <SelectItem value="O+">O+</SelectItem>
-                            <SelectItem value="O-">O-</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                {/* Parent Information */}
-                <div className="space-y-4 pt-2">
-                  <div className="text-base font-medium text-muted-foreground">
-                    {t("students.parent")}
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="parentName"
-                      render={({ field }) => (
-                        <FormItem className="space-y-2">
-                          <FormLabel className="text-muted-foreground">
-                            {t("students.parentName")}
-                          </FormLabel>
-                          <FormControl>
-                            <Input {...field} className="rtl:text-right" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="parentContact"
-                      render={({ field }) => (
-                        <FormItem className="space-y-2">
-                          <FormLabel className="text-muted-foreground">
-                            {t("students.parentContact")}
-                          </FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    {/* parentEmail */}
-                    <FormField
-                      control={form.control}
-                      name="parentEmail"
-                      render={({ field }) => (
-                        <FormItem className="space-y-2">
-                          <FormLabel className="text-muted-foreground">
-                            {t("students.parentEmail")}
-                          </FormLabel>
-                          <FormControl>
-                            <Input type="email" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="additional" className="pt-4">
-                <div className="text-base font-medium text-muted-foreground pb-2">
-                  {t("students.image")}
-                </div>
-                <FormField
-                  control={form.control}
-                  name="image"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <ImageUpload
-                          value={field.value}
-                          onChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </TabsContent>
-            </Tabs>
+            <div className="max-h-[55vh] min-h-[18vh] overflow-y-auto">
+              {renderStepContent()}
+            </div>
           </form>
         </Form>
 
-        <DialogFooter>
-          <div className="flex w-full md:w-1/2 gap-3 pt-4">
+        <DialogFooter className="border-t pt-4">
+          <div className="flex justify-between w-full">
             <Button
-              type="submit"
-              onClick={form.handleSubmit(onSubmit)}
-              disabled={(editingStudent && !form.formState.isDirty) || loading}
-              className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium disabled:opacity-50"
+              type="button"
+              variant="outline"
+              onClick={prevStep}
+              disabled={currentStep === 1}
+              className="flex items-center gap-2 bg-transparent"
             >
-              {loading
-                ? t("common.loading")
-                : editingStudent
-                ? t("common.update")
-                : t("common.save")}
+              <ArrowLeft2 color="currentColor" className="rtl:rotate-180" />
+              {t("common.previous")}
             </Button>
-            <DialogClose asChild>
+
+            {currentStep < STEPS.length ? (
               <Button
-                variant="outline"
-                className="flex-1 border-border text-muted-foreground hover:bg-background"
+                type="button"
+                onClick={async () => {
+                  const isValid = await validateCurrentStep();
+                  if (isValid) nextStep();
+                }}
+                className="flex items-center gap-2"
               >
-                {t("common.cancel")}
+                {t("common.next")}
+                <ArrowRight2 color="currentColor" className="rtl:rotate-180" />
               </Button>
-            </DialogClose>
+            ) : (
+              <Button
+                type="submit"
+                onClick={form.handleSubmit(onSubmit)}
+                disabled={
+                  loading || (editingStudent && !form.formState.isDirty)
+                }
+                className="flex items-center gap-2"
+              >
+                {loading
+                  ? t("common.loading")
+                  : editingStudent
+                  ? t("common.update")
+                  : t("common.save")}
+              </Button>
+            )}
           </div>
         </DialogFooter>
       </DialogContent>
