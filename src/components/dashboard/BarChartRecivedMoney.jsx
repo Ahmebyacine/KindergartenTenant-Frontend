@@ -8,7 +8,7 @@ import {
 import useFetch from "@/hooks/useFetch";
 import api from "@/api";
 import { getMonthNameByNumber } from "@/utils/getMonthNameByNumber";
-import { Chart1 } from "iconsax-react";
+import { Chart1, Danger } from "iconsax-react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { Skeleton } from "../ui/skeleton";
 import { t } from "i18next";
