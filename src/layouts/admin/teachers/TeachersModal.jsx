@@ -143,8 +143,8 @@ export default function TeachersModal({
           <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
             <DialogTitle className="text-lg sm:text-xl font-semibold text-foreground rtl:text-right ltr:text-left w-full">
               {editingTeacher
-                ? t("teacher.editTeacher")
-                : t("teacher.addTeacher")}
+                ? t("teachers.editTeacher")
+                : t("teachers.addTeacher")}
             </DialogTitle>
           </div>
         </DialogHeader>
