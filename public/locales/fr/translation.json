@@ -387,7 +387,8 @@
       "addSuccess": "Rapport financier ajouté avec succès",
       "addError": "Échec de l'ajout du rapport financier",
       "sendNotificationSuccess": "Notification de rappel envoyée avec succès",
-      "sendNotificationError": "Échec de l'envoi de la notification de rappel"
+      "sendNotificationError": "Échec de l'envoi de la notification de rappel",
+      "months": "Mois"
     },
     "health": {
       "title": "Rapport de santé",

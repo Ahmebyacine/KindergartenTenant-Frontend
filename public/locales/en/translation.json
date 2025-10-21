@@ -387,7 +387,8 @@
       "addSuccess": "Financial report added successfully",
       "addError": "Failed to add financial report",
       "sendNotificationSuccess": "Reminder notification sent successfully",
-      "sendNotificationError": "Failed to send reminder notification"
+      "sendNotificationError": "Failed to send reminder notification",
+      "months": "Months"
     },
     "health": {
       "title": "Health Report",

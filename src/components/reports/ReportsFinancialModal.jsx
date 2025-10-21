@@ -32,16 +32,18 @@ import { Add } from "iconsax-react";
 import { useEffect, useState } from "react";
 import { getAcademicYearMonths } from "@/utils/getAcademicYear";
 import { t } from "i18next";
+import { MultiSelect } from "../ui/multi-select";
 
 // Updated schema with student instead of childName
-const financialReportSchema = (t) => z.object({
-  student: z.string().min(1, t("common.required")),
-  classId: z.string().min(1, t("common.required")),
-  month: z.string().min(1, t("common.required")),
-  amount: z.number().min(1, t("reports.financial.amountMin")),
-  status: z.enum(["paid", "unpaid"]),
-  notes: z.string().optional(),
-});
+const financialReportSchema = (t) =>
+  z.object({
+    student: z.string().min(1, t("common.required")),
+    classId: z.string().min(1, t("common.required")),
+    months: z.array(z.string().min(1, t("common.required"))),
+    amount: z.number().min(1, t("reports.financial.amountMin")),
+    status: z.enum(["paid", "unpaid"]),
+    notes: z.string().optional(),
+  });
 
 export default function ReportsFinancialModal({
   onAddReport,
@@ -49,15 +51,15 @@ export default function ReportsFinancialModal({
   children,
 }) {
   const [filteredChildren, setFilteredChildren] = useState([]);
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
   const form = useForm({
     resolver: zodResolver(financialReportSchema(t)),
     defaultValues: {
       student: "",
       classId: "",
-      month: "",
+      months: [],
       amount: null,
-      status: "",
+      status: "paid",
       notes: "",
     },
   });
@@ -79,7 +81,7 @@ export default function ReportsFinancialModal({
   const onSubmit = async (data) => {
     await onAddReport(data);
     form.reset();
-    setOpen(false)
+    setOpen(false);
   };
 
   const academicYearMonths = getAcademicYearMonths();
@@ -117,7 +119,9 @@ export default function ReportsFinancialModal({
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="rtl:text-right">
-                          <SelectValue placeholder={t("reports.financial.selectClass")} />
+                          <SelectValue
+                            placeholder={t("reports.financial.selectClass")}
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -150,7 +154,9 @@ export default function ReportsFinancialModal({
                       >
                         <FormControl>
                           <SelectTrigger className="rtl:text-right">
-                            <SelectValue placeholder={t("reports.financial.selectChild")} />
+                            <SelectValue
+                              placeholder={t("reports.financial.selectChild")}
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className="max-h-60 overflow-y-auto">
@@ -177,29 +183,38 @@ export default function ReportsFinancialModal({
                 )}
               />
 
-              {/* Month */}
               <FormField
                 control={form.control}
-                name="month"
+                name="months"
                 render={({ field }) => (
                   <FormItem className="space-y-2">
                     <FormLabel className="text-muted-foreground">
-                      {t("reports.financial.month")}
+                      {t("reports.financial.months")}
                     </FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="rtl:text-right">
-                          <SelectValue placeholder={t("reports.financial.selectMonth")} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {academicYearMonths.map((month) => (
-                          <SelectItem key={month.iso} value={month.iso}>
-                            {month.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+
+                    <FormControl>
+                      <MultiSelect
+                        options={academicYearMonths.map((month) => ({
+                          label: month.label,
+                          value: month.iso,
+                        }))}
+                        selected={
+                          field.value?.map((v) => ({
+                            label:
+                              academicYearMonths.find((m) => m.iso === v)
+                                ?.label || v,
+                            value: v,
+                          })) || []
+                        }
+                        onChange={(selectedOptions) =>
+                          field.onChange(
+                            selectedOptions.map((opt) => opt.value)
+                          )
+                        }
+                        placeholder={t("reports.financial.selectMonth")}
+                      />
+                    </FormControl>
+
                     <FormMessage />
                   </FormItem>
                 )}
@@ -240,12 +255,18 @@ export default function ReportsFinancialModal({
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="rtl:text-right">
-                          <SelectValue placeholder={t("reports.financial.selectStatus")} />
+                          <SelectValue
+                            placeholder={t("reports.financial.selectStatus")}
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="paid">{t("reports.financial.paid")}</SelectItem>
-                        <SelectItem value="unpaid">{t("reports.financial.unpaid")}</SelectItem>
+                        <SelectItem value="paid">
+                          {t("reports.financial.paid")}
+                        </SelectItem>
+                        <SelectItem value="unpaid">
+                          {t("reports.financial.unpaid")}
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />

@@ -387,7 +387,8 @@
       "addSuccess": "تمت إضافة التقرير المالي بنجاح",
       "addError": "تعذر إضافة التقرير المالي",
       "sendNotificationSuccess": "تم إرسال إشعار التذكير بنجاح",
-      "sendNotificationError": "تعذر إرسال إشعار التذكير"
+      "sendNotificationError": "تعذر إرسال إشعار التذكير",
+      "months": "الشهور"
     },
     "health": {
       "title": "لتقرير الصحي",
