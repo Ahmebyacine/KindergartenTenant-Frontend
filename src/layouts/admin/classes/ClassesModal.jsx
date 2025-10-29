@@ -206,7 +206,6 @@ export default function ClassesModal({
                         {...field}
                         type="number"
                         min="0"
-                        className="rtl:text-right"
                         placeholder={t("classes.pricePlaceholder")}
                         onChange={(e) =>
                           field.onChange(

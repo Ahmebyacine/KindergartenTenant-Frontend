@@ -113,7 +113,8 @@
     "You do not have permission to view financial reports": "You do not have permission to view financial reports",
     "You do not have permission to view health reports": "You do not have permission to view health reports",
     "You do not have permission to view this reports": "You do not have permission to view this reports",
-    "You have already changed your default password": "You have already changed your default password"
+    "You have already changed your default password": "You have already changed your default password",
+    "querySrv ETIMEOUT _mongodb._tcp.projecttest.qucpzkh.mongodb.net": "Connection error occurred, please try again later."
   },
   "dashboard": {
     "monthlyIncome": "Monthly Income",
@@ -322,6 +323,8 @@
     "father": "Father",
     "mother": "Mother",
     "other": "Other",
+    "studentPhoto": "Student photo",
+    "discount": "Discount",
     "guardianName": "Guardian’s name",
     "primaryContact": "Primary contact (App account number)",
     "secondaryContact": "Secondary contact",

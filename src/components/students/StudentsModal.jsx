@@ -55,6 +55,10 @@ const studentSchema = (t) =>
       secondaryContact: z.string().optional(),
       thirdContact: z.string().optional(),
     }),
+    discount: z
+      .number({ invalid_type_error: t("classes.validation.priceNumber") })
+      .min(0, t("classes.validation.minPrice"))
+      .optional(),
     image: z.any().optional(),
   });
 
@@ -79,73 +83,91 @@ export default function StudentsModal({
   const form = useForm({
     resolver: zodResolver(studentSchema(t)),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      birthDate: "",
-      class: "",
-      bloodGroup: "",
-      gender: "male",
-      adress: "",
-      healthStatus: "good",
-      illnessOrAllergy: "",
-      takesMedicineRegularly: false,
-      medicineDetails: "",
+      firstName: editingStudent?.student?.firstName || "",
+      lastName: editingStudent?.student?.lastName || "",
+      birthDate: editingStudent?.student?.birthDate?.split("T")[0] || "",
+      class: editingStudent?.class?._id || "",
+      bloodGroup: editingStudent?.student?.bloodGroup || "",
+      gender: editingStudent?.student?.gender || "male",
+      adress: editingStudent?.student?.adress || "",
+      healthStatus: editingStudent?.student?.healthStatus || "good",
+      illnessOrAllergy: editingStudent?.student?.illnessOrAllergy || "",
+      takesMedicineRegularly:
+        editingStudent?.student?.takesMedicineRegularly || false,
+      medicineDetails: editingStudent?.student?.medicineDetails || "",
       parents: {
-        father: { name: "", profession: "" },
-        mother: { name: "", profession: "" },
-        guardian: { relation: "father", name: "" },
-        email: "",
-        contact: "",
-        secondaryContact: "",
-        thirdContact: "",
+        father: {
+          name: editingStudent?.student?.parents?.father?.name || "",
+          profession:
+            editingStudent?.student?.parents?.father?.profession || "",
+        },
+        mother: {
+          name: editingStudent?.student?.parents?.mother?.name || "",
+          profession:
+            editingStudent?.student?.parents?.mother?.profession || "",
+        },
+        guardian: {
+          relation:
+            editingStudent?.student?.parents?.guardian?.relation || "father",
+          name: editingStudent?.student?.parents?.guardian?.name || "",
+        },
+        email: editingStudent?.student?.parents?.email || "",
+        contact: editingStudent?.student?.parents?.contact || "",
+        secondaryContact:
+          editingStudent?.student?.parents?.secondaryContact || "",
+        thirdContact: editingStudent?.student?.parents?.thirdContact || "",
       },
-      image: null,
+      discount:
+        typeof editingStudent?.discount === "number"
+          ? editingStudent.discount
+          : 0,
+      image: editingStudent?.student?.image || null,
     },
   });
 
   // Reset form when editing student changes
   useEffect(() => {
-    if (editingStudent) {
-      form.reset({
-        firstName: editingStudent?.student?.firstName || "",
-        lastName: editingStudent?.student?.lastName || "",
-        birthDate: editingStudent?.student?.birthDate?.split("T")[0] || "",
-        class: editingStudent?.class?._id || "",
-        bloodGroup: editingStudent?.student?.bloodGroup || "",
-        gender: editingStudent?.student?.gender || "male",
-        adress: editingStudent?.student?.adress || "",
-        healthStatus: editingStudent?.student?.healthStatus || "good",
-        illnessOrAllergy: editingStudent?.student?.illnessOrAllergy || "",
-        takesMedicineRegularly:
-          editingStudent?.student?.takesMedicineRegularly || false,
-        medicineDetails: editingStudent?.student?.medicineDetails || "",
-        parents: {
-          father: {
-            name: editingStudent?.student?.parents?.father?.name || "",
-            profession:
-              editingStudent?.student?.parents?.father?.profession || "",
-          },
-          mother: {
-            name: editingStudent?.student?.parents?.mother?.name || "",
-            profession:
-              editingStudent?.student?.parents?.mother?.profession || "",
-          },
-          guardian: {
-            relation:
-              editingStudent?.student?.parents?.guardian?.relation || "father",
-            name: editingStudent?.student?.parents?.guardian?.name || "",
-          },
-          email: editingStudent?.student?.parents?.email || "",
-          contact: editingStudent?.student?.parents?.contact || "",
-          secondaryContact:
-            editingStudent?.student?.parents?.secondaryContact || "",
-          thirdContact: editingStudent?.student?.parents?.thirdContact || "",
+    form.reset({
+      firstName: editingStudent?.student?.firstName || "",
+      lastName: editingStudent?.student?.lastName || "",
+      birthDate: editingStudent?.student?.birthDate?.split("T")[0] || "",
+      class: editingStudent?.class?._id || "",
+      bloodGroup: editingStudent?.student?.bloodGroup || "",
+      gender: editingStudent?.student?.gender || "male",
+      adress: editingStudent?.student?.adress || "",
+      healthStatus: editingStudent?.student?.healthStatus || "good",
+      illnessOrAllergy: editingStudent?.student?.illnessOrAllergy || "",
+      takesMedicineRegularly:
+        editingStudent?.student?.takesMedicineRegularly || false,
+      medicineDetails: editingStudent?.student?.medicineDetails || "",
+      parents: {
+        father: {
+          name: editingStudent?.student?.parents?.father?.name || "",
+          profession:
+            editingStudent?.student?.parents?.father?.profession || "",
         },
-        image: editingStudent?.student?.image || null,
-      });
-    } else {
-      form.reset();
-    }
+        mother: {
+          name: editingStudent?.student?.parents?.mother?.name || "",
+          profession:
+            editingStudent?.student?.parents?.mother?.profession || "",
+        },
+        guardian: {
+          relation:
+            editingStudent?.student?.parents?.guardian?.relation || "father",
+          name: editingStudent?.student?.parents?.guardian?.name || "",
+        },
+        email: editingStudent?.student?.parents?.email || "",
+        contact: editingStudent?.student?.parents?.contact || "",
+        secondaryContact:
+          editingStudent?.student?.parents?.secondaryContact || "",
+        thirdContact: editingStudent?.student?.parents?.thirdContact || "",
+      },
+      discount:
+        typeof editingStudent?.discount === "number"
+          ? editingStudent.discount
+          : 0,
+      image: editingStudent?.student?.image || null,
+    });
   }, [editingStudent, form]);
 
   const nextStep = () => {
@@ -198,6 +220,7 @@ export default function StudentsModal({
   };
 
   const onSubmit = async (data) => {
+    console.log("Submited !");
     try {
       setLoading(true);
       const formData = new FormData();
@@ -255,6 +278,9 @@ export default function StudentsModal({
         formData.append("deleteImage", "true");
         formData.append("oldImage", editingStudent.student.image);
       }
+
+      // Discount
+      formData.append("discount", data.discount || 0);
 
       if (editingStudent) {
         await onUpdateStudent(formData, editingStudent?.student?._id);
@@ -377,10 +403,10 @@ export default function StudentsModal({
             ) : (
               <Button
                 type="submit"
-                onClick={form.handleSubmit(onSubmit)}
                 disabled={
                   loading || (editingStudent && !form.formState.isDirty)
                 }
+                onClick={form.handleSubmit(onSubmit)}
                 className="flex items-center gap-2"
               >
                 {loading
