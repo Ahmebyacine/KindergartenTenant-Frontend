@@ -42,11 +42,16 @@ import { getCurrentAcademicYear } from "@/utils/getAcademicYear";
 import { toast } from "sonner";
 import { t } from "i18next";
 
-const formSchema = (t) => z.object({
-  student: z.string().min(1, t("common.required")),
-  classId: z.string().min(1, t("common.required")),
-  academicYear: z.string().min(1, t("common.required")),
-});
+const formSchema = (t) =>
+  z.object({
+    student: z.string().min(1, t("common.required")),
+    classId: z.string().min(1, t("common.required")),
+    discount: z
+      .number({ invalid_type_error: t("classes.validation.priceNumber") })
+      .min(0, t("classes.validation.minPrice"))
+      .optional(),
+    academicYear: z.string().min(1, t("common.required")),
+  });
 
 export default function RegistrationsModal({
   classes,
@@ -65,6 +70,7 @@ export default function RegistrationsModal({
     defaultValues: {
       student: "",
       classId: "",
+      discount: 0,
       academicYear: getCurrentAcademicYear(),
     },
   });
@@ -180,7 +186,9 @@ export default function RegistrationsModal({
                             </div>
                           ) : searchResults.length === 0 ? (
                             <CommandEmpty>
-                              {t("students.registration.noResults", { searchValue })}
+                              {t("students.registration.noResults", {
+                                searchValue,
+                              })}
                             </CommandEmpty>
                           ) : (
                             searchResults.map((item) => (
@@ -191,7 +199,9 @@ export default function RegistrationsModal({
                                 className="cursor-pointer"
                               >
                                 <div>
-                                  <span className="font-semibold">{t("students.registration.name")}:</span>{" "}
+                                  <span className="font-semibold">
+                                    {t("students.registration.name")}:
+                                  </span>{" "}
                                   {item.firstName} {item.lastName}
                                 </div>
                                 <div>
@@ -226,11 +236,15 @@ export default function RegistrationsModal({
                   <CloseSquare size={18} color="currentColor" />
                 </button>
                 <div>
-                  <span className="font-semibold">{t("students.registration.name")}:</span>{" "}
+                  <span className="font-semibold">
+                    {t("students.registration.name")}:
+                  </span>{" "}
                   {selectedStudent.firstName} {selectedStudent.lastName}
                 </div>
                 <div>
-                  <span className="font-semibold">{t("students.registration.birthDate")}:</span>
+                  <span className="font-semibold">
+                    {t("students.registration.birthDate")}:
+                  </span>
                   {formatDate(selectedStudent.birthDate)}
                 </div>
               </div>
@@ -263,6 +277,30 @@ export default function RegistrationsModal({
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="discount"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("students.discount")}</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="number"
+                      min="0"
+                      placeholder={t("classes.pricePlaceholder")}
+                      onChange={(e) =>
+                        field.onChange(
+                          e.target.value === "" ? 0 : Number(e.target.value)
+                        )
+                      }
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

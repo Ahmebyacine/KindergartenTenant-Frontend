@@ -22,7 +22,6 @@ export const AuthProvider = ({ children }) => {
         updateDocumentDirection(response?.data?.user.language);
         setTheme(response?.data?.user.theme);
         setConfig(response.data.config)
-        console.log(response.data.user)
       } catch (error) {
         console.error(error);
       } finally {

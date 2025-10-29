@@ -113,7 +113,8 @@
     "You do not have permission to view financial reports": "ليس لديك إذن لعرض التقارير المالية",
     "You do not have permission to view health reports": "ليس لديك إذن لعرض التقارير الصحية",
     "You do not have permission to view this reports": "ليس لديك إذن لعرض هذه التقارير",
-    "You have already changed your default password": "لقد قمت بالفعل بتغيير كلمة المرور الافتراضية الخاصة بك"
+    "You have already changed your default password": "لقد قمت بالفعل بتغيير كلمة المرور الافتراضية الخاصة بك",
+    "querySrv ETIMEOUT _mongodb._tcp.projecttest.qucpzkh.mongodb.net":"حدث خطأ في الاتصال  يرجى المحاولة مرة أخرى لاحقًا."
   },
   "dashboard": {
     "monthlyIncome": "الدخل الشهري",
@@ -326,6 +327,8 @@
     "primaryContact": "(رقم حساب التطبيق) جهة الاتصال الأساسية",
     "secondaryContact": "جهة الاتصال الثانوية",
     "thirdContact": "جهة الاتصال الثالثة",
+    "studentPhoto":"صورة الطفل",
+    "discount": "تخفيض",
     "printCard": {
       "title": "طباعة البطاقات",
       "description": "طباعة بطاقات الأطفال",
@@ -387,7 +390,8 @@
       "addSuccess": "تمت إضافة التقرير المالي بنجاح",
       "addError": "تعذر إضافة التقرير المالي",
       "sendNotificationSuccess": "تم إرسال إشعار التذكير بنجاح",
-      "sendNotificationError": "تعذر إرسال إشعار التذكير"
+      "sendNotificationError": "تعذر إرسال إشعار التذكير",
+      "months": "الشهور"
     },
     "health": {
       "title": "لتقرير الصحي",

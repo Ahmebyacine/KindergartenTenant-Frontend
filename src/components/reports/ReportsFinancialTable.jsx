@@ -55,7 +55,7 @@ export default function ReportsFinancialTable({ classes, students }) {
     page: actualPage,
     pages,
     refetch,
-    error
+    error,
   } = usePaginatedFetch(() => fetchReports({ page: page }));
 
   const handlePageChange = (newPage) => {
@@ -91,11 +91,17 @@ export default function ReportsFinancialTable({ classes, students }) {
   const handleAddReport = async (data) => {
     try {
       const response = await api.post("/financial-reports", data);
-      setReports((prev) => [response.data, ...prev]);
+      setReports((prev) => {
+        const updatedIds = response.data.reports.map((r) => r._id);
+        const filteredPrev = prev.filter((r) => !updatedIds.includes(r._id));
+        return [...response.data.reports, ...filteredPrev];
+      });
       toast.success(t("reports.financial.addSuccess"));
     } catch (error) {
-      toast.error(t("reports.financial.addError"),{
-        description: `apiError.${error?.response?.data?.message || "errorDefault"}`
+      toast.error(t("reports.financial.addError"), {
+        description: `apiError.${
+          error?.response?.data?.message || "errorDefault"
+        }`,
       });
       console.error("Error creating class", error);
     }
@@ -210,10 +216,10 @@ export default function ReportsFinancialTable({ classes, students }) {
               >
                 <div className="flex flex-col items-center justify-center gap-2">
                   <Document size={40} color="CurrentColor" />
-                  <p className="text-lg font-medium">{t("reports.noReports")}</p>
-                  <p className="text-sm">
-                    {t("reports.noReportsDescription")}
+                  <p className="text-lg font-medium">
+                    {t("reports.noReports")}
                   </p>
+                  <p className="text-sm">{t("reports.noReportsDescription")}</p>
                 </div>
               </TableCell>
             </TableRow>

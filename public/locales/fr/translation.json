@@ -113,7 +113,8 @@
     "You do not have permission to view financial reports": "Vous n'avez pas l'autorisation de consulter les rapports financiers",
     "You do not have permission to view health reports": "Vous n'avez pas l'autorisation de consulter les rapports de santé",
     "You do not have permission to view this reports": "Vous n'avez pas l'autorisation de consulter ces rapports",
-    "You have already changed your default password": "Vous avez déjà changé votre mot de passe par défaut"
+    "You have already changed your default password": "Vous avez déjà changé votre mot de passe par défaut",
+    "querySrv ETIMEOUT _mongodb._tcp.projecttest.qucpzkh.mongodb.net": "Une erreur de connexion s'est produite, veuillez réessayer plus tard."
   },
   "dashboard": {
     "monthlyIncome": "Revenus mensuels",
@@ -322,6 +323,8 @@
   "father": "Père",
   "mother": "Mère",
   "other": "Autre",
+  "discount":"Remise",
+  "studentPhoto":"photo d'enfant",
   "guardianName": "Nom du tuteur",
   "primaryContact": "Contact principal (numéro de compte de l'application)",
   "secondaryContact": "Contact secondaire",
@@ -387,7 +390,8 @@
       "addSuccess": "Rapport financier ajouté avec succès",
       "addError": "Échec de l'ajout du rapport financier",
       "sendNotificationSuccess": "Notification de rappel envoyée avec succès",
-      "sendNotificationError": "Échec de l'envoi de la notification de rappel"
+      "sendNotificationError": "Échec de l'envoi de la notification de rappel",
+      "months": "Mois"
     },
     "health": {
       "title": "Rapport de santé",
