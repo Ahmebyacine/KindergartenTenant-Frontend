@@ -53,7 +53,10 @@ export default function AttendanceSupervisor() {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(new Date());
   const [selectedClass, setSelectedClass] = useState(null);
-  const [attendance, setAttendance] = useState([]);
+  const [attendance, setAttendance] = useState({
+    recorded: false,
+    info: [],
+  });
 
   const fetchClasses = async () => {
     const response = await api.get("/classes");
@@ -152,15 +155,22 @@ export default function AttendanceSupervisor() {
           enrollmentId: data,
         });
         setAttendance((prev) => {
-          const index = prev.info.findIndex(
-            (item) => item.attendanceId === response.data._id
+          const info = Array.isArray(prev?.info) ? prev.info : [];
+          const index = info.findIndex(
+            (item) => item.enrollmentId === data.ids
           );
-          const updatedInfo = [...prev.info];
+          if (index === -1) return prev; // no match found
+
+          const updatedInfo = [...info];
           updatedInfo[index] = {
             ...updatedInfo[index],
-            ...{ checkOutTime: response.data.checkOutTime },
+            attendanceId: response.data._id,
+            status: response.data.status,
+            time: response.data.createdAt,
+            checkInTime: response.data.checkInTime,
           };
-          return { ...prev, info: updatedInfo };
+
+          return { ...prev, recorded: true, info: updatedInfo };
         });
       }
       toast.success(t("attendance.successCheckOut"));
