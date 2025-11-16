@@ -155,22 +155,20 @@ export default function AttendanceSupervisor() {
           enrollmentId: data,
         });
         setAttendance((prev) => {
-          const info = Array.isArray(prev?.info) ? prev.info : [];
-          const index = info.findIndex(
-            (item) => item.enrollmentId === data.ids
+          const index = prev.info.findIndex(
+            (item) => item.attendanceId === response.data._id
           );
-          if (index === -1) return prev; // no match found
 
-          const updatedInfo = [...info];
+          const updatedInfo = [...prev.info];
           updatedInfo[index] = {
             ...updatedInfo[index],
-            attendanceId: response.data._id,
-            status: response.data.status,
-            time: response.data.createdAt,
-            checkInTime: response.data.checkInTime,
+            ...{ checkOutTime: response.data.checkOutTime },
           };
 
-          return { ...prev, recorded: true, info: updatedInfo };
+          return {
+            ...prev,
+            info: updatedInfo,
+          };
         });
       }
       toast.success(t("attendance.successCheckOut"));

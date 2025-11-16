@@ -33,20 +33,22 @@ import { useEffect, useState } from "react";
 import { t } from "i18next";
 
 // Updated schema with student instead of childName
-const healthReportSchema = (t) => z.object({
-  student: z.string().min(1, t("common.required")),
-  classId: z.string().min(1, t("common.required")),
-  observationTime: z.string().min(1, t("common.required")),
-  conditionType: z.string().min(1, t("common.required")),
-  conditionAssessment: z.string().min(1, t("common.required")),
-  actionTaken: z.boolean(),
-  actionType: z.string().optional(),
-  notes: z.string().optional(),
-});
+const healthReportSchema = (t) =>
+  z.object({
+    student: z.string().min(1, t("common.required")),
+    classId: z.string().min(1, t("common.required")),
+    observationTime: z.string().min(1, t("common.required")),
+    conditionType: z.string().min(1, t("common.required")),
+    conditionAssessment: z.string().min(1, t("common.required")),
+    actionTaken: z.boolean(),
+    actionType: z.string().optional(),
+    notes: z.string().optional(),
+  });
 
 export default function ReportsHealthModal({ onAddReport, classes, children }) {
   const [filteredChildren, setFilteredChildren] = useState([]);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const form = useForm({
     resolver: zodResolver(healthReportSchema(t)),
     defaultValues: {
@@ -77,12 +79,18 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
   }, [classId, children]);
 
   const onSubmit = async (data) => {
-    await onAddReport(data);
-    form.reset();
+    setLoading(true);
+    try {
+      await onAddReport(data);
+      form.reset();
+      setOpen(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const conditionTypes = [
-    { value: "fever"},
+    { value: "fever" },
     { value: "cough" },
     { value: "fatigue" },
     { value: "nausea" },
@@ -91,9 +99,9 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
 
   // Condition assessments
   const conditionAssessments = [
-    { value: "mild"},
-    { value: "moderate"},
-    { value: "severe"},
+    { value: "mild" },
+    { value: "moderate" },
+    { value: "severe" },
   ];
 
   return (
@@ -131,7 +139,9 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="rtl:text-right">
-                          <SelectValue placeholder={t("reports.health.selectClass")} />
+                          <SelectValue
+                            placeholder={t("reports.health.selectClass")}
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -163,7 +173,9 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                     >
                       <FormControl>
                         <SelectTrigger className="rtl:text-right">
-                          <SelectValue placeholder={t("reports.health.selectChild")} />
+                          <SelectValue
+                            placeholder={t("reports.health.selectChild")}
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="max-h-60 overflow-y-auto">
@@ -199,10 +211,7 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                       {t("reports.health.observationTime")}
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        className="rtl:text-right"
-                      />
+                      <Input {...field} className="rtl:text-right" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -221,7 +230,11 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="rtl:text-right">
-                          <SelectValue placeholder={t("reports.health.selectConditionType")} />
+                          <SelectValue
+                            placeholder={t(
+                              "reports.health.selectConditionType"
+                            )}
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -249,7 +262,11 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="rtl:text-right">
-                          <SelectValue placeholder={t("reports.health.selectConditionAssessment")} />
+                          <SelectValue
+                            placeholder={t(
+                              "reports.health.selectConditionAssessment"
+                            )}
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -258,7 +275,9 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                             key={assessment.value}
                             value={assessment.value}
                           >
-                            {t(`reports.health.conditionAssessments.${assessment.value}`)}
+                            {t(
+                              `reports.health.conditionAssessments.${assessment.value}`
+                            )}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -313,10 +332,7 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
                         {t("reports.health.actionType")}
                       </FormLabel>
                       <FormControl>
-                        <Input
-                          {...field}
-                          className="rtl:text-right"
-                        />
+                        <Input {...field} className="rtl:text-right" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -355,8 +371,9 @@ export default function ReportsHealthModal({ onAddReport, classes, children }) {
               type="submit"
               onClick={form.handleSubmit(onSubmit)}
               className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
+              disabled={loading}
             >
-              {t("common.save")}
+              {loading ? t("common.loading") : t("common.save")}
             </Button>
             <DialogClose asChild>
               <Button

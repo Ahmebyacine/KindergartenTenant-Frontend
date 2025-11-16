@@ -34,11 +34,12 @@ import { useEffect, useState } from "react";
 import { t } from "i18next";
 
 // Updated schema to match API requirements
-const expenseSchema = (t) => z.object({
-  category: z.string().min(1, t("common.required")),
-  amount: z.number().min(1, t("expenses.amountMustBePositive")),
-  description: z.string().min(1, t("common.required")),
-});
+const expenseSchema = (t) =>
+  z.object({
+    category: z.string().min(1, t("common.required")),
+    amount: z.number().min(1, t("expenses.amountMustBePositive")),
+    description: z.string().min(1, t("common.required")),
+  });
 
 export default function ExpensesModal({
   onAddExpense,
@@ -46,6 +47,7 @@ export default function ExpensesModal({
   editingExpense = null,
 }) {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const form = useForm({
     resolver: zodResolver(expenseSchema(t)),
     defaultValues: {
@@ -63,13 +65,18 @@ export default function ExpensesModal({
   }, [editingExpense, form]);
 
   const onSubmit = async (data) => {
-    if (editingExpense) {
-      await onUpdateExpense({ ...editingExpense, ...data });
-    } else {
-      await onAddExpense(data);
+    setLoading(true);
+    try {
+      if (editingExpense) {
+        await onUpdateExpense({ ...editingExpense, ...data });
+      } else {
+        await onAddExpense(data);
+      }
+      form.reset();
+      setOpen(false);
+    } finally {
+      setLoading(false);
     }
-    form.reset();
-    setOpen(false);
   };
 
   return (
@@ -90,7 +97,9 @@ export default function ExpensesModal({
       <DialogContent className="w-full max-w-full sm:max-w-2xl bg-card p-6 rounded-lg sm:rounded-2xl">
         <DialogHeader className="border-b-2 pb-4">
           <DialogTitle className="text-lg rtl:text-right sm:text-xl font-semibold text-foreground">
-            {editingExpense ? t("common.editExpense") : t("expenses.addNewExpense")}
+            {editingExpense
+              ? t("common.editExpense")
+              : t("expenses.addNewExpense")}
           </DialogTitle>
         </DialogHeader>
 
@@ -116,7 +125,9 @@ export default function ExpensesModal({
                       >
                         <FormControl>
                           <SelectTrigger className="rtl:text-right">
-                            <SelectValue placeholder={t("expenses.categoryPlaceholder")} />
+                            <SelectValue
+                              placeholder={t("expenses.categoryPlaceholder")}
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -192,10 +203,14 @@ export default function ExpensesModal({
             <Button
               type="submit"
               onClick={form.handleSubmit(onSubmit)}
-              disabled={editingExpense && !form.formState.isDirty}
+              disabled={(editingExpense && !form.formState.isDirty) || loading}
               className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium disabled:opacity-50"
             >
-              {editingExpense ? t("common.update") : t("common.save")}
+              {loading
+                ? t("common.loading")
+                : editingExpense
+                ? t("common.update")
+                : t("common.save")}
             </Button>
             <DialogClose asChild>
               <Button

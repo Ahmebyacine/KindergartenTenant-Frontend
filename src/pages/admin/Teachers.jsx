@@ -14,7 +14,6 @@ import { fetchTeachers } from "@/api/usersApi";
 import { t } from "i18next";
 
 export default function Teachers() {
-  const [addLoading, setAddLoading] = useState(false);
   const [activeTab, setActiveTab] = useState(null);
   const [search, setSearch] = useState("");
 
@@ -49,7 +48,6 @@ export default function Teachers() {
   }, [tabs]);
 
   const handleAddTeacher = async (data) => {
-    setAddLoading(true);
     try {
       const res = await api.post("/users", data);
       setTeachers((prev) => [res.data, ...prev]);
@@ -61,8 +59,6 @@ export default function Teachers() {
           `errorApi.${error?.response?.data?.message || "defaultError"}`
         ),
       });
-    } finally {
-      setAddLoading(false);
     }
   };
 
@@ -100,12 +96,14 @@ export default function Teachers() {
 
   const filteredTeachers = useMemo(() => {
     if (!search.trim())
-      return teachers?.filter((teacher) => {
-        if (activeTab === "no-assigned") {
-          return !teacher?.assignedClass;
-        }
-        return teacher?.assignedClass?.category === activeTab;
-      }) || [];
+      return (
+        teachers?.filter((teacher) => {
+          if (activeTab === "no-assigned") {
+            return !teacher?.assignedClass;
+          }
+          return teacher?.assignedClass?.category === activeTab;
+        }) || []
+      );
 
     return teachers.filter((teacher) => {
       const name = teacher.name?.toLowerCase() || "";
@@ -157,7 +155,6 @@ export default function Teachers() {
               <TeachersModal
                 onAddTeacher={handleAddTeacher}
                 classes={classes}
-                loading={addLoading}
               />
             </div>
 

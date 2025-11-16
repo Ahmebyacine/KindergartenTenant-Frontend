@@ -52,6 +52,7 @@ export default function ReportsFinancialModal({
 }) {
   const [filteredChildren, setFilteredChildren] = useState([]);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const form = useForm({
     resolver: zodResolver(financialReportSchema(t)),
     defaultValues: {
@@ -65,7 +66,7 @@ export default function ReportsFinancialModal({
   });
 
   const classId = form.watch("classId");
-
+  const months = form.watch("months");
   // Filter children based on selected class and search query
   useEffect(() => {
     let result = children || [];
@@ -78,10 +79,31 @@ export default function ReportsFinancialModal({
     setFilteredChildren(result);
   }, [classId, children]);
 
+  useEffect(() => {
+    if (classId) {
+      const selectedClass = classes.find((c) => c._id === classId);
+      console.log(selectedClass)
+      if (selectedClass) {
+        const price = selectedClass.price || 0;
+        const numberOfMonths = months?.length || 0;
+
+        // Auto calculate amount
+        const calculatedAmount = price * numberOfMonths;
+
+        form.setValue("amount", calculatedAmount);
+      }
+    }
+  }, [classId, months, classes, form]);
+
   const onSubmit = async (data) => {
-    await onAddReport(data);
-    form.reset();
-    setOpen(false);
+    setLoading(true);
+    try {
+      await onAddReport(data);
+      form.reset();
+      setOpen(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const academicYearMonths = getAcademicYearMonths();
@@ -233,7 +255,7 @@ export default function ReportsFinancialModal({
                       <Input
                         type="number"
                         className="rtl:text-right"
-                        placeholder="8000"
+                        placeholder="0"
                         {...field}
                         onChange={(e) => field.onChange(Number(e.target.value))}
                       />
@@ -304,8 +326,9 @@ export default function ReportsFinancialModal({
               type="submit"
               onClick={form.handleSubmit(onSubmit)}
               className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
+              disabled={loading}
             >
-              {t("common.save")}
+              {loading ? t("common.loading") : t("common.save")}
             </Button>
             <DialogClose asChild>
               <Button

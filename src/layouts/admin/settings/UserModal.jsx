@@ -30,7 +30,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { generateRandomPassword } from "@/utils/generateRandomPassword";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ImageUpload from "@/components/ImageUpload";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
@@ -62,6 +62,7 @@ export default function UserModal({
   onOpenChange,
   isLimited = true,
 }) {
+  const [loading, setLoading] = useState(false);
   // Initialize the form
   const form = useForm({
     resolver: zodResolver(userSchema(t)),
@@ -94,32 +95,37 @@ export default function UserModal({
   }, [editingUser, form]);
 
   const onSubmit = async (data) => {
-    const formData = new FormData();
-    formData.append("name", data.name);
-    formData.append("email", data.email);
-    formData.append("phone", data.phone);
-    formData.append("role", data.role);
-    formData.append("permissions", JSON.stringify(data.permissions || {}));
-    if (data.image && data.image instanceof File) {
-      if (editingUser?.image) {
-        formData.append("oldImage", editingUser?.image);
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("email", data.email);
+      formData.append("phone", data.phone);
+      formData.append("role", data.role);
+      formData.append("permissions", JSON.stringify(data.permissions || {}));
+      if (data.image && data.image instanceof File) {
+        if (editingUser?.image) {
+          formData.append("oldImage", editingUser?.image);
+        }
+        formData.append("image", data.image);
       }
-      formData.append("image", data.image);
+      if (editingUser.image && !data.image) {
+        formData.append("deleteImage", "true");
+        formData.append("oldImage", editingUser.image);
+      }
+      if (!editingUser) {
+        formData.append("password", generateRandomPassword(12));
+      }
+      if (editingUser) {
+        await onUpdateUser(formData, editingUser._id);
+      } else {
+        await onAddUser(formData);
+      }
+      form.reset();
+      onOpenChange(false);
+    } finally {
+      setLoading(false);
     }
-    if (editingUser.image && !data.image) {
-      formData.append("deleteImage", "true");
-      formData.append("oldImage", editingUser.image);
-    }
-    if (!editingUser) {
-      formData.append("password", generateRandomPassword(12));
-    }
-    if (editingUser) {
-      await onUpdateUser(formData, editingUser._id);
-    } else {
-      await onAddUser(formData);
-    }
-    form.reset();
-    onOpenChange(false);
   };
 
   return (
@@ -312,7 +318,9 @@ export default function UserModal({
                       render={({ field }) => (
                         <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
                           <div className="space-y-0.5">
-                            <FormLabel>{t("settings.users.reportPedagogical")}</FormLabel>
+                            <FormLabel>
+                              {t("settings.users.reportPedagogical")}
+                            </FormLabel>
                           </div>
                           <FormControl>
                             <Switch
@@ -331,7 +339,9 @@ export default function UserModal({
                       render={({ field }) => (
                         <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
                           <div className="space-y-0.5">
-                            <FormLabel>{t("settings.users.reportFinancial")}</FormLabel>
+                            <FormLabel>
+                              {t("settings.users.reportFinancial")}
+                            </FormLabel>
                           </div>
                           <FormControl>
                             <Switch
@@ -350,7 +360,9 @@ export default function UserModal({
                       render={({ field }) => (
                         <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
                           <div className="space-y-0.5">
-                            <FormLabel>{t("settings.users.reportHealth")}</FormLabel>
+                            <FormLabel>
+                              {t("settings.users.reportHealth")}
+                            </FormLabel>
                           </div>
                           <FormControl>
                             <Switch
@@ -391,10 +403,16 @@ export default function UserModal({
                 <div className="flex flex-row md:w-1/2 gap-3 pt-4">
                   <Button
                     type="submit"
-                    disabled={editingUser && !form.formState.isDirty}
+                    disabled={
+                      (editingUser && !form.formState.isDirty) || loading
+                    }
                     className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
                   >
-                    {editingUser ? t("common.update") : t("common.save")}
+                    {loading
+                      ? t("common.loading")
+                      : editingUser
+                      ? t("common.update")
+                      : t("common.save")}
                   </Button>
                   <DialogClose asChild>
                     <Button

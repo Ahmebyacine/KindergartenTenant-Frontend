@@ -131,8 +131,7 @@ export default function AttendanceTeacher() {
   const handleAttendanceCheckOut = async (data) => {
     try {
       if (Array.isArray(data) && data.length > 0) {
-        const response = await api.patch("/attendances/check-out/bulk", data);
-        console.log(response.data);
+        await api.patch("/attendances/check-out/bulk", data);
       } else {
         const response = await api.patch("/attendances/check-out", {
           ...data,

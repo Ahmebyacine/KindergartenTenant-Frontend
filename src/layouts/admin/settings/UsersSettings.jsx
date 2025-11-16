@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { SearchNormal1 } from "iconsax-react";
+import { SearchNormal1, UserRemove } from "iconsax-react";
 import UserModal from "./UserModal";
 import api from "@/api";
 import { toast } from "sonner";
@@ -10,6 +10,7 @@ import { generateRandomPassword } from "@/utils/generateRandomPassword";
 import { fetchUsers } from "@/api/usersApi";
 import { useAuth } from "@/contexts/AuthContext";
 import { t } from "i18next";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function UsersSettings() {
   const [editingId, setEditingId] = useState(null);
@@ -121,19 +122,28 @@ export default function UsersSettings() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2">
-          {loading || error
-            ? Array.from({ length: 4 }).map((_, index) => (
-                <UserCard key={index} loading={loading} error={error} />
-              ))
-            : users.map((user) => (
-                <UserCard
-                  key={user._id}
-                  user={user}
-                  onEdit={(user) => setEditingId(user._id)}
-                  onDelete={(user) => handleDeleteUser(user._id)}
-                  onChangePassword={(user) => handleChangePassword(user._id)}
-                />
-              ))}
+          {loading || error ? (
+            Array.from({ length: 4 }).map((_, index) => (
+              <UserCard key={index} loading={loading} error={error} />
+            ))
+          ) : users.length === 0 ? (
+            <Card className="col-start-2">
+              <CardContent className="flex flex-col items-center gap-5">
+                <UserRemove color="currentColor" size={34} />
+                {t("settings.users.noUsers")}
+              </CardContent>
+            </Card>
+          ) : (
+            users.map((user) => (
+              <UserCard
+                key={user._id}
+                user={user}
+                onEdit={(user) => setEditingId(user._id)}
+                onDelete={(user) => handleDeleteUser(user._id)}
+                onChangePassword={(user) => handleChangePassword(user._id)}
+              />
+            ))
+          )}
         </div>
       </section>
       {editingId && (

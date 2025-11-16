@@ -57,6 +57,7 @@ export default function TeachersModal({
   classes,
 }) {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const form = useForm({
     resolver: zodResolver(teacherSchema(t)),
     defaultValues: {
@@ -89,34 +90,39 @@ export default function TeachersModal({
   }, [editingTeacher, form]);
 
   const onSubmit = async (data) => {
-    const formData = new FormData();
-    formData.append("name", data.name);
-    formData.append("email", data.email);
-    formData.append("phone", data.phone);
-    formData.append("permissions", JSON.stringify(data.permissions || {}));
-    if (data.assignedClass)
-      formData.append("assignedClass", data.assignedClass);
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("email", data.email);
+      formData.append("phone", data.phone);
+      formData.append("permissions", JSON.stringify(data.permissions || {}));
+      if (data.assignedClass)
+        formData.append("assignedClass", data.assignedClass);
 
-    if (data.image && data.image instanceof File) {
-      if (editingTeacher?.image) {
+      if (data.image && data.image instanceof File) {
+        if (editingTeacher?.image) {
+          formData.append("oldImage", editingTeacher.image);
+        }
+        formData.append("image", data.image);
+      }
+      if (!data.image && editingTeacher?.image) {
+        formData.append("deleteImage", "true");
         formData.append("oldImage", editingTeacher.image);
       }
-      formData.append("image", data.image);
-    }
-    if (!data.image && editingTeacher?.image) {
-      formData.append("deleteImage", "true");
-      formData.append("oldImage", editingTeacher.image);
-    }
 
-    if (editingTeacher) {
-      await onUpdateTeacher(formData, editingTeacher._id);
-    } else {
-      formData.append("role", "teacher");
-      formData.append("password", generateRandomPassword(12));
-      await onAddTeacher(formData);
+      if (editingTeacher) {
+        await onUpdateTeacher(formData, editingTeacher._id);
+      } else {
+        formData.append("role", "teacher");
+        formData.append("password", generateRandomPassword(12));
+        await onAddTeacher(formData);
+      }
+      form.reset();
+      setOpen(false);
+    } finally {
+      setLoading(false);
     }
-    form.reset();
-    setOpen(false);
   };
 
   return (
@@ -394,10 +400,14 @@ export default function TeachersModal({
             <Button
               type="submit"
               onClick={form.handleSubmit(onSubmit)}
-              disabled={editingTeacher && !form.formState.isDirty}
+              disabled={(editingTeacher && !form.formState.isDirty) || loading}
               className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium disabled:opacity-50"
             >
-              {editingTeacher ? t("common.update") : t("common.save")}
+              {loading
+                ? t("common.loading")
+                : editingTeacher
+                ? t("common.update")
+                : t("common.save")}
             </Button>
             <DialogClose asChild>
               <Button

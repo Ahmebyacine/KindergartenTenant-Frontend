@@ -32,15 +32,16 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { t } from "i18next";
 
-const classSchema = (t) => z.object({
-  className: z.string().min(1, t("common.required")),
-  category: z.string().min(1, t("common.required")),
-  capacity: z.number().min(1, t("classes.validation.minCapacity")),
-  price: z
-    .number({ invalid_type_error: t("classes.validation.priceNumber") })
-    .min(0, t("classes.validation.minPrice"))
-    .optional(),
-});
+const classSchema = (t) =>
+  z.object({
+    className: z.string().min(1, t("common.required")),
+    category: z.string().min(1, t("common.required")),
+    capacity: z.number().min(1, t("classes.validation.minCapacity")),
+    price: z
+      .number({ invalid_type_error: t("classes.validation.priceNumber") })
+      .min(0, t("classes.validation.minPrice"))
+      .optional(),
+  });
 
 export default function ClassesModal({
   onAddClass,
@@ -50,6 +51,7 @@ export default function ClassesModal({
   isLimited = false,
 }) {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(classSchema(t)),
@@ -71,13 +73,18 @@ export default function ClassesModal({
   }, [editingClass, form]);
 
   const onSubmit = async (data) => {
-    if (editingClass) {
-      await onUpdateClass({ ...editingClass, ...data });
-    } else {
-      await onAddClass(data);
+    setLoading(true)
+    try {
+      if (editingClass) {
+        await onUpdateClass({ ...editingClass, ...data });
+      } else {
+        await onAddClass(data);
+      }
+      form.reset();
+      setOpen(false);
+    } finally {
+      setLoading(false);
     }
-    form.reset();
-    setOpen(false);
   };
 
   return (
@@ -116,7 +123,10 @@ export default function ClassesModal({
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 pt-2">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-6 pt-2"
+          >
             <div className="grid grid-cols-1 gap-4">
               {/* Class Name */}
               <FormField
@@ -154,7 +164,9 @@ export default function ClassesModal({
                     >
                       <FormControl>
                         <SelectTrigger className="rtl:text-right">
-                          <SelectValue placeholder={t("classes.categoryPlaceholder")} />
+                          <SelectValue
+                            placeholder={t("classes.categoryPlaceholder")}
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -229,9 +241,13 @@ export default function ClassesModal({
               type="submit"
               onClick={form.handleSubmit(onSubmit)}
               className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
-              disabled={editingClass && !form.formState.isDirty}
+              disabled={(editingClass && !form.formState.isDirty) || loading}
             >
-              {editingClass ? t("common.update") : t("common.add")}
+              {loading
+                ? t("common.loading")
+                : editingClass
+                ? t("common.update")
+                : t("common.add")}
             </Button>
             <DialogClose asChild>
               <Button
