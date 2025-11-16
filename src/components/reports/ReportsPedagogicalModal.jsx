@@ -32,15 +32,16 @@ import { useEffect, useState } from "react";
 import { t } from "i18next";
 
 // Updated report schema
-const reportSchema = (t) => z.object({
-  student: z.string().min(1, t("common.required")),
-  classId: z.string().min(1, t("common.required")),
-  languageCommunication: z.string().min(1, t("common.required")),
-  behavior: z.string().min(1, t("common.required")),
-  skills: z.string().min(1, t("common.required")),
-  overall: z.string().min(1, t("common.required")),
-  notes: z.string().optional(),
-});
+const reportSchema = (t) =>
+  z.object({
+    student: z.string().min(1, t("common.required")),
+    classId: z.string().min(1, t("common.required")),
+    languageCommunication: z.string().min(1, t("common.required")),
+    behavior: z.string().min(1, t("common.required")),
+    skills: z.string().min(1, t("common.required")),
+    overall: z.string().min(1, t("common.required")),
+    notes: z.string().optional(),
+  });
 
 export default function ReportsPedagogicalModal({
   onAddReport,
@@ -49,6 +50,7 @@ export default function ReportsPedagogicalModal({
 }) {
   const [filteredChildren, setFilteredChildren] = useState([]);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const form = useForm({
     resolver: zodResolver(reportSchema(t)),
     defaultValues: {
@@ -76,9 +78,14 @@ export default function ReportsPedagogicalModal({
   }, [classId, children]);
 
   const onSubmit = async (data) => {
-    await onAddReport(data);
-    form.reset();
-    setOpen(false);
+    setLoading(true);
+    try {
+      await onAddReport(data);
+      form.reset();
+      setOpen(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const evaluationOptions = [
@@ -123,7 +130,9 @@ export default function ReportsPedagogicalModal({
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="rtl:text-right">
-                          <SelectValue placeholder={t("reports.pedagogical.selectClass")} />
+                          <SelectValue
+                            placeholder={t("reports.pedagogical.selectClass")}
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -156,7 +165,9 @@ export default function ReportsPedagogicalModal({
                       >
                         <FormControl>
                           <SelectTrigger className="rtl:text-right">
-                            <SelectValue placeholder={t("reports.pedagogical.selectChild")} />
+                            <SelectValue
+                              placeholder={t("reports.pedagogical.selectChild")}
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className="max-h-60 overflow-y-auto">
@@ -197,13 +208,19 @@ export default function ReportsPedagogicalModal({
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="rtl:text-right">
-                          <SelectValue placeholder={t("reports.pedagogical.selectLanguageAndCommunication")} />
+                          <SelectValue
+                            placeholder={t(
+                              "reports.pedagogical.selectLanguageAndCommunication"
+                            )}
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {evaluationOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
-                            {t(`reports.pedagogical.evaluationOptions.${option.value}`)}
+                            {t(
+                              `reports.pedagogical.evaluationOptions.${option.value}`
+                            )}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -225,13 +242,19 @@ export default function ReportsPedagogicalModal({
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="rtl:text-right">
-                          <SelectValue placeholder={t("reports.pedagogical.selectBehavior")} />
+                          <SelectValue
+                            placeholder={t(
+                              "reports.pedagogical.selectBehavior"
+                            )}
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {evaluationOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
-                            {t(`reports.pedagogical.evaluationOptions.${option.value}`)}
+                            {t(
+                              `reports.pedagogical.evaluationOptions.${option.value}`
+                            )}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -253,13 +276,17 @@ export default function ReportsPedagogicalModal({
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="rtl:text-right">
-                          <SelectValue placeholder={t("reports.pedagogical.selectSkills")} />
+                          <SelectValue
+                            placeholder={t("reports.pedagogical.selectSkills")}
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {evaluationOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
-                            {t(`reports.pedagogical.evaluationOptions.${option.value}`)}
+                            {t(
+                              `reports.pedagogical.evaluationOptions.${option.value}`
+                            )}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -281,13 +308,17 @@ export default function ReportsPedagogicalModal({
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="rtl:text-right">
-                          <SelectValue placeholder={t("reports.pedagogical.selectOverall")} />
+                          <SelectValue
+                            placeholder={t("reports.pedagogical.selectOverall")}
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {evaluationOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
-                            {t(`reports.pedagogical.evaluationOptions.${option.value}`)}
+                            {t(
+                              `reports.pedagogical.evaluationOptions.${option.value}`
+                            )}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -308,10 +339,7 @@ export default function ReportsPedagogicalModal({
                     {t("common.notes")}
                   </FormLabel>
                   <FormControl>
-                    <Textarea
-                      {...field}
-                      className="rtl:text-right"
-                    />
+                    <Textarea {...field} className="rtl:text-right" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -327,15 +355,16 @@ export default function ReportsPedagogicalModal({
               type="submit"
               onClick={form.handleSubmit(onSubmit)}
               className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
+              disabled={loading}
             >
-              حفظ
+              {loading ? t("common.loading") : t("common.save")}
             </Button>
             <DialogClose asChild>
               <Button
                 variant="outline"
                 className="flex-1 border-border text-muted-foreground hover:bg-background"
               >
-                إلغاء
+                {t("common.cancel")}
               </Button>
             </DialogClose>
           </div>

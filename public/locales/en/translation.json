@@ -663,7 +663,8 @@
       "setPermissions": "Report Access Permissions",
       "reportPedagogical": "Pedagogical Report",
       "reportFinancial": "Financial Report",
-      "reportHealth": "Health Report"
+      "reportHealth": "Health Report",
+      "noUsers":"No users Found"
     },
     "personal": {
       "title": "Personal Settings",

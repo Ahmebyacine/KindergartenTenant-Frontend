@@ -663,7 +663,8 @@
       "setPermissions": "تعيين الصلاحيات",
       "reportPedagogical": "التقارير البيداغوجية",
       "reportFinancial": "التقارير المالية",
-      "reportHealth": "التقارير الصحية"
+      "reportHealth": "التقارير الصحية",
+      "noUsers":"لا يوجد مستخدمين"
     },
     "personal": {
       "title": "الإعدادات الشخصية",

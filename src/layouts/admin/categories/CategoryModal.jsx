@@ -37,6 +37,7 @@ export default function CategoryModal({
   isLimited = false,
 }) {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const form = useForm({
     resolver: zodResolver(categorySchema(t)),
     defaultValues: {
@@ -51,13 +52,18 @@ export default function CategoryModal({
   }, [editingCategory, form]);
 
   const onSubmit = async (data) => {
-    if (editingCategory) {
-      await onUpdateCategory({ ...editingCategory, ...data });
-    } else {
-      await onAddCategory(data);
+    setLoading(true)
+    try {
+      if (editingCategory) {
+        await onUpdateCategory({ ...editingCategory, ...data });
+      } else {
+        await onAddCategory(data);
+      }
+      form.reset();
+      setOpen(false);
+    } finally {
+      setLoading(false);
     }
-    form.reset();
-    setOpen(false);
   };
 
   return (
@@ -134,9 +140,13 @@ export default function CategoryModal({
               type="submit"
               onClick={form.handleSubmit(onSubmit)}
               className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
-              disabled={editingCategory && !form.formState.isDirty}
+              disabled={(editingCategory && !form.formState.isDirty) || loading}
             >
-              {editingCategory ? t("common.update") : t("common.add")}
+              {loading
+                ? t("common.loading")
+                : editingCategory
+                ? t("common.update")
+                : t("common.add")}
             </Button>
             <DialogClose asChild>
               <Button
