@@ -17,9 +17,11 @@ import Loading from "@/pages/common/Loading";
 import { formatDate } from "@/utils/dateFormatter";
 import { getConditionBadge } from "@/utils/getStatusBadges";
 import { t } from "i18next";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function ReportHealthDetails() {
   const { reportId } = useParams();
+  const { user } = useAuth();
 
   const fetchreportsDetails = async () => {
     const response = await api.get(`/health-reports/${reportId}`);
@@ -36,7 +38,7 @@ export default function ReportHealthDetails() {
         {/* Header */}
         <div className="flex flex-col">
           <Link
-            to="/reports?tab=health"
+            to={ user.role === 'teacher' ? "/teacher-reports?tab=health" : "/reports?tab=health" }
             className="font-cairo text-muted-foreground"
           >
             <h1 className="text-2xl flex items-center font-bold text-foreground font-cairo mb-2">
@@ -49,7 +51,7 @@ export default function ReportHealthDetails() {
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
                   <Link
-                    to="/reports"
+                    to={ user.role === 'teacher' ? "/teacher-reports" : "/reports" }
                     className="font-cairo text-muted-foreground"
                   >
                     {t("reports.title")}
@@ -60,7 +62,7 @@ export default function ReportHealthDetails() {
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
                   <Link
-                    to="/reports?tab=health"
+                    to={ user.role === 'teacher' ? "/teacher-reports?tab=health" : "/reports?tab=health" }
                     className="font-cairo text-muted-foreground"
                   >
                     {t("reports.health.title")}

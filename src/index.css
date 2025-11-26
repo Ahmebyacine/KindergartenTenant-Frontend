@@ -148,6 +148,6 @@ textarea {
 
 input[type="email"],
 input[type="password"] {
+  @apply text-left rtl:placeholder-shown:text-right;
   direction: ltr;
-  text-align: left; 
 }

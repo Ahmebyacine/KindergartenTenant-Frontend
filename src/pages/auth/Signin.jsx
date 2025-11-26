@@ -86,7 +86,7 @@ export default function Signin() {
 
           <CardContent>
             {errorKey && (
-              <Alert variant="destructive" className="mb-4 text-right">
+              <Alert variant="destructive" className="mb-4 rtl:text-right">
                 <AlertDescription>
                   {t(`errorApi.${errorKey}`)}
                 </AlertDescription>
@@ -110,7 +110,6 @@ export default function Signin() {
                           placeholder={t("auth.signin.placeholderEmail")}
                           type="email"
                           autoComplete="email"
-                          className="text-right"
                           {...field}
                           disabled={isLoading}
                         />
@@ -130,7 +129,6 @@ export default function Signin() {
                           placeholder={t("auth.signin.placeholderPassword")}
                           type="password"
                           autoComplete="current-password"
-                          className="text-right"
                           {...field}
                           disabled={isLoading}
                         />
