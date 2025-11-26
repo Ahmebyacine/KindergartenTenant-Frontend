@@ -27,9 +27,11 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { t } from "i18next";
 import DetailAmountItem from "../DetailAmountItem";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function ReportsFinancialDetails() {
   const { reportId } = useParams();
+  const { user } = useAuth();
   const [confirming, setConfirming] = useState(false);
 
   const fetchreportsDetails = async () => {
@@ -79,7 +81,7 @@ export default function ReportsFinancialDetails() {
         {/* Header */}
         <div className="flex flex-col">
           <Link
-            to="/reports?tab=financial"
+            to={ user.role === 'teacher' ? "/teacher-reports?tab=financial" : "/reports?tab=financial" }
             className="font-cairo text-muted-foreground"
           >
             <h1 className="text-2xl flex items-center font-bold text-foreground font-cairo mb-2">
@@ -92,7 +94,7 @@ export default function ReportsFinancialDetails() {
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
                   <Link
-                    to="/reports"
+                    to={ user.role === 'teacher' ? "/teacher-reports" : "/reports" }
                     className="font-cairo text-muted-foreground"
                   >
                     {t("reports.title")}
@@ -103,7 +105,7 @@ export default function ReportsFinancialDetails() {
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
                   <Link
-                    to="/reports?tab=financial"
+                    to={ user.role === 'teacher' ? "/teacher-reports?tab=financial" : "/reports?tab=financial" }
                     className="font-cairo text-muted-foreground"
                   >
                     {t("reports.financial.title")}

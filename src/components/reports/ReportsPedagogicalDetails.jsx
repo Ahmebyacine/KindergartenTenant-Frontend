@@ -16,10 +16,11 @@ import DetailItem from "../DetailItem";
 import { formatDate } from "@/utils/dateFormatter";
 import { getOverallBadge } from "@/utils/getStatusBadges";
 import { t } from "i18next";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function ReportsPedagogicalDetails() {
   const { reportId } = useParams();
-
+  const { user } = useAuth();
   const fetchreportsDetails = async () => {
     const response = await api.get(`/pedagogical-reports/${reportId}`);
     return response.data;
@@ -27,7 +28,7 @@ export default function ReportsPedagogicalDetails() {
 
   const { data: reportDetails, loading } = useFetch(fetchreportsDetails);
 
-  if (loading) return <Loading sidebar={false}/>;
+  if (loading) return <Loading sidebar={false}/> ;
 
   return (
     <div className="bg-background p-6 font-cairo">
@@ -35,7 +36,7 @@ export default function ReportsPedagogicalDetails() {
         {/* Header */}
         <div className="flex flex-col">
           <Link
-            to="/reports?tab=pedagogical"
+            to={ user.role === 'teacher' ? "/teacher-reports?tab=pedagogical" : "/reports?tab=pedagogical" }
             className="font-cairo text-muted-foreground"
           >
             <h1 className="text-2xl flex items-center font-bold text-foreground font-cairo mb-2">
@@ -48,7 +49,7 @@ export default function ReportsPedagogicalDetails() {
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
                   <Link
-                    to="/reports"
+                    to={ user.role === 'teacher' ? "/teacher-reports" : "/reports" }
                     className="font-cairo text-muted-foreground"
                   >
                     {t("reports.title")}
@@ -59,7 +60,7 @@ export default function ReportsPedagogicalDetails() {
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
                   <Link
-                    to="/reports?tab=pedagogical"
+                    to={ user.role === 'teacher' ? "/teacher-reports?tab=pedagogical" : "/reports?tab=pedagogical" }
                     className="font-cairo text-muted-foreground"
                   >
                     {t("reports.pedagogical.title")}
