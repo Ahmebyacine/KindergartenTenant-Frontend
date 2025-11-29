@@ -140,7 +140,15 @@
     "type": "Type",
     "status": "Statut",
     "failedFetchReports": "Échec du chargement des rapports",
-    "noRecentReports": "Aucun rapport récent"
+    "noRecentReports": "Aucun rapport récent",
+    "subscription": {
+    "current": "Abonnement actuel",
+    "trial": "Essai",
+    "paid": "Payant",
+    "upgrade": "Passer au plan payé",
+    "expiresIn": "Votre abonnement expire dans {{days}} jours.",
+    "upgradeNow": "Mettre à niveau"
+  }
   },
   "dashboardSupervisor": {
     "monthlyReceived": "Total des montants reçus ce mois-ci",
