@@ -140,7 +140,15 @@
     "type": "النوع",
     "status": "الحالة",
     "failedFetchReports": "فشل تحميل التقارير",
-    "noRecentReports": "لا توجد تقارير حديثة"
+    "noRecentReports": "لا توجد تقارير حديثة",
+    "subscription": {
+    "current": "الاشتراك الحالي",
+    "trial": "تجريبي",
+    "paid": "مدفوع",
+    "upgrade": "الترقية إلى الخطة المدفوعة",
+    "expiresIn": "تنتهي صلاحية اشتراكك خلال {{days}} يومًا.",
+    "upgradeNow": "ترقية الآن"
+  }
   },
   "dashboardSupervisor": {
     "monthlyReceived": "إجمالي المبالغ المستلمة هذا الشهر",

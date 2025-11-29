@@ -140,7 +140,15 @@
     "type": "Type",
     "status": "Status",
     "failedFetchReports": "Failed to fetch reports",
-    "noRecentReports": "No recent reports"
+    "noRecentReports": "No recent reports",
+    "subscription": {
+    "current": "Current Subscription",
+    "trial": "Trial",
+    "paid": "Paid",
+    "upgrade": "Upgrade to paid plan",
+    "expiresIn": "Your subscription expires in {{days}} days.",
+    "upgradeNow": "Upgrade Now"
+  }
   },
   "dashboardSupervisor": {
     "monthlyReceived": "Total Amount Received This Month",

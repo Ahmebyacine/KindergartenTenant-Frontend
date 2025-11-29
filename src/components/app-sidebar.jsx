@@ -28,6 +28,7 @@ import img from "@/assets/images/avatar.png";
 import logoAr from "@/assets/images/logoSidebarArabic.png";
 import logoLt from "@/assets/images/logoSidebarLatino.png";
 import { t } from "i18next";
+import SubscriptionCard from "@/layouts/admin/SubscriptionCard";
 
 export function AppSidebar() {
   const { user } = useAuth();
@@ -39,11 +40,7 @@ export function AppSidebar() {
     >
       <SidebarHeader className="h-16 px-3 py-3 font-bold transition-all duration-300">
         <img
-          src={
-            i18n.language === "ar"
-              ? logoAr
-              : logoLt
-          }
+          src={i18n.language === "ar" ? logoAr : logoLt}
           alt="Rawdatee Logo"
           className="h-full object-contain group-data-[collapsible=icon]:hidden"
         />
@@ -63,6 +60,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
+        {user && user.role === "admin" && <SubscriptionCard />}
         <SidebarMenu>
           <SidebarMenuItem className={"border-border border-2 rounded-lg"}>
             <DropdownMenu>
