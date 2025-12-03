@@ -14,7 +14,7 @@ export default function SubscriptionCard() {
 
   return (
     <Card
-      className={`p-0 py-3 gap-2 ${
+      className={`group-data-[collapsible=icon]:hidden p-0 py-3 gap-2 ${
         config.status === "trial" ? "bg-secondary/15" : "bg-primary/15"
       }`}
     >
