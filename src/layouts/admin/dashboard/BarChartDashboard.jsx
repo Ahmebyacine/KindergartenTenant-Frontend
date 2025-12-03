@@ -93,7 +93,7 @@ export default function BarChartDashboard() {
           <CardContent className="px-0 overflow-x-auto">
             <ChartContainer
               config={chartConfig}
-              className="h-full w-full min-w-[500px]"
+              className="h-full w-full min-w-[450px]"
             >
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={data}>
