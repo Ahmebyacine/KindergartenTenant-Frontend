@@ -14,6 +14,7 @@ export default function CurrencyStep({ onNext, onPrevious }) {
 
   const currencys = [
     { id: "DZD", name: t("onboarding.currency.dzd"), flag: "DZ" },
+    { id: "LYD", name: t("onboarding.currency.lyd"), flag: "LY" },
     //{ id: "USD", name: t("onboarding.currency.usd"), flag: "US" },
     //{ id: "EUR", name: t("onboarding.currency.eur"), flag: "EU" },
   ];
@@ -38,11 +39,11 @@ export default function CurrencyStep({ onNext, onPrevious }) {
         </h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 md:px-25 gap-6 mb-16">
         {currencys.map((currency) => (
           <Card
             key={currency.id}
-            className={`cursor-pointer transition-all duration-200 hover:shadow-md border-2 rounded-2xl col-start-2 col-end-3 ${
+            className={`cursor-pointer transition-all duration-200 hover:shadow-md border-2 rounded-2xl  ${
               //if add other languges delete  col-start-2 col-end-3
               selectedCurrency === currency.id
                 ? "border-primary bg-primary/5"

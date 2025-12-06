@@ -11,13 +11,14 @@ import {
 } from "@/components/ui/table";
 import useFetch from "@/hooks/useFetch";
 import api from "@/api";
-import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import { formatDateMonth } from "@/utils/dateFormatter";
 import { Document } from "iconsax-react";
 import { Input } from "@/components/ui/input";
 import { t } from "i18next";
+import { useCurrency } from "@/hooks/useCurrency";
 
 export default function EmployeeJournalTable() {
+  const { format } = useCurrency();
   const [monthFilter, setMonthFilter] = useState(new Date().toISOString().slice(0, 7));
   const fetchFinancialPerformance = async (filters = {}) => {
     const params = new URLSearchParams();
@@ -83,7 +84,7 @@ export default function EmployeeJournalTable() {
                   {row?.count}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatCurrencyDZD(row?.totalAmount)}
+                  {format(row?.totalAmount)}
                 </TableCell>
               </TableRow>
             ))}

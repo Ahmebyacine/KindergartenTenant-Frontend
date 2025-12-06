@@ -24,7 +24,6 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import ReportsFinancialModal from "@/components/reports/ReportsFinancialModal";
 import api from "@/api";
-import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import { formatDateMonth } from "@/utils/dateFormatter";
 import LoadingTable from "@/components/LoadingTable";
 import ReportsFilter from "@/components/reports/ReportsFilter";
@@ -32,8 +31,10 @@ import usePaginatedFetch from "@/hooks/usePaginatedFetch";
 import getPageNumbers from "@/utils/getPageNumbers";
 import { t } from "i18next";
 import ErrorPage from "@/pages/common/ErrorPage";
+import { useCurrency } from "@/hooks/useCurrency";
 
 export default function ReportsFinancialTable({ classes, students }) {
+  const { format } = useCurrency();
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const debounceTimeout = useRef(null);
@@ -189,7 +190,7 @@ export default function ReportsFinancialTable({ classes, students }) {
                   {formatDateMonth(report.month)}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatCurrencyDZD(report.amount)}
+                  {format(report.amount)}
                 </TableCell>
                 <TableCell className="py-3">
                   {getStatusPayBadge(report.status)}

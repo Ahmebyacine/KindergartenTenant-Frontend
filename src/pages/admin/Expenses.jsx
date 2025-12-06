@@ -15,7 +15,6 @@ import {
   MoneyArchive,
   SearchNormal1,
 } from "iconsax-react";
-import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import ExpensesTable from "@/layouts/admin/expenses/ExpensesTable";
 import StatCard from "@/components/StatCard";
 import api from "@/api";
@@ -29,8 +28,10 @@ import usePaginatedFetch from "@/hooks/usePaginatedFetch";
 import getPageNumbers from "@/utils/getPageNumbers";
 import ErrorPage from "../common/ErrorPage";
 import { t } from "i18next";
+import { useCurrency } from "@/hooks/useCurrency";
 
 export default function Expenses() {
+  const { format } = useCurrency();
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const debounceTimeout = useRef(null);
@@ -148,7 +149,7 @@ export default function Expenses() {
   const stats = [
     {
       title: t("expenses.stats.month.title"),
-      value: formatCurrencyDZD(expensesStatistics?.totalMonth || 0),
+      value: format(expensesStatistics?.totalMonth || 0),
       subLabel: t("expenses.stats.month.subLabel", {
         month: t(getMonthNameByNumber(expensesStatistics?.month || 0)),
       }),
@@ -158,7 +159,7 @@ export default function Expenses() {
     },
     {
       title: t("expenses.stats.year.title"),
-      value: formatCurrencyDZD(expensesStatistics?.totalYear || 0),
+      value: format(expensesStatistics?.totalYear || 0),
       subLabel: t("expenses.stats.year.subLabel"),
       icon: DollarSquare,
       iconColor: "#1447E6",
@@ -178,7 +179,7 @@ export default function Expenses() {
     },
     {
       title: t("expenses.stats.average.title"),
-      value: formatCurrencyDZD(
+      value: format(
         Math.round(
           expensesStatistics?.totalMonth / expensesStatistics?.operationCount
         ) || 0

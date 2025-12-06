@@ -1,7 +1,6 @@
 import { Chart2, Coin, Money2, People } from "iconsax-react";
 import BarChartDashboard from "@/layouts/admin/dashboard/BarChartDashboard";
 import RecentReportsTable from "@/components/dashboard/RecentReportsTable";
-import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import { Link } from "react-router-dom";
 import StatCard from "@/components/StatCard";
 import LineChartAttendnce from "@/components/dashboard/LineChartAttendnce";
@@ -9,8 +8,10 @@ import api from "@/api";
 import useFetch from "@/hooks/useFetch";
 import { getTextNumberChild } from "@/utils/getTextNumberChild";
 import { t } from "i18next";
+import { useCurrency } from "@/hooks/useCurrency";
 
 export default function Dashboard() {
+  const { format } = useCurrency();
 
   const fetchSummaryAdmin = async () => {
     const res = await api.get(`/statistics/summary/admin`);
@@ -22,7 +23,7 @@ export default function Dashboard() {
   const stats = [
     {
       title: t("dashboard.monthlyIncome"),
-      value: formatCurrencyDZD(data?.totalIncome || 0),
+      value: format(data?.totalIncome || 0),
       icon: Coin,
       iconColor: "#00C951",
       bgColor: "bg-[#B9F8CF]",
@@ -30,7 +31,7 @@ export default function Dashboard() {
     },
     {
       title: t("dashboard.monthlyExpenses"),
-      value: formatCurrencyDZD(data?.totalExpenses || 0),
+      value: format(data?.totalExpenses || 0),
       icon: Money2,
       iconColor: "#FB2C36",
       bgColor: "bg-[#FFC9C9]",

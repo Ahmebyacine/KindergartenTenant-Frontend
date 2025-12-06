@@ -6,12 +6,13 @@ import BarChartRecivedMoney from "@/components/dashboard/BarChartRecivedMoney";
 import LineChartAttendnce from "@/components/dashboard/LineChartAttendnce";
 import api from "@/api";
 import useFetch from "@/hooks/useFetch";
-import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import { getTextNumberChild } from "@/utils/getTextNumberChild";
 import { t } from "i18next";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCurrency } from "@/hooks/useCurrency";
 
 export default function DashboardTeacher() {
+  const { format } = useCurrency();
   const { user } = useAuth();
 
   const fetchSummaryAdmin = async () => {
@@ -39,7 +40,7 @@ export default function DashboardTeacher() {
     },
     user?.permissions?.reportFinancial !== false && {
       title: t("teacherDashboard.receivedMoney"),
-      value: formatCurrencyDZD(data?.totalIncome || 0),
+      value: format(data?.totalIncome || 0),
       icon: CardReceive,
       iconColor: "#10B981",
       bgColor: "bg-[#DCFCE7]",

@@ -7,11 +7,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Document } from "iconsax-react";
-import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import LoadingTable from "@/components/LoadingTable";
 import { t } from "i18next";
+import { useCurrency } from "@/hooks/useCurrency";
 
 export default function IncomesTable({ incomes, loading }) {
+  const { format } = useCurrency();
   return (
     <>
       <Table>
@@ -59,10 +60,10 @@ export default function IncomesTable({ incomes, loading }) {
                   {row?.totalInvoices}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatCurrencyDZD(row?.totalAmount)}
+                  {format(row?.totalAmount)}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatCurrencyDZD(row?.averageInvoice)}
+                  {format(row?.averageInvoice)}
                 </TableCell>
                 <TableCell className="py-3">{row?.collectionRate}</TableCell>
                 <TableCell className="py-3">

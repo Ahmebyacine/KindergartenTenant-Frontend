@@ -1,6 +1,5 @@
 import { Chart2, Coin, Danger, People } from "iconsax-react";
 import RecentReportsTable from "@/components/dashboard/RecentReportsTable";
-import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import { Link } from "react-router-dom";
 import BarChartRecivedMoney from "@/components/dashboard/BarChartRecivedMoney";
 import LineChartAttendnce from "@/components/dashboard/LineChartAttendnce";
@@ -10,8 +9,10 @@ import useFetch from "@/hooks/useFetch";
 import { getTextNumberChild } from "@/utils/getTextNumberChild";
 import { t } from "i18next";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCurrency } from "@/hooks/useCurrency";
 
 export default function DashboardSupervisor() {
+  const { format } = useCurrency();
   const { user } = useAuth();
 
   const fetchSummarySupervisor = async () => {
@@ -24,7 +25,7 @@ export default function DashboardSupervisor() {
   const stats = [
     user?.permissions?.reportFinancial !== false && {
       title: t("dashboardSupervisor.monthlyReceived"),
-      value: formatCurrencyDZD(data?.totalIncome || 0),
+      value: format(data?.totalIncome || 0),
       icon: Coin,
       iconColor: "#00C951",
       bgColor: "bg-[#B9F8CF]",

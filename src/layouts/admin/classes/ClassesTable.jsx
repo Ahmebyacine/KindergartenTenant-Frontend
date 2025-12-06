@@ -10,9 +10,9 @@ import { getClassStatusBadge } from "@/utils/getStatusBadges";
 import { FileTextIcon } from "lucide-react";
 import LoadingTable from "@/components/LoadingTable";
 import ClassesModal from "./ClassesModal";
-import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import DeleteAlertDialog from "@/components/DeleteAlertDialog";
 import { t } from "i18next";
+import { useCurrency } from "@/hooks/useCurrency";
 
 export default function ClassesTable({
   classes,
@@ -21,6 +21,7 @@ export default function ClassesTable({
   onUpdateClass,
   onDeleteClass,
 }) {
+  const { format } = useCurrency();
   return (
     <Table>
       <TableHeader>
@@ -63,7 +64,7 @@ export default function ClassesTable({
                 {classItem.studentCount}
               </TableCell>
               <TableCell className="text-foreground py-3">
-                { classItem.price ? formatCurrencyDZD(classItem.price) : "-"}
+                { classItem.price ? format(classItem.price) : "-"}
               </TableCell>
               <TableCell className="text-foreground py-3">
                 {getClassStatusBadge(

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import api from "@/api";
 
@@ -31,6 +31,7 @@ export default function Signin() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [errorKey, setErrorKey] = useState(null);
+  const [show, setShow] = useState(false);
 
   const signInSchema = z.object({
     email: z
@@ -58,7 +59,8 @@ export default function Signin() {
       navigate("/");
     } catch (error) {
       const key =
-        error.response?.data?.message && t(`errorApi.${error.response.data.message}`, "")
+        error.response?.data?.message &&
+        t(`errorApi.${error.response.data.message}`, "")
           ? error.response.data.message
           : "defaultError";
       setErrorKey(key);
@@ -87,9 +89,7 @@ export default function Signin() {
           <CardContent>
             {errorKey && (
               <Alert variant="destructive" className="mb-4 rtl:text-right">
-                <AlertDescription>
-                  {t(`errorApi.${errorKey}`)}
-                </AlertDescription>
+                <AlertDescription>{t(`errorApi.${errorKey}`)}</AlertDescription>
               </Alert>
             )}
 
@@ -125,13 +125,28 @@ export default function Signin() {
                     <FormItem>
                       <FormLabel>{t("auth.signin.password")}</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder={t("auth.signin.placeholderPassword")}
-                          type="password"
-                          autoComplete="current-password"
-                          {...field}
-                          disabled={isLoading}
-                        />
+                        <div className="relative">
+                          <Input
+                            placeholder={t("auth.signin.placeholderPassword")}
+                            type={show ? "text" : "password"}
+                            autoComplete="current-password"
+                            {...field}
+                            disabled={isLoading}
+                            className="pr-10"
+                          />
+                          <button
+                            type="button"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 p-1"
+                            onClick={() => setShow(!show)}
+                            tabIndex={-1}
+                          >
+                            {show ? (
+                              <EyeOff className="h-4 w-4 text-muted-foreground" />
+                            ) : (
+                              <Eye className="h-4 w-4 text-muted-foreground" />
+                            )}
+                          </button>
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>

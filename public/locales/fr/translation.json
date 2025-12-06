@@ -30,7 +30,9 @@
     "delete_item": "Supprimer l'élément",
     "delete_item_confirmation": "Êtes-vous sûr de vouloir supprimer l'élément sélectionné ? Cette action est irréversible.",
     "start": "Commencer maintenant",
-    "permissions": "Permissions"
+    "permissions": "Permissions",
+    "step": "Étape",
+    "of": "de"
   },
   "errorApi": {
     "Unauthorized": "Non autorisé",
@@ -114,7 +116,8 @@
     "You do not have permission to view health reports": "Vous n'avez pas l'autorisation de consulter les rapports de santé",
     "You do not have permission to view this reports": "Vous n'avez pas l'autorisation de consulter ces rapports",
     "You have already changed your default password": "Vous avez déjà changé votre mot de passe par défaut",
-    "querySrv ETIMEOUT _mongodb._tcp.projecttest.qucpzkh.mongodb.net": "Une erreur de connexion s'est produite, veuillez réessayer plus tard."
+    "querySrv ETIMEOUT _mongodb._tcp.projecttest.qucpzkh.mongodb.net": "Une erreur de connexion s'est produite, veuillez réessayer plus tard.",
+    "Invalid phone number": "Numéro de téléphone invalide"
   },
   "dashboard": {
     "monthlyIncome": "Revenus mensuels",
@@ -337,6 +340,10 @@
     "primaryContact": "Contact principal (numéro de compte de l'application)",
     "secondaryContact": "Contact secondaire",
     "thirdContact": "Troisième contact",
+    "basicInformation":"Informations de base",
+    "healthInformation":"Informations de santé",
+    "parentInformation":"Informations sur le parent",
+    "photoReview":"Revue de la photo",
     "printCard": {
       "title": "Imprimer les cartes",
       "description": "Imprimer les cartes des enfants",
@@ -855,7 +862,8 @@
     },
     "currency": {
       "title": "Quelle devise utilisez-vous dans votre maternelle ?",
-      "dzd": "Dinar algérien (DZD)"
+      "dzd": "Dinar algérien (DZD)",
+      "lyd": "Dinar libyen (LYD)"
     },
     "language": {
       "title": "Quelle langue préférez-vous utiliser dans votre maternelle ?"
