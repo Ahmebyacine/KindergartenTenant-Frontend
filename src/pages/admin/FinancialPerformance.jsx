@@ -4,7 +4,6 @@ import {
   Chart2,
   DollarSquare,
 } from "iconsax-react";
-import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import FinancialJournalChart from "@/layouts/admin/financialPerformance/FinancialJournalChart";
 import FinancialJournalTable from "@/layouts/admin/financialPerformance/FInancialJournalTable";
 import EmployeeJournalTable from "@/layouts/admin/financialPerformance/EmployeeJournalTable";
@@ -14,8 +13,10 @@ import { getMonthNameByNumber } from "@/utils/getMonthNameByNumber";
 import useFetch from "@/hooks/useFetch";
 import ErrorPage from "../common/ErrorPage";
 import { t } from "i18next";
+import { useCurrency } from "@/hooks/useCurrency";
 
 export default function FinancialPerformance() {
+  const { format } = useCurrency();
   const fetchFinancialPerformance = async () => {
     const res = await api.get(`/statistics/financial-performance`);
     return res.data.map((item) => ({
@@ -43,7 +44,7 @@ export default function FinancialPerformance() {
   const statsData = [
   {
     title: t("financialPerformance.stats.income.title"),
-    value: formatCurrencyDZD(totals?.income || 0),
+    value: format(totals?.income || 0),
     subLabel: t("financialPerformance.stats.income.subLabel"),
     icon: CardReceive,
     bgColor: "bg-[#DCFCE7]",
@@ -51,7 +52,7 @@ export default function FinancialPerformance() {
   },
   {
     title: t("financialPerformance.stats.expenses.title"),
-    value: formatCurrencyDZD(totals?.expenses || 0),
+    value: format(totals?.expenses || 0),
     subLabel: t("financialPerformance.stats.expenses.subLabel"),
     icon: CardSend,
     bgColor: "bg-[#FFE2E2]",
@@ -59,7 +60,7 @@ export default function FinancialPerformance() {
   },
   {
     title: t("financialPerformance.stats.profit.title"),
-    value: formatCurrencyDZD(profit),
+    value: format(profit),
     subLabel: t("financialPerformance.stats.profit.subLabel"),
     icon: DollarSquare,
     bgColor: "bg-[#FEF3C6]",

@@ -30,7 +30,9 @@
     "delete_item": "حذف العنصر",
     "delete_item_confirmation": "هل أنت متأكد من حذف العنصر المحدد؟ لا يمكن التراجع عن هذا الإجراء.",
     "start": " ابدأ الآن",
-    "permissions": "الصلاحيات"
+    "permissions": "الصلاحيات",
+    "step": "الخطوة",
+    "of": "من"
   },
   "errorApi": {
     "Unauthorized": "غير مصرح",
@@ -114,7 +116,8 @@
     "You do not have permission to view health reports": "ليس لديك إذن لعرض التقارير الصحية",
     "You do not have permission to view this reports": "ليس لديك إذن لعرض هذه التقارير",
     "You have already changed your default password": "لقد قمت بالفعل بتغيير كلمة المرور الافتراضية الخاصة بك",
-    "querySrv ETIMEOUT _mongodb._tcp.projecttest.qucpzkh.mongodb.net":"حدث خطأ في الاتصال  يرجى المحاولة مرة أخرى لاحقًا."
+    "querySrv ETIMEOUT _mongodb._tcp.projecttest.qucpzkh.mongodb.net":"حدث خطأ في الاتصال  يرجى المحاولة مرة أخرى لاحقًا.",
+    "Invalid phone number": "رقم هاتف غير صالح"
   },
   "dashboard": {
     "monthlyIncome": "الدخل الشهري",
@@ -337,6 +340,10 @@
     "thirdContact": "جهة الاتصال الثالثة",
     "studentPhoto":"صورة الطفل",
     "discount": "تخفيض",
+    "basicInformation":"معلومات أساسية",
+    "healthInformation":"معلومات صحية",
+    "parentInformation":"معلومات ولي الأمر",
+    "photoReview":"مراجعة الصورة",
     "printCard": {
       "title": "طباعة البطاقات",
       "description": "طباعة بطاقات الأطفال",
@@ -855,7 +862,8 @@
     },
     "currency": {
       "title": "ما هي العملة التي تستخدمها في الروضة الخاصة بك؟",
-      "dzd": "دينار جزائري (DZD)"
+      "dzd": "دينار جزائري (DZD)",
+      "lyd": "دينار ليبي (LYD)"
     },
     "language": {
       "title": "ما هي اللغة التي تفضل استخدامها في الروضة الخاصة بك؟"

@@ -1,8 +1,8 @@
 import { Button } from "./ui/button";
 import { useState } from "react";
-import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import { Input } from "./ui/input";
 import { Check, Edit } from "lucide-react";
+import { useCurrency } from "@/hooks/useCurrency";
 
 export default function DetailAmountItem({
   label,
@@ -11,6 +11,7 @@ export default function DetailAmountItem({
   editable = false,
 }) {
   const [isEditing, setIsEditing] = useState(false);
+  const { format } = useCurrency();
   return (
     <div className="flex py-1">
       <span className="text-foreground w-1/2 font-cairo ml-5 line-clamp-1">
@@ -36,7 +37,7 @@ export default function DetailAmountItem({
               </div>
             ) : (
               <>
-                {formatCurrencyDZD(value)}
+                {format(value)}
                 <Button
                   size="sm"
                   variant="ghost"
@@ -48,7 +49,7 @@ export default function DetailAmountItem({
             )}
           </>
         ) : (
-          formatCurrencyDZD(value)
+          format(value)
         )}
       </span>
     </div>

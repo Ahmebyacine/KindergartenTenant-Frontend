@@ -13,6 +13,7 @@ import { useState } from "react";
 import { t } from "i18next";
 
 export default function ReportsFilter({ classes, onApplyFilters }) {
+  const [open, setOpen] = useState(false);
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("");
 
@@ -20,11 +21,12 @@ export default function ReportsFilter({ classes, onApplyFilters }) {
     setSelectedMonth("");
     setSelectedClass("");
     onApplyFilters("", "");
+    setOpen(false);
   };
 
   return (
     <div className="bg-background p-2 md:p-4 flex items-center justify-center">
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button
             variant="outline"
@@ -42,7 +44,9 @@ export default function ReportsFilter({ classes, onApplyFilters }) {
           <div className={`p-6 pt-0 space-y-6 rtl:text-right ltr:text-left`}>
             {/* Filter by classes section */}
             <div>
-              <h3 className="text-lg font-semibold mb-3">{t("filter.byClass")}</h3>
+              <h3 className="text-lg font-semibold mb-3">
+                {t("filter.byClass")}
+              </h3>
               <div className="flex flex-wrap gap-2 justify-start">
                 {classes?.map((classItem) => (
                   <Button
@@ -66,7 +70,9 @@ export default function ReportsFilter({ classes, onApplyFilters }) {
             </div>
             {/* Filter by month section */}
             <div>
-              <h3 className="text-lg font-semibold mb-3">{t("filter.byMonth")}</h3>
+              <h3 className="text-lg font-semibold mb-3">
+                {t("filter.byMonth")}
+              </h3>
               <div className="flex flex-wrap gap-2 justify-start">
                 {months.map((month) => (
                   <Button
@@ -102,7 +108,10 @@ export default function ReportsFilter({ classes, onApplyFilters }) {
             </Button>
             <Button
               className="bg-primary rounded-lg px-6 py-3 hover:bg-primary/90"
-              onClick={() => onApplyFilters(selectedClass, selectedMonth)}
+              onClick={() => {
+                onApplyFilters(selectedClass, selectedMonth);
+                setOpen(false);
+              }}
             >
               {t("filter.applyFilters")}
             </Button>

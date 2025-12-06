@@ -1,5 +1,4 @@
 import { Archive, CardReceive, CardRemove, Chart2 } from "iconsax-react";
-import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import IncomesTable from "@/layouts/admin/incomes/IncomesTable";
 import StatCard from "@/components/StatCard";
 import api from "@/api";
@@ -7,8 +6,10 @@ import useFetch from "@/hooks/useFetch";
 import { getMonthNameByNumber } from "@/utils/getMonthNameByNumber";
 import ErrorPage from "../common/ErrorPage";
 import { t } from "i18next";
+import { useCurrency } from "@/hooks/useCurrency";
 
 export default function Incomes() {
+  const { format } = useCurrency();
   const fetchIncome = async () => {
     const res = await api.get(`/financial-reports/summary`);
     return res.data.map((item) => ({
@@ -44,7 +45,7 @@ export default function Incomes() {
   const stats = [
     {
       title: t("income.stats.income.title"),
-      value: formatCurrencyDZD(totals?.paidAmount || 0),
+      value: format(totals?.paidAmount || 0),
       subLabel: t("income.stats.income.subLabel"),
       icon: CardReceive,
       bgColor: "bg-[#DCFCE7]",
@@ -52,7 +53,7 @@ export default function Incomes() {
     },
     {
       title: t("income.stats.unpaidInvoices.title"),
-      value: formatCurrencyDZD(totals?.unpaidAmount || 0),
+      value: format(totals?.unpaidAmount || 0),
       subLabel: t("income.stats.unpaidInvoices.subLabel"),
       icon: CardRemove,
       bgColor: "bg-[#FFE2E2]",

@@ -8,12 +8,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatCurrencyDZD } from "@/utils/currencyFormatter";
+import { useCurrency } from "@/hooks/useCurrency";
 import { t } from "i18next";
 import { Document } from "iconsax-react";
 import React from "react";
 
 export default function FinancialJournalTable({ data, loading }) {
+  const { format } = useCurrency();
   return (
     <Card className="shadow-sm">
       <Table>
@@ -57,13 +58,13 @@ export default function FinancialJournalTable({ data, loading }) {
                   {row?.year}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatCurrencyDZD(row?.income)}
+                  {format(row?.income)}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatCurrencyDZD(row?.expenses)}
+                  {format(row?.expenses)}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {formatCurrencyDZD(row?.income - row?.expenses)}
+                  {format(row?.income - row?.expenses)}
                 </TableCell>
                 <TableCell className="py-3">
                   {row?.income && row?.income !== 0

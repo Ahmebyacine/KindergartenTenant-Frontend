@@ -9,10 +9,11 @@ import {
 import { getClassStatusBadge } from "@/utils/getStatusBadges";
 import { FileTextIcon } from "lucide-react";
 import LoadingTable from "@/components/LoadingTable";
-import { formatCurrencyDZD } from "@/utils/currencyFormatter";
 import { t } from "i18next";
+import { useCurrency } from "@/hooks/useCurrency";
 
 export default function ClassesTable({ classes, loading }) {
+  const { format } = useCurrency();
   return (
     <>
       <Table>
@@ -53,7 +54,7 @@ export default function ClassesTable({ classes, loading }) {
                   {classItem.studentCount}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
-                  {classItem.price ? formatCurrencyDZD(classItem.price) : "-"}
+                  {classItem.price ? format(classItem.price) : "-"}
                 </TableCell>
                 <TableCell className="text-foreground py-3">
                   {getClassStatusBadge(classItem.studentsCount)}

@@ -62,13 +62,6 @@ const studentSchema = (t) =>
     image: z.any().optional(),
   });
 
-const STEPS = [
-  { id: 1, title: "Basic Information" },
-  { id: 2, title: "Health Information" },
-  { id: 3, title: "Parent Information" },
-  { id: 4, title: "Photo & Review" },
-];
-
 export default function StudentsModal({
   onAddStudent,
   onUpdateStudent,
@@ -79,6 +72,13 @@ export default function StudentsModal({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+
+  const STEPS = [
+    { id: 1, title: t("students.basicInformation") },
+    { id: 2, title: t("students.healthInformation") },
+    { id: 3, title: t("students.parentInformation") },
+    { id: 4, title: t("students.photoReview") },
+  ];
 
   const form = useForm({
     resolver: zodResolver(studentSchema(t)),
@@ -127,47 +127,50 @@ export default function StudentsModal({
 
   // Reset form when editing student changes
   useEffect(() => {
-    form.reset({
-      firstName: editingStudent?.student?.firstName || "",
-      lastName: editingStudent?.student?.lastName || "",
-      birthDate: editingStudent?.student?.birthDate?.split("T")[0] || "",
-      class: editingStudent?.class?._id || "",
-      bloodGroup: editingStudent?.student?.bloodGroup || "",
-      gender: editingStudent?.student?.gender || "male",
-      adress: editingStudent?.student?.adress || "",
-      healthStatus: editingStudent?.student?.healthStatus || "good",
-      illnessOrAllergy: editingStudent?.student?.illnessOrAllergy || "",
-      takesMedicineRegularly:
-        editingStudent?.student?.takesMedicineRegularly || false,
-      medicineDetails: editingStudent?.student?.medicineDetails || "",
-      parents: {
-        father: {
-          name: editingStudent?.student?.parents?.father?.name || "",
-          profession:
-            editingStudent?.student?.parents?.father?.profession || "",
+    form.reset(
+      {
+        firstName: editingStudent?.student?.firstName || "",
+        lastName: editingStudent?.student?.lastName || "",
+        birthDate: editingStudent?.student?.birthDate?.split("T")[0] || "",
+        class: editingStudent?.class?._id || "",
+        bloodGroup: editingStudent?.student?.bloodGroup || "",
+        gender: editingStudent?.student?.gender || "male",
+        adress: editingStudent?.student?.adress || "",
+        healthStatus: editingStudent?.student?.healthStatus || "good",
+        illnessOrAllergy: editingStudent?.student?.illnessOrAllergy || "",
+        takesMedicineRegularly:
+          editingStudent?.student?.takesMedicineRegularly || false,
+        medicineDetails: editingStudent?.student?.medicineDetails || "",
+        parents: {
+          father: {
+            name: editingStudent?.student?.parents?.father?.name || "",
+            profession:
+              editingStudent?.student?.parents?.father?.profession || "",
+          },
+          mother: {
+            name: editingStudent?.student?.parents?.mother?.name || "",
+            profession:
+              editingStudent?.student?.parents?.mother?.profession || "",
+          },
+          guardian: {
+            relation:
+              editingStudent?.student?.parents?.guardian?.relation || "father",
+            name: editingStudent?.student?.parents?.guardian?.name || "",
+          },
+          email: editingStudent?.student?.parents?.email || "",
+          contact: editingStudent?.student?.parents?.contact || "",
+          secondaryContact:
+            editingStudent?.student?.parents?.secondaryContact || "",
+          thirdContact: editingStudent?.student?.parents?.thirdContact || "",
         },
-        mother: {
-          name: editingStudent?.student?.parents?.mother?.name || "",
-          profession:
-            editingStudent?.student?.parents?.mother?.profession || "",
-        },
-        guardian: {
-          relation:
-            editingStudent?.student?.parents?.guardian?.relation || "father",
-          name: editingStudent?.student?.parents?.guardian?.name || "",
-        },
-        email: editingStudent?.student?.parents?.email || "",
-        contact: editingStudent?.student?.parents?.contact || "",
-        secondaryContact:
-          editingStudent?.student?.parents?.secondaryContact || "",
-        thirdContact: editingStudent?.student?.parents?.thirdContact || "",
+        discount:
+          typeof editingStudent?.discount === "number"
+            ? editingStudent.discount
+            : 0,
+        image: editingStudent?.student?.image || null,
       },
-      discount:
-        typeof editingStudent?.discount === "number"
-          ? editingStudent.discount
-          : 0,
-      image: editingStudent?.student?.image || null,
-    });
+      { keepDefaultValues: true }
+    );
   }, [editingStudent, form]);
 
   const nextStep = () => {
@@ -351,7 +354,7 @@ export default function StudentsModal({
 
           <div className="text-center mt-2">
             <p className="text-sm text-muted-foreground">
-              Step {currentStep} of {STEPS.length}:{" "}
+              {t("common.step")} {currentStep} {t("common.of")} {STEPS.length}:{" "}
               {STEPS[currentStep - 1].title}
             </p>
           </div>

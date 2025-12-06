@@ -30,7 +30,9 @@
     "delete_item": "Delete Item",
     "delete_item_confirmation": "Are you sure you want to delete the selected item? This action cannot be undone.",
     "start": "Start Now",
-    "permissions": "Permissions"
+    "permissions": "Permissions",
+    "step": "Step",
+    "of": "of"
   },
   "errorApi": {
     "Unauthorized": "Unauthorized",
@@ -114,7 +116,8 @@
     "You do not have permission to view health reports": "You do not have permission to view health reports",
     "You do not have permission to view this reports": "You do not have permission to view this reports",
     "You have already changed your default password": "You have already changed your default password",
-    "querySrv ETIMEOUT _mongodb._tcp.projecttest.qucpzkh.mongodb.net": "Connection error occurred, please try again later."
+    "querySrv ETIMEOUT _mongodb._tcp.projecttest.qucpzkh.mongodb.net": "Connection error occurred, please try again later.",
+    "Invalid phone number": "Invalid phone number"
   },
   "dashboard": {
     "monthlyIncome": "Monthly Income",
@@ -142,13 +145,13 @@
     "failedFetchReports": "Failed to fetch reports",
     "noRecentReports": "No recent reports",
     "subscription": {
-    "current": "Current Subscription",
-    "trial": "Trial",
-    "paid": "Paid",
-    "upgrade": "Upgrade to paid plan",
-    "expiresIn": "Your subscription expires in {{days}} days.",
-    "upgradeNow": "Upgrade Now"
-  }
+      "current": "Current Subscription",
+      "trial": "Trial",
+      "paid": "Paid",
+      "upgrade": "Upgrade to paid plan",
+      "expiresIn": "Your subscription expires in {{days}} days.",
+      "upgradeNow": "Upgrade Now"
+    }
   },
   "dashboardSupervisor": {
     "monthlyReceived": "Total Amount Received This Month",
@@ -337,6 +340,10 @@
     "primaryContact": "Primary contact (App account number)",
     "secondaryContact": "Secondary contact",
     "thirdContact": "Third contact",
+    "basicInformation": "Basic Information",
+    "healthInformation": "Health Information",
+    "parentInformation": "Parent Information",
+    "photoReview": "Photo Review",
     "printCard": {
       "title": "Print Cards",
       "description": "Print children's cards",
@@ -672,7 +679,7 @@
       "reportPedagogical": "Pedagogical Report",
       "reportFinancial": "Financial Report",
       "reportHealth": "Health Report",
-      "noUsers":"No users Found"
+      "noUsers": "No users Found"
     },
     "personal": {
       "title": "Personal Settings",
@@ -855,7 +862,8 @@
     },
     "currency": {
       "title": "What currency do you use in your kindergarten?",
-      "dzd": "Algerian Dinar (DZD)"
+      "dzd": "Algerian Dinar (DZD)",
+      "lyd": "Libyan Dinar (LYD)"
     },
     "language": {
       "title": "What language do you prefer to use in your kindergarten?"
