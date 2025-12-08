@@ -55,6 +55,9 @@ const ProtectedRoute = ({ roles = [], redirectPath = "/signin", children }) => {
   }
 
   if (roles.length > 0 && !roles.includes(user.role.toLowerCase())) {
+    if (user.role.toLowerCase() === "admin") {
+      return <Navigate to="/" state={{ from: location }} replace />;
+    }
     if (user.role.toLowerCase() === "supervisor") {
       return (
         <Navigate
@@ -72,7 +75,7 @@ const ProtectedRoute = ({ roles = [], redirectPath = "/signin", children }) => {
     return <Navigate to="/unauthorized" state={{ from: location }} replace />;
   }
 
-  return children ? children : <Outlet />;
+  return children ?? <Outlet />;
 };
 
 export default ProtectedRoute;
