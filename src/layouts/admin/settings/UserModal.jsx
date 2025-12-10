@@ -76,7 +76,7 @@ export default function UserModal({
         reportFinancial: true,
         reportHealth: true,
       },
-      image: editingUser?.image || "",
+      image: editingUser?.image || null,
     },
   });
   useEffect(() => {
@@ -90,7 +90,7 @@ export default function UserModal({
         reportFinancial: true,
         reportHealth: true,
       },
-      image: editingUser?.image || "",
+      image: editingUser?.image || null,
     });
   }, [editingUser, form]);
 
@@ -109,7 +109,7 @@ export default function UserModal({
         }
         formData.append("image", data.image);
       }
-      if (editingUser.image && !data.image) {
+      if (editingUser?.image && !data.image) {
         formData.append("deleteImage", "true");
         formData.append("oldImage", editingUser.image);
       }
