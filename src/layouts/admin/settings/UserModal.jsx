@@ -76,7 +76,7 @@ export default function UserModal({
         reportFinancial: true,
         reportHealth: true,
       },
-      image: editingUser?.image || null,
+      image: editingUser?.image || "",
     },
   });
   useEffect(() => {
@@ -90,7 +90,7 @@ export default function UserModal({
         reportFinancial: true,
         reportHealth: true,
       },
-      image: editingUser?.image || null,
+      image: editingUser?.image || "",
     });
   }, [editingUser, form]);
 
